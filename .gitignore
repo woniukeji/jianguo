@@ -8,14 +8,18 @@
 
 # Java class files
 *.class
-
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
 # Generated files
 bin/
 gen/
 
 # Gradle files
-.gradle/
-build/
+
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -31,9 +35,4 @@ proguard/
 
 # Android Studio captures folder
 captures/
-/app/app.iml
-/FlycoTabLayout_Lib
-/.idea
-/jianguo.iml
-/gradlew.bat
-/gradlew
+
