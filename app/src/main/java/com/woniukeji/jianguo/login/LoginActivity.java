@@ -1,26 +1,27 @@
 package com.woniukeji.jianguo.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.entity.UserCallback;
+import com.woniukeji.jianguo.logger.Logger;
 import com.woniukeji.jianguo.utils.DateUtils;
-import com.woniukeji.jianguo.utils.MD5Coder;
+import com.woniukeji.jianguo.utils.MD5Util;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.HashMap;
@@ -38,7 +39,7 @@ import cn.sharesdk.wechat.friends.Wechat;
 import okhttp3.Call;
 
 /**
- * A login screen that offers login via email/password.
+ * A Register screen that offers Register via email/password.
  */
 public class LoginActivity extends Activity implements PlatformActionListener, View.OnClickListener {
 
@@ -46,18 +47,18 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
             "foo@example.com:hello", "bar@example.com:world"
     };
     @InjectView(R.id.login_progress) ProgressBar loginProgress;
-    @InjectView(R.id.phoneNumber) AutoCompleteTextView phoneNumber;
+    @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.password) EditText password;
     @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.register_in_button) TextView registerInButton;
-    @InjectView(R.id.wechat) Button wechat;
-    @InjectView(R.id.qq) Button qq;
+    @InjectView(R.id.register_in_button) Button registerInButton;
+    @InjectView(R.id.wechat) ImageView wechat;
+    @InjectView(R.id.qq) ImageView qq;
     @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
     @InjectView(R.id.login_form) ScrollView loginForm;
+    @InjectView(R.id.login_bg) ImageView loginBg;
 
     private UserLoginTask mAuthTask = null;
     // UI references.
-    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -99,8 +100,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         if (plat.isValid()) {
             String userId = plat.getDb().getUserId();
             if (!TextUtils.isEmpty(userId)) {
-                handler.sendEmptyMessage(MSG_USERID_FOUND);
-                login(plat.getName(), userId, null);
+                Register(true, plat.getName(), userId, null);
                 return;
             }
         }
@@ -108,6 +108,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         plat.SSOSetting(false);
         plat.showUser(null);
     }
+
     /*
          * 演示执行第三方登录/注册的方法
          * <p>
@@ -115,38 +116,54 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
          *
          * @param platformName 执行登录/注册的平台名称，如：SinaWeibo.NAME
          */
+    private void Register(boolean auth, String plat, String token, HashMap<String, Object> userInfo) {
+        String sex = null;
+        String nickname = null;
+        String nameimage = null;
+        String time = DateUtils.getDateTime(System.currentTimeMillis());
+        String only = MD5Util.MD5(Constants.ONLY_PART1 + time + ":" + Constants.ONLY_PART2);
+        if (auth) {
+            UserLoginTask userLoginTask = new UserLoginTask(true, only, token, nickname, nameimage, sex);
+            userLoginTask.execute();
+        } else {
+            Iterator iterator = userInfo.entrySet().iterator();
+            //QQ Wechat字段名不同分别获取
+            if (plat.equals("Wechat")) {
+                while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    if (entry.getKey().equals("nickname")) {
+                        nickname = (String) entry.getValue();
+                    } else if (entry.getKey().equals("headimgurl")) {
+                        nameimage = (String) entry.getValue();
+                    } else if (entry.getKey().equals("sex")) {
+                        sex = entry.getValue().toString();
+                    }
+                }
+            } else {//QQ Wechat字段名不同分别获取
+                Map.Entry entry = (Map.Entry) iterator.next();
+                if (entry.getKey().equals("nickname")) {
+                    nickname = (String) entry.getValue();
+                } else if (entry.getKey().equals("figureurl_qq_1")) {
+                    nameimage = (String) entry.getValue();
+                } else if (entry.getKey().equals("gender")) {
+                    if (entry.getValue().equals("男")) {
+                        sex = "1";
+                    } else {
+                        sex = "0";
+                    }
+                }
+            }
 
-    private void login(String plat, String userId, HashMap<String, Object> userInfo) {
-         final String sex;
-         final String nickname;
-         final String nameimage;
-
-        Iterator iterator=userInfo.entrySet().iterator();
-        while (iterator.hasNext()){
-            Map.Entry entry= (Map.Entry) iterator.next();
-           if (entry.getKey().equals("nickname")){
-
-           }else if(entry.getKey().equals("figureurl_qq_1")){
-
-           }
-           else if(entry.getKey().equals("gender")){
-
-           }
+            UserLoginTask userLoginTask = new UserLoginTask(false, only, token, nickname, nameimage, sex);
+            userLoginTask.execute();
         }
-
-
-        String time =DateUtils.getDateTime(System.currentTimeMillis());
-        String only = MD5Coder.getMD5Code(Constants.ONLY_STR+time+":");
-        UserLoginTask userLoginTask=new UserLoginTask(only,userId,"","","");
-        userLoginTask.execute();
-
+//        String only = MD5Coder.getMD5Code(Constants.ONLY_PART1+time+":"+Constants.ONLY_PART2);
     }
 
     @Override
     public void onComplete(Platform platform, int action, HashMap<String, Object> hashMap) {
         if (action == Platform.ACTION_USER_INFOR) {
-            handler.sendEmptyMessage(MSG_AUTH_COMPLETE);
-            login(platform.getName(), platform.getDb().getUserId(), hashMap);
+            Register(false, platform.getName(), platform.getDb().getUserId(), hashMap);
         }
     }
 
@@ -166,6 +183,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
             case R.id.sign_in_button:
                 break;
             case R.id.register_in_button:
+                startActivity(new Intent(LoginActivity.this,RegistActivity.class));
                 break;
             case R.id.wechat: {
                 authorize(new Wechat(this));
@@ -174,7 +192,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
             case R.id.qq: {
                 authorize(new QQ(this));
             }
-                break;
+            break;
         }
     }
 
@@ -186,20 +204,26 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         private final String nickname;
         private final String nameimage;
         private final String sex;
+        private final boolean auth;
 
-        UserLoginTask(String only, String token,String nickname,String nameimage,String sex) {
+        UserLoginTask(boolean auth, String only, String token, String nickname, String nameimage, String sex) {
             this.only = only;
-            this.sex = token;
-            this.token = nickname;
-            this.nickname = nameimage;
-            this.nameimage = sex;
+            this.sex = sex;
+            this.token = token;
+            this.nickname = nickname;
+            this.nameimage = nameimage;
+            this.auth = auth;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-               Login();
+                if (auth) {
+                    Login();
+                } else {
+                    AuthWQ();
+                }
             } catch (Exception e) {
                 return false;
             }
@@ -210,9 +234,8 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
 //            showProgress(false);
-
             if (success) {
-                finish();
+
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -224,7 +247,40 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
             mAuthTask = null;
 //            showProgress(false);
         }
-        public void Login(){
+
+        /**
+         * login
+         * 授权过的weixin qq 用户直接通过token登陆
+         */
+        public void Login() {
+            OkHttpUtils
+                    .get()
+                    .url(Constants.LOGIN_WQ)
+                    .addParams("token", token)
+                    .addParams("only", only)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new UserCallback() {
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Logger.getDefaultLogger().e(e.toString());
+                        }
+
+                        @Override
+                        public void onResponse(User response) {
+                            Logger.getDefaultLogger().e(response.toString());
+                        }
+
+                    });
+        }
+
+        /**
+         * authWQ
+         * 未授权的weixin qq用户
+         */
+        public void AuthWQ() {
             OkHttpUtils
                     .get()
                     .url(Constants.LOGIN_WQ)
@@ -234,16 +290,18 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
                     .addParams("token", token)
                     .addParams("nameimage", nameimage)
                     .build()
-                    .execute(new UserCallback()
-                    {
+                    .connTimeOut(30000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new UserCallback() {
                         @Override
                         public void onError(Call call, Exception e) {
-
+                            Logger.getDefaultLogger().e(e.toString());
                         }
 
                         @Override
                         public void onResponse(User response) {
-
+                            Logger.getDefaultLogger().e(response.toString());
                         }
 
                     });

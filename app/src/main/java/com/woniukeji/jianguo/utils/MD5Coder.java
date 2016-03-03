@@ -52,7 +52,7 @@ public class MD5Coder {
         for (int i = 0; i < bByte.length; i++) {
             sBuffer.append(byteToArrayString(bByte[i]));
         }
-        return sBuffer.toString();
+        return sBuffer.toString().toUpperCase();
     }
 
     /**

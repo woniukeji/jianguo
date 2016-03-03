@@ -1,5 +1,7 @@
 package com.woniukeji.jianguo.login;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.woniukeji.jianguo.R;
@@ -10,7 +12,9 @@ import com.woniukeji.jianguo.base.BaseActivity;
  */
 public class RegistActivity extends BaseActivity {
 
-
+    private String patternCoder = "(?<!\\d)\\d{6}(?!\\d)";
+    private BroadcastReceiver smsReceiver;
+    private IntentFilter filter2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

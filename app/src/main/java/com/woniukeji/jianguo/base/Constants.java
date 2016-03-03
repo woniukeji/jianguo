@@ -17,15 +17,18 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_USING=JIANGUO_TEST;
-    public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";
-    public static final String LOGIN_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";
-    public static final String ONLY_STR = "xse2iowiowdg3542d49z";
-    public static final String CHAT_ROOM = "item_chatroom";
-    public static final String MESSAGE_ATTR_IS_VOICE_CALL = "is_voice_call";
-    public static final String MESSAGE_ATTR_IS_VIDEO_CALL = "is_video_call";
-    public static final String ACCOUNT_REMOVED = "account_removed";
-    public static final String SP_FILE_NAME_CATEGORYS = "spCategorys";
-    public static final String SP_NAME = "Categorys";
+    public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
+    public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
+    public static final String REC_SMS= JIANGUO_USING+"T_Text_Sms_T_user_login_Insert_ServletServlet";//获取短信
+    public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
+
+    public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
+    public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
+    public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
+    public static final String ONLY_PART1 = "xse2iowiowdg3542d49z";
+    public static final String ONLY_PART2 = "jfiejdw4gdeqefw33ff23fi999";
+
+    public static final String SP_NAME = "T_user_login_Update_Psd_Servlet";
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
 
 
