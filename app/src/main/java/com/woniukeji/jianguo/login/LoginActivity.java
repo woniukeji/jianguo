@@ -16,8 +16,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.entity.UserCallback;
+import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.MD5Coder;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,6 +35,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
+import okhttp3.Call;
 
 /**
  * A login screen that offers login via email/password.
@@ -91,12 +100,12 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
             String userId = plat.getDb().getUserId();
             if (!TextUtils.isEmpty(userId)) {
                 handler.sendEmptyMessage(MSG_USERID_FOUND);
-//                login(plat.getName(), userId, null);
+                login(plat.getName(), userId, null);
                 return;
             }
         }
         plat.setPlatformActionListener(this);
-        plat.SSOSetting(true);
+        plat.SSOSetting(false);
         plat.showUser(null);
     }
     /*
@@ -108,10 +117,29 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
          */
 
     private void login(String plat, String userId, HashMap<String, Object> userInfo) {
-        Message msg = new Message();
-        msg.what = MSG_LOGIN;
-        msg.obj = plat;
-        handler.sendMessage(msg);
+         final String sex;
+         final String nickname;
+         final String nameimage;
+
+        Iterator iterator=userInfo.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry= (Map.Entry) iterator.next();
+           if (entry.getKey().equals("nickname")){
+
+           }else if(entry.getKey().equals("figureurl_qq_1")){
+
+           }
+           else if(entry.getKey().equals("gender")){
+
+           }
+        }
+
+
+        String time =DateUtils.getDateTime(System.currentTimeMillis());
+        String only = MD5Coder.getMD5Code(Constants.ONLY_STR+time+":");
+        UserLoginTask userLoginTask=new UserLoginTask(only,userId,"","","");
+        userLoginTask.execute();
+
     }
 
     @Override
@@ -153,34 +181,28 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
+        private final String only;
+        private final String token;
+        private final String nickname;
+        private final String nameimage;
+        private final String sex;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        UserLoginTask(String only, String token,String nickname,String nameimage,String sex) {
+            this.only = only;
+            this.sex = token;
+            this.token = nickname;
+            this.nickname = nameimage;
+            this.nameimage = sex;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+               Login();
+            } catch (Exception e) {
                 return false;
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
             return true;
         }
 
@@ -201,6 +223,30 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         protected void onCancelled() {
             mAuthTask = null;
 //            showProgress(false);
+        }
+        public void Login(){
+            OkHttpUtils
+                    .get()
+                    .url(Constants.LOGIN_WQ)
+                    .addParams("only", only)
+                    .addParams("sex", sex)
+                    .addParams("nickname", nickname)
+                    .addParams("token", token)
+                    .addParams("nameimage", nameimage)
+                    .build()
+                    .execute(new UserCallback()
+                    {
+                        @Override
+                        public void onError(Call call, Exception e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(User response) {
+
+                        }
+
+                    });
         }
     }
 }

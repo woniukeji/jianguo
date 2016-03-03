@@ -17,7 +17,6 @@ public class RegistActivity extends BaseActivity {
         setContentView(R.layout.activity_regist);
         // Set up the login form.
 
-
     }
 
     @Override
