@@ -46,6 +46,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+
     @InjectView(R.id.login_progress) ProgressBar loginProgress;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.password) EditText password;
