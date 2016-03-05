@@ -8,8 +8,8 @@ android {
         applicationId "com.woniukeji.jianguo"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -34,27 +34,27 @@ android {
     productFlavors {
         yingyongbao {
             manifestPlaceholders = [CHANNEL_NAME: "YINGYONGBAO"]
-            minSdkVersion 18
+            minSdkVersion 14
         }
         umeng {
             manifestPlaceholders = [CHANNEL_NAME: "UMENG"]
-            minSdkVersion 18
+            minSdkVersion 14
         }
         wandoujia {
             manifestPlaceholders = [CHANNEL_NAME: "WANDOUJIA"]
-            minSdkVersion 18
+            minSdkVersion 14
         }
         baidu {
             manifestPlaceholders = [CHANNEL_NAME: "BAIDU"]
-            minSdkVersion 18
+            minSdkVersion 14
         }
         c360 {
             manifestPlaceholders = [CHANNEL_NAME: "C360"]
-            minSdkVersion 18
+            minSdkVersion 14
         }
         xiaomi {
             manifestPlaceholders = [CHANNEL_NAME: "MI"]
-            minSdkVersion 18
+            minSdkVersion 14
         }
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
@@ -86,5 +86,6 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Favorite-2.7.0.jar')
     compile files('libs/MobTools-2016.0301.1053.jar')
     compile files('libs/MobCommons-2016.0301.1053.jar')
+    compile project(':dialoglibrary')
 }
 

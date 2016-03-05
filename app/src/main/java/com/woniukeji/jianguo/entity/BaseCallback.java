@@ -10,7 +10,7 @@ import okhttp3.Response;
 /**
  * Created by invinjun on 2016/3/3.
  */
-public abstract class UserCallback extends Callback<BaseBean>
+public abstract class BaseCallback extends Callback<BaseBean>
 {
     @Override
     public BaseBean parseNetworkResponse(Response response) throws IOException

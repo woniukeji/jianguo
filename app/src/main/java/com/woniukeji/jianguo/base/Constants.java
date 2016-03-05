@@ -25,10 +25,26 @@ public class Constants {
     public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
     public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
     public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
+    public static final String CHECK_PHONE_BLACK= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//快速登录忘记密码
     public static final String ONLY_PART1 = "xse2iowiowdg3542d49z";
     public static final String ONLY_PART2 = "jfiejdw4gdeqefw33ff23fi999";
 
-    public static final String SP_NAME = "T_user_login_Update_Psd_Servlet";
+    public static final String SP_LOGIN = "loginInfo";
+    public static final String SP_TYPE="type";//0代表手机登录 1微信 2未登录
+    public static final String SP_TEL="tel";
+    public static final String SP_PASSWORD="password";
+    public static final String SP_USERID="id";
+    public static final String SP_STATUS="status";
+    public static final String SP_WQTOKEN="qqwx_token";
+
+    public static final String SP_USER = "userInfo";
+    public static final String SP_NICK="nickname";
+    public static final String SP_NAME="name";
+    public static final String SP_IMG="name_image";
+    public static final String SP_SCHOOL="school";
+    public static final String SP_INTEGRAL="integral";
+    public static final String SP_CREDIT="credit";
+
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
 
 

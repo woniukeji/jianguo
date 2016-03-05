@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -8,7 +8,9 @@
               tools:context="com.woniukeji.jianguo.login.LoginActivity">
 
     <!-- CheckPhone progress -->
-
+    <include
+        android:id="@+id/layout_title_bar"
+        layout="@layout/app_title_bar" />
 
     <LinearLayout
         android:id="@+id/login_form"
@@ -22,16 +24,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-            <ImageView
-                android:id="@+id/login_bg"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="237dp"
-                android:background="@mipmap/login_bg"
-                android:scaleType="centerCrop"
-                />
+                android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="42dp"
                     android:gravity="center"
                     android:paddingLeft="15dp"
                     android:background="@color/white"
@@ -44,20 +44,34 @@
 
                         />
 
-                        <EditText
-                            android:id="@+id/phoneNumber"
-                            android:gravity="center|left"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:hint="@string/prompt_email"
-                            android:inputType="text|phone"
-                            android:maxLines="1"
-                            android:textSize="14sp"
-                            android:background="@color/float_transparent"
-                            android:singleLine="true"/>
+                    <EditText
+                        android:id="@+id/phoneNumber"
+                        android:gravity="center|left"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:hint="请输入您的手机号"
+                        android:inputType="text|phone"
+                        android:maxLines="1"
+                        android:textSize="14sp"
+                        android:background="@color/float_transparent"
+                        android:singleLine="true"/>
 
 
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_get_code"
+                    android:layout_width="88dp"
+                    android:layout_height="31dp"
+                    android:layout_weight="4"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/button_background_login"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="13dp"
+                    android:text="验证码"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -75,47 +89,29 @@
                 android:id="@+id/icon_pass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/icon_password"
+                android:src="@mipmap/icon_pin"
                 android:layout_centerVertical="true"
                 />
-            <TextView
-                android:id="@+id/forget_pass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="忘记密码？"
-                android:textSize="12sp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                />
+
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/phone_code"
                     android:layout_toRightOf="@id/icon_pass"
                     android:layout_toLeftOf="@id/forget_pass"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="@string/prompt_password"
+                    android:hint="请输入验证码"
                     android:textSize="14sp"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="text|phone"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:background="@color/float_transparent"
                     />
 
         </RelativeLayout>
-            <TextView
-                android:id="@+id/quick_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="使用手机验证码登陆"
-                android:gravity="right"
-                android:textSize="12sp"
-                android:layout_marginRight="21dp"
-                android:layout_marginTop="18dp"
-                />
+
             <Button
                 android:id="@+id/sign_in_button"
                 style="?android:textAppearanceSmall"
@@ -128,24 +124,8 @@
                 android:text="@string/action_sign_in"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
-            <Button
-                android:id="@+id/register_in_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="37.5dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_background_login_reg"
-                android:text="注册"
-                android:textColor="@color/white"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:text="使用其他方式登陆"
-                />
+
+
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -153,23 +133,9 @@
     android:orientation="horizontal"
     android:layout_marginTop="17dp"
     >
-    <ImageView
-        android:id="@+id/wechat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:src="@drawable/ssdk_oks_classic_wechat"
-        android:layout_marginRight="8dp"
-        />
-    <ImageView
-        android:id="@+id/qq"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:src="@drawable/ssdk_oks_classic_qq"
-        />
+
 </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

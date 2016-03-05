@@ -1,18 +1,12 @@
 package com.woniukeji.jianguo.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by invinjun on 2016/3/3.
  */
-public class User {
-    private String Message;
+public class User  implements Serializable {
 
-    public String getMessage() {
-        return Message;
-    }
-
-    public void setMessage(String message) {
-        Message = message;
-    }
 
     private T_user_login_Bean t_user_login;
     private T_user_info_Bean t_user_info;
@@ -33,7 +27,7 @@ public class User {
         this.t_user_info = t_user_info;
     }
 
-    public class T_user_info_Bean {
+    public class T_user_info_Bean implements Serializable{
 
         //�û����ϱ�
         private int id;//ID
@@ -116,7 +110,7 @@ public class User {
         }
 
     }
-    public class T_user_login_Bean {
+    public class T_user_login_Bean implements Serializable{
 
         //�û���¼��
         private int id;//ID

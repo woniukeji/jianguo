@@ -3,9 +3,10 @@ package com.woniukeji.jianguo.base;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (scale * dipValue + 0.5f);
     }
-    public void showToast(String text) {
+    public void showShortToast(String text) {
         Toast.makeText(BaseActivity.this,text,Toast.LENGTH_SHORT).show();
+    }
+    public void showLongToast(String text) {
+        Toast.makeText(BaseActivity.this,text,Toast.LENGTH_LONG).show();
     }
 }

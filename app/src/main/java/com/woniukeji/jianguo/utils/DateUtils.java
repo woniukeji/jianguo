@@ -1,5 +1,7 @@
 package com.woniukeji.jianguo.utils;
 
+import com.woniukeji.jianguo.base.Constants;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -213,9 +215,10 @@ public class DateUtils {
      *            long 日期
      * @return 返回字符型日期时间 yyyy-MM-dd HH:mm:ss 格式
      */
-    public static String getDateTime(long millis ) {
+    public static String getDateTimeToOnly(long millis ) {
         Date date=new Date(millis);
-        return format(date, "yyyy-MM-dd HH");
+        String tempTime=format(date, "yyyy-MM-dd HH");
+        return MD5Util.MD5(Constants.ONLY_PART1 + tempTime + ":" + Constants.ONLY_PART2);
     }
 
     /**

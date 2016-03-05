@@ -7,4 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#3498db</item>
     </style>
+    <style name="title_bar_style">
+    <item name="android:background">@color/app_bg</item>
+    <item name="android:paddingLeft">0.0dip</item>
+    <item name="android:paddingRight">0.0dip</item>
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">52dp</item>
+    </style>
 </resources>

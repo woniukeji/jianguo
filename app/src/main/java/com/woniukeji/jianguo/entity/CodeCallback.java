@@ -10,13 +10,13 @@ import okhttp3.Response;
 /**
  * Created by invinjun on 2016/3/3.
  */
-public abstract class UserCallback extends Callback<BaseBean>
+public abstract class CodeCallback extends Callback<SmsCode>
 {
     @Override
-    public BaseBean parseNetworkResponse(Response response) throws IOException
+    public SmsCode parseNetworkResponse(Response response) throws IOException
     {
         String string = response.body().string();
-        BaseBean user = new Gson().fromJson(string, BaseBean.class);
-        return user;
+        SmsCode smsCode = new Gson().fromJson(string, SmsCode.class);
+        return smsCode;
     }
 }

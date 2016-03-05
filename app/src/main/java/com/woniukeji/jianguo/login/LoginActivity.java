@@ -1,27 +1,33 @@
 package com.woniukeji.jianguo.login;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.base.MainActivity;
+import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.entity.UserCallback;
-import com.woniukeji.jianguo.logger.Logger;
+import com.woniukeji.jianguo.entity.UserDataCallback;
+import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Util;
+import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.HashMap;
@@ -31,6 +37,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -41,13 +48,8 @@ import okhttp3.Call;
 /**
  * A Register screen that offers Register via email/password.
  */
-public class LoginActivity extends Activity implements PlatformActionListener, View.OnClickListener {
+public class LoginActivity extends BaseActivity implements PlatformActionListener, View.OnClickListener {
 
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-
-    @InjectView(R.id.login_progress) ProgressBar loginProgress;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.password) EditText password;
     @InjectView(R.id.sign_in_button) Button signInButton;
@@ -55,22 +57,42 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
     @InjectView(R.id.wechat) ImageView wechat;
     @InjectView(R.id.qq) ImageView qq;
     @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
-    @InjectView(R.id.login_form) ScrollView loginForm;
+    @InjectView(R.id.login_form) LinearLayout loginForm;
     @InjectView(R.id.login_bg) ImageView loginBg;
+    @InjectView(R.id.forget_pass) TextView forgetPass;
+    @InjectView(R.id.quick_login) TextView quickLogin;
 
+    private Context context=LoginActivity.this;
     private UserLoginTask mAuthTask = null;
     // UI references.
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private Handler handler = new Handler() {
 
+    private int MSG_USER_SUCCESS = 0;
+    private int MSG_USER_FAIL = 1;
+    private int MSG_AUTH_COMPLETE = 2;
+    private int MSG_AUTH_ERROR = 3;
+    private int MSG_AUTH_CANCEL = 4;
+    private int MSG_LOGIN = 5;
+    private Handler handler = new Handler() {
         // 处理子线程给我们发送的消息。
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case 0:
+                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+                    //每次登录后保存用户信息
+                        saveToSP(user.getData());
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        intent.putExtra("user", user);
+                        startActivity(intent);
+                        finish();
+                        showLongToast("登录成功");
+                    break;
                 case 1:
-
+                    String ErrorMessage = (String) msg.obj;
+                    Toast.makeText(LoginActivity.this, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -79,25 +101,49 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
 
         ;
     };
-    private int MSG_USERID_FOUND = 0;
-    private int MSG_AUTH_COMPLETE = 1;
-    private String platform;
-    private int MSG_AUTH_ERROR = 2;
-    private int MSG_AUTH_CANCEL = 3;
-    private int MSG_LOGIN = 4;
+
+    private void saveToSP(User user) {
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_USERID,user.getT_user_login().getId());
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_STATUS,user.getT_user_login().getStatus());
+
+        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
+        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
+        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
+        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
+        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_CREDIT,user.getT_user_info().getCredit());
+        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void setContentView() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
         //初始化SDK
         ShareSDK.initSDK(this);
+    }
+
+    @Override
+    public void initViews() {
+
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
 
     }
 
 
     private void authorize(Platform plat) {
+        Toast.makeText(LoginActivity.this, "正在登录，请稍后...", Toast.LENGTH_SHORT).show();
         if (plat.isValid()) {
             String userId = plat.getDb().getUserId();
             if (!TextUtils.isEmpty(userId)) {
@@ -121,8 +167,8 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         String sex = null;
         String nickname = null;
         String nameimage = null;
-        String time = DateUtils.getDateTime(System.currentTimeMillis());
-        String only = MD5Util.MD5(Constants.ONLY_PART1 + time + ":" + Constants.ONLY_PART2);
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+//        String only = MD5Util.MD5(Constants.ONLY_PART1 + time + ":" + Constants.ONLY_PART2);
         if (auth) {
             UserLoginTask userLoginTask = new UserLoginTask(true, only, token, nickname, nameimage, sex);
             userLoginTask.execute();
@@ -158,7 +204,6 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
             UserLoginTask userLoginTask = new UserLoginTask(false, only, token, nickname, nameimage, sex);
             userLoginTask.execute();
         }
-//        String only = MD5Coder.getMD5Code(Constants.ONLY_PART1+time+":"+Constants.ONLY_PART2);
     }
 
     @Override
@@ -178,13 +223,19 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         handler.sendEmptyMessage(MSG_AUTH_COMPLETE);
     }
 
-    @OnClick({R.id.sign_in_button, R.id.register_in_button, R.id.wechat, R.id.qq})
+    @OnClick({R.id.sign_in_button, R.id.register_in_button, R.id.wechat, R.id.qq,R.id.forget_pass, R.id.quick_login})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
+                String phone = phoneNumber.getText().toString().trim();
+                String pass = password.getText().toString().trim();
+                if (CheckStatus()) {
+                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, MD5Util.MD5(pass));
+                    phoneLoginTask.execute();
+                }
                 break;
             case R.id.register_in_button:
-                startActivity(new Intent(LoginActivity.this,RegistActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegistActivity.class));
                 break;
             case R.id.wechat: {
                 authorize(new Wechat(this));
@@ -194,11 +245,39 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
                 authorize(new QQ(this));
             }
             break;
+            case R.id.forget_pass:
+                startActivity(new Intent(LoginActivity.this,ChangPssActivity.class));
+                break;
+            case R.id.quick_login:
+                startActivity(new Intent(LoginActivity.this,QuickLoginActivity.class));
+                break;
         }
     }
 
+    private boolean CheckStatus() {
+        if (!CommonUtils.isMobileNO(phoneNumber.getText().toString().trim())) {
+            showShortToast("手机号码格式不正确");
+            return false;
+        }
+        if (phoneNumber.getText().toString().equals("")) {
+            showShortToast("手机号不能为空");
+            return false;
+        } else if (password.getText().toString().equals("")) {
+            showShortToast("密码不能为空");
+            return false;
+        }
+        return true;
+    }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
+    }
+
+
+    public class UserLoginTask extends AsyncTask<Void, Void, User> {
 
         private final String only;
         private final String token;
@@ -206,6 +285,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         private final String nameimage;
         private final String sex;
         private final boolean auth;
+        SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         UserLoginTask(boolean auth, String only, String token, String nickname, String nameimage, String sex) {
             this.only = only;
@@ -217,7 +297,7 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected User doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
                 if (auth) {
@@ -226,27 +306,30 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
                     AuthWQ();
                 }
             } catch (Exception e) {
-                return false;
+                return null;
             }
-            return true;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-//            showProgress(false);
-            if (success) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("登录中...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
 
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
+        @Override
+        protected void onPostExecute(final User user) {
+            mAuthTask = null;
+            pDialog.dismiss();
         }
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-//            showProgress(false);
+            pDialog.dismiss();
         }
 
         /**
@@ -263,20 +346,34 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new UserCallback() {
+                    .execute(new UserDataCallback() {
                         @Override
                         public void onError(Call call, Exception e) {
-                            Logger.getDefaultLogger().e(e.toString());
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_USER_FAIL;
+                            handler.sendMessage(message);
                         }
 
                         @Override
-                        public void onResponse(User response) {
-                            Logger.getDefaultLogger().e(response.toString());
+                        public void onResponse(BaseBean user) {
+                            if (user.getCode().equals("200")){
+                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"1");
+                                Message message = new Message();
+                                message.obj = user;
+                                message.what = MSG_USER_SUCCESS;
+                                handler.sendMessage(message);
+                            }else {
+                                Message message = new Message();
+                                message.obj = user.getMessage();
+                                message.what = MSG_USER_FAIL;
+                                handler.sendMessage(message);
+                            }
+
                         }
 
                     });
         }
-
         /**
          * authWQ
          * 未授权的weixin qq用户
@@ -294,19 +391,122 @@ public class LoginActivity extends Activity implements PlatformActionListener, V
                     .connTimeOut(30000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new UserCallback() {
+                    .execute(new UserDataCallback() {
                         @Override
                         public void onError(Call call, Exception e) {
-                            Logger.getDefaultLogger().e(e.toString());
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_USER_FAIL;
+                            handler.sendMessage(message);
                         }
 
                         @Override
-                        public void onResponse(User response) {
-                            Logger.getDefaultLogger().e(response.toString());
+                        public void onResponse(BaseBean user) {
+                            if (user.getCode().equals("200")){
+                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"1");
+                                Message message = new Message();
+                                message.obj = user;
+                                message.what = MSG_USER_SUCCESS;
+                                handler.sendMessage(message);
+                            }else {
+                                Message message = new Message();
+                                message.obj = user.getMessage();
+                                message.what = MSG_USER_FAIL;
+                                handler.sendMessage(message);
+                            }
                         }
 
                     });
         }
+    }
+
+    public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
+
+        private final String tel;
+        private final String passWord;
+        SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+
+        PhoneLoginTask(String phoneNum, String passWord) {
+            this.tel = phoneNum;
+            this.passWord = passWord;
+        }
+
+        @Override
+        protected User doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                PhoneLogin();
+            } catch (Exception e) {
+                return null;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("登录中...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(final User user) {
+            mAuthTask = null;
+            pDialog.dismiss();
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            pDialog.dismiss();
+        }
+
+        /**
+         * phoneLogin
+         */
+        public void PhoneLogin() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.LOGIN_PHONE)
+                    .addParams("only", only)
+                    .addParams("tel", tel)
+                    .addParams("password", passWord)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new UserDataCallback() {
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_USER_FAIL;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean user) {
+                            if (user.getCode().equals("200")){
+                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"0");
+                                Message message = new Message();
+                                message.obj = user;
+                                message.what = MSG_USER_SUCCESS;
+                                handler.sendMessage(message);
+                            }else {
+                                Message message = new Message();
+                                message.obj = user.getMessage();
+                                message.what = MSG_USER_FAIL;
+                                handler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
+
+
     }
 }
 
