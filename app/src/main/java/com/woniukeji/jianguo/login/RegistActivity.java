@@ -22,20 +22,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.base.MainActivity;
+import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.entity.UserCallback;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Util;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.utils.TimeCount;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
@@ -44,6 +47,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * A login screen that offers login via email/password.
@@ -188,6 +192,7 @@ public class RegistActivity extends BaseActivity {
                 boolean isOK = CommonUtils.isMobileNO(tel);
                 if (isOK) {
 //                    showShortToast("正在发送验证码，请稍后");
+                    new TimeCount(60000, 1000,btnGetCode).start();//构造CountDownTimer对象
                     GetSMS getSMS = new GetSMS(tel);
                     getSMS.execute();
                 } else {
@@ -262,7 +267,7 @@ public class RegistActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登陆中...");
+            pDialog.setTitleText("中...");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -362,7 +367,13 @@ public class RegistActivity extends BaseActivity {
                     .connTimeOut(30000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new UserCallback() {
+                    .execute(new Callback<BaseBean<User>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
+                            return user;
+                        }
                         @Override
                         public void onError(Call call, Exception e) {
                             Message message = new Message();
@@ -391,5 +402,6 @@ public class RegistActivity extends BaseActivity {
                     });
         }
     }
+
 }
 

@@ -23,15 +23,15 @@
         tools:replace="android:icon, android:theme">
         <activity
             android:name=".login.SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".base.MainActivity"
+            android:name=".main.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".login.RegistActivity"
@@ -91,7 +91,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
+        <activity android:name=".mine.MineFragment">
+        </activity>
+        <activity android:name=".mine.AuthActivity">
+        </activity>
     </application>
 
 </manifest>

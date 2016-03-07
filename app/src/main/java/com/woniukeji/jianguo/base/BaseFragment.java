@@ -1,4 +1,5 @@
-package tv.liangzi.sport.fragment;
+package com.woniukeji.jianguo.base;
+
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -78,6 +79,6 @@ public abstract class BaseFragment extends Fragment {
     /**
      * fragment name
      */
-    public abstract String getFragmentName();
+//    public abstract String getFragmentName();
 
 }

@@ -1,5 +1,8 @@
 package com.woniukeji.jianguo.utils;
 
+import android.os.CountDownTimer;
+import android.widget.TextView;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,4 +20,5 @@ public class CommonUtils {
         return m.matches();
 
     }
+
 }

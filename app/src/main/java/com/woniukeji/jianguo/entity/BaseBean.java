@@ -16,9 +16,7 @@ public class BaseBean <T>{
         this.data = data;
     }
 
-    BaseBean(Class aClass){
 
-    }
     public String getMessage() {
         return message;
     }

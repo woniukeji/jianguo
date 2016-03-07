@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.base.MainActivity;
+import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.BaseCallback;
 import com.woniukeji.jianguo.entity.CodeCallback;

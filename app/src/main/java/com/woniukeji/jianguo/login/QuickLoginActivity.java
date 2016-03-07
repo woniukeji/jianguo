@@ -15,19 +15,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.base.MainActivity;
+import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.entity.UserCallback;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
@@ -37,6 +39,7 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * A Register screen that offers Register via email/password.
@@ -264,7 +267,13 @@ public class QuickLoginActivity extends BaseActivity {
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new UserCallback() {
+                    .execute(new Callback<BaseBean<User>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
+                            return user;
+                        }
                         @Override
                         public void onError(Call call, Exception e) {
                             Message message = new Message();

@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.base;
+package com.woniukeji.jianguo.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,10 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.BaseActivity;
+import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.TabEntity;
+import com.woniukeji.jianguo.mine.MineFragment;
 
 import java.util.ArrayList;
 
@@ -30,12 +33,12 @@ public class MainActivity extends BaseActivity {
 
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
-            R.mipmap.tab_more_unselect,
+            R.mipmap.tab_partjob_unselect,
             R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
-            R.mipmap.tab_more_select ,
+            R.mipmap.tab_partjob_select,
             R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
@@ -129,13 +132,13 @@ public class MainActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new FragmentText();           //直播榜
+                    return new HomeFragment();           //直播榜
                 case 1:
                     return new FragmentText();          //话题榜
                 case 2:
                     return new FragmentText();
                 case 3:
-                    return new FragmentText();  //用户榜
+                    return new MineFragment();  //用户榜
             }
             return new FragmentText();
         }

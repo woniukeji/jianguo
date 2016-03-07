@@ -16,6 +16,7 @@ package com.woniukeji.jianguo.base;
 public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
+    public static final String JIANGUO_TEST2="http://101.200.205.243:8080/";
     public static final String JIANGUO_USING=JIANGUO_TEST;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号

@@ -63,7 +63,7 @@
                  android:layout_marginRight="13dp"
                  android:text="验证码"
                  android:textColor="@color/white"
-                 android:textSize="14sp" />
+                 android:textSize="12sp" />
          </RelativeLayout>
             <ImageView
                 android:layout_width="match_parent"

@@ -1,0 +1,228 @@
+package com.woniukeji.jianguo.main;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.BaseFragment;
+import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.Job;
+import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.widget.FixedRecyclerView;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+/**
+ * A fragment representing a list of Items.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * interface.
+ */
+public class HomeFragment extends BaseFragment {
+
+    // TODO: Customize parameter argument names
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    @InjectView(R.id.list) FixedRecyclerView recycleList;
+    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
+    private OnListFragmentInteractionListener mListener;
+    private View headerView;
+    private jobitemRecyclerViewAdapter adapter;
+    private List<Job> jobs=new ArrayList<Job>();
+    private ViewPager vp;
+    private LinearLayout ll;
+    private ArrayList<View> imageViewList;
+    private int lastX;
+    private int lastposition = 0;
+
+    private Handler mHandler = new Myhandler(this.getActivity());
+    private Context context=this.getActivity();
+
+    private static class Myhandler extends Handler {
+        private WeakReference<Context> reference;
+
+        public Myhandler(Context context) {
+            reference = new WeakReference<>(context);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            MainActivity mainActivity = (MainActivity) reference.get();
+            switch (msg.what) {
+                case 0:
+                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+                    Intent intent = new Intent(mainActivity, MainActivity.class);
+//                    intent.putExtra("user", user);
+                    mainActivity.startActivity(intent);
+                    mainActivity.finish();
+                    break;
+                case 1:
+                    String ErrorMessage = (String) msg.obj;
+                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    String sms = (String) msg.obj;
+                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public HomeFragment() {
+    }
+
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static HomeFragment newInstance(int columnCount) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
+// Set the adapter
+
+        ButterKnife.inject(this, view);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        headerView = inflater.inflate(R.layout.home_header_view, container, false);
+        adapter = new jobitemRecyclerViewAdapter(jobs,getActivity());
+        adapter.addHeaderView(headerView);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+//设置布局管理器
+        recycleList.setLayoutManager(mLayoutManager);
+//设置adapter
+        recycleList.setAdapter(adapter);
+//设置Item增加、移除动画
+        recycleList.setItemAnimator(new DefaultItemAnimator());
+//添加分割线
+//        recycleList.addItemDecoration(new RecyclerView.ItemDecoration() {
+//        });
+//        recycleList.addItemDecoration(new DividerItemDecoration(
+//                getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+//                isHead = true;
+//                GetRecommendView getRecommendView = new GetRecommendView();
+//                Thread thread = new Thread(getRecommendView);
+//                thread.start();
+            }
+        });
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        for (int i = 0; i < 10; i++) {
+            jobs.add(new Job());
+        }
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
+    public void setImg(View viewPager) {
+        vp = (ViewPager) viewPager.findViewById(R.id.vp);
+        ll = (LinearLayout) viewPager.findViewById(R.id.ll);
+        imageViewList = new ArrayList<View>();
+        homeViewPagerAdapter pagerAdapter=new homeViewPagerAdapter(getActivity(),imageViewList);
+        vp.setAdapter(pagerAdapter);
+        vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ll.getChildAt(position).setEnabled(true);
+                ll.getChildAt(lastposition).setEnabled(false);
+                lastposition = position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+//        if (context instanceof OnListFragmentInteractionListener) {
+//            mListener = (OnListFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnListFragmentInteractionListener");
+//        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+    }
+}
