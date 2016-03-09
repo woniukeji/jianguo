@@ -72,4 +72,21 @@ public class MD5Coder {
         }
         return resultString;
     }
+    /**
+     * 获取MD5编码+android标示
+     * @param source
+     * @return
+     */
+    public static String getQiNiuName(String source) {
+        String resultString = null;
+        try {
+            resultString = new String(source);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // md.digest() 该函数返回值为存放哈希值结果的byte数组
+            resultString = "android_"+byteToString(md.digest(source.getBytes()));
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+        }
+        return resultString;
+    }
 }

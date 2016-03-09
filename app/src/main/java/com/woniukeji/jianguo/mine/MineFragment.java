@@ -9,6 +9,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.woniukeji.jianguo.R;
@@ -19,9 +23,56 @@ import com.woniukeji.jianguo.main.MainActivity;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 public class MineFragment extends BaseFragment {
+    @InjectView(R.id.img_back) ImageView imgBack;
+    @InjectView(R.id.title) TextView title;
+    @InjectView(R.id.title_bar) RelativeLayout titleBar;
+    @InjectView(R.id.img_head) ImageView imgHead;
+    @InjectView(R.id.name) TextView name;
+    @InjectView(R.id.school) TextView school;
+    @InjectView(R.id.phone) TextView phone;
+    @InjectView(R.id.lin_info) LinearLayout linInfo;
+    @InjectView(R.id.account) RelativeLayout account;
+    @InjectView(R.id.or_img) ImageView orImg;
+    @InjectView(R.id.img) ImageView img;
+    @InjectView(R.id.point_img) ImageView pointImg;
+    @InjectView(R.id.ll_money) LinearLayout llMoney;
+    @InjectView(R.id.ll_real_name) LinearLayout llRealName;
     private Handler mHandler = new Myhandler(this.getActivity());
-    private Context context=this.getActivity();
+    private Context context = this.getContext();
+
+    @OnClick({R.id.ll_money, R.id.ll_real_name,R.id.img_back, R.id.title, R.id.img_head, R.id.school, R.id.phone, R.id.account})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_money:
+                break;
+            case R.id.ll_real_name:
+                Intent intent = new Intent(getActivity().getApplicationContext(), AuthActivity.class);
+//                intent.putExtra("")
+                startActivity(intent);
+                break;
+            case R.id.img_back:
+                break;
+            case R.id.title:
+                break;
+            case R.id.img_head:
+                break;
+            case R.id.school:
+                break;
+            case R.id.phone:
+                break;
+            case R.id.account:
+                Intent intentRe = new Intent(getActivity().getApplicationContext(), ResumeActivity.class);
+//                intent.putExtra("")
+                startActivity(intentRe);
+                break;
+        }
+    }
+
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -63,6 +114,7 @@ public class MineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.activity_mine, container, false);
+        ButterKnife.inject(this, view);
         return view;
 
 
@@ -81,6 +133,7 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     @Override

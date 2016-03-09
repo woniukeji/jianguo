@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="上传身份证正面"
+                android:text="点击上传新头像"
                 />
         </RelativeLayout>
 

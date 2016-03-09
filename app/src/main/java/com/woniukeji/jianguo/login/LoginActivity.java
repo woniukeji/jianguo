@@ -111,6 +111,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
         SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_USERID,user.getT_user_login().getId());
         SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_STATUS,user.getT_user_login().getStatus());
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");

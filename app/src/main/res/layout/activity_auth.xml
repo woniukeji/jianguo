@@ -7,12 +7,12 @@
     android:orientation="vertical"
     tools:context="com.woniukeji.jianguo.mine.AuthActivity">
 <include
-    android:id="@+id/title"
+    android:id="@+id/in_title"
   layout="@layout/app_title_bar"
   />
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="150dp">
 
     <LinearLayout
         android:id="@+id/ll_top"
@@ -23,16 +23,18 @@
         <RelativeLayout
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:gravity="center"
             >
             <ImageView
                 android:id="@+id/img_front"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher"
                 />
             <TextView
+                android:id="@+id/tv_front"
                 android:layout_below="@+id/img_front"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,10 +50,12 @@
             <ImageView
                 android:id="@+id/img_opposite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
                 />
             <TextView
+                android:id="@+id/tv_opposite"
                 android:layout_below="@+id/img_opposite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,10 +84,12 @@
         />
 </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_phone"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
+        android:paddingLeft="15dp"
         >
         <ImageView
             android:id="@+id/img_phone"
@@ -107,15 +113,18 @@
             android:src="@mipmap/icon_pin"
             android:gravity="center"
             />
-        <TextView
-            android:layout_toLeftOf="@+id/img"
-            android:id="@+id/tv_is_auth"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="未验证"
-            android:gravity="center"
-            />
 
+        <EditText
+            android:layout_toLeftOf="@+id/img"
+            android:id="@+id/et_phone_auth"
+            android:gravity="center|right"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="未验证"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:background="@color/float_transparent"
+            android:singleLine="true"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -188,6 +197,7 @@
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
+        android:paddingLeft="15dp"
         >
         <ImageView
             android:id="@+id/or_img"
@@ -203,37 +213,34 @@
             android:text="性别"
             android:gravity="center_vertical"
             />
-        <CheckBox
-            android:id="@+id/cb_man"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
-            android:gravity="center"
-            />
-        <TextView
-            android:id="@+id/tv_man"
-            android:layout_toLeftOf="@+id/cb_man"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="男"
-            android:gravity="center"
-            />
-        <CheckBox
-            android:layout_toLeftOf="@+id/tv_man"
-            android:id="@+id/cb_women"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_toLeftOf="@+id/cb_women"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="女"
-            android:gravity="center"
-            />
+   <RadioGroup
+       android:id="@+id/rg_sex"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentRight="true"
+       android:orientation="horizontal"
+       >
+       <RadioButton
+           android:id="@+id/rb_woman"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="女"
+           android:button="@null"
+           android:background="@android:color/transparent"
+           android:drawableRight="@android:drawable/btn_radio"
+           />
+       <RadioButton
+           android:id="@+id/rb_man"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="男"
+           android:checked="true"
+           android:button="@null"
+           android:background="@android:color/transparent"
+           android:drawableRight="@android:drawable/btn_radio"
+           />
+
+   </RadioGroup>
     </RelativeLayout>
     <Button
         android:id="@+id/check_button"

@@ -114,10 +114,19 @@ public class User  implements Serializable {
 
         //�û���¼��
         private int id;//ID
-        private String tel;//����
+        private String tel;// 默认为0
         private String password;//�绰
         private String qqwx_token;//QQ
-        private int status;//״̬
+        private int status;// 状态（0=被封号，1=可以登录，但没有实名认证，2=已实名认证）
+        private String qiniu;//QQ
+
+        public String getQiniu() {
+            return qiniu;
+        }
+
+        public void setQiniu(String qiniu) {
+            this.qiniu = qiniu;
+        }
 
         public int getId() {
             return id;

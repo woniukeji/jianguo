@@ -2,7 +2,9 @@
 <manifest package="com.woniukeji.jianguo"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-sdk
+        android:minSdkVersion="18"
+        android:targetSdkVersion="21" />
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,6 +15,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="21" />
+
+
 
     <application
         android:allowBackup="true"
@@ -91,10 +99,24 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".mine.MineFragment">
+        <activity android:name=".mine.AuthActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
         </activity>
-        <activity android:name=".mine.AuthActivity">
+        <activity android:name=".mine.ResumeActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
         </activity>
+        <activity
+            android:name="me.nereo.multi_image_selector.PreviewPicturesActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+        <activity
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
     </application>
 
 </manifest>

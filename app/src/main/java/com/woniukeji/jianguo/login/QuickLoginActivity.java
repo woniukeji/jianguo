@@ -57,14 +57,7 @@ public class QuickLoginActivity extends BaseActivity {
     @InjectView(R.id.title) TextView title;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.icon_pass) ImageView iconPass;
-
-    // UI references.
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-
     SmsCode smsCode;
-
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
@@ -144,6 +137,7 @@ public class QuickLoginActivity extends BaseActivity {
         SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
         SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_USERID,user.getT_user_login().getId());
         SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_STATUS,user.getT_user_login().getStatus());
+        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
@@ -260,7 +254,7 @@ public class QuickLoginActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.LOGIN_PHONE)
+                    .url(Constants.LOGIN_QUICK)
                     .addParams("only", only)
                     .addParams("tel", tel)
                     .build()
