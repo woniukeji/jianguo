@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/gray_btn_bg_color"
     tools:context="com.woniukeji.jianguo.mine.AuthActivity">
 <include
     android:id="@+id/in_title"
@@ -12,33 +13,41 @@
   />
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:background="@color/white"
+    android:layout_height="239dp">
 
     <LinearLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         >
         <RelativeLayout
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="28dp"
+            android:layout_marginLeft="59dp"
+            android:layout_marginRight="31dp"
             >
             <ImageView
                 android:id="@+id/img_front"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/img_zhengmian"
                 />
             <TextView
                 android:id="@+id/tv_front"
+                android:layout_marginTop="12dp"
                 android:layout_below="@+id/img_front"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textSize="12dp"
+                android:singleLine="true"
+                android:textColor="#3B9BFF"
                 android:text="上传身份证正面"
                 />
         </RelativeLayout>
@@ -46,13 +55,16 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginRight="59dp"
+            android:layout_marginLeft="31dp"
+            >
             <ImageView
                 android:id="@+id/img_opposite"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:src="@mipmap/ic_launcher"
-                android:scaleType="centerCrop"
+                android:src="@mipmap/img_fanmian"
                 />
             <TextView
                 android:id="@+id/tv_opposite"
@@ -60,7 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="上传身份证正面"
+                android:layout_marginTop="12dp"
+                android:textSize="12dp"
+                android:textColor="#3B9BFF"
+                android:text="上传身份证反面"
                 />
         </RelativeLayout>
     </LinearLayout>
@@ -69,18 +84,21 @@
     android:layout_below="@id/ll_top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="25dp"
     android:text="请保证您的身份证主要信息清晰可见"
-    android:textSize="14sp"
+    android:textColor="#666666"
+    android:textSize="14dp"
     android:gravity="center"
     />
     <TextView
         android:layout_below="@+id/tv_notic1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:text="您可以将白纸置于桌面，将身份证置于纸上"
         android:gravity="center"
-        android:textSize="12sp"
+        android:textColor="#D8D8D8"
+        android:textSize="12dp"
         />
 </RelativeLayout>
     <RelativeLayout
@@ -90,12 +108,14 @@
         android:gravity="center_vertical"
         android:layout_gravity="center"
         android:paddingLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
         >
         <ImageView
             android:id="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_photo"
+            android:src="@mipmap/icon_real_tel"
             android:gravity="center"
             />
         <TextView
@@ -103,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="手机号码"
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <ImageView
@@ -110,21 +131,30 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
             android:gravity="center"
+            android:layout_marginRight="17dp"
             />
 
         <EditText
             android:layout_toLeftOf="@+id/img"
+            android:layout_marginRight="10dp"
             android:id="@+id/et_phone_auth"
             android:gravity="center|right"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="未验证"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:background="@color/float_transparent"
             android:singleLine="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            android:layout_marginLeft="3dp"
+            />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -136,7 +166,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_i"
             android:layout_gravity="center"
 
             />
@@ -144,6 +174,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="真实姓名："
+        android:textSize="14dp"
         />
         <EditText
             android:id="@+id/et_real_name"
@@ -152,13 +183,19 @@
             android:layout_height="40dp"
             android:hint="请输入您的真实姓名"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:background="@color/float_transparent"
             android:singleLine="true"/>
 
 
     </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_btn_bg_color"
+        android:layout_marginLeft="18dp"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="42dp"
@@ -169,7 +206,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_shenfen"
             android:layout_gravity="center"
 
             />
@@ -177,6 +214,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="身份证号："
+            android:textSize="14dp"
             />
         <EditText
             android:id="@+id/et_id"
@@ -186,7 +224,7 @@
             android:inputType="text|phone"
             android:hint="请输入您的身份证号"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:background="@color/float_transparent"
             android:singleLine="true"/>
 
@@ -198,12 +236,20 @@
         android:gravity="center_vertical"
         android:layout_gravity="center"
         android:paddingLeft="15dp"
+        android:background="@color/white"
         >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/gray_btn_bg_color"
+            android:layout_marginLeft="3dp"
+            />
         <ImageView
             android:id="@+id/or_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_photo"
+            android:src="@mipmap/icon_xingbie"
             android:gravity="center"
             />
         <TextView
@@ -211,14 +257,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="性别"
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
    <RadioGroup
        android:id="@+id/rg_sex"
        android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
+       android:layout_height="match_parent"
        android:layout_alignParentRight="true"
        android:orientation="horizontal"
+       android:gravity="center"
        >
        <RadioButton
            android:id="@+id/rb_woman"
@@ -226,8 +274,9 @@
            android:layout_height="wrap_content"
            android:text="女"
            android:button="@null"
+           android:textSize="14dp"
            android:background="@android:color/transparent"
-           android:drawableRight="@android:drawable/btn_radio"
+           android:drawableRight="@drawable/icon_woman"
            />
        <RadioButton
            android:id="@+id/rb_man"
@@ -236,8 +285,9 @@
            android:text="男"
            android:checked="true"
            android:button="@null"
+           android:textSize="14dp"
            android:background="@android:color/transparent"
-           android:drawableRight="@android:drawable/btn_radio"
+           android:drawableRight="@drawable/icon_man"
            />
 
    </RadioGroup>
@@ -252,6 +302,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/button_background_login"
         android:text="提交审核"
+        android:textSize="16dp"
         android:textColor="@color/white"
         android:textStyle="bold"/>
     <TextView
@@ -261,7 +312,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="兼果保证本资料仅供兼果平台使用"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:gravity="center"
         />
     <TextView
@@ -271,7 +322,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="兼果拒绝向任何第三方透露您的资料"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:gravity="center"
         />
 </LinearLayout>

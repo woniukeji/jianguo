@@ -118,9 +118,13 @@ public class AuthActivity extends BaseActivity {
                 break;
             case R.id.rb_man:
                 sex="1";
+                rbMan.setChecked(true);
+                rbWoman.setChecked(false);
                 break;
             case R.id.rb_woman:
                 sex="0";
+                rbMan.setChecked(false);
+                rbWoman.setChecked(true);
                 break;
             case R.id.check_button:
                 String phone = etPhoneAuth.getText().toString().trim();
@@ -224,8 +228,8 @@ public class AuthActivity extends BaseActivity {
             rbMan.setChecked(true);
             rbWoman.setChecked(false);
         }
-        Picasso.with(context).load(realName.getT_user_ealname().getFront_image()).placeholder(R.drawable.ic_launcher).error(R.drawable.ic_launcher).into(imgFront);
-        Picasso.with(context).load(realName.getT_user_ealname().getBehind_image()).placeholder(R.drawable.ic_launcher).error(R.drawable.ic_launcher).into(imgOpposite);
+        Picasso.with(context).load(realName.getT_user_ealname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
+        Picasso.with(context).load(realName.getT_user_ealname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
 
     }
 
@@ -262,6 +266,10 @@ public class AuthActivity extends BaseActivity {
             rlPhone.setClickable(false);
         }
         if (status==2){//已经认证 可以查询信息
+            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
+            postTask.execute();
+        }else if(status==3){//审核中
+            checkButton.setText("正在审核");
             PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
             postTask.execute();
         }
