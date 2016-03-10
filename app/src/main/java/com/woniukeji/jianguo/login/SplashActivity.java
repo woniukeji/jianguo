@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.woniukeji.jianguo.LeanMessage.ChatManager;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -106,6 +111,23 @@ public class SplashActivity extends BaseActivity {
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_CREDIT,user.getT_user_info().getCredit());
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+        final ChatManager chatManager = ChatManager.getInstance();
+        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+        }
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+//                    finish();
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
+                } else {
+                    showShortToast(e.toString());
+                }
+            }
+        });
+//        chatManager.setConversationEventHandler(ConversationEventHandler.getInstance());
     }
 
 

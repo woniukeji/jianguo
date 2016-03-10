@@ -184,6 +184,7 @@
             android:hint="请输入您的真实姓名"
             android:maxLines="1"
             android:textSize="14dp"
+            android:layout_marginRight="14dp"
             android:background="@color/float_transparent"
             android:singleLine="true"/>
 
@@ -225,6 +226,7 @@
             android:hint="请输入您的身份证号"
             android:maxLines="1"
             android:textSize="14dp"
+            android:layout_marginRight="14dp"
             android:background="@color/float_transparent"
             android:singleLine="true"/>
 
@@ -267,25 +269,37 @@
        android:layout_alignParentRight="true"
        android:orientation="horizontal"
        android:gravity="center"
+       android:layout_marginRight="14dp"
        >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="女"
+           android:textSize="14dp"
+           android:layout_marginRight="5dp"
+           />
        <RadioButton
            android:id="@+id/rb_woman"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="女"
            android:button="@null"
-           android:textSize="14dp"
            android:background="@android:color/transparent"
            android:drawableRight="@drawable/icon_woman"
+           />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="男"
+           android:textSize="14dp"
+           android:layout_marginLeft="8dp"
+           android:layout_marginRight="5dp"
            />
        <RadioButton
            android:id="@+id/rb_man"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="男"
            android:checked="true"
            android:button="@null"
-           android:textSize="14dp"
            android:background="@android:color/transparent"
            android:drawableRight="@drawable/icon_man"
            />

@@ -13,16 +13,16 @@ package com.woniukeji.jianguo.entity;
  sex	     性别
  */
 public class RealName {
-    public T_user_ealname getT_user_ealname() {
-        return t_user_ealname;
+    public T_user_realname getT_user_realname() {
+        return t_user_realname;
     }
 
-    public void setT_user_ealname(T_user_ealname t_user_ealname) {
-        this.t_user_ealname = t_user_ealname;
+    public void setT_user_realname(T_user_realname t_user_realname) {
+        this.t_user_realname = t_user_realname;
     }
 
-    private T_user_ealname t_user_ealname;
-    public  class T_user_ealname{
+    private T_user_realname t_user_realname;
+    public  class T_user_realname{
         private String id;
         private String login_id;
         private String front_image;

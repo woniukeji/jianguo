@@ -38,7 +38,7 @@
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:background="@mipmap/img_bg"
-        android:layout_height="100dp">
+        android:layout_height="105dp">
         <ImageView
             android:id="@+id/img_head"
             android:layout_width="63dp"
@@ -74,12 +74,10 @@
             android:text="信用优秀"
             android:layout_marginLeft="13dp"
             android:textSize="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:textColor="@color/white"
-            android:background="@drawable/button_background_login"
+            android:background="@drawable/textview_bg"
             />
     </LinearLayout>
 
@@ -89,12 +87,12 @@
         android:layout_height="wrap_content"
         android:text="海南省琼州学院"
         android:textSize="14dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/white"
         />
     <TextView
         android:id="@+id/phone"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14dp"
@@ -263,6 +261,7 @@
             android:layout_height="match_parent"
             android:text="90"
             android:layout_marginRight="7dp"
+            android:textSize="16dp"
             android:gravity="center"
             />
         <TextView
@@ -333,6 +332,7 @@
             android:layout_height="match_parent"
             android:text="90"
             android:layout_marginRight="7dp"
+            android:textSize="16dp"
             android:gravity="center"
             />
 

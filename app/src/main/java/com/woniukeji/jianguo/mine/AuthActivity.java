@@ -21,29 +21,22 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RealName;
-import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
-import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.FileUtils;
-import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
+import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -59,7 +52,7 @@ import okhttp3.Response;
 
 public class AuthActivity extends BaseActivity {
     @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.title) TextView title;
+    @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.img_front) ImageView imgFront;
     @InjectView(R.id.tv_front) TextView tvFront;
     @InjectView(R.id.img_opposite) ImageView imgOpposite;
@@ -92,7 +85,7 @@ public class AuthActivity extends BaseActivity {
     private String tel;
     private String sex="1";
     public SweetAlertDialog pDialog ;
-    @OnClick({R.id.rl_phone,R.id.img_back, R.id.title, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
+    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_phone:
@@ -101,9 +94,6 @@ public class AuthActivity extends BaseActivity {
                 break;
             case R.id.img_back:
                 finish();
-                break;
-            case R.id.title:
-                title.setText("实名认证");
                 break;
             case R.id.img_front:
                 //单选多选
@@ -148,9 +138,8 @@ public class AuthActivity extends BaseActivity {
             pDialog.setCancelable(false);
             pDialog.show();
 
-                String commonUploadToken = (String) SPUtils.getParam(this, Constants.SP_LOGIN, Constants.SP_QNTOKEN, "");
-                upLoadQiNiu(commonUploadToken, MD5Coder.getQiNiuName(fileName), imgFile);
-                upLoadQiNiu(commonUploadToken, MD5Coder.getQiNiuName(fileName2), imgFile2);
+                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
+                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2);
                 String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
                 String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
                 PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
@@ -184,10 +173,10 @@ public class AuthActivity extends BaseActivity {
                     if (null!=authActivity.pDialog){
                         authActivity.pDialog.dismiss();
                     }
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+                    BaseBean baseBean = (BaseBean) msg.obj;
+                    //手动保存认证状态 防止未重新登录情况下再次进入该界面
+                    SPUtils.setParam(authActivity,Constants.SP_LOGIN,Constants.SP_STATUS,3);
                     authActivity.showShortToast("提交成功");
-                    Intent intent = new Intent(authActivity, MainActivity.class);
-//                    intent.putExtra("user",user);
                     break;
                 case 1:
                     if (null!=authActivity.pDialog){
@@ -219,17 +208,17 @@ public class AuthActivity extends BaseActivity {
 
     }
     private void setInf(RealName realName) {
-        etId.setText(realName.getT_user_ealname().getId_number());
-        etRealName.setText(realName.getT_user_ealname().getRealname());
-        if (realName.getT_user_ealname().getSex().equals("0")){
+        etId.setText(realName.getT_user_realname().getId_number());
+        etRealName.setText(realName.getT_user_realname().getRealname());
+        if (realName.getT_user_realname().getSex().equals("0")){
             rbMan.setChecked(false);
             rbWoman.setChecked(true);
         }else {
             rbMan.setChecked(true);
             rbWoman.setChecked(false);
         }
-        Picasso.with(context).load(realName.getT_user_ealname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
-        Picasso.with(context).load(realName.getT_user_ealname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+        Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
+        Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
 
     }
 
@@ -243,6 +232,7 @@ public class AuthActivity extends BaseActivity {
     public void initViews() {
         FileUtils.newFolder(Constants.IMG_PATH);
         pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        title.setText("实名认证");
     }
 
     @Override
@@ -265,13 +255,38 @@ public class AuthActivity extends BaseActivity {
             etPhoneAuth.setClickable(false);
             rlPhone.setClickable(false);
         }
+
+
         if (status==2){//已经认证 可以查询信息
             PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
             postTask.execute();
+            checkButton.setText("审核通过");
+            checkButton.setClickable(false);
+            checkButton.setFocusable(false);
+            etRealName.setClickable(false);
+            etRealName.setFocusable(false);
+            etRealName.setFocusableInTouchMode(false);
+            etId.setClickable(false);
+            etId.setFocusable(false);
+            etId.setFocusableInTouchMode(false);
+            rbMan.setClickable(false);
+            rbWoman.setClickable(false);
         }else if(status==3){//审核中
             checkButton.setText("正在审核");
+            checkButton.setClickable(false);
+            checkButton.setFocusable(false);
             PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
             postTask.execute();
+            etRealName.setClickable(false);
+            etRealName.setFocusable(false);
+            etRealName.setFocusableInTouchMode(false);
+            etId.setClickable(false);
+            etId.setFocusable(false);
+            etId.setFocusableInTouchMode(false);
+            rbMan.setClickable(false);
+            rbWoman.setClickable(false);
+        }else{
+
         }
 
     }
@@ -310,18 +325,7 @@ public class AuthActivity extends BaseActivity {
         }
     }
 
-    public void upLoadQiNiu(String token, String key, File imgFile) {
-        // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
-        UploadManager uploadManager = new UploadManager();
-        uploadManager.put(imgFile, key, token,
-                new UpCompletionHandler() {
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject res) {
-                        //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
-                        LogUtils.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                    }
-                }, null);
-    }
+
 
     public class PostTask extends AsyncTask<Void, Void, Void> {
 

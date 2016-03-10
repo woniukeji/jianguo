@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/gray_btn_bg_color"
     tools:context="com.woniukeji.jianguo.mine.AuthActivity">
 <LinearLayout
     android:layout_width="match_parent"
@@ -14,7 +15,7 @@
 
 
     <include
-    android:id="@+id/title"
+    android:id="@+id/title_bar"
   layout="@layout/app_title_bar"
   />
 <RelativeLayout
@@ -27,19 +28,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:background="@mipmap/img_bg"
             >
             <ImageView
-                android:id="@+id/img_front"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:id="@+id/img_head"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_head_defult"
                 />
             <TextView
-                android:layout_below="@+id/img_front"
+                android:layout_below="@+id/img_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textSize="14dp"
+                android:layout_marginTop="15dp"
                 android:text="点击上传新头像"
+                android:textColor="@color/white"
                 />
         </RelativeLayout>
 
@@ -47,13 +53,15 @@
 </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="基本信息"
-            android:layout_marginLeft="12dp"
-            android:textSize="18sp"
+            android:paddingLeft="12dp"
+            android:background="@color/white"
+            android:textSize="18dp"
             android:textColor="#de7978"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             />
 <TextView
@@ -66,7 +74,9 @@
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -74,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="姓名："
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <EditText
@@ -81,10 +92,11 @@
             android:gravity="center|right"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:inputType="text|phone"
+            android:inputType="text|textPersonName"
             android:hint="请填写您的真实姓名"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:textSize="14dp"
+            android:paddingRight="17dp"
             android:background="@color/float_transparent"
             android:singleLine="true"/>
         <TextView
@@ -99,7 +111,9 @@
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -107,33 +121,49 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="性别："
+             android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <RadioGroup
-            android:id="@+id/rg_student"
+            android:id="@+id/rg_sex"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
+            android:paddingRight="17dp"
+            android:gravity="center"
             >
-            <RadioButton
-                android:id="@+id/rb_yes"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="是"
-                android:button="@null"
-                android:background="@android:color/transparent"
-                android:drawableRight="@android:drawable/btn_radio"
+                android:text="女"
+                android:textSize="14dp"
+                android:layout_marginRight="5dp"
                 />
             <RadioButton
-                android:id="@+id/rb_no"
+                android:id="@+id/rb_girl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="否"
+                android:button="@null"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/icon_xuanxiang"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="男"
+                android:textSize="14dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="5dp"
+                />
+            <RadioButton
+                android:id="@+id/rb_boy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:checked="true"
                 android:button="@null"
                 android:background="@android:color/transparent"
-                android:drawableRight="@android:drawable/btn_radio"
+                android:drawableRight="@drawable/icon_xuanxiang"
                 />
 
         </RadioGroup>
@@ -145,11 +175,14 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_birthday"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -157,6 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="出生日期："
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <ImageView
@@ -164,15 +198,18 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
+            android:layout_marginLeft="8dp"
             android:gravity="center"
+            android:paddingRight="17dp"
             />
         <TextView
             android:layout_toLeftOf="@+id/img"
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_birthday"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="请选择您的出生日期"
+            android:textSize="14dp"
             android:gravity="center"
             />
         <TextView
@@ -183,11 +220,14 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_shoes"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -195,6 +235,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="鞋码："
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <ImageView
@@ -202,7 +243,9 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
+            android:layout_marginLeft="8dp"
+            android:paddingRight="17dp"
             android:gravity="center"
             />
         <TextView
@@ -211,6 +254,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="请选择您的鞋码"
+            android:textSize="14dp"
             android:gravity="center"
             />
         <TextView
@@ -221,11 +265,14 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_clothse"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -233,6 +280,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="服装尺码："
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <ImageView
@@ -240,8 +288,10 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
+            android:layout_marginLeft="8dp"
             android:gravity="center"
+            android:paddingRight="17dp"
             />
         <TextView
             android:layout_toLeftOf="@+id/img"
@@ -249,6 +299,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="请选择您的服装码"
+            android:textSize="14dp"
             android:gravity="center"
             />
         <TextView
@@ -259,11 +310,14 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_tall"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -272,14 +326,17 @@
             android:layout_height="match_parent"
             android:text="身高："
             android:gravity="center_vertical"
+            android:textSize="14dp"
             />
         <ImageView
             android:id="@+id/img"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
+            android:layout_marginLeft="8dp"
             android:gravity="center"
+            android:paddingRight="17dp"
             />
         <TextView
             android:layout_toLeftOf="@+id/img"
@@ -287,6 +344,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="请选择您的身高"
+            android:textSize="14dp"
             android:gravity="center"
             />
         <TextView
@@ -297,13 +355,14 @@
             />
     </RelativeLayout>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="身份信息"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
         android:layout_marginTop="10dp"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textColor="#de7978"
         android:gravity="center_vertical"
         />
@@ -314,40 +373,58 @@
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="学生"
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <RadioGroup
             android:id="@+id/rg_student"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
+            android:paddingRight="17dp"
+            android:gravity="center"
             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="是"
+                android:textSize="14dp"
+                android:layout_marginRight="5dp"
+                />
             <RadioButton
                 android:id="@+id/rb_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="是"
                 android:button="@null"
                 android:background="@android:color/transparent"
-                android:drawableRight="@android:drawable/btn_radio"
+                android:drawableRight="@drawable/icon_xuanxiang"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="否"
+                android:textSize="14dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="5dp"
                 />
             <RadioButton
                 android:id="@+id/rb_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="否"
                 android:checked="true"
                 android:button="@null"
                 android:background="@android:color/transparent"
-                android:drawableRight="@android:drawable/btn_radio"
+                android:drawableRight="@drawable/icon_xuanxiang"
                 />
 
         </RadioGroup>
@@ -360,11 +437,14 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_school"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
         >
 
         <TextView
@@ -372,6 +452,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="所在学校："
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <ImageView
@@ -379,16 +460,19 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="17dp"
             android:gravity="center"
             />
         <TextView
             android:layout_toLeftOf="@+id/img"
-            android:id="@+id/tv_schoo"
+            android:id="@+id/tv_school"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="请选择您所在的学校"
             android:gravity="center"
+            android:textSize="14dp"
             />
         <TextView
             android:layout_width="match_parent"
@@ -398,11 +482,13 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_date"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:layout_marginLeft="12dp"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
         >
 
         <TextView
@@ -410,6 +496,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="入学时间："
+            android:textSize="14dp"
             android:gravity="center_vertical"
             />
         <ImageView
@@ -417,15 +504,18 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pin"
+            android:src="@mipmap/icon_go"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="17dp"
             android:gravity="center"
             />
         <TextView
             android:layout_toLeftOf="@+id/img"
-            android:id="@+id/tv_tall"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="请选择您的入学时间"
+            android:textSize="14dp"
             android:gravity="center"
             />
         <TextView
@@ -445,6 +535,8 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/button_background_login"
         android:text="保存"
+        android:textSize="16dp"
+        android:layout_marginBottom="20dp"
         android:textColor="@color/white"
         android:textStyle="bold"/>
 

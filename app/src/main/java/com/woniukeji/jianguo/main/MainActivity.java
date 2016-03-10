@@ -15,11 +15,13 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
+import com.woniukeji.jianguo.talk.TalkFragment;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 /**
  *
@@ -45,6 +47,17 @@ public class MainActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_main);
+        // 测试 SDK 是否正常工作的代码
+//        AVObject testObject = new AVObject("TestObject");
+//        testObject.put("words","Hello World!");
+//        testObject.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(AVException e) {
+//                if(e == null){
+//                    LogUtils.d("saved","success!");
+//                }
+//            }
+//        });
 
     }
 
@@ -118,6 +131,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View view) {
 
     }
@@ -136,7 +154,7 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new FragmentText();          //话题榜
                 case 2:
-                    return new FragmentText();
+                    return new TalkFragment();
                 case 3:
                     return new MineFragment();  //用户榜
             }
