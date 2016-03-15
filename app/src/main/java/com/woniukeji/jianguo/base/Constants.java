@@ -21,7 +21,7 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://101.200.205.243:8080/";
-    public static final String JIANGUO_USING=JIANGUO_TEST;
+    public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
     public static final String REC_SMS= JIANGUO_USING+"T_Text_Sms_T_user_login_Insert_ServletServlet";//获取短信
@@ -36,11 +36,13 @@ public class Constants {
     public static final String ONLY_PART1 = "xse2iowiowdg3542d49z";
     public static final String ONLY_PART2 = "jfiejdw4gdeqefw33ff23fi999";
 
+    public static final String GET_SCHOOL= JIANGUO_USING+"T_school_LikeName_Servlet";//学校模糊查询 接口
+
     public static final String POST_REAL_NAME= JIANGUO_USING+"T_user_realname_Insert_Servlet";//实名认证
     public static final String GET_REAL_NAME= JIANGUO_USING+"T_user_realname_SelectId_Servlet";//查看实名
     public static final String CHANGE_REAL_NAME= JIANGUO_USING+"T_user_realname_Update_Servlet";//修改认证信息
 
-    public static final String POST_RESUME= JIANGUO_USING+"T_user_resume_Insert_Servlet";//录入简历
+//    public static final String POST_RESUME= JIANGUO_USING+"T_user_resume_Insert_Servlet";//录入简历
     public static final String GET_RESUME= JIANGUO_USING+"T_user_resume_SelectId_Servlet";//查看简历
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
 
@@ -65,5 +67,5 @@ public class Constants {
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguo"+ File.separator;
 
-
+    public static final String UPDATED_AT = "updatedAt";
 }

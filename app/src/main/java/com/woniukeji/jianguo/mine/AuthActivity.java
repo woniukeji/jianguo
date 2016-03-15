@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -74,8 +73,6 @@ public class AuthActivity extends BaseActivity {
     private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 2;
     private int MSG_GET_FAIL = 3;
-    private Handler mHandler = new Myhandler(this);
-    private Context context = AuthActivity.this;
     private File imgFile;
     private String fileName;
     private String fileName2;
@@ -148,15 +145,11 @@ public class AuthActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
-    }
 
 
 
+    private Handler mHandler = new Myhandler(this);
+    private Context context = AuthActivity.this;
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -221,7 +214,6 @@ public class AuthActivity extends BaseActivity {
         Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
 
     }
-
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_auth);
@@ -244,6 +236,7 @@ public class AuthActivity extends BaseActivity {
     public void initData() {
         tel = (String) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_TEL, "0");
         loginId = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_USERID, 0);
+      showShortToast("用户id： "+loginId);
         status = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_STATUS, 0);
         if (tel.equals("0")) {
             etPhoneAuth.setText("请认证手机号");

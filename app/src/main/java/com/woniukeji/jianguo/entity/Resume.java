@@ -30,8 +30,9 @@ public class Resume {
         this.t_user_resume = t_user_resume;
     }
 
-    private UserResum t_user_resume;
-    private class UserResum{
+    public UserResum t_user_resume;
+    public class UserResum{
+
         private String id;
         private String nickname;
         private String name;
@@ -39,11 +40,32 @@ public class Resume {
         private String sex;
         private String height;
         private String student;
+        private String school;
+        private String name_image;
         private String birth_date;
         private String shoe_size;
         private String clothing_size;
         private String sign;
         private String label;
+
+
+        public String getName_image() {
+            return name_image;
+        }
+
+        public void setName_image(String name_image) {
+            this.name_image = name_image;
+        }
+
+        public String getSchool() {
+            return school;
+        }
+
+        public void setSchool(String school) {
+            this.school = school;
+        }
+
+
 
         public String getId() {
             return id;

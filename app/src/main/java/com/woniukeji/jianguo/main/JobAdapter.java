@@ -1,24 +1,29 @@
 package com.woniukeji.jianguo.main;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Job;
+import com.woniukeji.jianguo.widget.AnimTextView;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecyclerViewAdapter.ViewHolder> {
+public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
 
     private final List<Job> mValues;
     private final Context mContext;
@@ -27,9 +32,9 @@ public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecy
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
     private AnimationDrawable mAnimationDrawable;
-    private boolean isFooterChange=false;
+    private boolean isFooterChange = false;
 
-    public jobitemRecyclerViewAdapter(List<Job> items, Context context) {
+    public JobAdapter(List<Job> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -37,13 +42,15 @@ public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecy
     public void addHeaderView(View headerView) {
         mHeaderView = headerView;
     }
+
     public void setFooterChange(boolean isChange) {
         isFooterChange = isChange;
     }
+
     public void mmswoon(ViewHolder holder) {
-        if(isFooterChange){
+        if (isFooterChange) {
             holder.loading.setText("已加载全部");
-        }else{
+        } else {
             holder.loading.setText("加载中...");
             holder.animLoading.setVisibility(View.VISIBLE);
 //            holder.animLoading.setBackgroundResource(R.drawable.loading_footer);
@@ -52,6 +59,7 @@ public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecy
         }
 
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -73,7 +81,7 @@ public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecy
             default:
                 break;
         }
-        return  holder;
+        return holder;
     }
 
     @Override
@@ -87,7 +95,12 @@ public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecy
             holder.itemView.setVisibility(View.VISIBLE);
         } else {
             final Job job = mValues.get(position - 1);
-                //等待数据设置
+            AnimatorSet set = new AnimatorSet();
+            ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, 80 / 100f);
+            set.setDuration(600);
+            set.setInterpolator(new AccelerateInterpolator());
+            set.start();
+            //等待数据设置
 
         }
     }
@@ -112,17 +125,22 @@ public class jobitemRecyclerViewAdapter extends RecyclerView.Adapter<jobitemRecy
     static
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         @InjectView(R.id.user_head) ImageView userHead;
         @InjectView(R.id.business_name) TextView businessName;
         @InjectView(R.id.img_pay) ImageView imgPay;
         @InjectView(R.id.img_date) ImageView imgDate;
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.tv_sex) TextView tvSex;
+        @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
+        @InjectView(R.id.demo_tv) AnimTextView demoTv;
+        @InjectView(R.id.rl_progess) RelativeLayout rlProgess;
         @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
         @InjectView(R.id.tv_wages) TextView tvWages;
         @InjectView(R.id.rl_job) RelativeLayout rlJob;
-        private  ImageView animLoading;
-        private  TextView loading;
+        private ImageView animLoading;
+        private TextView loading;
+
         public ViewHolder(View view, int type) {
             super(view);
 

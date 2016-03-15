@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/transparent">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_share"
+        android:layout_width="fill_parent"
+        android:layout_height="180dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/dialog_bg"
+        android:gravity="center"
+        >
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/gray_btn_bg_color"
+    android:layout_marginTop="70dp"
+    />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_btn_bg_color"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            />
+            <com.woniukeji.jianguo.widget.time.PickerSize
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:id="@+id/pcker"
+                >
+            </com.woniukeji.jianguo.widget.time.PickerSize>
+
+        <TextView
+            android:id="@+id/tv_no"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="#9B9B9B" />
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/app_bg" />
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+    </RelativeLayout>

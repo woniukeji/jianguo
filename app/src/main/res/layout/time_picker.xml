@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rl_pick"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp">
+
+
+        <com.woniukeji.jianguo.widget.time.PickerDateView
+            android:id="@+id/month_pv"
+            android:layout_width="200dp"
+            android:layout_height="170dp" />
+
+        <com.woniukeji.jianguo.widget.time.PickerView
+            android:id="@+id/hour_pv"
+            android:layout_width="60dp"
+            android:layout_height="170dp"
+            android:layout_marginLeft="0dp"
+            android:layout_toRightOf="@id/month_pv" />
+
+        <com.woniukeji.jianguo.widget.time.PickerView
+            android:id="@+id/minute_pv"
+            android:layout_width="60dp"
+            android:layout_height="170dp"
+            android:layout_toRightOf="@id/hour_pv" />
+
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,32 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header"
     android:layout_width="match_parent"
-    android:layout_height="220dp">
+    android:background="@color/gray_btn_bg_color"
+    android:layout_height="wrap_content">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:clickable="true" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <cn.lightsky.infiniteindicator.InfiniteIndicator
+        android:id="@+id/indicator_default_circle"
+        app:indicator_type="indicator_anim_circle"
+        android:layout_height="115dp"
+        android:layout_width="match_parent"/>
+<LinearLayout
+    android:id="@+id/ll_part_top"
+    android:layout_below="@+id/indicator_default_circle"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_marginTop="8dp"
+    >
+    <ImageView
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/vp"
-        android:orientation="vertical"
-        android:padding="6dp">
+        android:src="@mipmap/img_jingpin"
+        android:background="@drawable/dialog_background"
+        android:layout_marginRight="2.5dp"
+        />
+    <ImageView
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/img_rijie"
+        android:background="@drawable/dialog_background"
+        android:layout_marginLeft="2.5dp"
+        />
 
-        <LinearLayout
-            android:id="@+id/ll"
-            android:layout_width="match_parent"
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_part_bottom"
+        android:layout_below="@+id/ll_part_top"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="3.5dp"
+        >
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:src="@mipmap/img_jianzhi"
+            android:background="@drawable/dialog_background"
+            android:layout_marginRight="2.5dp"
+            />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/img_my"
+            android:background="@drawable/dialog_background"
+            android:layout_marginLeft="2.5dp"
+            />
 
-        </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv_part3"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textColor="#f87c7c"
+        android:text="热门兼职"
+        android:textSize="15dp"
+        android:background="@color/white"
+        android:layout_below="@+id/ll_part_bottom"
+        android:gravity="center|left"
+        android:drawableLeft="@mipmap/icon_hot"
+        android:drawablePadding="5dp"
+        android:paddingLeft="15dp"
 
+        android:layout_marginTop="10dp"
+        />
+    <TextView
+        android:layout_below="@+id/tv_part3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_btn_bg_color"
+        />
 </RelativeLayout>

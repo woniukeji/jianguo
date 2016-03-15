@@ -1,1 +1,1 @@
-include ':app', ':dialoglibrary', ':multi-image-selector'
+include ':app', ':dialoglibrary', ':multi-image-selector', ':progresslibrary', ':chat'

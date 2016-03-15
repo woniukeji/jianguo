@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 应用搜索Activity 清空已输入搜索文字按钮 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+   	<item android:state_pressed="true"  android:drawable="@drawable/ic_btn_search_clear_text_right_pressed"/>
+  <item android:drawable="@drawable/ic_btn_search_clear_text_right_normal"/>  
+</selector>

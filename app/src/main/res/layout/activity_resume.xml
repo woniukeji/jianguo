@@ -30,7 +30,7 @@
             android:gravity="center"
             android:background="@mipmap/img_bg"
             >
-            <ImageView
+            <com.woniukeji.jianguo.widget.CircleImageView
                 android:id="@+id/img_head"
                 android:layout_width="57dp"
                 android:layout_height="57dp"

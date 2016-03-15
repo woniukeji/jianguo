@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/rl_school"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+               android:background="@color/white"
+                    android:paddingLeft="15dp"
+            >
+
+<com.woniukeji.jianguo.widget.CircleImageView
+    android:id="@+id/circle_talk_head"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:src="@mipmap/icon_head_defult"
+    />
+    <LinearLayout
+        android:layout_toRightOf="@+id/circle_talk_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        >
+        <TextView
+            android:id="@+id/tv_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="徐佳莹"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            />
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="还要找三个人呢"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/material_blue_grey_90"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="3月2号"
+        android:layout_marginRight="10dp"
+        />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/gray_btn_bg_color"
+    android:layout_alignParentBottom="true"
+    />
+</RelativeLayout>

@@ -190,7 +190,7 @@ public class PickerDateView extends View {
 
     private void drawData(Canvas canvas) {
         // 先绘制选中的text再往上往下绘制其余的text
-        float scale = parabola(mViewHeight / 4.0f, mMoveLen);
+        float scale = parabola(mViewHeight / 3.2f, mMoveLen);
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
         mPaint.setTextSize(size);
         mPaint.setAlpha((int) ((mMaxTextAlpha - mMinTextAlpha) * scale + mMinTextAlpha));

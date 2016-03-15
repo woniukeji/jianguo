@@ -208,6 +208,13 @@ public class DateUtils {
     public static String getDateTime(Date date) {
         return format(date, "yyyy-MM-dd HH");
     }
+    public static String getDate(long millis ) {
+        Date date=new Date(millis);
+//        String tempTime=format(date, "yyyy-MM-dd HH");
+//        return MD5Util.MD5(Constants.ONLY_PART1 + tempTime + ":" + Constants.ONLY_PART2);
+        String tempTime=format(date, "MM月dd日");
+        return tempTime;
+    }
     /**
      * 功能描述：返回字符型日期时间
      *
@@ -217,8 +224,10 @@ public class DateUtils {
      */
     public static String getDateTimeToOnly(long millis ) {
         Date date=new Date(millis);
-        String tempTime=format(date, "yyyy-MM-dd HH");
-        return MD5Util.MD5(Constants.ONLY_PART1 + tempTime + ":" + Constants.ONLY_PART2);
+//        String tempTime=format(date, "yyyy-MM-dd HH");
+//        return MD5Util.MD5(Constants.ONLY_PART1 + tempTime + ":" + Constants.ONLY_PART2);
+        String tempTime=format(date, "yyyyMMddHH");
+        return MD5Util.MD5(Constants.ONLY_PART1 + tempTime  + Constants.ONLY_PART2);
     }
 
     /**

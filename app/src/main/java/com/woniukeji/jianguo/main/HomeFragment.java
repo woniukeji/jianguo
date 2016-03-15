@@ -20,6 +20,7 @@ import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Job;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.utils.PicassoLoader;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
 
 import java.lang.ref.WeakReference;
@@ -28,6 +29,9 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.lightsky.infiniteindicator.InfiniteIndicator;
+import cn.lightsky.infiniteindicator.page.OnPageClickListener;
+import cn.lightsky.infiniteindicator.page.Page;
 
 /**
  * A fragment representing a list of Items.
@@ -35,7 +39,7 @@ import butterknife.InjectView;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChangeListener,OnPageClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -45,16 +49,17 @@ public class HomeFragment extends BaseFragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private View headerView;
-    private jobitemRecyclerViewAdapter adapter;
+    private JobAdapter adapter;
     private List<Job> jobs=new ArrayList<Job>();
     private ViewPager vp;
     private LinearLayout ll;
-    private ArrayList<View> imageViewList;
-    private int lastX;
-    private int lastposition = 0;
-
+    private ArrayList<Page> pageViews;
+    private InfiniteIndicator mAnimCircleIndicator;
+    private InfiniteIndicator mAnimLineIndicator;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context=this.getActivity();
+
+
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -125,9 +130,16 @@ public class HomeFragment extends BaseFragment {
 // Set the adapter
 
         ButterKnife.inject(this, view);
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
-        adapter = new jobitemRecyclerViewAdapter(jobs,getActivity());
+        initData();
+        mAnimCircleIndicator = (InfiniteIndicator)headerView.findViewById(R.id.indicator_default_circle);
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
+        mAnimCircleIndicator.addPages(pageViews);
+        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
+        mAnimCircleIndicator.setOnPageChangeListener(this);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+
+        adapter = new JobAdapter(jobs,getActivity());
         adapter.addHeaderView(headerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
@@ -144,48 +156,58 @@ public class HomeFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                isHead = true;
-//                GetRecommendView getRecommendView = new GetRecommendView();
-//                Thread thread = new Thread(getRecommendView);
-//                thread.start();
             }
         });
         return view;
     }
+    private void initData() {
+        pageViews = new ArrayList<>();
+        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
+        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
+        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
+        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
 
+    }
     @Override
     public void onResume() {
         for (int i = 0; i < 10; i++) {
             jobs.add(new Job());
         }
         adapter.notifyDataSetChanged();
+        mAnimCircleIndicator.start();
         super.onResume();
     }
-    public void setImg(View viewPager) {
-        vp = (ViewPager) viewPager.findViewById(R.id.vp);
-        ll = (LinearLayout) viewPager.findViewById(R.id.ll);
-        imageViewList = new ArrayList<View>();
-        homeViewPagerAdapter pagerAdapter=new homeViewPagerAdapter(getActivity(),imageViewList);
-        vp.setAdapter(pagerAdapter);
-        vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
+    @Override
+    public void onStart() {
+        super.onStart();
 
-            @Override
-            public void onPageSelected(int position) {
-                ll.getChildAt(position).setEnabled(true);
-                ll.getChildAt(lastposition).setEnabled(false);
-                lastposition = position;
+    }
 
-            }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAnimCircleIndicator.stop();
+    }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
 
-            }
-        });
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onPageClick(int position, Page page) {
 
     }
     @Override

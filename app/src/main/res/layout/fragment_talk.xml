@@ -1,14 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.woniukeji.jianguo.talk.TalkFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="com.woniukeji.jianguo.talk.TalkFragment"
+              android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment"/>
     <Button
         android:id="@+id/button"
@@ -19,5 +20,12 @@
         android:text="Fasong"
 
         />
+    <com.woniukeji.jianguo.widget.FixedRecyclerView
+        android:id="@+id/talk_const_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</FrameLayout>
+    </com.woniukeji.jianguo.widget.FixedRecyclerView>
+
+
+</LinearLayout>

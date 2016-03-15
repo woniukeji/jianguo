@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,23 +19,27 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Resume;
-import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
+import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
 import com.woniukeji.jianguo.utils.QiNiu;
+import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.widget.CircleImageView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -50,7 +55,7 @@ import okhttp3.Response;
 public class ResumeActivity extends BaseActivity {
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_head) ImageView imgHead;
+    @InjectView(R.id.img_head) CircleImageView imgHead;
     @InjectView(R.id.et_real_name) EditText etRealName;
     @InjectView(R.id.rb_girl) RadioButton rbGirl;
     @InjectView(R.id.rb_boy) RadioButton rbBoy;
@@ -74,12 +79,17 @@ public class ResumeActivity extends BaseActivity {
     @InjectView(R.id.check_button) Button checkButton;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
-    private int MSG_GET_SUCCESS = 2;
+    private int MSG_GET_SUCCESS = 4;
     private int MSG_GET_FAIL = 3;
     private Handler mHandler = new Myhandler(this);
     private Context context = ResumeActivity.this;
     private File imgFile;
-    private String fileName;
+    private String fileName="";
+//    private String[] sheoes=new String[]{"35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"};
+    private String[] clothes=new String[]{"S","M","L","XL","XXL","XXXL"};
+    private int loginId;
+    private String sex="0";
+    private String student="1";
 
 
     @OnClick({R.id.img_back, R.id.img_head, R.id.rb_girl, R.id.rb_boy, R.id.rl_birthday, R.id.rl_shoes, R.id.rl_clothse, R.id.rl_tall, R.id.rb_yes, R.id.rb_no, R.id.rl_school, R.id.rl_date, R.id.check_button})
@@ -93,26 +103,66 @@ public class ResumeActivity extends BaseActivity {
                 MultiImageSelectorActivity.startSelect(ResumeActivity.this, 0, 1, 0);
                 break;
             case R.id.rb_girl:
+                sex="0";
                 break;
             case R.id.rb_boy:
+                sex="1";
                 break;
             case R.id.rl_birthday:
+                startActivityForResult(new Intent(context,TimePickerActivity.class),1);
                 break;
             case R.id.rl_shoes:
+                List<String> listShoes=new ArrayList<String>();
+                for (int i = 35; i < 52; i++) {
+                    listShoes.add(String.valueOf(i));
+                }
+                PickerPopupWindow pickerPopupWindow=new PickerPopupWindow(context,listShoes,mHandler,0);
+                pickerPopupWindow.showShareWindow();
+                pickerPopupWindow.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rl_clothse:
+                List<String> listTemp=Arrays.asList(clothes);
+                List<String> listCloth=new ArrayList<String>(listTemp);
+                PickerPopupWindow pickerPopup=new PickerPopupWindow(context,listCloth,mHandler,1);
+                pickerPopup.showShareWindow();
+                pickerPopup.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rl_tall:
+                List<String> listTall=new ArrayList<String>();
+                for (int i = 145; i < 190; i++) {
+                    listTall.add(String.valueOf(i)+"cm");
+                }
+                PickerPopupWindow pickerPopup1=new PickerPopupWindow(context,listTall,mHandler,2);
+                pickerPopup1.showShareWindow();
+                pickerPopup1.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rb_yes:
+                student="1";
                 break;
             case R.id.rb_no:
+                student="0";
                 break;
             case R.id.rl_school:
+                startActivityForResult(new Intent(context,SchoolActivity.class),3);
                 break;
             case R.id.rl_date:
+                startActivityForResult(new Intent(context,TimePickerActivity.class),2);
                 break;
             case R.id.check_button:
+                String name=etRealName.getText().toString().trim();
+
+                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
+   //
+                PostTask postTask=new PostTask(true,String.valueOf(loginId),name,url2,tvSchool.getText().toString().trim(),
+                        tvDate.getText().toString().trim(),sex,tvTall.getText().toString().trim().substring(0,3),student,tvBirthday.getText().toString().trim(),
+                        tvShoes.getText().toString().trim(),tvClothse.getText().toString().trim());
+                postTask.execute();
+//                boolean isPost, String loginId, String name, String name_image,
+//                    String school, String intoschool_date, String sex, String height,
+//                    String student, String birth_date, String shoe_size, String clothing_size
                 break;
         }
     }
@@ -130,9 +180,8 @@ public class ResumeActivity extends BaseActivity {
             ResumeActivity resumeActivity = (ResumeActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    resumeActivity.showShortToast("登录成功！");
-                    Intent intent = new Intent(resumeActivity, MainActivity.class);
+                    BaseBean baseBean = (BaseBean) msg.obj;
+                    resumeActivity.showShortToast("信息修改成功！");
 //                    intent.putExtra("user",user);
                     break;
                 case 1:
@@ -140,16 +189,31 @@ public class ResumeActivity extends BaseActivity {
                     Toast.makeText(resumeActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-
+                    //选择器返回字符
+                    String size= (String) msg.obj;
+                    int type=msg.arg1;
+                    if(type==0){
+                       resumeActivity.tvShoes.setText(size);
+                    }else if(type==1){
+                        resumeActivity.tvClothse.setText(size);
+                    }else
+                        resumeActivity.tvTall.setText(size);
                     break;
                 case 3:
                     String sms = (String) msg.obj;
                     Toast.makeText(resumeActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
+                case 4:
+                    BaseBean<Resume> resumeBaseBean= (BaseBean) msg.obj;
+                    resumeActivity.initResumeInfo(resumeBaseBean.getData().getT_user_resume());
+                    resumeActivity.showShortToast("信息获取成功！");
+                    break;
                 default:
                     break;
             }
         }
+
+
     }
 
     @Override
@@ -167,10 +231,41 @@ public class ResumeActivity extends BaseActivity {
     public void initListeners() {
 
     }
+    private void initResumeInfo(Resume.UserResum userResum) {
+         etRealName.setText(userResum.getName());
+        tvBirthday.setText(userResum.getBirth_date());
+        tvShoes.setText(userResum.getShoe_size());
+        tvClothse.setText(userResum.getClothing_size());
+        tvTall.setText(userResum.getHeight());
+          tvSchool.setText(userResum.getSchool());
+        tvDate.setText(userResum.getIntoschool_date());
+       if (userResum.getSex().equals("0")){
+           rbGirl.setChecked(true);
+           rbBoy.setChecked(false);
+       }else {
+           rbGirl.setChecked(false);
+           rbBoy.setChecked(true);
+       }
+        if (userResum.getStudent().equals("0")){
+            rbYes.setChecked(false);
+            rbNo.setChecked(true);
+        }else {
+            rbNo.setChecked(false);
+            rbYes.setChecked(true);
+        }
+        fileName=userResum.getName_image();
+        Picasso.with(context).load(userResum.getName_image())
+                .placeholder(R.mipmap.icon_head_defult)
+                .error(R.mipmap.icon_head_defult)
+                .transform(new CropCircleTransfermation())
+                .into(imgHead);
 
+    }
     @Override
     public void initData() {
-
+        loginId = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_USERID, 0);
+        PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null, null,null,null,null,null,null,null);
+        postTask.execute();
     }
 
 
@@ -261,13 +356,15 @@ public class ResumeActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.POST_RESUME)
+                    .url(Constants.CHANGE_RESUME)
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .addParams("name", name)
                     .addParams("school", school)
                     .addParams("height", height)
                     .addParams("student", student)
+                    .addParams("name_image", name_image)
+                    .addParams("intoschool_date", intoschool_date)
                     .addParams("birth_date", birth_date)
                     .addParams("shoe_size", shoe_size)
                     .addParams("clothing_size", clothing_size)
@@ -319,7 +416,7 @@ public class ResumeActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.GET_REAL_NAME)
+                    .url(Constants.GET_RESUME)
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .build()
@@ -346,7 +443,6 @@ public class ResumeActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.SP_LOGIN, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_GET_SUCCESS;
@@ -375,12 +471,22 @@ public class ResumeActivity extends BaseActivity {
                 imgFile = new File(path.get(0));
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
                 fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
-                Uri imgSource = Uri.fromFile(imgFile);
+                Uri imgSource =  Uri.fromFile(imgFile);
                 imgHead.setImageURI(imgSource);
                 BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 300, 300);
                 QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
             }
+        }else if(requestCode == 1){
+               tvBirthday.setText(data.getStringExtra("date"));
+        }else if(requestCode == 2){
+            tvDate.setText(data.getStringExtra("date"));
+        }else if(requestCode == 3){
+                if (resultCode == RESULT_OK) {
+                    tvSchool.setText(data.getStringExtra("school"));
+                }
+
         }
+
 
     }
 
