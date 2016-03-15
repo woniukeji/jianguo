@@ -135,7 +135,7 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
         mAnimCircleIndicator = (InfiniteIndicator)headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());
         mAnimCircleIndicator.addPages(pageViews);
-        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center);
+        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
         mAnimCircleIndicator.setOnPageChangeListener(this);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
 

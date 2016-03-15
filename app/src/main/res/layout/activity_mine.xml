@@ -173,6 +173,7 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/credit"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
@@ -224,6 +225,7 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_evaluation"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
@@ -274,6 +276,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_collect"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:orientation="horizontal"
@@ -294,6 +297,7 @@
             />
     </LinearLayout>
     <RelativeLayout
+        android:id="@+id/rl_point"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
@@ -338,6 +342,7 @@
 
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_feedback"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
@@ -379,6 +384,7 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rl_setting"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"

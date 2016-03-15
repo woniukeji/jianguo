@@ -15,11 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
+import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.main.MainActivity;
+import com.woniukeji.jianguo.utils.CropCircleTransfermation;
+import com.woniukeji.jianguo.utils.SPUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -42,32 +46,45 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.point_img) ImageView pointImg;
     @InjectView(R.id.ll_money) LinearLayout llMoney;
     @InjectView(R.id.ll_real_name) LinearLayout llRealName;
+    @InjectView(R.id.ll_wallte_realname) LinearLayout llWallteRealname;
+    @InjectView(R.id.img_enter) ImageView imgEnter;
+    @InjectView(R.id.credit) RelativeLayout credit;
+    @InjectView(R.id.rl_evaluation) RelativeLayout rlEvaluation;
+    @InjectView(R.id.ll_collect) LinearLayout llCollect;
+    @InjectView(R.id.rl_point) RelativeLayout rlPoint;
+    @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
+    @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
     private Handler mHandler = new Myhandler(this.getActivity());
-    private Context context = this.getContext();
+    private Context context = getActivity();
 
-    @OnClick({R.id.ll_money, R.id.ll_real_name,R.id.img_back, R.id.title, R.id.img_head, R.id.school, R.id.phone, R.id.account})
+
+    @OnClick({R.id.ll_money,R.id.account, R.id.ll_real_name,R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.credit:
+                break;
+            case R.id.rl_evaluation:
+                break;
+            case R.id.ll_collect:
+                break;
+            case R.id.rl_point:
+                break;
+            case R.id.rl_feedback:
+                Intent intentFeed = new Intent(getActivity().getApplicationContext(), FeedBackActivity.class);
+                startActivity(intentFeed);
+                break;
+            case R.id.rl_setting:
+                Intent intentSet = new Intent(getActivity().getApplicationContext(), SettingActivity.class);
+                startActivity(intentSet);
+                break;
             case R.id.ll_money:
                 break;
             case R.id.ll_real_name:
                 Intent intent = new Intent(getActivity().getApplicationContext(), AuthActivity.class);
-//                intent.putExtra("")
                 startActivity(intent);
-                break;
-            case R.id.img_back:
-                break;
-            case R.id.title:
-                break;
-            case R.id.img_head:
-                break;
-            case R.id.school:
-                break;
-            case R.id.phone:
                 break;
             case R.id.account:
                 Intent intentRe = new Intent(getActivity().getApplicationContext(), ResumeActivity.class);
-//                intent.putExtra("")
                 startActivity(intentRe);
                 break;
         }
@@ -134,6 +151,24 @@ public class MineFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onStart() {
+        String nick = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_NICK, "");
+        String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_SCHOOL, "");
+        String tel = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_TEL, "");
+        String img= (String)SPUtils.getParam(getActivity(), Constants.SP_USER,Constants.SP_IMG,"");
+        imgBack.setVisibility(View.GONE);
+        name.setText(nick);
+        school.setText(schoolStr);
+        phone.setText(tel);
+        Picasso.with(getActivity()).load(img)
+                .placeholder(R.mipmap.icon_head_defult)
+                .error(R.mipmap.icon_head_defult)
+                .transform(new CropCircleTransfermation())
+                .into(imgHead);
+        super.onStart();
     }
 
     @Override

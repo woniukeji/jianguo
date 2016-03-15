@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_btn_bg_color"
+    tools:context="com.woniukeji.jianguo.mine.FeedBackActivity">
+    <include
+        layout="@layout/app_title_bar"
+        />
+<EditText
+    android:paddingLeft="15dp"
+    android:paddingTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_height="100dp"
+    android:hint="请输入您的意见，我们将不断优化"
+    android:gravity="top"
+    android:textSize="14dp"
+    android:background="@color/white"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+android:background="@color/white"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="反馈类型："
+            />
+    </LinearLayout>
+    <EditText
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="请输入您的联系方式（手机或者QQ号）"
+        android:textSize="12dp"
+        android:background="@color/white"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/button_background_logout"
+        android:text="提交"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/white"
+        />
+</LinearLayout>

@@ -135,12 +135,21 @@
             android:name=".mine.TimePickerActivity"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
         </activity>
-        <activity android:name=".mine.SchoolActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                    >
+        <activity
+            android:name=".mine.SchoolActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-
-        <activity android:name=".talk.ChatActivity"/>
+        <activity android:name=".talk.ChatActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+        <activity android:name=".mine.SettingActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
+        </activity>
+        <activity android:name=".mine.FeedBackActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
+        </activity>
     </application>
 
 </manifest>
