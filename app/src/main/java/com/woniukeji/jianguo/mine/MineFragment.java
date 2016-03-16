@@ -23,6 +23,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
+import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 
 import java.lang.ref.WeakReference;
@@ -169,10 +170,18 @@ public class MineFragment extends BaseFragment {
                 .transform(new CropCircleTransfermation())
                 .into(imgHead);
         super.onStart();
+        LogUtils.i("fragment","mine:onstart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        LogUtils.i("fragment","mine:onresum");
+    }
+
+    @Override
+    public void onDestroy() {
+        LogUtils.i("fragment","mine:ondestroy");
+        super.onDestroy();
     }
 }

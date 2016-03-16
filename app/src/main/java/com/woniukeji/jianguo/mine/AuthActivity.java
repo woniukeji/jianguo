@@ -82,71 +82,6 @@ public class AuthActivity extends BaseActivity {
     private String tel;
     private String sex="1";
     public SweetAlertDialog pDialog ;
-    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.rl_phone:
-                startActivity(new Intent(context, QuickLoginActivity.class));
-//                finish();
-                break;
-            case R.id.img_back:
-                finish();
-                break;
-            case R.id.img_front:
-                //单选多选
-                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
-                break;
-            case R.id.tv_front:
-                break;
-            case R.id.img_opposite:
-                MultiImageSelectorActivity.startSelect(AuthActivity.this, 1, 1, 0);
-                break;
-            case R.id.tv_opposite:
-                break;
-            case R.id.rb_man:
-                sex="1";
-                rbMan.setChecked(true);
-                rbWoman.setChecked(false);
-                break;
-            case R.id.rb_woman:
-                sex="0";
-                rbMan.setChecked(false);
-                rbWoman.setChecked(true);
-                break;
-            case R.id.check_button:
-                String phone = etPhoneAuth.getText().toString().trim();
-                String name = etRealName.getText().toString().trim();
-                String id = etId.getText().toString().trim();
-
-                if (fileName == null || fileName2 == null || fileName.equals("") || fileName2.equals("")) {
-                    showShortToast("请先上传身份证图片！");
-                    break;
-                }
-                if (name==null||name.equals("")){
-                    showShortToast("请填写真实姓名");
-                    break;
-                } else if (id==null||id.equals("")){
-                    showShortToast("请填写身份证号码");
-                    break;
-            }
-
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("请稍后...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2);
-                String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
-                PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
-                postTask.execute();
-                break;
-        }
-    }
-
-
-
 
     private Handler mHandler = new Myhandler(this);
     private Context context = AuthActivity.this;
@@ -282,6 +217,68 @@ public class AuthActivity extends BaseActivity {
 
         }
 
+    }
+    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_phone:
+                startActivity(new Intent(context, QuickLoginActivity.class));
+//                finish();
+                break;
+            case R.id.img_back:
+                finish();
+                break;
+            case R.id.img_front:
+                //单选多选
+                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
+                break;
+            case R.id.tv_front:
+                break;
+            case R.id.img_opposite:
+                MultiImageSelectorActivity.startSelect(AuthActivity.this, 1, 1, 0);
+                break;
+            case R.id.tv_opposite:
+                break;
+            case R.id.rb_man:
+                sex="1";
+                rbMan.setChecked(true);
+                rbWoman.setChecked(false);
+                break;
+            case R.id.rb_woman:
+                sex="0";
+                rbMan.setChecked(false);
+                rbWoman.setChecked(true);
+                break;
+            case R.id.check_button:
+                String phone = etPhoneAuth.getText().toString().trim();
+                String name = etRealName.getText().toString().trim();
+                String id = etId.getText().toString().trim();
+
+                if (fileName == null || fileName2 == null || fileName.equals("") || fileName2.equals("")) {
+                    showShortToast("请先上传身份证图片！");
+                    break;
+                }
+                if (name==null||name.equals("")){
+                    showShortToast("请填写真实姓名");
+                    break;
+                } else if (id==null||id.equals("")){
+                    showShortToast("请填写身份证号码");
+                    break;
+                }
+
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("请稍后...");
+                pDialog.setCancelable(false);
+                pDialog.show();
+
+                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
+                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2);
+                String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
+                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
+                PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
+                postTask.execute();
+                break;
+        }
     }
 
     @Override

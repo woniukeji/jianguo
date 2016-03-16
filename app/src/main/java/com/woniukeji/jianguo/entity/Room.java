@@ -3,7 +3,7 @@ package com.woniukeji.jianguo.entity;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.woniukeji.jianguo.LeanMessage.AVIMConversationCacheUtils;
+import com.woniukeji.jianguo.leanmessage.AVIMConversationCacheUtils;
 
 import java.util.List;
 

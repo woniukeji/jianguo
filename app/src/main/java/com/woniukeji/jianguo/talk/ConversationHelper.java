@@ -3,7 +3,7 @@ package com.woniukeji.jianguo.talk;
 import android.text.TextUtils;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.woniukeji.jianguo.LeanMessage.ChatManager;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.entity.ConversationType;
 import com.woniukeji.jianguo.utils.LogUtils;
 

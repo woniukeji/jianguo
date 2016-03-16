@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        >
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="报名信息"
+        android:textSize="18dp"
+        android:gravity="center"
+        />
+        <ImageView
+            android:id="@+id/img_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_off"
+            android:layout_alignParentRight="true"
+            android:padding="15dp"
+            />
+    <TextView
+        android:layout_below="@+id/tv_info"
+        android:id="@+id/tv_wage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="150元/天"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textColor="@color/app_bg"
+        />
+
+    <LinearLayout
+        android:layout_below="@+id/tv_wage"
+        android:layout_width="match_parent"
+        android:layout_height="228dp"
+        android:paddingLeft="30dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作内容："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_work_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="凯宾斯基宴会服务生"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作日期："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_work_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4月1日-5月1日"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作时间："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_work_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8：00-18:00"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="集合地点："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_collection_sites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="琼州学院后门"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="集合时间："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_collection_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18:30"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性别："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="男女不限"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="结算方式："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_pay_method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日结"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="其他事项："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="包接送"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+<Button
+android:id="@+id/tv_ok"
+android:layout_width="match_parent"
+android:layout_height="40dp"
+android:layout_alignParentBottom="true"
+android:layout_marginBottom="5dp"
+android:layout_marginTop="10dp"
+android:gravity="center"
+android:text="确定报名"
+android:background="#f5c952"
+android:textColor="@color/white" />
+    </RelativeLayout>
+</RelativeLayout>

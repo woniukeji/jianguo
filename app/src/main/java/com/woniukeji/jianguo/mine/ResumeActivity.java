@@ -109,14 +109,17 @@ public class ResumeActivity extends BaseActivity {
                 sex="1";
                 break;
             case R.id.rl_birthday:
-                startActivityForResult(new Intent(context,TimePickerActivity.class),1);
+                TimePickerPopuWin pickerPopup1=new TimePickerPopuWin(context,mHandler,3);
+                pickerPopup1.showShareWindow();
+                pickerPopup1.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rl_shoes:
                 List<String> listShoes=new ArrayList<String>();
                 for (int i = 35; i < 52; i++) {
                     listShoes.add(String.valueOf(i));
                 }
-                PickerPopupWindow pickerPopupWindow=new PickerPopupWindow(context,listShoes,mHandler,0);
+                SizePickerPopuWin pickerPopupWindow=new SizePickerPopuWin(context,listShoes,mHandler,0);
                 pickerPopupWindow.showShareWindow();
                 pickerPopupWindow.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -124,7 +127,7 @@ public class ResumeActivity extends BaseActivity {
             case R.id.rl_clothse:
                 List<String> listTemp=Arrays.asList(clothes);
                 List<String> listCloth=new ArrayList<String>(listTemp);
-                PickerPopupWindow pickerPopup=new PickerPopupWindow(context,listCloth,mHandler,1);
+                SizePickerPopuWin pickerPopup=new SizePickerPopuWin(context,listCloth,mHandler,1);
                 pickerPopup.showShareWindow();
                 pickerPopup.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -134,9 +137,9 @@ public class ResumeActivity extends BaseActivity {
                 for (int i = 145; i < 190; i++) {
                     listTall.add(String.valueOf(i)+"cm");
                 }
-                PickerPopupWindow pickerPopup1=new PickerPopupWindow(context,listTall,mHandler,2);
-                pickerPopup1.showShareWindow();
-                pickerPopup1.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
+                SizePickerPopuWin pickerPopupWin=new SizePickerPopuWin(context,listTall,mHandler,2);
+                pickerPopupWin.showShareWindow();
+                pickerPopupWin.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rb_yes:
@@ -149,7 +152,10 @@ public class ResumeActivity extends BaseActivity {
                 startActivityForResult(new Intent(context,SchoolActivity.class),3);
                 break;
             case R.id.rl_date:
-                startActivityForResult(new Intent(context,TimePickerActivity.class),2);
+                TimePickerPopuWin pickerPopup3=new TimePickerPopuWin(context,mHandler,4);
+                pickerPopup3.showShareWindow();
+                pickerPopup3.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.check_button:
                 String name=etRealName.getText().toString().trim();
@@ -192,12 +198,24 @@ public class ResumeActivity extends BaseActivity {
                     //选择器返回字符
                     String size= (String) msg.obj;
                     int type=msg.arg1;
-                    if(type==0){
-                       resumeActivity.tvShoes.setText(size);
-                    }else if(type==1){
-                        resumeActivity.tvClothse.setText(size);
-                    }else
-                        resumeActivity.tvTall.setText(size);
+                    switch (type){
+                        case 0:
+                            resumeActivity.tvShoes.setText(size);
+                            break;
+                        case 1:
+                            resumeActivity.tvClothse.setText(size);
+                            break;
+                        case 2:
+                            resumeActivity.tvTall.setText(size);
+                            break;
+                        case 3:
+                            resumeActivity.tvBirthday.setText(size);
+                            break;
+                        case 4:
+                            resumeActivity.tvDate.setText(size);
+                            break;
+                    }
+
                     break;
                 case 3:
                     String sms = (String) msg.obj;

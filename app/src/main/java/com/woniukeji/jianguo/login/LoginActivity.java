@@ -17,8 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -119,6 +123,22 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_CREDIT,user.getT_user_info().getCredit());
         SPUtils.setParam(context,Constants.SP_USER,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+        final ChatManager chatManager = ChatManager.getInstance();
+        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+        }
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+//                    finish();
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
+                } else {
+                    showShortToast(e.toString());
+                }
+            }
+        });
     }
 
     @Override
@@ -148,13 +168,13 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 
     private void authorize(Platform plat) {
         Toast.makeText(LoginActivity.this, "正在登录，请稍后...", Toast.LENGTH_SHORT).show();
-        if (plat.isValid()) {
-            String userId = plat.getDb().getUserId();
-            if (!TextUtils.isEmpty(userId)) {
-                Register(true, plat.getName(), userId, null);
-                return;
-            }
-        }
+//        if (plat.isValid()) {
+//            String userId = plat.getDb().getUserId();
+//            if (!TextUtils.isEmpty(userId)) {
+//                Register(true, plat.getName(), userId, null);
+//                return;
+//            }
+//        }
         plat.setPlatformActionListener(this);
         plat.SSOSetting(false);
         plat.showUser(null);
@@ -167,16 +187,11 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
          *
          * @param platformName 执行登录/注册的平台名称，如：SinaWeibo.NAME
          */
-    private void Register(boolean auth, String plat, String token, HashMap<String, Object> userInfo) {
+    private void Register( String plat, String token, HashMap<String, Object> userInfo) {
         String sex = null;
         String nickname = null;
         String nameimage = null;
-        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        String only = MD5Util.MD5(Constants.ONLY_PART1 + time + ":" + Constants.ONLY_PART2);
-        if (auth) {
-            UserLoginTask userLoginTask = new UserLoginTask(true, only, token, nickname, nameimage, sex);
-            userLoginTask.execute();
-        } else {
+// 接下来执行您要的操作
             Iterator iterator = userInfo.entrySet().iterator();
             //QQ Wechat字段名不同分别获取
             if (plat.equals("Wechat")) {
@@ -191,29 +206,31 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
                     }
                 }
             } else {//QQ Wechat字段名不同分别获取
-                Map.Entry entry = (Map.Entry) iterator.next();
-                if (entry.getKey().equals("nickname")) {
-                    nickname = (String) entry.getValue();
-                } else if (entry.getKey().equals("figureurl_qq_1")) {
-                    nameimage = (String) entry.getValue();
-                } else if (entry.getKey().equals("gender")) {
-                    if (entry.getValue().equals("男")) {
-                        sex = "1";
-                    } else {
-                        sex = "0";
+                while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    if (entry.getKey().equals("nickname")) {
+                        nickname = (String) entry.getValue();
+                    } else if (entry.getKey().equals("figureurl_qq_1")) {
+                        nameimage = (String) entry.getValue();
+                    } else if (entry.getKey().equals("gender")) {
+                        if (entry.getValue().equals("男")) {
+                            sex = "1";
+                        } else {
+                            sex = "0";
+                        }
                     }
                 }
-            }
 
-            UserLoginTask userLoginTask = new UserLoginTask(false, only, token, nickname, nameimage, sex);
+            }
+            String only1 = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            UserLoginTask userLoginTask = new UserLoginTask( only1, token, nickname, nameimage, sex);
             userLoginTask.execute();
         }
-    }
 
     @Override
     public void onComplete(Platform platform, int action, HashMap<String, Object> hashMap) {
         if (action == Platform.ACTION_USER_INFOR) {
-            Register(false, platform.getName(), platform.getDb().getUserId(), hashMap);
+            Register( platform.getName(), platform.getDb().getUserId(), hashMap);
         }
     }
 
@@ -288,27 +305,20 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         private final String nickname;
         private final String nameimage;
         private final String sex;
-        private final boolean auth;
-        SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
-        UserLoginTask(boolean auth, String only, String token, String nickname, String nameimage, String sex) {
+        UserLoginTask( String only, String token, String nickname, String nameimage, String sex) {
             this.only = only;
             this.sex = sex;
             this.token = token;
             this.nickname = nickname;
             this.nameimage = nameimage;
-            this.auth = auth;
         }
 
         @Override
         protected User doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                if (auth) {
-                    Login();
-                } else {
                     AuthWQ();
-                }
             } catch (Exception e) {
                 return null;
             }
@@ -318,22 +328,16 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登录中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
         }
 
         @Override
         protected void onPostExecute(final User user) {
             mAuthTask = null;
-            pDialog.dismiss();
         }
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            pDialog.dismiss();
         }
 
         /**

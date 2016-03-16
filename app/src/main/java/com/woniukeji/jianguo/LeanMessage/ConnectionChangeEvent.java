@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.LeanMessage;
+package com.woniukeji.jianguo.leanmessage;
 
 /**
  * Created by wli on 15/12/16.

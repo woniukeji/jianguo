@@ -41,7 +41,7 @@ public class PickerView extends View {
     private int mCurrentSelected;
     private Paint mPaint;
 
-    private float mMaxTextSize = 60;
+    private float mMaxTextSize = 80;
     private float mMinTextSize = 40;
 
     private float mMaxTextAlpha = 255;

@@ -25,7 +25,7 @@ import java.util.List;
  * @version: V1.0
  */
 
-public class PickerPopupWindow extends PopupWindow implements OnClickListener {
+public class SizePickerPopuWin extends PopupWindow implements OnClickListener {
 
 
 
@@ -42,7 +42,7 @@ public class PickerPopupWindow extends PopupWindow implements OnClickListener {
     //黑色背景
 
 
-    public PickerPopupWindow(Context context,List<String> list ,Handler handler,int mType) {
+    public SizePickerPopuWin(Context context, List<String> list , Handler handler, int mType) {
         this.context = context;
         this.stringList = list;
         this.mHandler=handler;

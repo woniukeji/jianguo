@@ -3,21 +3,21 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rl_job"
                 android:layout_width="wrap_content"
-                android:layout_height="90dp"
+                android:layout_height="108dp"
                 android:background="@color/white"
     >
 
     <ImageView
         android:id="@+id/user_head"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:layout_marginTop="14dp"
         android:layout_marginLeft="15dp"
         android:background="@drawable/button_background_login"
        />
 <LinearLayout
     android:layout_width="wrap_content"
-    android:layout_height="78dp"
+    android:layout_height="match_parent"
     android:layout_marginLeft="5dp"
     android:layout_toRightOf="@+id/user_head"
     android:orientation="vertical"
@@ -26,31 +26,31 @@
         android:id="@+id/business_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
-        android:layout_marginTop="2dp"
+        android:textSize="15dp"
+        android:layout_marginTop="14dp"
         android:text="凯宾斯基酒店宴会服务员"
-
         />
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="2dp"
-        android:layout_height="15dp"
+        android:layout_height="20dp"
         android:gravity="center"
+        android:layout_marginTop="1dp"
         >
         <ImageView
             android:id="@+id/img_pay"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:src="@mipmap/icon_money"
             />
         <TextView
+            android:id="@+id/tv_pay_method"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/img_pay"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="月结"
-            android:textSize="9dp"
+            android:textSize="13dp"
+            android:textColor="#9b9b9b"
             android:gravity="center"
 
             />
@@ -58,82 +58,84 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_height="15dp"
+        android:layout_height="20dp"
         android:gravity="center"
+        android:layout_marginTop="1dp"
         >
         >
         <ImageView
             android:id="@+id/img_date"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:src="@mipmap/icon_date"
             />
         <TextView
+            android:id="@+id/tv_date"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/img_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="4月1号-4月6号"
+            android:textColor="#9b9b9b"
             android:gravity="center"
-            android:textSize="9dp"
+            android:textSize="13dp"
 
             />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:layout_height="15dp"
+        android:layout_height="20dp"
         android:gravity="center"
+        android:layout_marginTop="1dp"
         >
         >
         <ImageView
             android:id="@+id/img_local"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:src="@mipmap/icon_didian"
             />
         <TextView
+            android:id="@+id/tv_location"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/img_local"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="海棠湾附近"
+            android:textColor="#9b9b9b"
             android:gravity="center"
-            android:textSize="9dp"
+            android:textSize="13dp"
             />
     </RelativeLayout>
 
 </LinearLayout>
-    <TextView
-        android:id="@+id/tv_sex"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:background="@mipmap/icon_man"
+    <ImageView
+        android:id="@+id/img_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_man"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="62dp"
-        android:layout_marginTop="19dp"
-        android:textSize="12sp"
-        android:textColor="@color/white"
+        android:layout_marginRight="75dp"
+        android:layout_marginTop="16dp"
         />
     <RelativeLayout
         android:id="@+id/rl_progess"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="17dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         >
 
         <com.liulishuo.magicprogresswidget.MagicProgressCircle
             android:id="@+id/demo_mpc"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:mpc_stroke_width="1dp"
-            app:mpc_default_color="#61aeff"
+            app:mpc_stroke_width="3dp"
+            app:mpc_start_color="#5edfd9"
+            app:mpc_end_color="#5edfd9"
            />
 
 
@@ -143,7 +145,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="15/20"
-            android:textColor="#f87c7c"
             android:textSize="9dp" />
 
     </RelativeLayout>
@@ -164,18 +165,18 @@
         android:id="@+id/tv_wages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_progess"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="14dp"
         android:text="1800/月"
         android:layout_marginRight="18dp"
-        android:layout_marginTop="7dp"
         android:textSize="12dp"
         android:textColor="#f87c7c"
         />
     <TextView
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="1dp"
         android:background="@color/gray_btn_bg_color"
         />
 </RelativeLayout>

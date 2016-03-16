@@ -132,21 +132,25 @@
         </receiver>
         <!-- 实时通信模块、推送 END -->
         <activity
-            android:name=".mine.TimePickerActivity"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
-        </activity>
-        <activity
             android:name=".mine.SchoolActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".talk.ChatActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            />
-        <activity android:name=".mine.SettingActivity"
+        <activity
+            android:name=".talk.ChatActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".mine.SettingActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".mine.FeedBackActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".mine.CollectActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
-        <activity android:name=".mine.FeedBackActivity"
+        <activity android:name=".partjob.JobDetailActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>

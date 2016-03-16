@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.woniukeji.jianguo.utils.LogUtils;
+
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -18,11 +20,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
     @Override
     protected void onStart() {
+        LogUtils.i("activity",":onstart");
         super.onStart();
     }
 
     @Override
     protected void onResume() {
+        LogUtils.i("activity",":onResume");
         super.onResume();
     }
 
@@ -36,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
     @Override
     protected void onDestroy() {
+        LogUtils.i("activity",":onDestroy");
         super.onDestroy();
     }
 

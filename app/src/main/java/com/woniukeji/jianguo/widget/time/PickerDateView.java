@@ -165,7 +165,7 @@ public class PickerDateView extends View {
         mViewHeight = getMeasuredHeight();
         mViewWidth = getMeasuredWidth();
         // 按照View的高度计算字体大小
-        mMaxTextSize = mViewHeight / 5.5f;
+        mMaxTextSize = mViewHeight / 6.6f;
         mMinTextSize = mMaxTextSize / 3f;
         isInit = true;
         invalidate();

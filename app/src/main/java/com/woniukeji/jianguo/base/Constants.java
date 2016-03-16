@@ -45,6 +45,8 @@ public class Constants {
 //    public static final String POST_RESUME= JIANGUO_USING+"T_user_resume_Insert_Servlet";//录入简历
     public static final String GET_RESUME= JIANGUO_USING+"T_user_resume_SelectId_Servlet";//查看简历
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
+    public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
+    public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
 
     public static final String SP_LOGIN = "loginInfo";
     public static final String SP_TYPE="type";//0代表手机登录 1微信 2未登录

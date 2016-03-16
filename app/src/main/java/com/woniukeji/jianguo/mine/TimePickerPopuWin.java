@@ -1,10 +1,14 @@
 package com.woniukeji.jianguo.mine;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.widget.time.PickerDateView;
@@ -13,16 +17,11 @@ import com.woniukeji.jianguo.widget.time.PickerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+public class TimePickerPopuWin extends PopupWindow implements View.OnClickListener {
 
-public class TimePickerActivity extends Activity  {
-    @InjectView(R.id.year_pv) PickerDateView yearPv;
-    @InjectView(R.id.month_pv) PickerView monthPv;
-    @InjectView(R.id.day_pv) PickerView dayPv;
-    @InjectView(R.id.rl_pick) RelativeLayout rlPick;
-    @InjectView(R.id.button) Button button;
+    private final Context context;
+    private final Handler mHandler;
+    private final int type;
     private List<String> years = new ArrayList<String>();
     private List<String> months = new ArrayList<String>();
     private List<String> bigDays = new ArrayList<String>();//big
@@ -32,19 +31,51 @@ public class TimePickerActivity extends Activity  {
     private String yearStr="1998";
     private String monthStr="07";
     private String dayStr="16";
+    private PickerDateView yearPv;
+    private PickerView monthPv;
+    private PickerView dayPv;
+    private TextView tvNo;
+    private TextView tvOk;
+    public TimePickerPopuWin(Context context, Handler handler, int mType) {
+        this.context = context;
+        this.mHandler=handler;
+        this.type=mType;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_time_picker);
-        ButterKnife.inject(this);
+    }
+    public void showShareWindow() {
+        View view = LayoutInflater.from(context).inflate(R.layout.time_picker_popu, null);
+
+        initView(view);
         initListeners();
         initDate();
+        // 添加布局
+        this.setContentView(view);
+        // 设置SharePopupWindow宽度
+        this.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
+        // 设置SharePopupWindow高度
+        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        // 设置setFocusable可获取焦点
+        this.setFocusable(true);
+        // 设置setFocusable动画风格
+//        this.setAnimationStyle(R.style.AnimBottom);
+        //画背景
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        // 设置背景
+        this.setBackgroundDrawable(dw);
+
+
     }
+    public void initView(View view) {
+        tvNo= (TextView) view.findViewById(R.id.tv_no);
+        tvOk= (TextView) view.findViewById(R.id.tv_ok);
+        yearPv= (PickerDateView) view.findViewById(R.id.year_pv);
+        monthPv= (PickerView) view.findViewById(R.id.month_pv);
+        dayPv= (PickerView) view.findViewById(R.id.day_pv);
 
-
+    }
     public void initListeners() {
-
+        tvNo.setOnClickListener(this);
+        tvOk.setOnClickListener(this);
         yearPv.setOnSelectListener(new PickerDateView.onSelectListener() {
             @Override
             public void onSelect(String text) {
@@ -59,8 +90,6 @@ public class TimePickerActivity extends Activity  {
         monthPv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
-                String[] months_big = {"1", "3", "5", "7", "8", "10", "12"};
-                String[] months_little = {"4", "6", "9", "11"};
                 monthStr = text.substring(0, 2);
                 switch (Integer.valueOf(monthStr)) {
                     case 1:
@@ -111,6 +140,7 @@ public class TimePickerActivity extends Activity  {
                 }
             }
         });
+
         dayPv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
@@ -145,16 +175,24 @@ public class TimePickerActivity extends Activity  {
         yearPv.setData(years);
         monthPv.setData(months);
         dayPv.setData(bigDays);
+
     }
 
 
-
-
-    @OnClick(R.id.button)
-    public void onClick() {
-        Intent it = this.getIntent();
-        it.putExtra("date", yearStr + "-" + monthStr + "-" + dayStr);
-        setResult(1, it);
-        finish();
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_no:
+                dismiss();
+                break;
+            case R.id.tv_ok:
+                Message message=new Message();
+                message.arg1=type;
+                message.obj=yearStr + "-" + monthStr + "-" + dayStr;
+                message.what=2;
+                mHandler.sendMessage(message);
+                dismiss();
+                break;
+        }
     }
 }

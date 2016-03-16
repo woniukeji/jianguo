@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <include
+        android:id="@+id/top"
+        android:layout_alignParentTop="true"
+        layout="@layout/app_title_bar"
+        android:layout_height="48dp"
+        android:layout_width="fill_parent"/>
+<ScrollView
+    android:layout_below="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+   >
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/white"
+    android:layout_marginTop="10dp"
+    >
+    <ImageView
+        android:id="@+id/user_head"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/default_head"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/user_head"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/business_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_marginTop="4dp"
+            android:text="凯宾斯基酒店宴会服务员"
+
+            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="15dp"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/tv_notic4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工资: "
+                android:textSize="14dp"
+                />
+            <TextView
+                android:id="@+id/tv_wage"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/tv_notic4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="1500/月份"
+                android:textSize="12dp"
+                android:gravity="center"
+                android:textColor="#ff8f93"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/tv_notic5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="招聘人数："
+                android:textSize="14dp"
+                />
+            <TextView
+                android:id="@+id/tv_hiring_count"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/tv_notic5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="152/200"
+                android:textColor="#ff8f93"
+                android:gravity="center"
+                android:textSize="12dp"
+
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="15dp"
+            android:gravity="center"
+            >
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/tv_enroll_num"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:text="18/25"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="18dp"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="#f87c7c"
+        />
+    <TextView
+        android:id="@+id/tv_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="18dp"
+        android:textSize="12dp"
+        android:text="7天前"
+        />
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gray_btn_bg_color"
+        />
+</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="228dp"
+        android:paddingLeft="15dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="26dp"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_marginTop="10dp"
+    android:gravity="center|left"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="工作地点："
+        android:textSize="15dp"
+        />
+    <TextView
+        android:id="@+id/tv_work_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="海棠湾附近"
+        android:textSize="15dp"
+        />
+    <TextView
+        android:id="@+id/tv_location_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="具体位置："
+        android:layout_marginLeft="16dp"
+        android:drawableLeft="@mipmap/icon_position"
+        android:textColor="@color/app_bg"
+        />
+
+</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作日期："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_work_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4月1日-5月1日"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作时间："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_work_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8：00-18:00"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="集合地点："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_collection_sites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="琼州学院后门"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="集合时间："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_collection_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18:30"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性别："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="男女不限"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="结算方式："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_pay_method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日结"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center|left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="其他事项："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="包接送"
+                android:textSize="15dp"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        >
+        <TextView
+            android:id="@+id/tv_notic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="工作详情"
+            android:textSize="18dp"
+            android:textColor="#ff8f93"
+            android:drawableLeft="@mipmap/icon_attention"
+            />
+        <TextView
+            android:layout_below="@+id/tv_notic"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:textColor="@color/gray_btn_bg_color"
+            />
+<RelativeLayout
+    android:layout_below="@+id/tv_notic"
+    android:id="@+id/rl_work"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    >
+    <TextView
+        android:id="@+id/tv_notic6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="工作内容："
+        android:textSize="15dp"
+        />
+    <TextView
+        android:id="@+id/tv_work_content"
+        android:textSize="15dp"
+        android:layout_toRightOf="@+id/tv_notic6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:text="宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花Jui听不那个工，宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花J"
+        />
+</RelativeLayout>
+        <RelativeLayout
+            android:layout_below="@+id/rl_work"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+            <TextView
+                android:id="@+id/tv_notic7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工作要求："
+                android:textSize="15dp"
+                />
+            <TextView
+                android:id="@+id/tv_work_require"
+                android:textSize="15dp"
+                android:layout_toRightOf="@+id/tv_notic7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:text="宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花Jui听不那个工，宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花J"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_worker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="商家详情"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+        android:textSize="18dp"
+        android:textColor="#ff8f93"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/icon_attention"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:textColor="@color/gray_btn_bg_color"
+        />
+    <RelativeLayout
+        android:id="@+id/rl_company"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        >
+
+        <com.woniukeji.jianguo.widget.CircleImageView
+            android:id="@+id/cirimg_work"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:src="@mipmap/icon_head_defult"
+            />
+        <TextView
+            android:id="@+id/tv_company_name"
+            android:layout_toRightOf="@id/cirimg_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="翼蜗牛网络科技有限公司"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:id="@+id/tv_jobs_count"
+            android:layout_below="@+id/tv_company_name"
+            android:layout_toRightOf="@id/cirimg_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="32个职位在招"
+            android:textSize="12dp"
+            />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_go"
+            />
+    </RelativeLayout>
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="80dp"/>
+   </LinearLayout>
+</ScrollView>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    >
+    <TextView
+        android:id="@+id/tv_contact_company"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="在线咨询"
+        android:drawableTop="@mipmap/icon_talk"
+        android:gravity="center"
+        />
+    <TextView
+        android:id="@+id/tv_collection"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="收藏"
+        android:gravity="center"
+        android:drawableTop="@drawable/icon_collection_normal"
+
+        />
+        <TextView
+            android:id="@+id/tv_signup"
+        android:layout_weight="1.5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="我要报名"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="#f5c952"
+        />
+</LinearLayout>
+
+</RelativeLayout>

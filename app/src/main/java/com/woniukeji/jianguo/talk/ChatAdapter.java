@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import com.woniukeji.jianguo.LeanMessage.ChatManager;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.R;
 
 import org.kymjs.kjframe.KJBitmap;

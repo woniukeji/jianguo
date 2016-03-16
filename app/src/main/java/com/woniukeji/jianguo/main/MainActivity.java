@@ -10,17 +10,20 @@ import android.view.View;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
+import com.woniukeji.jianguo.partjob.PartJobFragment;
 import com.woniukeji.jianguo.talk.TalkFragment;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 /**
  *
@@ -99,6 +102,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                     tabHost.setCurrentTab(position);
+                if (position==2){
+                    tabHost.hideMsg(2);
+                }
 
             }
 
@@ -114,14 +120,22 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
-
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
     public void initData() {
 
     }
-
+    /**
+     * 处理推送过来的消息
+     * 首页tab显示维度消息
+     */
+    public void onEvent(ImTypeMessageEvent event) {
+        tabHost.showDot(2);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +145,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -151,7 +166,7 @@ public class MainActivity extends BaseActivity {
                 case 0:
                     return new HomeFragment();           //直播榜
                 case 1:
-                    return new FragmentText();          //话题榜
+                    return new PartJobFragment();          //话题榜
                 case 2:
                     return new TalkFragment();
                 case 3:

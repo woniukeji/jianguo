@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.LeanMessage;
+package com.woniukeji.jianguo.leanmessage;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMClientEventHandler;

@@ -4,7 +4,7 @@ package com.woniukeji.jianguo.base;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import com.woniukeji.jianguo.LeanMessage.MessageHandler;
+import com.woniukeji.jianguo.leanmessage.MessageHandler;
 
 /**
  * Created by invinjun on 2016/3/2.

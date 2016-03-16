@@ -18,8 +18,9 @@ import android.widget.Toast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.Job;
+import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.PicassoLoader;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
 
@@ -49,8 +50,8 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private View headerView;
-    private JobAdapter adapter;
-    private List<Job> jobs=new ArrayList<Job>();
+    private HomeJobAdapter adapter;
+    private List<Jobs> jobs=new ArrayList<Jobs>();
     private ViewPager vp;
     private LinearLayout ll;
     private ArrayList<Page> pageViews;
@@ -139,7 +140,7 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
         mAnimCircleIndicator.setOnPageChangeListener(this);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
 
-        adapter = new JobAdapter(jobs,getActivity());
+        adapter = new HomeJobAdapter(jobs,getActivity());
         adapter.addHeaderView(headerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
@@ -171,17 +172,18 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
     @Override
     public void onResume() {
         for (int i = 0; i < 10; i++) {
-            jobs.add(new Job());
+            jobs.add(new Jobs());
         }
         adapter.notifyDataSetChanged();
         mAnimCircleIndicator.start();
+        LogUtils.i("fragment",":onDestroy");
         super.onResume();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
+        LogUtils.i("fragment",":onStart");
     }
 
     @Override
@@ -231,19 +233,10 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+        LogUtils.i("fragment",":onDestroyView");
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
     }

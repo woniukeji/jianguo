@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.LeanMessage;
+package com.woniukeji.jianguo.leanmessage;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

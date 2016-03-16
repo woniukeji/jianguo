@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.LeanMessage;
+package com.woniukeji.jianguo.leanmessage;
 
 import android.content.Context;
 
@@ -92,6 +92,7 @@ public class ChatManager {
   }
 
   public AVIMClient getImClient() {
+    LogUtils.e("client",imClient.toString());
     return imClient;
   }
 
@@ -105,6 +106,7 @@ public class ChatManager {
       throw new IllegalStateException("please call setupManagerWithUserId() first");
     }
     imClient = AVIMClient.getInstance(this.selfId);
+    LogUtils.e("client",imClient.toString());
     imClient.open(new AVIMClientCallback() {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
