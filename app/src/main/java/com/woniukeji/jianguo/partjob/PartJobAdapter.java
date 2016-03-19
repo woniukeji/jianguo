@@ -50,8 +50,8 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
         if (isFooterChange) {
             holder.loading.setText("已加载全部");
         } else {
-            holder.loading.setText("加载中...");
-            holder.animLoading.setVisibility(View.VISIBLE);
+            holder.loading.setText("已加载全部");
+            holder.animLoading.setVisibility(View.GONE);
 //            holder.animLoading.setBackgroundResource(R.drawable.loading_footer);
 //            mAnimationDrawable = (AnimationDrawable) holder.animLoading.getBackground();
 //            mAnimationDrawable.start();

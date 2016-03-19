@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,11 +18,12 @@ import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.main.MainActivity;
+import com.woniukeji.jianguo.mine.AuthActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -45,7 +44,7 @@ import okhttp3.Response;
 /**
  * A Register screen that offers Register via email/password.
  */
-public class QuickLoginActivity extends BaseActivity {
+public class BindPhoneActivity extends BaseActivity {
 
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
@@ -64,7 +63,10 @@ public class QuickLoginActivity extends BaseActivity {
     private int MSG_PHONE_SUCCESS = 2;
     private int MSG_REGISTER_SUCCESS = 3;
     private Handler mHandler=new Myhandler(this);
-    private Context context= QuickLoginActivity.this;
+    private Context context= BindPhoneActivity.this;
+    private int loginId;
+    private String phone;
+
     private static class Myhandler extends Handler{
         private WeakReference<Context> reference;
         public Myhandler(Context context){
@@ -73,13 +75,14 @@ public class QuickLoginActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            QuickLoginActivity quickLoginActivity= (QuickLoginActivity) reference.get();
+            BindPhoneActivity quickLoginActivity= (BindPhoneActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    quickLoginActivity.saveToSP(user.getData());
-                    quickLoginActivity.showShortToast("登录成功！");
-                    Intent intent=new Intent(quickLoginActivity,MainActivity.class);
+//                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+//                    quickLoginActivity.saveToSP(user.getData());
+                    quickLoginActivity.showShortToast("手机号验证成功！");
+                    Intent intent=new Intent(quickLoginActivity,AuthActivity.class);
+                    SPUtils.setParam(quickLoginActivity,Constants.LOGIN_INFO,Constants.SP_TEL,quickLoginActivity.phone);
 //                    intent.putExtra("user",user);
                     quickLoginActivity.startActivity(intent);
                     quickLoginActivity.finish();
@@ -118,6 +121,8 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        title.setText("手机验证");
+        signInButton.setText("提交");
 
     }
 
@@ -128,12 +133,13 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
 
     }
 
     @Override
     public void addActivity() {
-        ActivityManager.getActivityManager().addActivity(QuickLoginActivity.this);
+        ActivityManager.getActivityManager().addActivity(BindPhoneActivity.this);
     }
 
 
@@ -158,7 +164,7 @@ public class QuickLoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
-                String phone = phoneNumber.getText().toString().trim();
+                 phone = phoneNumber.getText().toString().trim();
                 String code = phoneCode.getText().toString().trim();
                 if (CheckStatus()) {
                     PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone);
@@ -211,7 +217,7 @@ public class QuickLoginActivity extends BaseActivity {
     public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
 
         private final String tel;
-        SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        SweetAlertDialog pDialog = new SweetAlertDialog(BindPhoneActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         PhoneLoginTask(String phoneNum  ) {
             this.tel = phoneNum;
@@ -221,7 +227,7 @@ public class QuickLoginActivity extends BaseActivity {
         protected User doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                PhoneLogin();
+                BindPhone();
             } catch (Exception e) {
                 return null;
             }
@@ -250,22 +256,23 @@ public class QuickLoginActivity extends BaseActivity {
         /**
          * phoneLogin
          */
-        public void PhoneLogin() {
+        public void BindPhone() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.LOGIN_QUICK)
+                    .url(Constants.POST_BIND_PHONE)
                     .addParams("only", only)
+                    .addParams("login_id", String.valueOf(loginId))
                     .addParams("tel", tel)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<User>>() {
+                    .execute(new Callback<BaseBean>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
+                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean>(){}.getType());
                             return user;
                         }
                         @Override
@@ -279,7 +286,7 @@ public class QuickLoginActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean user) {
                             if (user.getCode().equals("200")){
-                                SPUtils.setParam(QuickLoginActivity.this,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
+                                SPUtils.setParam(BindPhoneActivity.this,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;
@@ -303,7 +310,7 @@ public class QuickLoginActivity extends BaseActivity {
      */
     public class GetSMS extends AsyncTask<Void, Void, User> {
         private final String tel;
-        SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        SweetAlertDialog pDialog = new SweetAlertDialog(BindPhoneActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         GetSMS(String phoneNum) {
             this.tel = phoneNum;

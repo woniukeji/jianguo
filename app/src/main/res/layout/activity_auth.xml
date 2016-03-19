@@ -136,10 +136,10 @@
             android:layout_marginRight="17dp"
             />
 
-        <EditText
+        <TextView
             android:layout_toLeftOf="@+id/img"
             android:layout_marginRight="10dp"
-            android:id="@+id/et_phone_auth"
+            android:id="@+id/tv_phone_auth"
             android:gravity="center|right"
             android:layout_width="match_parent"
             android:layout_height="40dp"

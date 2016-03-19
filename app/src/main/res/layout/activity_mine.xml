@@ -261,7 +261,7 @@
             android:layout_toLeftOf="@+id/img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="90"
+            android:text=""
             android:layout_marginRight="7dp"
             android:textSize="16dp"
             android:gravity="center"

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
+import com.woniukeji.jianguo.utils.ActivityManager;
 
 public class FeedBackActivity extends BaseActivity {
 
@@ -32,6 +33,11 @@ public class FeedBackActivity extends BaseActivity {
     @Override
     public void initData() {
 
+    }
+
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(FeedBackActivity.this);
     }
 
     @Override

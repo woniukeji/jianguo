@@ -14,10 +14,12 @@ import android.widget.TextView;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
@@ -31,6 +33,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     private final List<AVIMConversation> mValues;
     private final Context mContext;
+    private final int loginId;
 
     private View mHeaderView;
     public static final int IS_HEADER = 0;
@@ -39,9 +42,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public ConversationAdapter(List<AVIMConversation> items, Context context) {
+    public ConversationAdapter(List<AVIMConversation> items, Context context,int loginid) {
         mValues = items;
         mContext = context;
+        loginId=loginid;
     }
 
     public void addHeaderView(View headerView) {
@@ -101,6 +105,23 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 //        } else {
         final AVIMConversation conversation = mValues.get(position);
 
+        conversation.getAttribute(Constants.CREAT_NAME);
+        if(conversation.getCreator().equals(String.valueOf(loginId))){
+            holder.tvNick.setText((String)conversation.getAttribute(Constants.OTHER_NAME));
+            Picasso.with(mContext).load((String)conversation.getAttribute(Constants.OTHER_IMG))
+                    .placeholder(R.mipmap.icon_head_defult)
+                    .error(R.mipmap.icon_head_defult)
+                    .transform(new CropCircleTransfermation())
+                    .into( holder.circleTalkHead);
+        }else{
+            holder.tvNick.setText((String)conversation.getAttribute(Constants.CREAT_NAME));
+            Picasso.with(mContext).load((String)conversation.getAttribute(Constants.CREAT_IMG))
+                    .placeholder(R.mipmap.icon_head_defult)
+                    .error(R.mipmap.icon_head_defult)
+                    .transform(new CropCircleTransfermation())
+                    .into( holder.circleTalkHead);
+        }
+
         conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
             @Override
             public void done(AVIMMessage avimMessage, AVIMException e) {
@@ -108,19 +129,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     AVIMTextMessage avimTextMessage = (AVIMTextMessage) avimMessage;
                         String avatorImag= (String) avimTextMessage.getAttrs().get("avatar");
                     String nickName = (String) avimTextMessage.getAttrs().get("nickname");
-                    holder.tvNick.setText(nickName);
                     holder.tvContent.setText(avimTextMessage.getText());
                     avimTextMessage.getTimestamp();
-                    String id=avimTextMessage.getFrom();
-//                        avimTextMessage.
-//                        avimTextMessage.getReceiptTimestamp();
                     String date=DateUtils.getDate(avimTextMessage.getTimestamp());
                     holder.tvDate.setText(date);
-                    Picasso.with(mContext).load(avatorImag)
-                            .placeholder(R.mipmap.icon_head_defult)
-                            .error(R.mipmap.icon_head_defult)
-                            .transform(new CropCircleTransfermation())
-                            .into( holder.circleTalkHead);
+
                 }
 //                    avimTextMessage.getAttrs().get("avator");
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +141,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     public void onClick(View view) {
                         Intent intent=new Intent(mContext, ChatActivity.class);
                         String conid=conversation.getConversationId();
-                        intent.putExtra("conid",conid);
+                        intent.putExtra("mConversationId",conid);
                         mContext.startActivity(intent);
                     }
                 });

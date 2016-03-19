@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
+import com.woniukeji.jianguo.base.Constants;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -97,9 +99,9 @@ public class SPUtils {
 
     public static void deleteParams(Context context) {
 
-        SharedPreferences sp = context.getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(Constants.LOGIN_INFO, Context.MODE_PRIVATE);
         sp.edit().clear().commit();
-        SharedPreferences sp1 = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences sp1 = context.getSharedPreferences(Constants.USER_INFO, Context.MODE_PRIVATE);
         sp1.edit().clear().commit();
     }
 

@@ -1,12 +1,22 @@
 package com.woniukeji.jianguo.mine;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.woniukeji.jianguo.login.LoginActivity;
+import com.woniukeji.jianguo.utils.ActivityManager;
+import com.woniukeji.jianguo.utils.SPUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,6 +31,7 @@ public class SettingActivity extends BaseActivity {
     @InjectView(R.id.refresh) RelativeLayout refresh;
     @InjectView(R.id.or_img) ImageView orImg;
     @InjectView(R.id.about) RelativeLayout about;
+    @InjectView(R.id.btn_logout) Button btnLogout;
 
 
     @Override
@@ -46,8 +57,13 @@ public class SettingActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void addActivity() {
+//        ActivityManager.getActivityManager().addActivity(SettingActivity.this);
+    }
 
-    @OnClick({R.id.img_back, R.id.changePassword, R.id.refresh, R.id.about})
+
+    @OnClick({R.id.img_back, R.id.changePassword, R.id.refresh, R.id.about,R.id.btn_logout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -57,8 +73,26 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.refresh:
                 break;
+            case R.id.btn_logout:
+
+                ChatManager chatManager = ChatManager.getInstance();
+                chatManager.closeWithCallback(new AVIMClientCallback() {
+                    @Override
+                    public void done(AVIMClient avimClient, AVIMException e) {
+                    }
+                });
+                ActivityManager.getActivityManager().finishAllActivity();
+                SPUtils.deleteParams(SettingActivity.this);
+                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                finish();
+                break;
             case R.id.about:
+
                 break;
         }
     }
+
+
+
+
 }

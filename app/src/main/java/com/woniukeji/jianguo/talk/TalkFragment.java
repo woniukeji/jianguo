@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
@@ -74,33 +75,20 @@ public class TalkFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        LogUtils.i("fragment", "talk:onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_talk, container, false);
         ButterKnife.inject(this, view);
         imgBack.setVisibility(View.GONE);
         tvTitle.setText("果聊");
+        avatarUrl = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
+        loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+
 //        conversationManager = ConversationManager.getInstance();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         talkConstRv.setLayoutManager(layoutManager);
-        itemAdapter = new ConversationAdapter(conversations, getActivity());
+        itemAdapter = new ConversationAdapter(conversations, getActivity(),loginId);
         talkConstRv.setAdapter(itemAdapter);
-        client = ChatManager.getInstance().getImClient();
-        LogUtils.e("client", client.toString());
-        AVIMConversationQuery query = client.getQuery();
-        query.limit(20);
-        query.findInBackground(new AVIMConversationQueryCallback() {
-            @Override
-            public void done(List<AVIMConversation> convs, AVIMException e) {
-                if (e == null) {
-                    conversations.addAll(convs);
-                    itemAdapter.notifyDataSetChanged();
-                    String con = client.toString();
-                    LogUtils.e("conv", con);
-                    //convs就是获取到的conversation列表
-                    //注意：按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
-                }
-            }
-        });
         return view;
     }
 
@@ -108,9 +96,27 @@ public class TalkFragment extends BaseFragment {
     public void onStart() {
         LogUtils.i("fragment", "talk:onstart");
         super.onStart();
-        avatarUrl = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_IMG, "");
-        loginId = (int) SPUtils.getParam(getActivity(), Constants.SP_LOGIN, Constants.SP_USERID, 0);
-//        sendWelcomeMessage("42",avatarUrl);
+        //查询对话
+        client = ChatManager.getInstance().getImClient();
+        LogUtils.e("client", client.toString());
+        AVIMConversationQuery query = client.getQuery();
+        query.limit(20);
+        query.setQueryPolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findInBackground(new AVIMConversationQueryCallback() {
+            @Override
+            public void done(List<AVIMConversation> convs, AVIMException e) {
+                if (e == null) {
+                    conversations.clear();
+                    conversations.addAll(convs);
+                    itemAdapter.notifyDataSetChanged();
+                    String con = client.toString();
+                    LogUtils.e("conv", con);
+                    //convs就是获取到的conversation列表
+                    //注意：按每个对话的最后更新日期（收到最后一条消息的时间）倒序  排列
+                }
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,12 +138,15 @@ public class TalkFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        LogUtils.i("fragment", "talk:onAttach");
 
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        LogUtils.i("fragment", "talk:onDetach");
+
         mListener = null;
     }
 

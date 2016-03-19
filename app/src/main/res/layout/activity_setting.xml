@@ -131,6 +131,7 @@
     </RelativeLayout>
     
     <Button
+        android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginLeft="30dp"

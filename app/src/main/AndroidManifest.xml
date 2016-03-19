@@ -146,11 +146,27 @@
             android:name=".mine.FeedBackActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".mine.CollectActivity"
+        <activity
+            android:name=".mine.CollectActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".partjob.JobDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".partjob.MerchantActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".main.CityActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".mine.EvaluationActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
-        <activity android:name=".partjob.JobDetailActivity"
+        <activity android:name=".login.BindPhoneActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>

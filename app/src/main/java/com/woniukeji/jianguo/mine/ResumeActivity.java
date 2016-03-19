@@ -25,6 +25,7 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Resume;
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
@@ -281,9 +282,14 @@ public class ResumeActivity extends BaseActivity {
     }
     @Override
     public void initData() {
-        loginId = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_USERID, 0);
+        loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null, null,null,null,null,null,null,null);
         postTask.execute();
+    }
+
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(ResumeActivity.this);
     }
 
 
@@ -411,7 +417,7 @@ public class ResumeActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.SP_LOGIN, Constants.SP_TYPE, "0");
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_POST_SUCCESS;

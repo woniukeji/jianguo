@@ -26,6 +26,7 @@ import com.woniukeji.jianguo.entity.BaseCallback;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Util;
@@ -46,7 +47,7 @@ import okhttp3.Call;
 public class ChangPssActivity extends BaseActivity  {
 
     @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.title) TextView title;
+    @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.phoneCode) EditText phoneCode;
@@ -133,8 +134,14 @@ public class ChangPssActivity extends BaseActivity  {
     public void initData() {
 
     }
+
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(ChangPssActivity.this);
+    }
+
     private void saveToSP(User user) {
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_PASSWORD,user.getT_user_login().getPassword());
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword());
     }
 
     @OnClick({R.id.img_back, R.id.btn_get_code, R.id.phone_sign_in_button})

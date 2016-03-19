@@ -2,9 +2,11 @@ package com.woniukeji.jianguo.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,17 +14,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
+import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.eventbus.CityEvent;
+import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
+import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.PicassoLoader;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -30,9 +43,13 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
 import cn.lightsky.infiniteindicator.page.Page;
+import de.greenrobot.event.EventBus;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * A fragment representing a list of Items.
@@ -40,30 +57,44 @@ import cn.lightsky.infiniteindicator.page.Page;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChangeListener,OnPageClickListener {
+public class HomeFragment extends BaseFragment implements ViewPager.OnPageChangeListener, OnPageClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     @InjectView(R.id.list) FixedRecyclerView recycleList;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @InjectView(R.id.tv_location) TextView tvLocation;
+    @InjectView(R.id.img_back) ImageView imgBack;
+    @InjectView(R.id.tv_title) TextView tvTitle;
+    @InjectView(R.id.top) RelativeLayout top;
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private View headerView;
     private HomeJobAdapter adapter;
-    private List<Jobs> jobs=new ArrayList<Jobs>();
+    private List<Jobs.ListTJob> jobList = new ArrayList<Jobs.ListTJob>();
     private ViewPager vp;
     private LinearLayout ll;
-    private ArrayList<Page> pageViews;
+    private ArrayList<Page> pageViews = new ArrayList<>();
     private InfiniteIndicator mAnimCircleIndicator;
     private InfiniteIndicator mAnimLineIndicator;
+    private int MSG_GET_SUCCESS = 0;
+    private int MSG_GET_FAIL = 1;
+    private int MSG_GET_CITY_SUCCESS = 4;
+    private int MSG_GET_CITY_FAIL = 5;
     private Handler mHandler = new Myhandler(this.getActivity());
-    private Context context=this.getActivity();
+    private Context context = this.getActivity();
+
+    @OnClick(R.id.tv_location)
+    public void onClick() {
+        startActivity(new Intent(getActivity(),CityActivity.class));
+    }
 
 
 
-    private static class Myhandler extends Handler {
+    private class Myhandler extends Handler {
         private WeakReference<Context> reference;
+        private List<CityBannerEntity.ListTBannerEntity> banners;
 
         public Myhandler(Context context) {
             reference = new WeakReference<>(context);
@@ -75,15 +106,14 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
             MainActivity mainActivity = (MainActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    Intent intent = new Intent(mainActivity, MainActivity.class);
-//                    intent.putExtra("user", user);
-                    mainActivity.startActivity(intent);
-                    mainActivity.finish();
+                    BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
+                    jobs.getData().getList_t_job();
+                    jobList.addAll(jobs.getData().getList_t_job());
+                    adapter.notifyDataSetChanged();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
 
@@ -92,10 +122,24 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
                     String sms = (String) msg.obj;
                     Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
+                case 4:
+                    BaseBean<CityBannerEntity> cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
+                    banners = cityBannerEntityBaseBean.getData().getList_t_banner();
+                    initBannerData(banners);
+
+                    adapter.notifyDataSetChanged();
+                    break;
                 default:
                     break;
             }
         }
+    }
+
+    private void initBannerData(List<CityBannerEntity.ListTBannerEntity> banners) {
+        for (int i = 0; i < banners.size(); i++) {
+            pageViews.add(new Page(String.valueOf(banners.get(i).getId()), banners.get(i).getImage(), this));
+        }
+        mAnimCircleIndicator.addPages(pageViews);
     }
 
     /**
@@ -118,7 +162,7 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -129,18 +173,19 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
 // Set the adapter
-
         ButterKnife.inject(this, view);
+
+
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
         initData();
-        mAnimCircleIndicator = (InfiniteIndicator)headerView.findViewById(R.id.indicator_default_circle);
+        mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-        mAnimCircleIndicator.addPages(pageViews);
+
         mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
         mAnimCircleIndicator.setOnPageChangeListener(this);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
 
-        adapter = new HomeJobAdapter(jobs,getActivity());
+        adapter = new HomeJobAdapter(jobList, getActivity());
         adapter.addHeaderView(headerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
@@ -161,29 +206,26 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
         });
         return view;
     }
-    private void initData() {
-        pageViews = new ArrayList<>();
-        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
-        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
-        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
-        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
 
+    private void initData() {
+        GetCityTask getCityTask = new GetCityTask();
+        getCityTask.execute();
+        GetTask getTask = new GetTask("0");
+        getTask.execute();
     }
+
     @Override
     public void onResume() {
-        for (int i = 0; i < 10; i++) {
-            jobs.add(new Jobs());
-        }
-        adapter.notifyDataSetChanged();
         mAnimCircleIndicator.start();
-        LogUtils.i("fragment",":onDestroy");
         super.onResume();
     }
-
+    public void onEvent(CityEvent event) {
+        tvLocation.setText(event.city.getCity());
+    }
     @Override
     public void onStart() {
         super.onStart();
-        LogUtils.i("fragment",":onStart");
+        LogUtils.i("fragment", ":onStart");
     }
 
     @Override
@@ -212,15 +254,10 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
     public void onPageClick(int position, Page page) {
 
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnListFragmentInteractionListener) {
-//            mListener = (OnListFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnListFragmentInteractionListener");
-//        }
     }
 
     @Override
@@ -233,11 +270,155 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
-        LogUtils.i("fragment",":onDestroyView");
+        EventBus.getDefault().unregister(this);
+        LogUtils.i("fragment", ":onDestroyView");
     }
 
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
+    }
+
+    public class GetTask extends AsyncTask<Void, Void, Void> {
+        private final String type;
+
+        GetTask(String type) {
+            this.type = type;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                getJobs();
+            } catch (Exception e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * postInfo
+         */
+        public void getJobs() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.GET_JOB)
+                    .addParams("only", only)
+                    .addParams("hot", type)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean<Jobs>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_GET_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean;
+                                message.what = MSG_GET_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_GET_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
+    }
+
+    public class GetCityTask extends AsyncTask<Void, Void, Void> {
+        GetCityTask() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                getCitys();
+            } catch (Exception e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        /**
+         * postInfo
+         */
+        public void getCitys() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.GET_CITY)
+                    .addParams("only", only)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean<CityBannerEntity>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityBannerEntity>>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_GET_CITY_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean;
+                                message.what = MSG_GET_CITY_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_GET_CITY_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
     }
 }

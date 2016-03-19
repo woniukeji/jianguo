@@ -1,5 +1,7 @@
 package com.woniukeji.jianguo.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by invinjun on 2016/3/16.
  */
@@ -221,7 +223,7 @@ public class JobDetails {
             }
         }
 
-        public static class TMerchantEntity {
+        public static class TMerchantEntity implements Serializable {
             private int id;
             private int login_id;
             private String name;

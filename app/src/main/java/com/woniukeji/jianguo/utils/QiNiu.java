@@ -17,7 +17,7 @@ import java.io.File;
 public class QiNiu {
 
     public static  void upLoadQiNiu(Context context, String key, File imgFile) {
-        String commonUploadToken = (String) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_QNTOKEN, "");
+        String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
         // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
         UploadManager uploadManager = new UploadManager();
         uploadManager.put(imgFile, key, commonUploadToken,

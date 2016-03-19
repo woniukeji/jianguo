@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,18 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Util;
@@ -110,35 +106,35 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     };
 
     private void saveToSP(User user) {
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_USERID,user.getT_user_login().getId());
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_STATUS,user.getT_user_login().getStatus());
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_USERID,user.getT_user_login().getId());
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,user.getT_user_login().getStatus());
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_CREDIT,user.getT_user_info().getCredit());
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
-        final ChatManager chatManager = ChatManager.getInstance();
-        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
-            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
-        }
-        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (null == e) {
-//                    finish();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-                } else {
-                    showShortToast(e.toString());
-                }
-            }
-        });
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_CREDIT,user.getT_user_info().getCredit());
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+//        final ChatManager chatManager = ChatManager.getInstance();
+//        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+//            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+//        }
+//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+//            @Override
+//            public void done(AVIMClient avimClient, AVIMException e) {
+//                if (null == e) {
+////                    finish();
+////                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+////                    startActivity(intent);
+//                } else {
+//                    showShortToast(e.toString());
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -163,6 +159,11 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     @Override
     public void initData() {
 
+    }
+
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(LoginActivity.this);
     }
 
 
@@ -374,7 +375,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
                         @Override
                         public void onResponse(BaseBean user) {
                             if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"1");
+                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"1");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;
@@ -425,7 +426,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
                         @Override
                         public void onResponse(BaseBean user) {
                             if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"1");
+                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"1");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;
@@ -518,7 +519,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
                         @Override
                         public void onResponse(BaseBean user) {
                             if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"0");
+                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;

@@ -32,6 +32,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Util;
@@ -55,7 +56,7 @@ import okhttp3.Response;
 public class RegistActivity extends BaseActivity {
 
     @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.title) TextView title;
+    @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.phoneCode) EditText phoneCode;
@@ -153,20 +154,26 @@ public class RegistActivity extends BaseActivity {
     public void initData() {
 
     }
-    private void saveToSP(User user) {
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_USERID,user.getT_user_login().getId());
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_STATUS,user.getT_user_login().getStatus());
-        SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_CREDIT,user.getT_user_info().getCredit());
-        SPUtils.setParam(context,Constants.SP_USER,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(RegistActivity.this);
+    }
+
+    private void saveToSP(User user) {
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_USERID,user.getT_user_login().getId());
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,user.getT_user_login().getStatus());
+        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
+
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_CREDIT,user.getT_user_info().getCredit());
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
     }
     /**
      * 创建一个超链接
@@ -386,7 +393,7 @@ public class RegistActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean response) {
                             if (response.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.SP_LOGIN,Constants.SP_TYPE,"0");
+                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
                                 Message message = new Message();
                                 message.obj = response;
                                 message.what = MSG_USER_SUCCESS;

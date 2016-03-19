@@ -26,7 +26,9 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RealName;
+import com.woniukeji.jianguo.login.BindPhoneActivity;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -59,7 +61,7 @@ public class AuthActivity extends BaseActivity {
     @InjectView(R.id.ll_top) LinearLayout llTop;
     @InjectView(R.id.img_phone) ImageView imgPhone;
     @InjectView(R.id.img) ImageView img;
-    @InjectView(R.id.et_phone_auth) EditText etPhoneAuth;
+    @InjectView(R.id.tv_phone_auth) TextView etPhoneAuth;
     @InjectView(R.id.et_real_name) EditText etRealName;
     @InjectView(R.id.et_id) EditText etId;
     @InjectView(R.id.or_img) ImageView orImg;
@@ -103,7 +105,7 @@ public class AuthActivity extends BaseActivity {
                     }
                     BaseBean baseBean = (BaseBean) msg.obj;
                     //手动保存认证状态 防止未重新登录情况下再次进入该界面
-                    SPUtils.setParam(authActivity,Constants.SP_LOGIN,Constants.SP_STATUS,3);
+                    SPUtils.setParam(authActivity,Constants.LOGIN_INFO,Constants.SP_STATUS,3);
                     authActivity.showShortToast("提交成功");
                     break;
                 case 1:
@@ -169,10 +171,17 @@ public class AuthActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        tel = (String) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_TEL, "0");
-        loginId = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_USERID, 0);
-      showShortToast("用户id： "+loginId);
-        status = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_STATUS, 0);
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        tel = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_TEL, "0");
+        loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        showShortToast("用户id： "+loginId);
+        status = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
         if (tel.equals("0")) {
             etPhoneAuth.setText("请认证手机号");
             rlPhone.setClickable(true);
@@ -183,7 +192,6 @@ public class AuthActivity extends BaseActivity {
             etPhoneAuth.setClickable(false);
             rlPhone.setClickable(false);
         }
-
 
         if (status==2){//已经认证 可以查询信息
             PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
@@ -213,16 +221,19 @@ public class AuthActivity extends BaseActivity {
             etId.setFocusableInTouchMode(false);
             rbMan.setClickable(false);
             rbWoman.setClickable(false);
-        }else{
-
         }
-
     }
+
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(AuthActivity.this);
+    }
+
     @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_phone:
-                startActivity(new Intent(context, QuickLoginActivity.class));
+                startActivity(new Intent(context, BindPhoneActivity.class));
 //                finish();
                 break;
             case R.id.img_back:
@@ -398,7 +409,7 @@ public class AuthActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.SP_LOGIN, Constants.SP_TYPE, "0");
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_POST_SUCCESS;
@@ -447,7 +458,7 @@ public class AuthActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.SP_LOGIN, Constants.SP_TYPE, "0");
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_GET_SUCCESS;

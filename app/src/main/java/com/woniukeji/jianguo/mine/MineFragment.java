@@ -65,8 +65,12 @@ public class MineFragment extends BaseFragment {
             case R.id.credit:
                 break;
             case R.id.rl_evaluation:
+                Intent intentEvluation = new Intent(getActivity().getApplicationContext(), EvaluationActivity.class);
+                startActivity(intentEvluation);
                 break;
             case R.id.ll_collect:
+                Intent intentColl = new Intent(getActivity().getApplicationContext(), CollectActivity.class);
+                startActivity(intentColl);
                 break;
             case R.id.rl_point:
                 break;
@@ -141,6 +145,7 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -152,14 +157,15 @@ public class MineFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+
     }
 
     @Override
     public void onStart() {
-        String nick = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_NICK, "");
-        String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_SCHOOL, "");
-        String tel = (String) SPUtils.getParam(getActivity(), Constants.SP_USER, Constants.SP_TEL, "");
-        String img= (String)SPUtils.getParam(getActivity(), Constants.SP_USER,Constants.SP_IMG,"");
+        String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, "");
+        String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
+        String tel = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_TEL, "");
+        String img= (String)SPUtils.getParam(getActivity(), Constants.USER_INFO,Constants.SP_IMG,"");
         imgBack.setVisibility(View.GONE);
         name.setText(nick);
         school.setText(schoolStr);

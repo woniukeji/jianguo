@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.LogUtils;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
@@ -17,6 +18,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         initViews();
         initListeners();
         initData();
+        addActivity();
     }
     @Override
     protected void onStart() {
@@ -52,6 +54,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public abstract void initListeners();
 
     public abstract void initData();
+
+    public abstract void addActivity();
 
     //常用适配或提示方法
     public static int dip2px(Context context, float dipValue) {

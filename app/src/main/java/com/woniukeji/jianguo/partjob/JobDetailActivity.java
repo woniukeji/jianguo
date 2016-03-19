@@ -1,12 +1,10 @@
 package com.woniukeji.jianguo.partjob;
 
-import android.app.job.JobInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
@@ -16,16 +14,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
-import com.woniukeji.jianguo.mine.TimePickerPopuWin;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.woniukeji.jianguo.talk.ChatActivity;
+import com.woniukeji.jianguo.utils.ActivityManager;
+import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
@@ -33,6 +38,9 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -77,6 +85,9 @@ public class JobDetailActivity extends BaseActivity {
     private int MSG_GET_FAIL = 1;
     private Handler mHandler = new Myhandler(this);
     private Context mContext = JobDetailActivity.this;
+    private int loginId;
+    private String img;
+    private String name;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -116,11 +127,14 @@ public class JobDetailActivity extends BaseActivity {
 //                    jobDetailActivity.setInf(realNameBaseBean.getData());
                     break;
                 case 3:
-//                    if (null!=jobDetailActivity.pDialog){
-//                        jobDetailActivity.pDialog.dismiss();
-//                    }
                     String sms = (String) msg.obj;
                     Toast.makeText(jobDetailActivity, sms, Toast.LENGTH_SHORT).show();
+                    break;
+                case 4:
+                    String signMessage = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, signMessage, Toast.LENGTH_SHORT).show();
+                    jobDetailActivity.tvSignup.setText("已报名");
+                    jobDetailActivity.tvSignup.setBackgroundResource(R.color.gray);
                     break;
                 default:
                     break;
@@ -166,7 +180,16 @@ public class JobDetailActivity extends BaseActivity {
 
         tvCompanyName.setText(merchantInfo.getName());
 //        tvHiringCount.setText(merchantInfo.getJob_count());
-
+        Picasso.with(JobDetailActivity.this).load(merchantInfo.getName_image())
+                .placeholder(R.mipmap.icon_head_defult)
+                .error(R.mipmap.icon_head_defult)
+                .transform(new CropCircleTransfermation())
+                .into(cirimgWork);
+        Picasso.with(JobDetailActivity.this).load(merchantInfo.getName_image())
+                .placeholder(R.mipmap.icon_head_defult)
+                .error(R.mipmap.icon_head_defult)
+                .transform(new CropCircleTransfermation())
+                .into(userHead);
 
     }
 
@@ -198,9 +221,17 @@ public class JobDetailActivity extends BaseActivity {
         tvWage.setText(String.valueOf(money));
         tvJobsCount.setText(count);
 
-        int loginId = (int) SPUtils.getParam(mContext, Constants.SP_LOGIN, Constants.SP_USERID, 0);
+         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
+        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
+
         GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
         getTask.execute();
+    }
+
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(JobDetailActivity.this);
     }
 
 
@@ -213,8 +244,46 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_location_detail:
                 break;
             case R.id.rl_company:
+                Intent intent=new Intent(this,MerchantActivity.class);
+                intent.putExtra("merchant",merchantInfo);
+                startActivity(intent);
                 break;
             case R.id.tv_contact_company:
+                final int Id=merchantInfo.getId();
+//                String.valueOf(Id);
+                final String toUserId="42";
+                Map<String, Object> attrs = new HashMap<>();
+                attrs.put(Constants.CREAT_NAME, name);
+                attrs.put(Constants.CREAT_IMG, img);
+                attrs.put(Constants.OTHER_IMG, merchantInfo.getName_image());
+                attrs.put(Constants.OTHER_NAME, merchantInfo.getName());
+                attrs.put(Constants.C_TYPE, 0);
+                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), name, attrs, false, true, new AVIMConversationCreatedCallback() {
+                    @Override
+                    public void done(AVIMConversation avimConversation, AVIMException e) {
+                        if (e == null) {
+                            Map<String, Object> attributes = new HashMap<String, Object>();
+                            attributes.put("userid", String.valueOf(loginId));
+                            attributes.put("touserid", toUserId);
+                            attributes.put("nickname", name);
+                            attributes.put("avatar", img);
+                            attributes.put("type", 0);
+                            AVIMTextMessage message = new AVIMTextMessage();
+                            message.setText("出来聊会天吧！");
+                            message.setAttrs(attributes);
+                            avimConversation.sendMessage(message, null);
+
+                            Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
+                            intent.putExtra("mConversationId",avimConversation.getConversationId());
+                            startActivity(intent);
+//                        finish();
+                        }else {
+                            String mes = e.getMessage();
+                            mes.trim();
+                        }
+                    }
+                });
+
                 break;
             case R.id.tv_collection:
                 Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_check);
@@ -299,7 +368,7 @@ public class JobDetailActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.SP_LOGIN, Constants.SP_TYPE, "0");
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_GET_SUCCESS;

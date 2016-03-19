@@ -20,11 +20,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
@@ -34,10 +37,10 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
-import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.talk.bean.Emojicon;
 import com.woniukeji.jianguo.talk.bean.Faceicon;
 import com.woniukeji.jianguo.talk.bean.Message;
@@ -60,6 +63,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -68,41 +73,65 @@ import de.greenrobot.event.EventBus;
 public class ChatActivity extends KJActivity {
 
     public static final int REQUEST_CODE_GETIMAGE_BYSDCARD = 0x1;
+    @InjectView(R.id.img_back) ImageView imgBack;
+    @InjectView(R.id.tv_title) TextView tvTitle;
+    @InjectView(R.id.chat_listview) ListView chatListview;
+    @InjectView(R.id.chat_msg_input_box) KJChatKeyboard chatMsgInputBox;
 
     private KJChatKeyboard box;
     private ListView mRealListView;
 
     List<AVIMMessage> datas = new ArrayList<AVIMMessage>();
     private ChatAdapter adapter;
-    private Context context=ChatActivity.this;
+    private Context context = ChatActivity.this;
     private AVIMConversation conv;
-
+    private Context mContext=ChatActivity.this;
+    private int loginId;
+    private String mConversationId;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Intent intent=this.getIntent();
-        String conid=intent.getStringExtra("conid");
-        LogUtils.e("123",conid);
-        queryConvById(conid);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        Intent intent = this.getIntent();
+         mConversationId = intent.getStringExtra("mConversationId");
+        LogUtils.e("123", mConversationId);
+        queryConvById(mConversationId);
+
+    }
+
     /**
      * 处理推送过来的消息
      * 同理，避免无效消息，此处加了 conversation id 判断
      */
     public void onEvent(ImTypeMessageEvent event) {
+        if (event.message.getConversationId().equals(mConversationId)){
             datas.add(event.message);
             adapter.notifyDataSetChanged();
-//            scrollToBottom();
+        }
     }
+
     private void queryConvById(String conid) {
         AVIMClient client = ChatManager.getInstance().getImClient();
-                    //登录成功
-         conv = client.getConversation(conid);
-        int limit = 10;// limit 取值范围 1~1000 之内的整数
+        //登录成功
+        conv = client.getConversation(conid);
+        conv.getAttribute(Constants.CREAT_NAME);
+         if(conv.getCreator().equals(String.valueOf(loginId))){
+             tvTitle.setText((String)conv.getAttribute(Constants.OTHER_NAME));
+        }else{
+             tvTitle.setText((String)conv.getAttribute(Constants.CREAT_NAME));
+         }
+
+        int limit = 20;// limit 取值范围 1~1000 之内的整数
         // 不使用 limit 默认返回 20 条消息
         conv.queryMessages(limit, new AVIMMessagesQueryCallback() {
             @Override
@@ -115,7 +144,7 @@ public class ChatActivity extends KJActivity {
             }
         });
 //                    AVIMConversationQuery query = client.getQuery();
-//                    query.whereEqualTo("objectId",conid);
+//                    query.whereEqualTo("objectId",mConversationId);
 //                    query.findInBackground(new AVIMConversationQueryCallback(){
 //                        @Override
 //                        public void done(List<AVIMConversation> convs, AVIMException e){
@@ -139,16 +168,16 @@ public class ChatActivity extends KJActivity {
         super.initWidget();
 //        TextView textview= (TextView) findViewById(R.id.title_text);
 //        textview.setText("聊天");
-        box = (KJChatKeyboard) findViewById( R.id.chat_msg_input_box);
-        mRealListView = (ListView) findViewById( R.id.chat_listview);
+        box = (KJChatKeyboard) findViewById(R.id.chat_msg_input_box);
+        mRealListView = (ListView) findViewById(R.id.chat_listview);
 
         mRealListView.setSelector(android.R.color.transparent);
 
-        int loginId = (int) SPUtils.getParam(context, Constants.SP_LOGIN, Constants.SP_USERID, 0);
-        String img= (String) SPUtils.getParam(context, Constants.SP_USER, Constants.SP_IMG, "");
-        String nickname= (String) SPUtils.getParam(context, Constants.SP_USER, Constants.SP_NICK, "无名字");
+        int loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        String img = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.SP_IMG, "");
+        String nickname = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.SP_NICK, "无名字");
 
-        initMessageInputToolBox(String.valueOf(loginId),nickname,img);
+        initMessageInputToolBox(String.valueOf(loginId), nickname, img);
         initListView();
 
 
@@ -167,7 +196,7 @@ public class ChatActivity extends KJActivity {
 
 //                message.setFrom(loginid);
 
-                sendMessage("42",loginid,nickname,img,content);
+                sendMessage("42", loginid, nickname, img, content);
             }
 
             @Override
@@ -222,24 +251,24 @@ public class ChatActivity extends KJActivity {
     private void sendMessage(String s, String loginid, String nickname, String img, String content) {
 
         Map<String, Object> attributes = new HashMap<String, Object>();
-        attributes.put("userid",loginid);
-        attributes.put("touserid",s);
-        attributes.put("nickname",nickname);
-        attributes.put("avatar",img);
-        attributes.put("type",0);
+        attributes.put("userid", loginid);
+        attributes.put("touserid", s);
+        attributes.put("nickname", nickname);
+        attributes.put("avatar", img);
+        attributes.put("type", 0);
         AVIMTextMessage message = new AVIMTextMessage();
         message.setText(content);
         message.setAttrs(attributes);
         datas.add(message);
         adapter.notifyDataSetChanged();
-        mRealListView.setSelection(datas.size()-1);
+        mRealListView.setSelection(datas.size() - 1);
         conv.sendMessage(message, new AVIMConversationCallback() {
             @Override
             public void done(AVIMException e) {
-                if (null!=e){
-                    LogUtils.e("message","fasong:"+e.getMessage());
+                if (null != e) {
+                    LogUtils.e("message", "fasong:" + e.getMessage());
                 }
-                LogUtils.e("message","fasong:");
+                LogUtils.e("message", "fasong:");
             }
         });
     }
@@ -398,6 +427,8 @@ public class ChatActivity extends KJActivity {
         };
     }
 
+
+
     /**
      * 聊天列表中对内容的点击事件监听
      */
@@ -408,6 +439,7 @@ public class ChatActivity extends KJActivity {
 
         void onFaceClick(int position);
     }
+
     public void sendWelcomeMessage(final String UserId, final String toUserId, final String nickName, final String img, final String text) {
         Map<String, Object> attrs = new HashMap<>();
 //        attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
@@ -417,11 +449,11 @@ public class ChatActivity extends KJActivity {
             public void done(AVIMConversation avimConversation, AVIMException e) {
                 if (e == null) {
                     Map<String, Object> attributes = new HashMap<String, Object>();
-                    attributes.put("userid",UserId);
-                    attributes.put("touserid",toUserId);
-                    attributes.put("nickname",nickName);
-                    attributes.put("avatar",img);
-                    attributes.put("type",0);
+                    attributes.put("userid", UserId);
+                    attributes.put("touserid", toUserId);
+                    attributes.put("nickname", nickName);
+                    attributes.put("avatar", img);
+                    attributes.put("type", 0);
                     AVIMTextMessage message = new AVIMTextMessage();
                     message.setText(text);
                     message.setAttrs(attributes);
@@ -431,4 +463,4 @@ public class ChatActivity extends KJActivity {
         });
     }
 
-    }
+}

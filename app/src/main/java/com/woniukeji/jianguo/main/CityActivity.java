@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.mine;
+package com.woniukeji.jianguo.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,12 +19,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.CityBannerEntity;
+import com.woniukeji.jianguo.eventbus.CityEvent;
+import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -36,10 +41,11 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class SchoolActivity extends BaseActivity {
+public class CityActivity extends BaseActivity {
 
     @InjectView(R.id.et_search) EditText etSearch;
     @InjectView(R.id.btn_clear_search_text) Button btnClearSearchText;
@@ -47,10 +53,10 @@ public class SchoolActivity extends BaseActivity {
     @InjectView(R.id.ll_search) LinearLayout llSearch;
     @InjectView(R.id.lv_search) ListView lvSearch;
     private Handler mHandler = new Myhandler(this);
-    private Context context = SchoolActivity.this;
+    private Context context = CityActivity.this;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
-    private List<School.tschool> tschools=new ArrayList<School.tschool>();
+    private List<CityBannerEntity.ListTCityEntity> listTCityEntities =new ArrayList<CityBannerEntity.ListTCityEntity>();
     private Adapter adapter;
 
 
@@ -64,15 +70,15 @@ public class SchoolActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            SchoolActivity schoolActivity = (SchoolActivity) reference.get();
+            CityActivity schoolActivity = (CityActivity) reference.get();
             switch (msg.what) {
                 case 0:
 //                    if (null != schoolActivity.pDialog) {
 //                    schoolActivity.pDialog.dismiss();
 //                }
-                    BaseBean<School> schoolBaseBean = (BaseBean) msg.obj;
-                    schoolActivity.tschools.clear();
-                    schoolActivity.tschools.addAll(schoolBaseBean.getData().getList_t_school());
+                    BaseBean<CityBannerEntity> schoolBaseBean = (BaseBean) msg.obj;
+                    schoolActivity.listTCityEntities.clear();
+                    schoolActivity.listTCityEntities.addAll(schoolBaseBean.getData().getList_t_city());
                     schoolActivity.showShortToast("查询成功");
                     schoolActivity.adapter.notifyDataSetChanged();
                     break;
@@ -95,7 +101,7 @@ public class SchoolActivity extends BaseActivity {
 
     @Override
     public void setContentView() {
-        setContentView(R.layout.activity_school);
+        setContentView(R.layout.activity_city);
         ButterKnife.inject(this);
     }
 
@@ -106,15 +112,17 @@ public class SchoolActivity extends BaseActivity {
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String schoolTemp=tschools.get(i).getName();
-                Intent intent=getIntent();
-                intent.putExtra("school",schoolTemp);
-                setResult(RESULT_OK,intent);
-                finish();
+                CityBannerEntity.ListTCityEntity city = listTCityEntities.get(i);
+                sendEvent(city);
             }
         });
     }
-
+    private void sendEvent(CityBannerEntity.ListTCityEntity mCity) {
+        CityEvent event = new CityEvent();
+        event.city = mCity;
+        EventBus.getDefault().post(event);
+        finish();
+    }
     @Override
     public void initListeners() {
         //搜索按键 模糊查询
@@ -146,7 +154,7 @@ public class SchoolActivity extends BaseActivity {
 
     @Override
     public void addActivity() {
-        ActivityManager.getActivityManager().addActivity(SchoolActivity.this);
+        ActivityManager.getActivityManager().addActivity(CityActivity.this);
     }
 
     @Override
@@ -156,14 +164,17 @@ public class SchoolActivity extends BaseActivity {
 
     private  class Adapter extends BaseAdapter {
 
+        private CityBannerEntity.ListTCityEntity Item;
+
         @Override
         public int getCount() {
-            return tschools.size();
+
+            return listTCityEntities.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return tschools.get(i);
+            return listTCityEntities.get(i);
         }
 
         @Override
@@ -173,7 +184,7 @@ public class SchoolActivity extends BaseActivity {
 
         @Override
         public View getView(int i, View convertView, ViewGroup viewGroup) {
-            School.tschool schItem = tschools.get(i);
+            Item = listTCityEntities.get(i);
             ViewHolder holder;
             LayoutInflater layoutInflater = LayoutInflater.from(context);;
             if (convertView==null) {
@@ -184,55 +195,12 @@ public class SchoolActivity extends BaseActivity {
             }else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.tvSchool.setText(schItem.getName());
+            holder.tvSchool.setText(Item.getCity());
             return convertView;
         }
          class ViewHolder{
             TextView tvSchool;
 
-        }
-    }
-
-    private class School {
-        private tschool t_school;
-        private List<tschool> list_t_school;
-
-        public List<tschool> getList_t_school() {
-            return list_t_school;
-        }
-
-        public void setList_t_school(List<tschool> list_t_school) {
-            this.list_t_school = list_t_school;
-        }
-
-        private class tschool {
-            private int id;
-            private int city_id;
-            private String name;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public int getCity_id() {
-                return city_id;
-            }
-
-            public void setCity_id(int city_id) {
-                this.city_id = city_id;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
         }
     }
 
@@ -269,18 +237,18 @@ public class SchoolActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.GET_SCHOOL)
+                    .url(Constants.GET_CITY)
                     .addParams("only", only)
                     .addParams("name", school)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<School>>() {
+                    .execute(new Callback<BaseBean<CityBannerEntity>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<School>>() {
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityBannerEntity>>() {
                             }.getType());
                             return baseBean;
                         }

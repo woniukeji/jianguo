@@ -33,6 +33,7 @@ public class Constants {
     public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
     public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
     public static final String CHECK_PHONE_BLACK= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//快速登录忘记密码
+    public static final String POST_BIND_PHONE= JIANGUO_USING+"T_user_login_BindingTel_Servlet";//绑定手机号
     public static final String ONLY_PART1 = "xse2iowiowdg3542d49z";
     public static final String ONLY_PART2 = "jfiejdw4gdeqefw33ff23fi999";
 
@@ -48,7 +49,11 @@ public class Constants {
     public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
     public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
 
-    public static final String SP_LOGIN = "loginInfo";
+    public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
+
+
+
+    public static final String LOGIN_INFO = "loginInfo";
     public static final String SP_TYPE="type";//0代表手机登录 1微信 2未登录
     public static final String SP_TEL="tel";
     public static final String SP_PASSWORD="password";
@@ -58,7 +63,7 @@ public class Constants {
 
     public static final String SP_QNTOKEN="qn_token";
 
-    public static final String SP_USER = "userInfo";
+    public static final String USER_INFO = "userInfo";
     public static final String SP_NICK="nickname";
     public static final String SP_NAME="name";
     public static final String SP_IMG="name_image";
@@ -68,6 +73,23 @@ public class Constants {
 
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguo"+ File.separator;
-
     public static final String UPDATED_AT = "updatedAt";
+
+    /*
+
+        leancloud消息协议
+        creatimg    string   创建者头像
+        otherimg    string   被邀请者头像
+        creatname   string   创建者名字
+        othername   string   被邀请者名字
+        ctype        int     对话类型：私人对话0，提醒1，通知2，群聊3
+
+     */
+    public static final String CREAT_IMG = "creatimg";
+    public static final String CREAT_NAME = "creatname";
+    public static final String OTHER_IMG = "otherimg";
+    public static final String OTHER_NAME = "othername";
+    public static final String C_TYPE = "ctype";
+
+
 }

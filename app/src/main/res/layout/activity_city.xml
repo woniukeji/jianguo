@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.woniukeji.jianguo.mine.SchoolActivity">
+    <!--<include-->
+        <!--android:id="@+id/in_title"-->
+        <!--layout="@layout/app_title_bar"-->
+        <!--vi-->
+        <!--/>-->
+    <LinearLayout
+        android:layout_below="@+id/in_title"
+        android:id="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/app_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="4.5"
+            android:background="@drawable/shape_search_bg"
+            android:orientation="horizontal">
+
+            <!-- 输入的搜索信息 -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="4"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="当前仅支持以下城市"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#b0c6ce"
+                android:textSize="14sp" />
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="4"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_search_app_left"
+                android:gravity="center_vertical"
+                android:hint="搜索"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#b0c6ce"
+                android:textSize="14sp" />
+
+
+            <!-- 清空搜索文字按钮 -->
+            <LinearLayout
+                android:id="@+id/layout_clear_search_text"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.4"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btn_clear_search_text"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:background="@drawable/selector_btn_search_clear_text_right" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/lv_search"
+        android:layout_below="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </ListView>
+</RelativeLayout>

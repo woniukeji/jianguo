@@ -20,6 +20,7 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
+import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
 
 import java.util.List;
@@ -29,7 +30,7 @@ import butterknife.InjectView;
 
 public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHolder> {
 
-    private final List<Jobs> mValues;
+    private final List<Jobs.ListTJob> mValues;
     private final Context mContext;
     private View mHeaderView;
     public static final int IS_HEADER = 0;
@@ -38,7 +39,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public HomeJobAdapter(List<Jobs> items, Context context) {
+    public HomeJobAdapter(List<Jobs.ListTJob> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -55,8 +56,8 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
         if (isFooterChange) {
             holder.loading.setText("已加载全部");
         } else {
-            holder.loading.setText("加载中...");
-            holder.animLoading.setVisibility(View.VISIBLE);
+            holder.loading.setText("已加载全部 ");
+            holder.animLoading.setVisibility(View.GONE);
 //            holder.animLoading.setBackgroundResource(R.drawable.loading_footer);
 //            mAnimationDrawable = (AnimationDrawable) holder.animLoading.getBackground();
 //            mAnimationDrawable.start();
@@ -98,28 +99,65 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             mmswoon(holder);
             holder.itemView.setVisibility(View.VISIBLE);
         } else {
-            final Jobs job = mValues.get(position - 1);
+            final Jobs.ListTJob job = mValues.get(position - 1);
 
-            final int score = 80;
+            // 1=月结，2=周结，3=日结，4=小时结
+            if (job.getTerm()==1){
+                holder.tvPayMethod.setText("月结");
+                holder.tvWages.setText(job.getMoney()+"/月");
+            }else if(job.getTerm()==2){
+                holder.tvPayMethod.setText("周结");
+                holder.tvWages.setText(job.getMoney()+"/周");
+            }else if(job.getTerm()==3){
+                holder.tvPayMethod.setText("日结");
+                holder.tvWages.setText(job.getMoney()+"/日");
+            }else {
+                holder.tvPayMethod.setText("小时结");
+                holder.tvWages.setText(job.getMoney()+"/小时");
+            }
 
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, score / 100f),
-                    ObjectAnimator.ofInt(holder.demoTv, "score", 0, score)
-            );
-            set.setDuration(600);
-            set.setInterpolator(new AccelerateInterpolator());
-            set.start();
-            //等待数据设置
-            Picasso.with(mContext).load("http//123.com")
+            holder.businessName.setText(job.getName());
+            holder.tvLocation.setText(job.getAddress());
+            String date= DateUtils.getTime(job.getStart_date(),job.getStop_date());
+            holder.tvDate.setText(date);
+            //性别限制（0=只招女，1=只招男，2=不限男女）
+            if (job.getLimit_sex()==0){
+                holder.imgSex.setImageResource(R.mipmap.icon_man);
+            }else if(job.getLimit_sex()==1){
+                holder.imgSex.setImageResource(R.mipmap.icon_man);
+            }
+            holder.imgSex.setVisibility(View.GONE);
+
+
+            Picasso.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
                     .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
+
+            //动画
+            float count=job.getCount();//已有人数
+            float sum=job.getSum();
+            holder.demoTv.setText(job.getCount()+"/"+job.getSum() );
+            final float score = count/sum*100;
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(
+                    ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, score / 100f)
+//                    ObjectAnimator.ofFloat(holder.demoTv, "score", 0, score)
+            );
+            set.setDuration(800);
+            set.setInterpolator(new AccelerateInterpolator());
+            set.start();
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, JobDetailActivity.class));
+                    Intent intent=new Intent(mContext, JobDetailActivity.class);
+                    intent.putExtra("job",job.getId());
+                    intent.putExtra("merchant",job.getMerchant_id());
+                    intent.putExtra("money",job.getMoney());
+                    intent.putExtra("count", job.getCount()+"/"+job.getSum());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -158,6 +196,9 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
         @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
         @InjectView(R.id.tv_wages) TextView tvWages;
         @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @InjectView(R.id.tv_pay_method) TextView tvPayMethod;
+        @InjectView(R.id.tv_date) TextView tvDate;
+        @InjectView(R.id.tv_location) TextView tvLocation;
         private ImageView animLoading;
         private TextView loading;
 

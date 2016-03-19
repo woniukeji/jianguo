@@ -44,6 +44,7 @@
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/toolbox_btn_face"
             android:background="@drawable/selector_chat_more"
+            android:visibility="gone"
             android:button="@null"/>
 
         <com.rockerhieu.emojicon.EmojiconEditText

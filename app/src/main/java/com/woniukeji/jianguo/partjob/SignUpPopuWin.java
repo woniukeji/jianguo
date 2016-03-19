@@ -104,8 +104,8 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
             case R.id.tv_ok:
                 Message message=new Message();
 //                message.arg1=type;
-//                message.obj=yearStr + "-" + monthStr + "-" + dayStr;
-                message.what=2;
+                message.obj="报名成功";
+                message.what=4;
                 mHandler.sendMessage(message);
                 dismiss();
                 break;
