@@ -38,7 +38,7 @@
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:background="@mipmap/img_bg"
-        android:layout_height="105dp">
+        android:layout_height="136dp">
         <ImageView
             android:id="@+id/img_head"
             android:layout_width="63dp"
@@ -115,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
+                android:background="@mipmap/img_xuanxiang_bg"
                 >
                 <ImageView
                     android:layout_width="30dp"
@@ -136,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
+                android:background="@mipmap/img_xuanxiang_bg"
                 >
                 <ImageView
                     android:layout_width="30dp"
@@ -275,27 +277,51 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/ll_collect"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:orientation="horizontal"
-        android:gravity="center|left"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
         android:background="@color/white"
         android:paddingLeft="15dp"
         >
         <ImageView
+            android:id="@+id/point_img"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@mipmap/icon_shoucang"
+            android:gravity="center"
             />
         <TextView
+            android:layout_toRightOf="@+id/point_img"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="收藏与关注"
             android:textSize="16dp"
+            android:gravity="center_vertical"
             />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/img"
+            android:layout_alignParentRight="true"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_go"
+            android:gravity="center"
+            android:layout_marginRight="17dp"
+            />
+        <TextView
+            android:layout_toLeftOf="@+id/img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:layout_marginRight="7dp"
+            android:textSize="16dp"
+            android:gravity="center"
+            />
+
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_point"
         android:layout_width="match_parent"

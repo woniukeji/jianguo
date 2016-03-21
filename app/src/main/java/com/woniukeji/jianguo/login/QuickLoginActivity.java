@@ -112,8 +112,7 @@ public class QuickLoginActivity extends BaseActivity {
 
         setContentView(R.layout.activity_login_quick);
         ButterKnife.inject(this);
-        //初始化SDK
-        ShareSDK.initSDK(this);
+
     }
 
     @Override

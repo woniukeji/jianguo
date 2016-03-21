@@ -57,7 +57,7 @@
              -keep class com.igexin.**{*;}
               -keep class dmax.dialog.**{*;}
 
-
+-keep public class com.tencent.bugly.**{*;}
 
 
 

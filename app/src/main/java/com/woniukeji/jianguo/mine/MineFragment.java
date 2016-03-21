@@ -51,7 +51,7 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.img_enter) ImageView imgEnter;
     @InjectView(R.id.credit) RelativeLayout credit;
     @InjectView(R.id.rl_evaluation) RelativeLayout rlEvaluation;
-    @InjectView(R.id.ll_collect) LinearLayout llCollect;
+    @InjectView(R.id.ll_collect) RelativeLayout llCollect;
     @InjectView(R.id.rl_point) RelativeLayout rlPoint;
     @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
     @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
@@ -164,7 +164,7 @@ public class MineFragment extends BaseFragment {
     public void onStart() {
         String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, "");
         String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
-        String tel = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_TEL, "");
+        String tel = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, "");
         String img= (String)SPUtils.getParam(getActivity(), Constants.USER_INFO,Constants.SP_IMG,"");
         imgBack.setVisibility(View.GONE);
         name.setText(nick);

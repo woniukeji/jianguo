@@ -19,7 +19,11 @@ public class DateUtils {
     public static Date date = null;
     public static DateFormat dateFormat = null;
     public static Calendar calendar = null;
-
+    public static String getMessageDate(String format,long millis) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        Date date=new Date(millis);
+        return df.format(date);
+    }
     /**
      * 功能描述：格式化日期
      * @param dateStr

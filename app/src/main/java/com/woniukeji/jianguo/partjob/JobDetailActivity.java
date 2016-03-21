@@ -34,6 +34,7 @@ import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
+import com.woniukeji.jianguo.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -52,6 +53,7 @@ public class JobDetailActivity extends BaseActivity {
 
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
+    @InjectView(R.id.img_share) ImageView img_share;
     @InjectView(R.id.user_head) ImageView userHead;
     @InjectView(R.id.business_name) TextView businessName;
     @InjectView(R.id.tv_wage) TextView tvWage;
@@ -202,6 +204,7 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvTitle.setText("兼职详情");
+        img_share.setVisibility(View.VISIBLE);
 
     }
 
@@ -235,11 +238,19 @@ public class JobDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
+    @OnClick({R.id.img_share,R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 finish();
+                break;
+            case R.id.img_share:
+
+                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler);
+                share.showShareWindow();
+                // 显示窗口 (设置layout在PopupWindow中显示的位置)
+                share.showAtLocation(JobDetailActivity.this.getLayoutInflater().inflate(R.layout.activity_job_detail, null),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.tv_location_detail:
                 break;
@@ -251,7 +262,7 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_contact_company:
                 final int Id=merchantInfo.getId();
 //                String.valueOf(Id);
-                final String toUserId="42";
+                final String toUserId="48";
                 Map<String, Object> attrs = new HashMap<>();
                 attrs.put(Constants.CREAT_NAME, name);
                 attrs.put(Constants.CREAT_IMG, img);

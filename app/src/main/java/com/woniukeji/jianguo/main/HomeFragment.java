@@ -30,6 +30,7 @@ import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
+import com.woniukeji.jianguo.mine.MyPartJboActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.PicassoLoader;
@@ -57,7 +58,7 @@ import okhttp3.Response;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class HomeFragment extends BaseFragment implements ViewPager.OnPageChangeListener, OnPageClickListener {
+public class HomeFragment extends BaseFragment implements ViewPager.OnPageChangeListener, OnPageClickListener ,View.OnClickListener{
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -78,6 +79,15 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private ArrayList<Page> pageViews = new ArrayList<>();
     private InfiniteIndicator mAnimCircleIndicator;
     private InfiniteIndicator mAnimLineIndicator;
+    RelativeLayout mHeader;
+    InfiniteIndicator mIndicatorDefaultCircle;
+    LinearLayout mLlPartTop;
+    ImageView mImgGiftsJob;
+    ImageView mImgDayJob;
+    private ImageView mImgMyJob;
+    LinearLayout mLlPartBottom;
+    ImageView mImgTravelJob;
+    TextView mTvPart3;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_GET_CITY_SUCCESS = 4;
@@ -85,10 +95,12 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = this.getActivity();
 
+
     @OnClick(R.id.tv_location)
     public void onClick() {
         startActivity(new Intent(getActivity(),CityActivity.class));
     }
+
 
 
 
@@ -177,6 +189,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
 
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
+
+        assignViews(headerView);
+
+
         initData();
         mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());
@@ -205,6 +221,44 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             }
         });
         return view;
+    }
+    private void assignViews(View view) {
+        mHeader = (RelativeLayout) view.findViewById(R.id.header);
+        mIndicatorDefaultCircle = (InfiniteIndicator) view.findViewById(R.id.indicator_default_circle);
+        mLlPartTop = (LinearLayout) view.findViewById(R.id.ll_part_top);
+        mImgGiftsJob = (ImageView) view.findViewById(R.id.img_gifts_job);
+        mImgDayJob = (ImageView) view.findViewById(R.id.img_day_job);
+        mImgTravelJob = (ImageView) view.findViewById(R.id.img_travel_job);
+        mImgMyJob = (ImageView) view.findViewById(R.id.img_my_job);
+        mLlPartBottom = (LinearLayout) view.findViewById(R.id.ll_part_bottom);
+        mImgTravelJob = (ImageView) view.findViewById(R.id.img_travel_job);
+        mTvPart3 = (TextView) view.findViewById(R.id.tv_part3);
+
+        mImgGiftsJob.setOnClickListener(this);
+        mImgDayJob.setOnClickListener(this);
+        mImgTravelJob.setOnClickListener(this);
+        mImgMyJob.setOnClickListener(this);
+
+    }
+    @Override
+    public void onClick(View view) {
+        MainActivity mainActivity= (MainActivity) getActivity();
+            switch (view.getId()){
+                case R.id.img_gifts_job:
+
+                    mainActivity.getMainPager().setCurrentItem(1);
+                break;
+                case R.id.img_day_job:
+                    mainActivity.getMainPager().setCurrentItem(1);
+                    break;
+                case R.id.img_travel_job:
+                    mainActivity.getMainPager().setCurrentItem(1);
+                    break;
+                case R.id.img_my_job:
+                   startActivity(new Intent(getActivity(), MyPartJboActivity.class));
+                    break;
+
+            }
     }
 
     private void initData() {

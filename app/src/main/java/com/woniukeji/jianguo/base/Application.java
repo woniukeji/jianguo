@@ -19,6 +19,8 @@ public class Application extends android.app.Application {
         AVOSCloud.initialize(this,"AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
         MessageHandler msgHandler = new MessageHandler(this);
         AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
+
+//        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
     }
     public void UmengConfig(){
 

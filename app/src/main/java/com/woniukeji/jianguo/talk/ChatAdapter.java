@@ -29,6 +29,7 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.utils.DateUtils;
 
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.utils.StringUtils;
@@ -114,9 +115,9 @@ public class ChatAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) v.getTag();
         }
-
-        holder.tv_date.setText(StringUtils.friendlyTime(StringUtils.getDataTime("yyyy-MM-dd " +
-                "HH:mm:ss")));
+        String tmp=StringUtils.friendlyTime(DateUtils.getMessageDate("yyyy-MM-dd " +
+                "HH:mm:ss",data.getTimestamp()));
+        holder.tv_date.setText(tmp);
         holder.tv_date.setVisibility(View.VISIBLE);
 
         //如果是文本类型，则隐藏图片，如果是图片则隐藏文本

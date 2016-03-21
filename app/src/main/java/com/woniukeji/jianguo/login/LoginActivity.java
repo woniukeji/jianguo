@@ -142,8 +142,6 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-        //初始化SDK
-        ShareSDK.initSDK(this);
     }
 
     @Override

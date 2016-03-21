@@ -26,6 +26,7 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
+import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -82,7 +83,8 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-
+        //初始化SDK
+        ShareSDK.initSDK(this);
     }
 
     @Override

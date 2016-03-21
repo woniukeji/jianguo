@@ -14,6 +14,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.woniukeji.jianguo.login.ChangPssActivity;
 import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
@@ -70,8 +71,11 @@ public class SettingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.changePassword:
+                startActivity(new Intent(SettingActivity.this, ChangPssActivity.class));
+                finish();
                 break;
             case R.id.refresh:
+                showShortToast("已经是最新版本");
                 break;
             case R.id.btn_logout:
 
