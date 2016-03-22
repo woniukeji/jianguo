@@ -194,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/img_my"
-            androiRd:background="@drawable/dialog_background"
+            android:background="@drawable/dialog_background"
             android:layout_marginLeft="2.5dp"
             android:visibility="gone"
             />
