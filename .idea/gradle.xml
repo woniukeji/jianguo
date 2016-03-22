@@ -8,15 +8,23 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/DrioDownlibrary" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/dialoglibrary" />
+            <option value="$PROJECT_DIR$/multi-image-selector" />
+            <option value="$PROJECT_DIR$/viewPagerlibrary" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/DrioDownlibrary" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/dialoglibrary" />
+            <option value="$PROJECT_DIR$/multi-image-selector" />
+            <option value="$PROJECT_DIR$/viewPagerlibrary" />
           </set>
         </option>
       </GradleProjectSettings>

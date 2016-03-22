@@ -1,1 +1,1 @@
-include ':app', ':dialoglibrary', ':multi-image-selector', ':progresslibrary', ':chat', ':DrioDownlibrary', ':viewPagerlibrary'
+include ':app', ':dialoglibrary', ':multi-image-selector', ':chat', ':DrioDownlibrary', ':viewPagerlibrary'
