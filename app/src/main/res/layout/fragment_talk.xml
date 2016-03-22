@@ -35,7 +35,7 @@ android:visibility="gone"
         >
 
         <com.woniukeji.jianguo.widget.CircleImageView
-            android:id="@+id/circle_talk_head"
+            android:id="@+id/circle_talk_head03"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
@@ -43,7 +43,7 @@ android:visibility="gone"
             android:src="@mipmap/icon_tongzhi"
             />
         <LinearLayout
-            android:layout_toRightOf="@+id/circle_talk_head"
+            android:layout_toRightOf="@+id/circle_talk_head03"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -90,7 +90,6 @@ android:visibility="gone"
             />
     </RelativeLayout>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/rl_school"
                     android:layout_width="wrap_content"
                     android:layout_height="58dp"
                     android:background="@color/white"
@@ -99,7 +98,7 @@ android:visibility="gone"
         >
 
         <com.woniukeji.jianguo.widget.CircleImageView
-            android:id="@+id/circle_talk_head"
+            android:id="@+id/circle_talk_head04"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginTop="10dp"
@@ -107,7 +106,7 @@ android:visibility="gone"
             android:src="@mipmap/icon_tixing"
             />
         <LinearLayout
-            android:layout_toRightOf="@+id/circle_talk_head"
+            android:layout_toRightOf="@+id/circle_talk_head04"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -115,7 +114,7 @@ android:visibility="gone"
             android:layout_centerVertical="true"
             >
             <TextView
-                android:id="@+id/tv_nick"
+                android:id="@+id/tv_nick01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -125,7 +124,7 @@ android:visibility="gone"
                 android:layout_marginTop="5dp"
                 />
             <TextView
-                android:id="@+id/tv_content"
+                android:id="@+id/tv_content01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -136,7 +135,7 @@ android:visibility="gone"
                 />
         </LinearLayout>
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_date01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#9B9B9B"

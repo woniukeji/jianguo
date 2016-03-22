@@ -3,20 +3,23 @@ package com.woniukeji.jianguo.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -26,18 +29,24 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class SplashActivity extends BaseActivity {
 
+    @InjectView(R.id.img_splash) ImageView imgSplash;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
     private int MSG_REGISTER_SUCCESS = 3;
     private Handler mHandler = new Myhandler(this);
-    private Context context=SplashActivity.this;
+    private Context context = SplashActivity.this;
+
+
+
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -58,7 +67,7 @@ public class SplashActivity extends BaseActivity {
                     splashActivity.finish();
                     break;
                 case 1:
-                    splashActivity.startActivity(new Intent(splashActivity,LoginActivity.class));
+                    splashActivity.startActivity(new Intent(splashActivity, LoginActivity.class));
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     splashActivity.finish();
@@ -75,16 +84,19 @@ public class SplashActivity extends BaseActivity {
             }
         }
     }
+
     @Override
     public void setContentView() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_splash);
+        ButterKnife.inject(this);
     }
 
     @Override
     public void initViews() {
         //初始化SDK
         ShareSDK.initSDK(this);
+        Picasso.with(context).load(R.mipmap.splash).into(imgSplash);
     }
 
     @Override
@@ -103,19 +115,19 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void saveToSP(User user) {
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_USERID,user.getT_user_login().getId());
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,user.getT_user_login().getStatus());
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_WQTOKEN, user.getT_user_login().getQqwx_token() != null ? user.getT_user_login().getQqwx_token() : "");
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TEL, user.getT_user_login().getTel() != null ? user.getT_user_login().getTel() : "");
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_PASSWORD, user.getT_user_login().getPassword() != null ? user.getT_user_login().getPassword() : "");
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, user.getT_user_login().getId());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, user.getT_user_login().getStatus());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, user.getT_user_login().getQiniu());
 
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_CREDIT,user.getT_user_info().getCredit());
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_SCHOOL, user.getT_user_info().getSchool() != null ? user.getT_user_info().getSchool() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
         final ChatManager chatManager = ChatManager.getInstance();
 //        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
 //            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
@@ -136,7 +148,6 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -147,17 +158,19 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onStart() {
         // 在当前的界面变为用户可见的时候调用的方法
-                new Thread() {
-                    public void run() {
-                        try {
-                            Thread.sleep(2000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                       chooseActivity();
-                    };
-                }.start();
-            super.onStart();
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                chooseActivity();
+            }
+
+            ;
+        }.start();
+        super.onStart();
     }
 
     /**
@@ -165,9 +178,10 @@ public class SplashActivity extends BaseActivity {
      * 根据保存的登陆信息 跳转不同界面
      */
     private void chooseActivity() {
-        String loginType= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"2");
+        String loginType = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "2");
+
         if (loginType.equals("2")){
-            startActivity(new Intent(context,LoginActivity.class));
+            startActivity(new Intent(context, LeadActivity.class));
             finish();
         }else if(loginType.equals("1")){
             String token= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,"");
@@ -199,9 +213,10 @@ public class SplashActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-                    QWLogin();
+            QWLogin();
             return null;
         }
+
         /**
          * login
          * 授权过的weixin qq 用户直接通过token登陆
@@ -221,9 +236,11 @@ public class SplashActivity extends BaseActivity {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
+                            BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
+                            }.getType());
                             return user;
                         }
+
                         @Override
                         public void onError(Call call, Exception e) {
                             Message message = new Message();
@@ -234,13 +251,13 @@ public class SplashActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(BaseBean user) {
-                            if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"1");
+                            if (user.getCode().equals("200")) {
+                                SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "1");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;
                                 mHandler.sendMessage(message);
-                            }else {
+                            } else {
                                 Message message = new Message();
                                 message.obj = user.getMessage();
                                 message.what = MSG_USER_FAIL;
@@ -252,6 +269,7 @@ public class SplashActivity extends BaseActivity {
         }
 
     }
+
     public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
 
         private final String tel;
@@ -305,9 +323,11 @@ public class SplashActivity extends BaseActivity {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
+                            BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
+                            }.getType());
                             return user;
                         }
+
                         @Override
                         public void onError(Call call, Exception e) {
                             Message message = new Message();
@@ -318,13 +338,13 @@ public class SplashActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(BaseBean user) {
-                            if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
+                            if (user.getCode().equals("200")) {
+                                SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;
                                 mHandler.sendMessage(message);
-                            }else {
+                            } else {
                                 Message message = new Message();
                                 message.obj = user.getMessage();
                                 message.what = MSG_USER_FAIL;

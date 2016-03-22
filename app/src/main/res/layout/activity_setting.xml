@@ -58,14 +58,14 @@
         android:paddingLeft="15dp"
         >
         <ImageView
-            android:id="@+id/or_img"
+            android:id="@+id/img_01"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_pingjia"
             android:gravity="center"
             />
         <TextView
-            android:layout_toRightOf="@+id/or_img"
+            android:layout_toRightOf="@+id/img_01"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="检测更新"
@@ -73,7 +73,7 @@
             android:textSize="16dp"
             />
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/img_02"
             android:layout_alignParentRight="true"
             android:layout_width="10dp"
             android:layout_height="match_parent"
@@ -98,14 +98,14 @@
         android:paddingLeft="15dp"
         >
         <ImageView
-            android:id="@+id/or_img"
+            android:id="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_pingjia"
             android:gravity="center"
             />
         <TextView
-            android:layout_toRightOf="@+id/or_img"
+            android:layout_toRightOf="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="关于我们"
@@ -113,7 +113,7 @@
             android:textSize="16dp"
             />
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/img_04"
             android:layout_alignParentRight="true"
             android:layout_width="10dp"
             android:layout_height="match_parent"

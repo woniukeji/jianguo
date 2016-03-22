@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginTop="5dp">
 
         <org.kymjs.kjframe.widget.RoundImageView
@@ -31,6 +32,9 @@
 
             <com.rockerhieu.emojicon.EmojiconTextView
                 android:id="@+id/chat_item_content_text"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="sdfsdfsdfsdsdfsdfsdfsdfsdfdsfsdfdsfdsfsd"
                 style="@style/chat_item_text_content"/>
 
             <ImageView

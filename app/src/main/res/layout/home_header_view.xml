@@ -16,26 +16,88 @@
     android:id="@+id/ll_part_top"
     android:layout_below="@+id/indicator_default_circle"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="50dp"
     android:layout_marginTop="8dp"
     >
-    <ImageView
+    <RelativeLayout
         android:id="@+id/img_gifts_job"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/img_jingpin"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:background="@drawable/dialog_background"
         android:layout_marginRight="2.5dp"
+        >
+          <ImageView
+              android:id="@+id/first_jp"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:src="@mipmap/first_jp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="18dp"
         />
-    <ImageView
+        <TextView
+            android:layout_below="@+id/first_jp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="5dp"
+            android:textSize="10dp"
+            android:textColor="#b3b3b3"
+            android:text="优质商家特供"
+            />
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/img_zs"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="9dp"
+            android:padding="5dp"
+            />
+    </RelativeLayout>
+    <RelativeLayout
         android:id="@+id/img_day_job"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="2.5dp"
+        android:background="@drawable/dialog_background"
+        >
+        <ImageView
+            android:id="@+id/first_rj"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:src="@mipmap/first_rj"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="18dp"
+            />
+        <TextView
+            android:layout_below="@+id/first_rj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="5dp"
+            android:textSize="10dp"
+            android:textColor="#b3b3b3"
+            android:text="百元工资当日领取"
+            />
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/img_r"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="9dp"
+            android:padding="5dp"
+            />
+    </RelativeLayout>
+    <ImageView
+
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@mipmap/img_rijie"
         android:background="@drawable/dialog_background"
         android:layout_marginLeft="2.5dp"
+        android:visibility="gone"
         />
 
 </LinearLayout>
@@ -43,30 +105,102 @@
         android:id="@+id/ll_part_bottom"
         android:layout_below="@+id/ll_part_top"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:layout_marginTop="3.5dp"
         >
-        <ImageView
+        <RelativeLayout
             android:id="@+id/img_travel_job"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@drawable/dialog_background"
+            android:layout_marginRight="2.5dp"
+            >
+            <ImageView
+                android:id="@+id/first_jz"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:src="@mipmap/first_jz"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="17dp"
+                />
+            <TextView
+                android:layout_below="@+id/first_jz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:textSize="10dp"
+                android:textColor="#b3b3b3"
+                android:text="穷游世界马上走"
+                />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_bao"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="9dp"
+                android:padding="5dp"
+                />
+        </RelativeLayout>
+        <ImageView
+
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/img_jianzhi"
             android:background="@drawable/dialog_background"
             android:layout_marginRight="2.5dp"
+            android:visibility="gone"
             />
-        <ImageView
+        <RelativeLayout
             android:id="@+id/img_my_job"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="2.5dp"
+            android:background="@drawable/dialog_background"
+            >
+            <ImageView
+                android:id="@+id/first_wd"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:src="@mipmap/first_wd"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="18dp"
+                />
+            <TextView
+                android:layout_below="@+id/first_wd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:textSize="10dp"
+                android:textColor="#b3b3b3"
+                android:text="管理你的兼职"
+                />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_w"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="9dp"
+                android:padding="5dp"
+                />
+        </RelativeLayout>
+        <ImageView
+
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/img_my"
-            android:background="@drawable/dialog_background"
+            androiRd:background="@drawable/dialog_background"
             android:layout_marginLeft="2.5dp"
+            android:visibility="gone"
             />
 
     </LinearLayout>
-    <TextView
+    <TextViewR
         android:id="@+id/tv_part3"
         android:layout_width="match_parent"
         android:layout_height="30dp"

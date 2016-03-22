@@ -13,14 +13,14 @@
     android:layout_height="50dp">
 
     <com.woniukeji.jianguo.widget.CircleImageView
-        android:id="@+id/circle_talk_head"
+        android:id="@+id/circle_talk_head02"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_centerVertical="true"
         android:src="@mipmap/icon_head_defult"
         />
     <LinearLayout
-        android:layout_toRightOf="@+id/circle_talk_head"
+        android:layout_toRightOf="@+id/circle_talk_head02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -49,7 +49,7 @@
             />
     </LinearLayout>
     <TextView
-        android:id="@+id/tv_date"
+        android:id="@+id/tv_date01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/material_blue_grey_90"
@@ -72,14 +72,14 @@
         android:layout_height="50dp">
 
         <com.woniukeji.jianguo.widget.CircleImageView
-            android:id="@+id/circle_talk_head"
+            android:id="@+id/circle_talk_head01"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_head_defult"
             />
         <LinearLayout
-            android:layout_toRightOf="@+id/circle_talk_head"
+            android:layout_toRightOf="@+id/circle_talk_head01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -87,7 +87,7 @@
             android:layout_marginTop="5dp"
             >
             <TextView
-                android:id="@+id/tv_nick"
+                android:id="@+id/tv_nick04"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -97,7 +97,7 @@
                 android:layout_marginTop="2dp"
                 />
             <TextView
-                android:id="@+id/tv_content"
+                android:id="@+id/tv_content09"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

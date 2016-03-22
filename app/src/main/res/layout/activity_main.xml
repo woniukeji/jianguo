@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="#fafafa"
         app:tl_iconHeight="30dp"
         app:tl_iconWidth="30dp"
         app:tl_indicator_color="#2C97DE"

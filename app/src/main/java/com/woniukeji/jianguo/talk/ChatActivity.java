@@ -104,7 +104,6 @@ public class ChatActivity extends KJActivity {
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         Intent intent = this.getIntent();
          mConversationId = intent.getStringExtra("mConversationId");
-        LogUtils.e("123", mConversationId);
         queryConvById(mConversationId);
 
     }
@@ -140,6 +139,8 @@ public class ChatActivity extends KJActivity {
                     //成功获取最新10条消息记录
                     datas.addAll(messages);
                     adapter.notifyDataSetChanged();
+                    mRealListView.setSelection(mRealListView.getBottom());
+                    mRealListView.setSelection(datas.size() - 1);
                 }
             }
         });
@@ -170,13 +171,10 @@ public class ChatActivity extends KJActivity {
 //        textview.setText("聊天");
         box = (KJChatKeyboard) findViewById(R.id.chat_msg_input_box);
         mRealListView = (ListView) findViewById(R.id.chat_listview);
-
         mRealListView.setSelector(android.R.color.transparent);
-
         int loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         String img = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.SP_IMG, "");
         String nickname = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.SP_NICK, "无名字");
-
         initMessageInputToolBox(String.valueOf(loginId), nickname, img);
         initListView();
 
@@ -206,7 +204,7 @@ public class ChatActivity extends KJActivity {
                         Date());
 //                datas.add(message);
                 adapter.refresh(datas);
-                createReplayMsg(message);
+//                createReplayMsg(message);
             }
 
             @Override
@@ -308,31 +306,32 @@ public class ChatActivity extends KJActivity {
 
         adapter = new ChatAdapter(this, datas, getOnChatItemClickListener());
         mRealListView.setAdapter(adapter);
+
     }
 
-    private void createReplayMsg(Message message) {
-        final Message reMessage = new Message(message.getType(), Message.MSG_STATE_SUCCESS, "Tom",
-                "avatar", "Jerry", "avatar", message.getType() == Message.MSG_TYPE_TEXT ? "返回:"
-                + message.getContent() : message.getContent(), false,
-                true, new Date());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000 * (new Random().nextInt(3) + 1));
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            datas.add(reMessage);
-                            adapter.refresh(datas);
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
+//    private void createReplayMsg(Message message) {
+//        final Message reMessage = new Message(message.getType(), Message.MSG_STATE_SUCCESS, "Tom",
+//                "avatar", "Jerry", "avatar", message.getType() == Message.MSG_TYPE_TEXT ? "返回:"
+//                + message.getContent() : message.getContent(), false,
+//                true, new Date());
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(1000 * (new Random().nextInt(3) + 1));
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                            datas.add(reMessage);
+//                            adapter.refresh(datas);
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

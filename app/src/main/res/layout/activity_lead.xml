@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.woniukeji.jianguo.login.LeadActivity">
+    <cn.lightsky.infiniteindicator.InfiniteIndicator
+        android:id="@+id/indicator_default_circle"
+        app:indicator_type="indicator_anim_circle"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+
+    <Button
+        android:id="@+id/btn_enter"
+        android:layout_width="140dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/blue_bg"
+        android:textSize="14dp"
+        android:text="立即进入"
+        android:textColor="@color/white"
+        />
+</RelativeLayout>

@@ -136,6 +136,7 @@
             app:mpc_stroke_width="3dp"
             app:mpc_start_color="#5edfd9"
             app:mpc_end_color="#5edfd9"
+           app:mpc_default_color="#f3f4f3"
            />
 
 

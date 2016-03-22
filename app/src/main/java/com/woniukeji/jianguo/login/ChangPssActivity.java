@@ -122,6 +122,7 @@ public class ChangPssActivity extends BaseActivity  {
     @Override
     public void initViews() {
         title.setText("密码找回");
+        phoneSignInButton.setText("确认修改");
 
     }
 

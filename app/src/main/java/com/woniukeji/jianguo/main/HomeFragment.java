@@ -82,11 +82,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     RelativeLayout mHeader;
     InfiniteIndicator mIndicatorDefaultCircle;
     LinearLayout mLlPartTop;
-    ImageView mImgGiftsJob;
-    ImageView mImgDayJob;
-    private ImageView mImgMyJob;
+    RelativeLayout mImgGiftsJob;
+    RelativeLayout mImgDayJob;
+    private RelativeLayout mImgMyJob;
     LinearLayout mLlPartBottom;
-    ImageView mImgTravelJob;
+    RelativeLayout mImgTravelJob;
     TextView mTvPart3;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
@@ -95,12 +95,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = this.getActivity();
 
-
     @OnClick(R.id.tv_location)
     public void onClick() {
         startActivity(new Intent(getActivity(),CityActivity.class));
     }
-
 
 
 
@@ -138,7 +136,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     BaseBean<CityBannerEntity> cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
                     banners = cityBannerEntityBaseBean.getData().getList_t_banner();
                     initBannerData(banners);
-
                     adapter.notifyDataSetChanged();
                     break;
                 default:
@@ -211,10 +208,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 //设置Item增加、移除动画
         recycleList.setItemAnimator(new DefaultItemAnimator());
 //添加分割线
-//        recycleList.addItemDecoration(new RecyclerView.ItemDecoration() {
-//        });
-//        recycleList.addItemDecoration(new DividerItemDecoration(
-//                getActivity(), DividerItemDecoration.VERTICAL_LIST));
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -226,12 +219,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         mHeader = (RelativeLayout) view.findViewById(R.id.header);
         mIndicatorDefaultCircle = (InfiniteIndicator) view.findViewById(R.id.indicator_default_circle);
         mLlPartTop = (LinearLayout) view.findViewById(R.id.ll_part_top);
-        mImgGiftsJob = (ImageView) view.findViewById(R.id.img_gifts_job);
-        mImgDayJob = (ImageView) view.findViewById(R.id.img_day_job);
-        mImgTravelJob = (ImageView) view.findViewById(R.id.img_travel_job);
-        mImgMyJob = (ImageView) view.findViewById(R.id.img_my_job);
+        mImgGiftsJob = (RelativeLayout) view.findViewById(R.id.img_gifts_job);
+        mImgDayJob = (RelativeLayout) view.findViewById(R.id.img_day_job);
+        mImgTravelJob = (RelativeLayout) view.findViewById(R.id.img_travel_job);
+        mImgMyJob = (RelativeLayout) view.findViewById(R.id.img_my_job);
         mLlPartBottom = (LinearLayout) view.findViewById(R.id.ll_part_bottom);
-        mImgTravelJob = (ImageView) view.findViewById(R.id.img_travel_job);
         mTvPart3 = (TextView) view.findViewById(R.id.tv_part3);
 
         mImgGiftsJob.setOnClickListener(this);
@@ -279,7 +271,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onStart() {
         super.onStart();
-        LogUtils.i("fragment", ":onStart");
     }
 
     @Override
