@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item android:drawable="@drawable/icon_woman_selected" android:state_ch="false"/>-->
+    <!--<item android:drawable="@drawable/icon_woman_normal" android:state_selected="true"/>-->
+    <item android:drawable="@drawable/icon_woman_normal" android:state_selected="true"/>
+    <item android:state_checked="true" android:state_window_focused="false"
+          android:drawable="@drawable/icon_woman_selected" />
+    <item android:state_checked="false" android:state_window_focused="false"
+          android:drawable="@drawable/icon_woman_normal" />
+
+
+    <item android:state_checked="false" android:drawable="@drawable/icon_woman_normal" />
+    <item android:state_checked="true" android:drawable="@drawable/icon_woman_selected" />
+
+
+</selector>
