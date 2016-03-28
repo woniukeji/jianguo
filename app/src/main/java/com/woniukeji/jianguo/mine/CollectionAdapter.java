@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.partjob;
+package com.woniukeji.jianguo.mine;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -18,6 +18,8 @@ import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
+import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
@@ -26,8 +28,10 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.greenrobot.event.EventBus;
 
-public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHolder> {
+public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
 
     private final List<Jobs.ListTJob> mValues;
     private final Context mContext;
@@ -36,7 +40,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public PartJobAdapter(List<Jobs.ListTJob> items, Context context) {
+    public CollectionAdapter(List<Jobs.ListTJob> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -152,6 +156,26 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                     intent.putExtra("money",job.getMoney());
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());
                     mContext.startActivity(intent);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    final SweetAlertDialog dialog=  new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
+                    dialog.setTitleText("确定要删除该收藏?")
+                            .setConfirmText("确定")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    AttentionCollectionEvent event=new AttentionCollectionEvent();
+                                    event.listTJob=job;
+                                    EventBus.getDefault().post(event);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setCancelText("取消")
+                            .show();
+                    return false;
                 }
             });
         }

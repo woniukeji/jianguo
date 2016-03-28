@@ -19,12 +19,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.okhttp.FormEncodingBuilder;
+import com.avos.avoscloud.okhttp.Request;
+import com.avos.avoscloud.okhttp.RequestBody;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.base.MyApiEndpointInterface;
 import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -40,7 +45,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class SchoolActivity extends BaseActivity {
-
     @InjectView(R.id.et_search) EditText etSearch;
     @InjectView(R.id.btn_clear_search_text) Button btnClearSearchText;
     @InjectView(R.id.layout_clear_search_text) LinearLayout layoutClearSearchText;
@@ -52,6 +56,8 @@ public class SchoolActivity extends BaseActivity {
     private int MSG_POST_FAIL = 1;
     private List<School.tschool> tschools=new ArrayList<School.tschool>();
     private Adapter adapter;
+
+
 
 
     private static class Myhandler extends Handler {
@@ -266,6 +272,22 @@ public class SchoolActivity extends BaseActivity {
          * postInfo
          */
         public void getRealName() {
+            RequestBody formBody = new FormEncodingBuilder()
+                    .add("platform", "android")
+                    .add("name", "bug")
+                    .add("subject", "XXXXXXXXXXXXXXX")
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("")
+                    .post(formBody)
+                    .build();
+            request = new Request.Builder()
+                    .url("https://api.github.com/repos/square/okhttp/issues")
+                    .header("User-Agent", "OkHttp Headers.java")
+                    .addHeader("Accept", "application/json; q=0.5")
+                    .addHeader("Accept", "application/vnd.github.v3+json")
+                    .build();
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()

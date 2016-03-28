@@ -9,10 +9,12 @@
 
 # Java class files
 *.class
+app.iml
 
 # Generated files
 bin/
 gen/
+
 
 # Gradle files
 .gradle/

@@ -90,6 +90,7 @@
         android:background="@drawable/button_bg"
         />
     <TextView
+        android:id="@+id/tv_add_attention"
         android:layout_width="66dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
@@ -98,7 +99,7 @@
         android:layout_marginRight="15dp"
         android:paddingLeft="5dp"
         android:text="关注"
-        android:drawableLeft="@mipmap/icon_star_on"
+        android:drawableLeft="@mipmap/icon_star"
         android:textSize="14dp"
         android:textColor="#ff9093"
         android:background="@mipmap/icon_attention_bg"

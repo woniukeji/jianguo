@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.lightsky.infiniteindicator.Loader.ImageLoade;
 import cn.lightsky.infiniteindicator.R;
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
 import cn.lightsky.infiniteindicator.page.Page;
@@ -19,7 +19,7 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private ImageLoader mImageLoader;
+    private ImageLoade mImageLoader;
     private OnPageClickListener mOnPageClickListener;
     private List<Page> pages = new ArrayList<>();
     private boolean isLoop = true;
@@ -89,11 +89,11 @@ public class RecyleAdapter extends RecyclingPagerAdapter {
         }
     }
 
-    public void setImageLoader(ImageLoader imageLoader) {
+    public void setImageLoader(ImageLoade imageLoader) {
         mImageLoader = imageLoader;
     }
 
-    public ImageLoader getImageLoader() {
+    public ImageLoade getImageLoader() {
         return mImageLoader;
     }
 

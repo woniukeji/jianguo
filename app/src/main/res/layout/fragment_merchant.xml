@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rl_job"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/user_head"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/button_background_login"
+       />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_toRightOf="@+id/user_head"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/business_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_marginTop="18dp"
+        android:text="凯宾斯基酒店宴会服务员"
+        />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:layout_marginTop="4dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_job_count"
+            android:layout_marginLeft="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="月结"
+            android:textSize="13dp"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:layout_marginTop="1dp"
+        >
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:layout_marginTop="1dp"
+        >
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_enroll_num"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:text="18/25"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="18dp"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="#f87c7c"
+        />
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_btn_bg_color"
+        />
+</RelativeLayout>

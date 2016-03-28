@@ -85,6 +85,8 @@ public class JobDetailActivity extends BaseActivity {
     private JobDetails.TJobInfoEntity jobinfo;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
+    private int MSG_POST_SUCCESS = 5;
+    private int MSG_POST_FAIL = 6;
     private Handler mHandler = new Myhandler(this);
     private Context mContext = JobDetailActivity.this;
     private int loginId;
@@ -138,6 +140,18 @@ public class JobDetailActivity extends BaseActivity {
                     jobDetailActivity.tvSignup.setText("已报名");
                     jobDetailActivity.tvSignup.setBackgroundResource(R.color.gray);
                     break;
+                case 5:
+//                    String msg1 = (String) msg.obj;
+//                    Toast.makeText(jobDetailActivity, msg1, Toast.LENGTH_SHORT).show();
+                    Drawable drawable=jobDetailActivity.getResources().getDrawable(R.drawable.icon_collection_check);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    jobDetailActivity.tvCollection.setCompoundDrawables(null,drawable,null,null);
+                    jobDetailActivity.showShortToast("收藏成功");
+                    break;
+                case 6:
+                    String msg2 = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, "收藏失败"+msg2, Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
@@ -147,8 +161,6 @@ public class JobDetailActivity extends BaseActivity {
     }
 
     private void fillData() {
-
-
         tvWorkLocation.setText(jobinfo.getAddress());
         String date = DateUtils.getTime(jobinfo.getStart_date(), jobinfo.getStop_date());
         String time = DateUtils.getTime(jobinfo.getStart_time(), jobinfo.getStop_time(), "HH:mm");
@@ -157,6 +169,17 @@ public class JobDetailActivity extends BaseActivity {
         tvWorkTime.setText(time);
         tvCollectionSites.setText(jobinfo.getSet_place());
         tvCollectionTime.setText(setTime);
+
+        if (jobinfo.getIs_collection().equals("0")){
+            Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvCollection.setCompoundDrawables(null,drawable,null,null);
+        }else{
+            Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_check);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvCollection.setCompoundDrawables(null,drawable,null,null);
+        }
+
         if (jobinfo.getLimit_sex() == 0) {
             tvSex.setText("女");
         } else if (jobinfo.getLimit_sex() == 1) {
@@ -174,7 +197,6 @@ public class JobDetailActivity extends BaseActivity {
             tvPayMethod.setText("小时结");
 
         tvOther.setText(jobinfo.getOther());
-
         tvWorkContent.setText(jobinfo.getWork_content());
         tvWorkRequire.setText(jobinfo.getWork_require());
 
@@ -245,7 +267,6 @@ public class JobDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_share:
-
                 SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler);
                 share.showShareWindow();
                 // 显示窗口 (设置layout在PopupWindow中显示的位置)
@@ -297,10 +318,10 @@ public class JobDetailActivity extends BaseActivity {
 
                 break;
             case R.id.tv_collection:
-                Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_check);
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                tvCollection.setCompoundDrawables(null,drawable,null,null);
-                showShortToast("收藏成功");
+                PostAttTask postAttTask=new PostAttTask(String.valueOf(loginId),"0",String.valueOf(jobinfo.getJob_id()));
+                postAttTask.execute();
+
+
                 break;
             case R.id.tv_signup:
                 SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,4);
@@ -315,6 +336,85 @@ public class JobDetailActivity extends BaseActivity {
         }
     }
 
+
+    public class PostAttTask extends AsyncTask<Void, Void, Void> {
+        private final String login_id;
+        private final String follow;
+        private final String collection;
+
+        PostAttTask(String login_id,String follow,String collection) {
+            this.follow = follow;
+            this.collection = collection;
+            this.login_id = login_id;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                PostAtten();
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * postInfo
+         */
+        public void PostAtten() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.POST_ATTENT)
+                    .addParams("only", only)
+                    .addParams("login_id", login_id)
+                    .addParams("follow", follow)
+                    .addParams("collection", collection)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean<JobDetails>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_POST_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean;
+                                message.what = MSG_POST_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
+    }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
         private final String login_id;

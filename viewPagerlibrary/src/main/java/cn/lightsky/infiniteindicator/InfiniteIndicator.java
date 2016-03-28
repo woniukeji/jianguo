@@ -17,9 +17,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import cn.lightsky.infiniteindicator.Loader.ImageLoade;
 import cn.lightsky.infiniteindicator.indicator.PageIndicator;
 import cn.lightsky.infiniteindicator.indicator.RecyleAdapter;
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
 import cn.lightsky.infiniteindicator.jakewharton.salvage.RecyclingPagerAdapter;
 import cn.lightsky.infiniteindicator.page.Page;
 
@@ -120,7 +120,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
         setViewPagerScroller();
     }
 
-    public void setImageLoader(ImageLoader imageLoader){
+    public void setImageLoader(ImageLoade imageLoader){
         mRecyleAdapter.setImageLoader(imageLoader);
     }
 

@@ -8,13 +8,14 @@ import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 
-import cn.lightsky.infiniteindicator.loader.ImageLoader;
+import cn.lightsky.infiniteindicator.Loader.ImageLoade;
+
 
 /**
  * Created by lightsky on 16/1/28.
  */
 
-public class PicassoLoader implements ImageLoader {
+public class PicassoLoader implements ImageLoade {
 
     public PicassoLoader getImageLoader(Context context) {
         return new PicassoLoader();

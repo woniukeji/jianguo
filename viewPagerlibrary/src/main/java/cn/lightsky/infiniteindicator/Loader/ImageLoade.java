@@ -1,12 +1,14 @@
-package cn.lightsky.infiniteindicator.loader;
-
+package cn.lightsky.infiniteindicator.Loader;
+/**
+ * Created by invinjun on 2016/3/28.
+ */
 import android.content.Context;
 import android.widget.ImageView;
 
 /**
  * Created by lightsky on 16/1/28.
  */
-public interface ImageLoader {
+public interface ImageLoade {
 
 //    private static ImageLoader singleton;
 
