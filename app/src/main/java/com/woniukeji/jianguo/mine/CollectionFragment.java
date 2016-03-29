@@ -93,11 +93,13 @@ public class CollectionFragment extends BaseFragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    rlNull.setVisibility(View.GONE);
+
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
-                    jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
                     adapter.notifyDataSetChanged();
+                    if (jobs.getData().getList_t_job().size()>0){
+                        rlNull.setVisibility(View.GONE);
+                    }
                     break;
                 case 1:
                     rlNull.setVisibility(View.VISIBLE);
