@@ -27,20 +27,20 @@
 
         >
 
-        <com.woniukeji.jianguo.widget.time.PickerDateView
+        <com.woniukeji.jianmerchant.widget.time.PickerDateView
             android:id="@+id/year_pv"
             android:layout_width="110dp"
             android:layout_height="match_parent"
             />
 
-        <com.woniukeji.jianguo.widget.time.PickerView
+        <com.woniukeji.jianmerchant.widget.time.PickerView
             android:id="@+id/month_pv"
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="0dp"
             android:layout_toRightOf="@id/year_pv" />
 
-        <com.woniukeji.jianguo.widget.time.PickerView
+        <com.woniukeji.jianmerchant.widget.time.PickerView
             android:id="@+id/day_pv"
             android:layout_width="70dp"
             android:layout_height="match_parent"

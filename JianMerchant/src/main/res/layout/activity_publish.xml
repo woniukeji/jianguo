@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:background="#F1F1F1"
+              >
+
+    <include
+        android:id="@+id/layout_title_bar"
+        layout="@layout/app_title_bar" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="230dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_marginTop="10dp"
+    >
+
+    <Button
+        android:id="@+id/btn_history"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="从历史记录中选取"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/button_orange"
+        />
+    <Button
+        android:id="@+id/btn_modle"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="从已保存的模板中选取"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_red"
+        />
+
+</LinearLayout>
+
+    <Button
+        android:id="@+id/btn_new"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:text="创建新的兼职"
+        android:background="@color/white"
+        />
+</LinearLayout>

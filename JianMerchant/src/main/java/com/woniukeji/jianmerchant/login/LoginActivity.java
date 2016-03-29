@@ -61,7 +61,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @InjectView(R.id.quick_login) TextView quickLogin;
 
     private Context context=LoginActivity.this;
-    private UserLoginTask mAuthTask = null;
     // UI references.
     private EditText mPasswordView;
     private View mProgressView;
@@ -101,35 +100,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     };
 
     private void saveToSP(User user) {
-        SPUtils.setParam(context, Constants.LOGIN_INFO,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
         SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
         SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
         SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_USERID,user.getT_user_login().getId());
         SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,user.getT_user_login().getStatus());
         SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_CREDIT,user.getT_user_info().getCredit());
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
-//        final ChatManager chatManager = ChatManager.getInstance();
-//        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
-//            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
-//        }
-//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-//            @Override
-//            public void done(AVIMClient avimClient, AVIMException e) {
-//                if (null == e) {
-////                    finish();
-////                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-////                    startActivity(intent);
-//                } else {
-//                    showShortToast(e.toString());
-//                }
-//            }
-//        });
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_merchant().getName_image()!=null?user.getT_merchant().getName_image():"");
     }
 
     @Override
@@ -151,7 +130,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void initData() {
-
     }
 
     @Override
@@ -216,9 +194,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
 
             }
-            String only1 = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            UserLoginTask userLoginTask = new UserLoginTask( only1, token, nickname, nameimage, sex);
-            userLoginTask.execute();
+//            String only1 = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+//            UserLoginTask userLoginTask = new UserLoginTask( only1, token, nickname, nameimage, sex);
+//            userLoginTask.execute();
         }
 
 //    @Override
@@ -260,14 +238,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private boolean CheckStatus() {
-        if (!CommonUtils.isMobileNO(phoneNumber.getText().toString().trim())) {
-            showShortToast("手机号码格式不正确");
-            return false;
-        }
+//        if (!CommonUtils.isMobileNO(phoneNumber.getText().toString().trim())) {
+//            showShortToast("手机号码格式不正确");
+//            return false;
+//        }
         if (phoneNumber.getText().toString().equals("")) {
             showShortToast("手机号不能为空");
             return false;
-        } else if (password.getText().toString().equals("")) {
+        } else
+        if (password.getText().toString().equals("")) {
             showShortToast("密码不能为空");
             return false;
         }
@@ -282,243 +261,103 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-    public class UserLoginTask extends AsyncTask<Void, Void, User> {
 
-        private final String only;
-        private final String token;
-        private final String nickname;
-        private final String nameimage;
-        private final String sex;
+public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
 
-        UserLoginTask( String only, String token, String nickname, String nameimage, String sex) {
-            this.only = only;
-            this.sex = sex;
-            this.token = token;
-            this.nickname = nickname;
-            this.nameimage = nameimage;
-        }
+    private final String tel;
+    private final String passWord;
+    SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                    AuthWQ();
-            } catch (Exception e) {
-                return null;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            mAuthTask = null;
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
-
-        /**
-         * login
-         * 授权过的weixin qq 用户直接通过token登陆
-         */
-        public void Login() {
-            OkHttpUtils
-                    .get()
-                    .url(Constants.LOGIN_WQ)
-                    .addParams("token", token)
-                    .addParams("only", only)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<User>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
-                            return user;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_USER_FAIL;
-                            handler.sendMessage(message);
-                        }
-
-
-                        @Override
-                        public void onResponse(BaseBean user) {
-                            if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"1");
-                                Message message = new Message();
-                                message.obj = user;
-                                message.what = MSG_USER_SUCCESS;
-                                handler.sendMessage(message);
-                            }else {
-                                Message message = new Message();
-                                message.obj = user.getMessage();
-                                message.what = MSG_USER_FAIL;
-                                handler.sendMessage(message);
-                            }
-
-                        }
-
-                    });
-        }
-        /**
-         * authWQ
-         * 未授权的weixin qq用户
-         */
-        public void AuthWQ() {
-            OkHttpUtils
-                    .get()
-                    .url(Constants.LOGIN_WQ)
-                    .addParams("only", only)
-                    .addParams("sex", sex)
-                    .addParams("nickname", nickname)
-                    .addParams("token", token)
-                    .addParams("nameimage", nameimage)
-                    .build()
-                    .connTimeOut(30000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<User>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
-                            return user;
-                        }
-                        @Override
-                        public void onError(Call call, Exception e) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_USER_FAIL;
-                            handler.sendMessage(message);
-                        }
-
-                        @Override
-                        public void onResponse(BaseBean user) {
-                            if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"1");
-                                Message message = new Message();
-                                message.obj = user;
-                                message.what = MSG_USER_SUCCESS;
-                                handler.sendMessage(message);
-                            }else {
-                                Message message = new Message();
-                                message.obj = user.getMessage();
-                                message.what = MSG_USER_FAIL;
-                                handler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
+    PhoneLoginTask(String phoneNum, String passWord) {
+        this.tel = phoneNum;
+        this.passWord = passWord;
     }
 
-    public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String passWord;
-        SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        PhoneLoginTask(String phoneNum, String passWord) {
-            this.tel = phoneNum;
-            this.passWord = passWord;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                PhoneLogin();
-            } catch (Exception e) {
-                return null;
-            }
+    @Override
+    protected User doInBackground(Void... params) {
+        // TODO: attempt authentication against a network service.
+        try {
+            PhoneLogin();
+        } catch (Exception e) {
             return null;
         }
+        return null;
+    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登录中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("登录中...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+    }
 
-        @Override
-        protected void onPostExecute(final User user) {
-            mAuthTask = null;
-            pDialog.dismiss();
-        }
+    @Override
+    protected void onPostExecute(final User user) {
+        pDialog.dismiss();
+    }
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            pDialog.dismiss();
-        }
+    @Override
+    protected void onCancelled() {
+        pDialog.dismiss();
+    }
 
-        /**
-         * phoneLogin
-         */
-        public void PhoneLogin() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.LOGIN_PHONE)
-                    .addParams("only", only)
-                    .addParams("tel", tel)
-                    .addParams("password", passWord)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<User>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
-                            return user;
-                        }
-                        @Override
-                        public void onError(Call call, Exception e) {
+    /**
+     * phoneLogin
+     */
+    public void PhoneLogin() {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.LOGIN)
+                .addParams("only", only)
+                .addParams("tel", tel)
+                .addParams("password", passWord)
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean<User>>() {
+                    @Override
+                    public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        String string = response.body().string();
+                        BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
+                        }.getType());
+                        return user;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_USER_FAIL;
+                        handler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onResponse(BaseBean user) {
+                        if (user.getCode().equals("200")) {
+                            SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
-                            message.obj = e.toString();
+                            message.obj = user;
+                            message.what = MSG_USER_SUCCESS;
+                            handler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = user.getMessage();
                             message.what = MSG_USER_FAIL;
                             handler.sendMessage(message);
                         }
+                    }
 
-                        @Override
-                        public void onResponse(BaseBean user) {
-                            if (user.getCode().equals("200")){
-                                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
-                                Message message = new Message();
-                                message.obj = user;
-                                message.what = MSG_USER_SUCCESS;
-                                handler.sendMessage(message);
-                            }else {
-                                Message message = new Message();
-                                message.obj = user.getMessage();
-                                message.what = MSG_USER_FAIL;
-                                handler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
-
-
+                });
     }
 }
+}
+
+
+
+
+
 

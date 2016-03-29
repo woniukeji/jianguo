@@ -6,6 +6,7 @@ package com.woniukeji.jianmerchant.entity;
 public class BaseBean <T>{
     private String message;
     private String code;
+    private String status;
     private T data;
 
     public T getData() {

@@ -35,7 +35,7 @@ public class PickerDateView extends View {
     /**
      * text之间间距和minTextSize之比
      */
-    public static final float MARGIN_ALPHA = 2.8f;
+    public static final float MARGIN_ALPHA = 4f;
     /**
      * 自动回滚到中间的速度
      */
@@ -48,7 +48,7 @@ public class PickerDateView extends View {
     private int mCurrentSelected;
     private Paint mPaint;
 
-    private float mMaxTextSize = 80;
+    private float mMaxTextSize = 60;
     private float mMinTextSize = 40;
 
     private float mMaxTextAlpha = 255;
@@ -166,7 +166,7 @@ public class PickerDateView extends View {
         mViewWidth = getMeasuredWidth();
         // 按照View的高度计算字体大小
         mMaxTextSize = mViewHeight / 6.6f;
-        mMinTextSize = mMaxTextSize / 3f;
+        mMinTextSize = mMaxTextSize / 3.2f;
         isInit = true;
         invalidate();
     }

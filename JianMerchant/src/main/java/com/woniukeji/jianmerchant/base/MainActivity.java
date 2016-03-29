@@ -16,6 +16,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.entity.TabEntity;
+import com.woniukeji.jianmerchant.partjob.PartJobFragment;
 import com.woniukeji.jianmerchant.talk.leanmessage.ChatManager;
 import com.woniukeji.jianmerchant.talk.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
@@ -35,16 +36,14 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职", "果聊","我"};
+    private String[] titles = {"兼职", "消息","个人"};
 
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
-            R.mipmap.tab_partjob_unselect,
             R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
-            R.mipmap.tab_partjob_select,
             R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
@@ -96,8 +95,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                     tabHost.setCurrentTab(position);
-                if (position==2){
-                    tabHost.hideMsg(2);
+                if (position==1){
+                    tabHost.hideMsg(1);
                 }
 
             }
@@ -151,7 +150,7 @@ public class MainActivity extends BaseActivity {
      * 首页tab显示维度消息
      */
     public void onEvent(ImTypeMessageEvent event) {
-        tabHost.showDot(2);
+        tabHost.showDot(1);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,20 +180,18 @@ public class MainActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-//                    return new HomeFragment();           //直播榜
+                    return new PartJobFragment();           //直播榜
 //                case 1:
 //                    return new PartJobFragment();          //话题榜
 //                case 2:
 //                    return new TalkFragment();
-//                case 3:
-//                    return new MineFragment();  //用户榜
             }
             return new FragmentText();
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
     }
 }
