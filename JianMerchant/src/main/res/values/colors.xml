@@ -40,7 +40,7 @@
     <color name="yellow">#FFFF00</color>
     <color name="green">#008000</color>
     <color name="purple">#800080</color>
-    <color name="pink">#FFC0CB</color>
+    <color name="hint">#D8D8D8</color>
 
     <color name="window_background">#EBEBEB</color>
     <color name="main_gray">#9A9A9A</color>

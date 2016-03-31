@@ -28,13 +28,13 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="70dp"
             />
-            <com.woniukeji.jianmerchant.widget.time.PickerSize
+            <com.woniukeji.jianmerchant.widget.time.PickerType
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:id="@+id/pcker2"
                 >
-            </com.woniukeji.jianmerchant.widget.time.PickerSize>
+            </com.woniukeji.jianmerchant.widget.time.PickerType>
         <TextView
             android:id="@+id/tv_no"
             android:layout_width="60dp"

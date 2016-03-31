@@ -41,7 +41,7 @@ public class DateUtils {
                 dt += format.substring(dt.length()).replaceAll("[YyMmDdHhSs]",
                         "0");
             }
-            date = (Date) dateFormat.parse(dt);
+            date =  dateFormat.parse(dt);
         } catch (Exception e) {
         }
         return date;
@@ -202,7 +202,23 @@ public class DateUtils {
     public static String getTime(Date date) {
         return format(date, "HH:mm:ss");
     }
-
+    /**
+     * 功能描述：返回字符型日期时间
+     *
+     *            Date 日期
+     * @return 返回字符型日期时间 yyyy/MM/dd HH:mm:ss 格式
+     */
+    public static long getLongTime(String strDate) {
+        DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = fmt.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long mills=getMillis(date);
+        return mills;
+    }
     /**
      * 功能描述：返回字符型日期时间
      *

@@ -24,7 +24,8 @@ public class Constants {
     public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN= JIANGUO_USING+"T_user_login_Login_Merchant_Servlet";//
     public static final String REC_SMS= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//忘记密码 快速登录
-
+    public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
+    public static final String POST_PART_INFO= JIANGUO_USING+"T_Job_Insert_Servlet";//提交兼职信息
 
 
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
@@ -74,6 +75,8 @@ public class Constants {
     public static final String SP_SCHOOL="school";
     public static final String SP_INTEGRAL="integral";
     public static final String SP_CREDIT="credit";
+
+    public static final String SP_MERCHANT_ID="merchantid";
 
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguoMer"+ File.separator;

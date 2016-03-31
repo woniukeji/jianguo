@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
         SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_MERCHANT_ID,user.getT_merchant().getId());
         SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_merchant().getName_image()!=null?user.getT_merchant().getName_image():"");
     }
 

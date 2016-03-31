@@ -449,7 +449,7 @@
         <EditText
             android:layout_toRightOf="@+id/wagesplit"
             android:layout_toLeftOf="@+id/tv_wages_method"
-            android:id="@+id/tv_wages"
+            android:id="@+id/et_wages"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:hint="请填写薪资"
@@ -1089,18 +1089,20 @@
                 android:src="@mipmap/icon_go"
                 android:layout_marginLeft="8dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:paddingRight="17dp"
                 />
-            <TextView
+            <EditText
                 android:layout_toRightOf="@+id/colltimesplit"
                 android:layout_toLeftOf="@+id/img_collection_time"
-                android:id="@+id/tv_collection_time"
+                android:id="@+id/et_collection_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="请选择集合时间"
+                android:hint="请输入集合时间"
                 android:paddingLeft="10dp"
-                android:textColor="#D8D8D8"
+                android:textColorHint="#D8D8D8"
                 android:textSize="14dp"
+                android:background="@color/transparent"
                 android:gravity="center|left"
                 />
             <include
@@ -1142,10 +1144,11 @@
                 />
             <EditText
                 android:layout_toRightOf="@+id/telsplit"
-                android:id="@+id/tv_tel"
+                android:id="@+id/et_tel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="请输入您的电话"
+                android:inputType="phone"
                 android:paddingLeft="10dp"
                 android:textColorHint="#D8D8D8"
                 android:background="@color/transparent"

@@ -69,6 +69,7 @@
         </activity>
         <activity android:name=".publish.PublishDetailActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                  android:configChanges="keyboardHidden"
             >
         </activity>
         <activity

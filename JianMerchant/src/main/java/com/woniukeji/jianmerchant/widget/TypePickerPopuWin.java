@@ -13,7 +13,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.woniukeji.jianmerchant.R;
+import com.woniukeji.jianmerchant.entity.PickType;
 import com.woniukeji.jianmerchant.widget.time.PickerSize;
+import com.woniukeji.jianmerchant.widget.time.PickerType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,36 +27,32 @@ import java.util.List;
  * @version: V1.0
  */
 
-public class TimePickerPopuWin extends PopupWindow implements OnClickListener {
+public class TypePickerPopuWin extends PopupWindow implements OnClickListener {
 
 
 
 
     private Context context;
-    private List<String> stringList1=new ArrayList<String>();
-    private List<String> stringList2=new ArrayList<String>();
-    private String textStr2;
-    private String textStr1;
+    private List<PickType> stringList=new ArrayList<PickType>();
+    private PickType pickType;
     private Handler mHandler;
-    private int type;//三种 鞋码 衣服 身高
+    private int type;//
+    private PickerType packer;
     private TextView tvNo;
     private TextView tvOk;
-    private PickerSize packer1;
-    private PickerSize packer2;
     //分享相关
     //黑色背景
 
 
-    public TimePickerPopuWin(Context context, List<String> list1,List<String> list2, Handler handler, int mType) {
+    public TypePickerPopuWin(Context context, List<PickType> list, Handler handler, int mType) {
         this.context = context;
-        this.stringList1 = list1;
-        this.stringList2 = list2;
+        this.stringList = list;
         this.mHandler=handler;
         this.type=mType;
     }
 
     public void showShareWindow() {
-        View view = LayoutInflater.from(context).inflate(R.layout.time_popwindow_picker, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.type_popwindow_picker, null);
 
         initView(view);
         initListener();
@@ -80,27 +78,18 @@ public class TimePickerPopuWin extends PopupWindow implements OnClickListener {
     public void initView(View view) {
         tvNo= (TextView) view.findViewById(R.id.tv_no);
         tvOk= (TextView) view.findViewById(R.id.tv_ok);
-        packer1= (PickerSize) view.findViewById(R.id.pcker1);
-        packer2= (PickerSize) view.findViewById(R.id.pcker2);
-        packer1.setData(stringList1);
-        textStr1=stringList1.get(stringList1.size()/2);
-        packer2.setData(stringList2);
-        textStr2=stringList2.get(stringList2.size()/2);
+        packer= (PickerType) view.findViewById(R.id.pcker2);
+        packer.setData(stringList);
+        pickType=stringList.get(stringList.size()/2);
     }
 
     public void initListener() {
         tvNo.setOnClickListener(this);
         tvOk.setOnClickListener(this);
-        packer1.setOnSelectListener(new PickerSize.onSelectListener() {
+        packer.setOnSelectListener(new PickerType.onSelectListener() {
             @Override
-            public void onSelect(String text) {
-                textStr1=text;
-            }
-        });
-        packer2.setOnSelectListener(new PickerSize.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                textStr2=text;
+            public void onSelect(PickType Type) {
+                pickType=Type;
             }
         });
     }
@@ -115,8 +104,8 @@ public class TimePickerPopuWin extends PopupWindow implements OnClickListener {
             case R.id.tv_ok:
                 Message message=new Message();
                 message.arg1=type;
-                message.obj=textStr1+textStr2;
-                message.what=2;
+                message.obj=pickType;
+                message.what=3;
                 mHandler.sendMessage(message);
                 dismiss();
                 break;

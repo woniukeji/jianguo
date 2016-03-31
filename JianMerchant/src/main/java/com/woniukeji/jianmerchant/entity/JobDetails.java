@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by invinjun on 2016/3/16.
  */
-public class JobDetails {
+public class JobDetails implements Serializable{
 
     /**
      * t_job_info : {"id":6,"job_id":5,"address":"宴会服务员","lon":116.454861,"lat":39.940387,"start_date":1458008358,"stop_date":1458098520,"start_time":1458008358,"stop_time":1458098520,"set_place":"步行街正门","set_time":1458008358,"limit_sex":2,"term":3,"other":"其他","work_content":"有接有送包餐 统一要求：【穿黑鞋携带身份证复印件】女生头发要盘起来！","work_require":"口齿伶俐;健康;","is_collection":"1"}
@@ -67,14 +67,14 @@ public class JobDetails {
             return t_merchant;
         }
 
-        public static class TJobInfoEntity {
+        public static class TJobInfoEntity implements Serializable{
             private int id;
             private int job_id;
             private String address;
             private double lon;
             private double lat;
-            private int start_date;
-            private int stop_date;
+            private long start_date;
+            private long stop_date;
             private int start_time;
             private int stop_time;
             private String set_place;
@@ -106,11 +106,11 @@ public class JobDetails {
                 this.lat = lat;
             }
 
-            public void setStart_date(int start_date) {
+            public void setStart_date(long start_date) {
                 this.start_date = start_date;
             }
 
-            public void setStop_date(int stop_date) {
+            public void setStop_date(long stop_date) {
                 this.stop_date = stop_date;
             }
 
@@ -174,11 +174,11 @@ public class JobDetails {
                 return lat;
             }
 
-            public int getStart_date() {
+            public long getStart_date() {
                 return start_date;
             }
 
-            public int getStop_date() {
+            public long getStop_date() {
                 return stop_date;
             }
 

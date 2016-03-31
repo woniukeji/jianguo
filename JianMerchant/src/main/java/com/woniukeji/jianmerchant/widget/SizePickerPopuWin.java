@@ -33,6 +33,8 @@ public class SizePickerPopuWin extends PopupWindow implements OnClickListener {
 
     private Context context;
     private List<String> stringList=new ArrayList<String>();
+    private List<String> stringList1=new ArrayList<String>();
+    private List<String> stringList3=new ArrayList<String>();
     private String textStr;
     private Handler mHandler;
     private int type;//三种 鞋码 衣服 身高
@@ -43,12 +45,11 @@ public class SizePickerPopuWin extends PopupWindow implements OnClickListener {
     //黑色背景
 
 
-    public SizePickerPopuWin(Context context, List<String> list , Handler handler, int mType) {
+    public SizePickerPopuWin(Context context, List<String> list, Handler handler, int mType) {
         this.context = context;
         this.stringList = list;
         this.mHandler=handler;
         this.type=mType;
-
     }
 
     public void showShareWindow() {
@@ -78,9 +79,9 @@ public class SizePickerPopuWin extends PopupWindow implements OnClickListener {
     public void initView(View view) {
         tvNo= (TextView) view.findViewById(R.id.tv_no);
         tvOk= (TextView) view.findViewById(R.id.tv_ok);
-        packer= (PickerSize) view.findViewById(R.id.pcker);
+        packer= (PickerSize) view.findViewById(R.id.pcker2);
         packer.setData(stringList);
-        textStr=stringList.get(0);
+        textStr=stringList.get(stringList.size()/2);
     }
 
     public void initListener() {
