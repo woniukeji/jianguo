@@ -54,7 +54,6 @@ public class PreviewJobActivity extends BaseActivity {
     @InjectView(R.id.tv_wage) TextView tvWage;
     @InjectView(R.id.tv_hiring_count) TextView tvHiringCount;
     @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-    @InjectView(R.id.tv_release_date) TextView tvReleaseDate;
     @InjectView(R.id.tv_work_location) TextView tvWorkLocation;
     @InjectView(R.id.tv_location_detail) TextView tvLocationDetail;
     @InjectView(R.id.tv_work_date) TextView tvWorkDate;
@@ -73,8 +72,6 @@ public class PreviewJobActivity extends BaseActivity {
     @InjectView(R.id.tv_company_name) TextView tvCompanyName;
     @InjectView(R.id.tv_jobs_count) TextView tvJobsCount;
     @InjectView(R.id.rl_company) RelativeLayout rlCompany;
-    @InjectView(R.id.tv_contact_company) TextView tvContactCompany;
-    @InjectView(R.id.tv_collection) TextView tvCollection;
     @InjectView(R.id.tv_signup) TextView tvSignup;
     private JobDetails.TMerchantEntity merchantInfo;
     private JobDetails.TJobInfoEntity jobinfo;
@@ -138,10 +135,10 @@ public class PreviewJobActivity extends BaseActivity {
                 case 5:
 //                    String msg1 = (String) msg.obj;
 //                    Toast.makeText(jobDetailActivity, msg1, Toast.LENGTH_SHORT).show();
-                    Drawable drawable=jobDetailActivity.getResources().getDrawable(R.drawable.icon_collection_check);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                    jobDetailActivity.tvCollection.setCompoundDrawables(null,drawable,null,null);
-                    jobDetailActivity.showShortToast("收藏成功");
+//                    Drawable drawable=jobDetailActivity.getResources().getDrawable(R.drawable.icon_collection_check);
+//                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//                    jobDetailActivity.tvCollection.setCompoundDrawables(null,drawable,null,null);
+//                    jobDetailActivity.showShortToast("收藏成功");
                     break;
                 case 6:
                     String msg2 = (String) msg.obj;
@@ -156,24 +153,24 @@ public class PreviewJobActivity extends BaseActivity {
     }
 
     private void fillData() {
+        businessName.setText(jobinfo.getTitle());
         tvWorkLocation.setText(jobinfo.getAddress());
         String date = DateUtils.getTime(jobinfo.getStart_date(), jobinfo.getStop_date());
-        String time = DateUtils.getTime(jobinfo.getStart_time(), jobinfo.getStop_time(), "HH:mm");
-        String setTime = DateUtils.getTime(jobinfo.getSet_time(), "HH:mm");
         tvWorkDate.setText(date);
-        tvWorkTime.setText(time);
+        tvWorkTime.setText(jobinfo.getStart_time()+"-"+jobinfo.getStop_time());
         tvCollectionSites.setText(jobinfo.getSet_place());
-        tvCollectionTime.setText(setTime);
-
-        if (jobinfo.getIs_collection().equals("0")){
-            Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            tvCollection.setCompoundDrawables(null,drawable,null,null);
-        }else{
-            Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_check);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            tvCollection.setCompoundDrawables(null,drawable,null,null);
-        }
+        tvCollectionTime.setText(jobinfo.getSet_time());
+        tvWage.setText(jobinfo.getWages());
+        tvHiringCount.setText(jobinfo.getSum());
+//        if (jobinfo.getIs_collection().equals("0")){
+//            Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
+//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//            tvCollection.setCompoundDrawables(null,drawable,null,null);
+//        }else{
+//            Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_check);
+//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//            tvCollection.setCompoundDrawables(null,drawable,null,null);
+//        }
 
         if (jobinfo.getLimit_sex() == 0) {
             tvSex.setText("女");
@@ -222,7 +219,6 @@ public class PreviewJobActivity extends BaseActivity {
     public void initViews() {
         tvTitle.setText("兼职详情");
         img_share.setVisibility(View.VISIBLE);
-        fillData();
 
     }
 
@@ -235,17 +231,17 @@ public class PreviewJobActivity extends BaseActivity {
     public void initData() {
 
        Intent intent= getIntent();
-        int jobid= intent.getIntExtra("job",0);
-        int merchantid=  intent.getIntExtra("merchant",0);
-        int money= (int) intent.getDoubleExtra("money",0);
-        String count=intent.getStringExtra("count");
-        tvWage.setText(String.valueOf(money));
-        tvJobsCount.setText(count);
+        jobinfo= (JobDetails.TJobInfoEntity) intent.getSerializableExtra("jobinfo");
+        merchantInfo= (JobDetails.TMerchantEntity) intent.getSerializableExtra("merchantinfo");
+//        int money= (int) intent.getDoubleExtra("money",0);
+//        String count=intent.getStringExtra("count");
+//        tvWage.setText(String.valueOf(money));
+//        tvJobsCount.setText(count);
 
          loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
         name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
-
+        fillData();
     }
 
     @Override
@@ -254,7 +250,7 @@ public class PreviewJobActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_share,R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
+    @OnClick({R.id.img_share,R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_signup})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -264,6 +260,7 @@ public class PreviewJobActivity extends BaseActivity {
                 break;
 
             case R.id.tv_signup:
+                finish();
                 break;
         }
     }

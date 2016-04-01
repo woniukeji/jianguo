@@ -471,19 +471,32 @@ public class PublishDetailActivity extends BaseActivity {
             case R.id.btn_preview:
 
                 if (CheckStatus()){
+                    jobinfo.setTitle(etTitle.getText().toString());
                     jobinfo.setAddress(tvPosition.getText().toString());
                     long startDate=DateUtils.getLongTime(tvDateStart.getText().toString());
                     long stopDate=DateUtils.getLongTime(tvDateEnd.getText().toString());
                     jobinfo.setStart_date(startDate);
                     jobinfo.setStop_date(stopDate);
-                    jobinfo.setLimit_sex(0);
+                    jobinfo.setLimit_sex(Integer.valueOf(limit_sex));
                     jobinfo.setSet_place(etCollectionPosition.getText().toString());
-                    jobinfo.setTerm(1);
-                    jobinfo.setStart_time(1);
-                    jobinfo.setStop_time(1);
+                    jobinfo.setTerm(Integer.valueOf(term));
+                    jobinfo.setStart_time(start_time);
+                    jobinfo.setStop_time(stop_time);
+                    jobinfo.setSet_time(set_time);
                     jobinfo.setWork_content(etWorkContent.getText().toString());
                     jobinfo.setWork_require(etWorkRequire.getText().toString());
+                    jobinfo.setWages(money+tvWagesMethod.getText().toString());
+                    if (limit_sex.equals("3")){
+                        int sum=Integer.valueOf(etGirlCount.getText().toString())+Integer.valueOf(etBoyCount.getText().toString());
+                        jobinfo.setSum(sum+"人");
+                    }else {
+                        jobinfo.setSum(etCount.getText().toString()+"人");
+                    }
 
+
+                    String merchantName= (String) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.SP_NAME,"");
+                    merchantInfo.setName(merchantName);
+                    merchantInfo.setName_image(name_image);
                     Intent intent =new Intent(PublishDetailActivity.this,PreviewJobActivity.class);
                     intent.putExtra("jobinfo",jobinfo);
                     intent.putExtra("merchantinfo",merchantInfo);

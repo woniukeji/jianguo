@@ -80,6 +80,13 @@
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".publish.PreviewJobActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                  android:configChanges="keyboardHidden"
+            >
+        </activity>
+
     </application>
 
 </manifest>

@@ -75,16 +75,44 @@ public class JobDetails implements Serializable{
             private double lat;
             private long start_date;
             private long stop_date;
-            private int start_time;
-            private int stop_time;
+            private String start_time;
+            private String stop_time;
             private String set_place;
-            private int set_time;
+            private String set_time;
             private int limit_sex;
             private int term;
             private String other;
             private String work_content;
             private String work_require;
             private String is_collection;
+
+            private String wages;//本地保留字段 用于预览界面参数
+            private String sum;
+            private String title;
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getWages() {
+                return wages;
+            }
+
+            public void setWages(String wages) {
+                this.wages = wages;
+            }
+
+            public String getSum() {
+                return sum;
+            }
+
+            public void setSum(String sum) {
+                this.sum = sum;
+            }
 
             public void setId(int id) {
                 this.id = id;
@@ -114,11 +142,11 @@ public class JobDetails implements Serializable{
                 this.stop_date = stop_date;
             }
 
-            public void setStart_time(int start_time) {
+            public void setStart_time(String start_time) {
                 this.start_time = start_time;
             }
 
-            public void setStop_time(int stop_time) {
+            public void setStop_time(String stop_time) {
                 this.stop_time = stop_time;
             }
 
@@ -126,7 +154,7 @@ public class JobDetails implements Serializable{
                 this.set_place = set_place;
             }
 
-            public void setSet_time(int set_time) {
+            public void setSet_time(String set_time) {
                 this.set_time = set_time;
             }
 
@@ -182,11 +210,11 @@ public class JobDetails implements Serializable{
                 return stop_date;
             }
 
-            public int getStart_time() {
+            public String getStart_time() {
                 return start_time;
             }
 
-            public int getStop_time() {
+            public String getStop_time() {
                 return stop_time;
             }
 
@@ -194,7 +222,7 @@ public class JobDetails implements Serializable{
                 return set_place;
             }
 
-            public int getSet_time() {
+            public String getSet_time() {
                 return set_time;
             }
 
