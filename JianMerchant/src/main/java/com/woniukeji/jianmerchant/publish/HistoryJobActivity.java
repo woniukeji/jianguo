@@ -1,37 +1,31 @@
-package com.woniukeji.jianguo.partjob;
+package com.woniukeji.jianmerchant.publish;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
-import com.woniukeji.jianguo.R;
-import com.woniukeji.jianguo.base.BaseActivity;
-import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.main.HomeJobAdapter;
-import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
-import com.woniukeji.jianguo.utils.DateUtils;
-import com.woniukeji.jianguo.utils.SPUtils;
-import com.woniukeji.jianguo.widget.FixedRecyclerView;
+import com.woniukeji.jianmerchant.R;
+import com.woniukeji.jianmerchant.base.BaseActivity;
+import com.woniukeji.jianmerchant.base.Constants;
+import com.woniukeji.jianmerchant.entity.BaseBean;
+import com.woniukeji.jianmerchant.entity.Model;
+import com.woniukeji.jianmerchant.utils.ActivityManager;
+import com.woniukeji.jianmerchant.utils.CommonUtils;
+import com.woniukeji.jianmerchant.utils.DateUtils;
+import com.woniukeji.jianmerchant.utils.SPUtils;
+import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -42,51 +36,38 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class MerchantActivity extends BaseActivity {
+public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapter.deleteCallBack{
 
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
+    @InjectView(R.id.img_share) ImageView imgShare;
     @InjectView(R.id.list) FixedRecyclerView list;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    RelativeLayout mHeader;
-    RelativeLayout mRlInfo;
-    ImageView mImgHead;
-    TextView mTvUserCount;
-    TextView mTvJobCount;
-    TextView mTvFansCount;
-    TextView mTvPart3;
-    TextView mTvPart4;
-
-    private HomeJobAdapter adapter;
-    private View headerView;
-    private List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
-    private int MSG_POST_SUCCESS = 2;
-    private int MSG_POST_FAIL = 3;
-
+    private int MSG_DELETE_SUCCESS = 2;
+    private int MSG_DELETE_FAIL = 3;
     private Handler mHandler = new Myhandler(this);
-    private Context mContext=MerchantActivity.this;
-    private TextView mTvAddAttention;
-    private int loginId;
-    private JobDetails.TMerchantEntity Merchant;
+    private Context mContext = HistoryJobActivity.this;
+    private HistoryJobAdapter adapter;
+    private int merchantid;
+    private String type;
+    private List<Model.ListTJobEntity> modleList=new ArrayList<>();
+    private int mPosition;
+    private SweetAlertDialog sweetAlertDialog;
+    private int lastVisibleItem;
+    private LinearLayoutManager mLayoutManager;
 
-
-    @Override
-    public void onClick(View view) {
-             switch (view.getId()){
-                 case R.id.tv_add_attention:
-                     PostAttTask postAttTask=new PostAttTask(String.valueOf(loginId),String.valueOf(Merchant.getId()),"0");
-                     postAttTask.execute();
-                     break;
-             }
+    @OnClick(R.id.img_back)
+    public void onClick() {
     }
 
 
-    private class Myhandler extends Handler {
+    private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
         public Myhandler(Context context) {
@@ -96,59 +77,59 @@ public class MerchantActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            MerchantActivity merchantActivity = (MerchantActivity) reference.get();
+            HistoryJobActivity activity = (HistoryJobActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
-                    jobs.getData().getList_t_job();
-                    jobList.addAll(jobs.getData().getList_t_job());
-                    adapter.notifyDataSetChanged();
+                    if (activity.refreshLayout.isRefreshing()){
+                        activity.refreshLayout.setRefreshing(false);
+                        activity.modleList.clear();
+                        BaseBean<Model> modleBaseBean = (BaseBean<Model>) msg.obj;
+                        activity.modleList.addAll(modleBaseBean.getData().getList_t_job());
+                    }else {
+                        BaseBean<Model> modleBaseBean = (BaseBean<Model>) msg.obj;
+                        activity.modleList.addAll(modleBaseBean.getData().getList_t_job());
+                        activity.adapter.notifyDataSetChanged();
+                    }
+
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(merchantActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-//                    String msg1 = (String) msg.obj;
-//                    Toast.makeText(merchantActivity, msg1, Toast.LENGTH_SHORT).show();
-                    Drawable drawable=getResources().getDrawable(R.mipmap.icon_star_on);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                    merchantActivity.mTvAddAttention.setCompoundDrawables(null,drawable,null,null);
+                    BaseBean baseBean = (BaseBean) msg.obj;
+                    activity.modleList.remove(activity.mPosition);
+                    activity.adapter.notifyDataSetChanged();
+                    activity.showShortToast("刪除模板成功！");
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(merchantActivity, sms, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
             }
         }
-
-
     }
 
     @Override
     public void setContentView() {
-        setContentView(R.layout.activity_merchant);
+        setContentView(R.layout.activity_history_job);
         ButterKnife.inject(this);
+        Intent intent=getIntent();
+        type=intent.getStringExtra("type");
     }
 
     @Override
     public void initViews() {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        headerView = layoutInflater.inflate(R.layout.merchant_header_view, null, false);
-        mHeader = (RelativeLayout)headerView.findViewById(R.id.header);
-        mRlInfo = (RelativeLayout) headerView.findViewById(R.id.rl_info);
-        mImgHead = (ImageView) headerView.findViewById(R.id.img_head);
-        mTvUserCount = (TextView) headerView.findViewById(R.id.tv_user_count);
-        mTvAddAttention = (TextView) headerView.findViewById(R.id.tv_add_attention);
-        mTvJobCount = (TextView) headerView.findViewById(R.id.tv_job_count);
-        mTvFansCount = (TextView) headerView.findViewById(R.id.tv_fans_count);
-        mTvPart3 = (TextView) headerView.findViewById(R.id.tv_part3);
-        mTvPart4 = (TextView) headerView.findViewById(R.id.tv_part4);
-        adapter = new HomeJobAdapter(jobList, this);
-        adapter.addHeaderView(headerView);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        if (type.equals("0")){
+            tvTitle.setText("历史记录");
+        }else {
+            tvTitle.setText("保存的模板");
+        }
+
+        adapter = new HistoryJobAdapter(modleList, this,type,this);
+         mLayoutManager = new LinearLayoutManager(this);
 //设置布局管理器
         list.setLayoutManager(mLayoutManager);
 //设置adapter
@@ -160,70 +141,82 @@ public class MerchantActivity extends BaseActivity {
 //        });
 //        recycleList.addItemDecoration(new DividerItemDecoration(
 //                getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        refreshLayout.setColorSchemeResources(R.color.app_bg);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                GetTask getTask=new GetTask("0");
+                getTask.execute();
             }
         });
-
     }
 
     @Override
     public void initListeners() {
-        mTvAddAttention.setOnClickListener(this);
+
     }
 
     @Override
     public void initData() {
-        Intent intent = getIntent();
-        loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-
-         Merchant = (JobDetails.TMerchantEntity) intent.getSerializableExtra("merchant");
-        if (Merchant != null) {
-            tvTitle.setText(Merchant.getName());
-            Picasso.with(MerchantActivity.this).load(Merchant.getName_image())
-                    .placeholder(R.mipmap.icon_head_defult)
-                    .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
-                    .into(mImgHead);
-        }
-        if (Merchant.getIs_follow().equals("0")){
-            Drawable drawable=getResources().getDrawable(R.mipmap.icon_star);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            mTvAddAttention.setCompoundDrawables(null,drawable,null,null);
-        }else {
-            Drawable drawable=getResources().getDrawable(R.mipmap.icon_star_on);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            mTvAddAttention.setCompoundDrawables(null,drawable,null,null);
-        }
-        GetTask getTask = new GetTask("0");
+        merchantid= (int) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.SP_MERCHANT_ID,0);
+        GetTask getTask=new GetTask("0");
         getTask.execute();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (modleList.size() > 5 && lastVisibleItem == modleList.size()+1) {
+                    GetTask getTask=new GetTask(String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
     @Override
     public void addActivity() {
-        ActivityManager.getActivityManager().addActivity(MerchantActivity.this);
+        ActivityManager.getActivityManager().addActivity(this);
+
     }
 
-    @OnClick({R.id.img_back})
-    public void onClick() {
-        finish();
+    @Override
+    public void onClick(View view) {
+
     }
-
-
+    @Override
+    public void deleOnClick(int job_id, int merchant_id,int position) {
+        mPosition=position;
+        DeleteTask deleteTask=new DeleteTask(String.valueOf(job_id),String.valueOf(merchant_id));
+        deleteTask.execute();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String type;
-
-        GetTask(String type) {
-            this.type = type;
-        }
-
+          private String count="0";
+          GetTask(String mCount){
+              this.count=mCount;
+          }
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                getJobs();
+                getHistoryJob();
             } catch (Exception e) {
             }
             return null;
@@ -232,27 +225,44 @@ public class MerchantActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+//            refreshLayout.setRefreshing(true);
+            if (!refreshLayout.isRefreshing()){
+                refreshLayout.setProgressViewOffset(false, 0,dip2px(mContext, 24));
+                refreshLayout.setRefreshing(true);
+            }
+
+//             sweetAlertDialog=new SweetAlertDialog(mContext,SweetAlertDialog.PROGRESS_TYPE);
+//             sweetAlertDialog.setTitleText("请稍后");
+//             sweetAlertDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+//            sweetAlertDialog.dismissWithAnimation();
         }
 
         /**
          * postInfo
          */
-        public void getJobs() {
+        public void getHistoryJob() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.GET_JOB)
+                    .url(Constants.GET_PART_HISTORY)
                     .addParams("only", only)
-                    .addParams("hot", type)
+                    .addParams("type", type)
+                    .addParams("count", count)
+                    .addParams("merchant_id",String.valueOf(merchantid))
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Jobs>>() {
+                    .execute(new Callback<BaseBean<Model>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
                             }.getType());
                             return baseBean;
                         }
@@ -285,22 +295,20 @@ public class MerchantActivity extends BaseActivity {
         }
     }
 
-    public class PostAttTask extends AsyncTask<Void, Void, Void> {
-        private final String login_id;
-        private final String follow;
-        private final String collection;
+    public class DeleteTask extends AsyncTask<Void, Void, Void> {
+        private final String jobid;
+        private final String merchantid;
 
-        PostAttTask(String login_id,String follow,String collection) {
-            this.follow = follow;
-            this.collection = collection;
-            this.login_id = login_id;
+        DeleteTask(String jobid,String merchantid) {
+            this.jobid = jobid;
+            this.merchantid = merchantid;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                PostAtten();
+                deleteJobModel();
             } catch (Exception e) {
             }
             return null;
@@ -312,26 +320,25 @@ public class MerchantActivity extends BaseActivity {
         }
 
         /**
-         * postInfo
+         *刪除兼職模板
          */
-        public void PostAtten() {
+        public void deleteJobModel() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.POST_ATTENT)
+                    .url(Constants.DELETE_JOB_MODEL)
                     .addParams("only", only)
-                    .addParams("login_id", login_id)
-                    .addParams("follow", follow)
-                    .addParams("collection", collection)
+                    .addParams("merchant_id", merchantid)
+                    .addParams("job_id", jobid)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<JobDetails>>() {
+                    .execute(new Callback<BaseBean>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
                             return baseBean;
                         }
@@ -340,22 +347,21 @@ public class MerchantActivity extends BaseActivity {
                         public void onError(Call call, Exception e) {
                             Message message = new Message();
                             message.obj = e.toString();
-                            message.what = MSG_POST_FAIL;
+                            message.what = MSG_DELETE_FAIL;
                             mHandler.sendMessage(message);
                         }
 
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
-                                message.what = MSG_POST_SUCCESS;
+                                message.what = MSG_DELETE_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
                                 message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_FAIL;
+                                message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }

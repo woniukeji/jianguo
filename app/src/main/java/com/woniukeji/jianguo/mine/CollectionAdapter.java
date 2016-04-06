@@ -33,14 +33,14 @@ import de.greenrobot.event.EventBus;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
 
-    private final List<Jobs.ListTJob> mValues;
+    private final List<Jobs.ListTJobEntity> mValues;
     private final Context mContext;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public CollectionAdapter(List<Jobs.ListTJob> items, Context context) {
+    public CollectionAdapter(List<Jobs.ListTJobEntity> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -95,7 +95,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                 holder.itemView.setVisibility(View.VISIBLE);
             }
         } else {
-            final Jobs.ListTJob job = mValues.get(position);
+            final Jobs.ListTJobEntity job = mValues.get(position);
 
 
             //等待数据设置
@@ -116,7 +116,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
-            String date=DateUtils.getTime(job.getStart_date(),job.getStop_date());
+            String date=DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
             //性别限制（0=只招女，1=只招男，2=不限男女）
             if (job.getLimit_sex()==0){

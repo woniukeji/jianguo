@@ -8,6 +8,6 @@ import com.woniukeji.jianguo.entity.Jobs;
  */
 public class AttentionCollectionEvent {
     public JobDetails.TMerchantEntity tMerchantEntity;
-    public Jobs.ListTJob listTJob;
+    public Jobs.ListTJobEntity listTJob;
     public int position;
 }

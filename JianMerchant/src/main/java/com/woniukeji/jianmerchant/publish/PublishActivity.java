@@ -122,11 +122,19 @@ public class PublishActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_history:
+                Intent intent=new Intent(PublishActivity.this,HistoryJobActivity.class);
+                intent.putExtra("type","0");
+                startActivity(intent);
                 break;
             case R.id.btn_modle:
+                Intent intent1=new Intent(PublishActivity.this,HistoryJobActivity.class);
+                intent1.putExtra("type","1");
+                startActivity(intent1);
                 break;
             case R.id.btn_new:
-                startActivity(new Intent(PublishActivity.this,PublishDetailActivity.class));
+                Intent intent2=new Intent(PublishActivity.this,PublishDetailActivity.class);
+                intent2.putExtra("type","new");
+                startActivity(intent2);
                 break;
         }
     }

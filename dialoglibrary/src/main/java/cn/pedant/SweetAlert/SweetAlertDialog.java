@@ -13,8 +13,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -32,7 +34,10 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private Animation mSuccessBowAnim;
     private TextView mTitleTextView;
     private TextView mContentTextView;
+    private EditText mContentEditText;
+    private LinearLayout mLLedit;
     private String mTitleText;
+    private String mEdittext;
     private String mContentText;
     private boolean mShowCancel;
     private boolean mShowContent;
@@ -142,6 +147,8 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
         mTitleTextView = (TextView)findViewById(R.id.title_text);
         mContentTextView = (TextView)findViewById(R.id.content_text);
+        mContentEditText=(EditText)findViewById(R.id.et_text);
+        mLLedit=(LinearLayout)findViewById(R.id.ll_edit);
         mErrorFrame = (FrameLayout)findViewById(R.id.error_frame);
         mErrorX = (ImageView)mErrorFrame.findViewById(R.id.error_x);
         mSuccessFrame = (FrameLayout)findViewById(R.id.success_frame);
@@ -158,6 +165,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         mCancelButton.setOnClickListener(this);
 
         setTitleText(mTitleText);
+        setEditText(mEdittext);
         setContentText(mContentText);
         setCancelText(mCancelText);
         setConfirmText(mConfirmText);
@@ -248,6 +256,14 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         }
         return this;
     }
+    public SweetAlertDialog setEditText (String text) {
+        mEdittext=text;
+        if (mLLedit != null && mEdittext != null) {
+            mLLedit.setVisibility(View.VISIBLE);
+            mContentEditText.setHint(mEdittext);
+        }
+        return this;
+    }
 
     public SweetAlertDialog setCustomImage (Drawable drawable) {
         mCustomImgDrawable = drawable;
@@ -274,7 +290,21 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         }
         return this;
     }
-
+    public SweetAlertDialog setContentEdit (String text) {
+          mEdittext=text;
+        if (mLLedit != null) {
+            mLLedit.setVisibility(View.VISIBLE);
+            mContentEditText.setHint(mEdittext);
+        }
+        return this;
+    }
+    public String getEditContent () {
+        if (mContentEditText != null) {
+            mContentEditText.getText().toString();
+            return mContentEditText.getText().toString();
+        }
+        return "";
+    }
     public boolean isShowCancelButton () {
         return mShowCancel;
     }

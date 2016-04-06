@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by invinjun on 2016/3/16.
  */
-public class JobDetails {
+public class JobDetails implements Serializable{
 
     /**
      * t_job_info : {"id":6,"job_id":5,"address":"宴会服务员","lon":116.454861,"lat":39.940387,"start_date":1458008358,"stop_date":1458098520,"start_time":1458008358,"stop_time":1458098520,"set_place":"步行街正门","set_time":1458008358,"limit_sex":2,"term":3,"other":"其他","work_content":"有接有送包餐 统一要求：【穿黑鞋携带身份证复印件】女生头发要盘起来！","work_require":"口齿伶俐;健康;","is_collection":"1"}
@@ -67,7 +67,7 @@ public class JobDetails {
             return t_merchant;
         }
 
-        public static class TJobInfoEntity {
+        public static class TJobInfoEntity implements Serializable{
             private int id;
             private int job_id;
             private String address;

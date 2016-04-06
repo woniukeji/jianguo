@@ -67,10 +67,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".partjob.demoActivity">
         </activity>
-        <activity android:name=".publish.PublishDetailActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                  android:configChanges="keyboardHidden"
-            >
+        <activity
+            android:name=".publish.PublishDetailActivity"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
             android:name="me.nereo.multi_image_selector.PreviewPicturesActivity"
@@ -80,13 +80,19 @@
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-
-        <activity android:name=".publish.PreviewJobActivity"
+        <activity
+            android:name=".publish.PreviewJobActivity"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".publish.HistoryJobActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".partjob.PartJobManagerActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                  android:configChanges="keyboardHidden"
             >
         </activity>
-
     </application>
 
 </manifest>

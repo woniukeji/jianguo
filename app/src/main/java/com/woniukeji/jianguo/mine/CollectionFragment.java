@@ -66,7 +66,7 @@ public class CollectionFragment extends BaseFragment {
     private int MSG_GET_FAIL = 1;
     private int MSG_DELETE_SUCCESS=5;
     private int MSG_DELETE_FAIL=6;
-    public List<Jobs.ListTJob> jobList = new ArrayList<Jobs.ListTJob>();
+    public List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context mContext = this.getActivity();
     private int loginId;

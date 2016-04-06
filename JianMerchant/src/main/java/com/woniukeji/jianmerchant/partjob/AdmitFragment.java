@@ -1,11 +1,13 @@
 package com.woniukeji.jianmerchant.partjob;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +23,17 @@ import com.woniukeji.jianmerchant.base.BaseFragment;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.Jobs;
-import com.woniukeji.jianmerchant.publish.PublishActivity;
+import com.woniukeji.jianmerchant.entity.Model;
+import com.woniukeji.jianmerchant.publish.HistoryJobAdapter;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
+import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -40,36 +46,21 @@ import okhttp3.Response;
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class PartJobFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.img_top) ImageView imgTop;
-    @InjectView(R.id.img_fabu) ImageView imgFabu;
-    @InjectView(R.id.publish) RelativeLayout publish;
-    @InjectView(R.id.img_gaunli) ImageView imgGaunli;
-    @InjectView(R.id.management) RelativeLayout management;
-    @InjectView(R.id.img_money) ImageView imgMoney;
-    @InjectView(R.id.money_management) RelativeLayout moneyManagement;
-    @InjectView(R.id.img_person) ImageView imgPerson;
-    @InjectView(R.id.manpower) RelativeLayout manpower;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
+public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCallBack{
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @InjectView(R.id.img_renwu) ImageView imgRenwu;
+    @InjectView(R.id.rl_null) RelativeLayout rlNull;
+    @InjectView(R.id.list) FixedRecyclerView list;
+    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_DELETE_SUCCESS = 5;
     private int MSG_DELETE_FAIL = 6;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context mContext = this.getActivity();
-    private int loginId;
-    private int delePosition;
+    private List<Model.ListTJobEntity> modleList=new ArrayList<>();
+    private AdmitAdapter adapter;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public void onDestroyView() {
@@ -77,20 +68,10 @@ public class PartJobFragment extends BaseFragment {
         ButterKnife.reset(this);
     }
 
-    @OnClick({R.id.publish, R.id.management, R.id.money_management, R.id.manpower})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.publish:
-                startActivity(new Intent(getActivity(), PublishActivity.class));
-                break;
-            case R.id.management:
-                startActivity(new Intent(getActivity(), PartJobManagerActivity.class));
-                break;
-            case R.id.money_management:
-                break;
-            case R.id.manpower:
-                break;
-        }
+
+    @Override
+    public void RecyOnClick(int job_id, int merchant_id, int position) {
+
     }
 
 
@@ -135,16 +116,12 @@ public class PartJobFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_part_job, container, false);
+        View view = inflater.inflate(R.layout.fragment_admit, container, false);
         ButterKnife.inject(this, view);
         initview();
         return view;
@@ -152,13 +129,33 @@ public class PartJobFragment extends BaseFragment {
     }
 
     private void initview() {
-        tvTitle.setText("首页");
-        imgBack.setVisibility(View.GONE);
+        int type=((PartJobManagerActivity)getActivity()).getmType();
+        adapter = new AdmitAdapter(modleList, getActivity(),type,this);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+//设置布局管理器
+        list.setLayoutManager(mLayoutManager);
+//设置adapter
+        list.setAdapter(adapter);
+//设置Item增加、移除动画
+        list.setItemAnimator(new DefaultItemAnimator());
+//添加分割线
+//        recycleList.addItemDecoration(new RecyclerView.ItemDecoration() {
+//        });
+//        recycleList.addItemDecoration(new DividerItemDecoration(
+//                getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        refreshLayout.setColorSchemeResources(R.color.app_bg);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetTask getTask=new GetTask("0");
+                getTask.execute();
+            }
+        });
+
     }
 
     @Override
     public void onAttach(Context context) {
-        loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
 //        GetTask getTask = new GetTask(String.valueOf(loginId));
 //        getTask.execute();
         super.onAttach(context);
@@ -243,78 +240,5 @@ public class PartJobFragment extends BaseFragment {
         }
     }
 
-    public class DeleteTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
-        private final String id;
 
-        DeleteTask(String loginId, String id) {
-            this.loginId = loginId;
-            this.id = id;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                DeleteCollAtten();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void DeleteCollAtten() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.GET_JOB_DETAIL)
-                    .addParams("only", only)
-                    .addParams("login_id", loginId)
-                    .addParams("id", id)
-                    .addParams("type", "1")
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Jobs>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_DELETE_FAIL;
-                            mHandler.sendMessage(message);
-                        }
-
-                        @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
-                                Message message = new Message();
-                                message.what = MSG_DELETE_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_DELETE_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
-    }
 }

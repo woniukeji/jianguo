@@ -65,7 +65,7 @@ private Context context=getActivity();
     private ListDropDownAdapter sortAdapter;
     private ListDropDownAdapter jobAdapter;
     private PartJobAdapter adapter;
-    public List<Jobs.ListTJob> jobList = new ArrayList<Jobs.ListTJob>();
+    public List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private Handler mHandler = new Myhandler(this.getActivity());
@@ -89,8 +89,8 @@ private Context context=getActivity();
                     adapter.notifyDataSetChanged();
                     break;
                 case 1:
-                    String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+//                    String ErrorMessage = (String) msg.obj;
+//                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
 

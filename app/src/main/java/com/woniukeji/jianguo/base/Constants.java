@@ -53,7 +53,7 @@ public class Constants {
     public static final String DELETE_COLLATTEN= JIANGUO_USING+"T_attent_Delete_Id_Servlet";//删除收藏关注
 
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
-
+    public static final String POST_SIGN= JIANGUO_USING+"T_enroll_Insert_Servlet";//兼职报名
 
 
     public static final String LOGIN_INFO = "loginInfo";

@@ -30,7 +30,7 @@ import butterknife.InjectView;
 
 public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHolder> {
 
-    private final List<Jobs.ListTJob> mValues;
+    private final List<Jobs.ListTJobEntity> mValues;
     private final Context mContext;
     private View mHeaderView;
     public static final int IS_HEADER = 0;
@@ -39,7 +39,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public HomeJobAdapter(List<Jobs.ListTJob> items, Context context) {
+    public HomeJobAdapter(List<Jobs.ListTJobEntity> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -99,7 +99,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             mmswoon(holder);
             holder.itemView.setVisibility(View.VISIBLE);
         } else {
-            final Jobs.ListTJob job = mValues.get(position - 1);
+            final Jobs.ListTJobEntity job = mValues.get(position - 1);
 
             // 1=月结，2=周结，3=日结，4=小时结
             if (job.getTerm()==1){
@@ -118,7 +118,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
-            String date= DateUtils.getTime(job.getStart_date(),job.getStop_date());
+            String date= DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
             //性别限制（0=只招女，1=只招男，2=不限男女）
             if (job.getLimit_sex()==0){

@@ -71,7 +71,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private OnListFragmentInteractionListener mListener;
     private View headerView;
     private HomeJobAdapter adapter;
-    private List<Jobs.ListTJob> jobList = new ArrayList<Jobs.ListTJob>();
+    private List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
     private ViewPager vp;
     private LinearLayout ll;
     private ArrayList<Page> pageViews = new ArrayList<>();

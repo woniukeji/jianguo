@@ -100,7 +100,7 @@ public class ResumeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_head:
-                //单选多选
+                //单选多选,requestCode,最多选择数，单选模式
                 MultiImageSelectorActivity.startSelect(ResumeActivity.this, 0, 1, 0);
                 break;
             case R.id.rb_girl:

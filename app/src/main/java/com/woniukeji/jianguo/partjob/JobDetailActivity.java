@@ -92,6 +92,7 @@ public class JobDetailActivity extends BaseActivity {
     private int loginId;
     private String img;
     private String name;
+    private int jobid;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -239,17 +240,16 @@ public class JobDetailActivity extends BaseActivity {
     public void initData() {
 
        Intent intent= getIntent();
-        int jobid= intent.getIntExtra("job",0);
+         jobid= intent.getIntExtra("job",0);
         int merchantid=  intent.getIntExtra("merchant",0);
         int money= (int) intent.getDoubleExtra("money",0);
         String count=intent.getStringExtra("count");
         tvWage.setText(String.valueOf(money));
         tvJobsCount.setText(count);
 
-         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
         name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
-
+        loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
         getTask.execute();
     }
@@ -324,7 +324,7 @@ public class JobDetailActivity extends BaseActivity {
 
                 break;
             case R.id.tv_signup:
-                SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,4);
+                SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,jobid);
                 signUpPopuWin.showShareWindow();
                 Rect rect = new Rect();
                 JobDetailActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
@@ -479,11 +479,11 @@ public class JobDetailActivity extends BaseActivity {
                         @Override
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+//                              SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_GET_SUCCESS;
-                                mHandler.sendMessage(message);
+                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
                                 message.obj = baseBean.getMessage();
@@ -491,7 +491,6 @@ public class JobDetailActivity extends BaseActivity {
                                 mHandler.sendMessage(message);
                             }
                         }
-
                     });
         }
     }

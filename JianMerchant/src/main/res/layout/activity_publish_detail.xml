@@ -187,7 +187,7 @@
         <TextView
             android:layout_toRightOf="@+id/level_split"
             android:layout_toLeftOf="@+id/level_img"
-            android:id="@+id/tv_level"
+            android:id="@+id/tv_hot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="热门/精品/旅行/正常"

@@ -26,6 +26,11 @@ public class Constants {
     public static final String REC_SMS= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//忘记密码 快速登录
     public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
     public static final String POST_PART_INFO= JIANGUO_USING+"T_Job_Insert_Servlet";//提交兼职信息
+    public static final String GET_PART_HISTORY= JIANGUO_USING+"T_job_Model_List_Servlet";//获取兼职历史记录
+    public static final String DELETE_JOB_MODEL= JIANGUO_USING+"T_job_Model_Delete_Servlet";//删除兼职模板
+
+
+
 
 
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
@@ -55,6 +60,8 @@ public class Constants {
     public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
 
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
+
+
 
 
 

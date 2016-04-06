@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.BaseActivity;
 import com.woniukeji.jianmerchant.base.Constants;
@@ -25,9 +26,11 @@ import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.CityCategory;
 import com.woniukeji.jianmerchant.entity.JobDetails;
 import com.woniukeji.jianmerchant.entity.Jobs;
+import com.woniukeji.jianmerchant.entity.Model;
 import com.woniukeji.jianmerchant.entity.PickType;
 import com.woniukeji.jianmerchant.utils.BitmapUtils;
 import com.woniukeji.jianmerchant.utils.CommonUtils;
+import com.woniukeji.jianmerchant.utils.CropCircleTransfermation;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.MD5Coder;
 import com.woniukeji.jianmerchant.utils.QiNiu;
@@ -66,7 +69,7 @@ public class PublishDetailActivity extends BaseActivity {
     @InjectView(R.id.tv_lev) TextView tvLev;
     @InjectView(R.id.level_split) ImageView levelSplit;
     @InjectView(R.id.level_img) ImageView levelImg;
-    @InjectView(R.id.tv_level) TextView tvLevel;
+    @InjectView(R.id.tv_hot) TextView tvHot;
     @InjectView(R.id.rl_part_level) RelativeLayout rlPartClass;
     @InjectView(R.id.tv_cate) TextView tvCate;
     @InjectView(R.id.categorysplit) ImageView categorysplit;
@@ -139,7 +142,7 @@ public class PublishDetailActivity extends BaseActivity {
     @InjectView(R.id.btn_save) Button btnSave;
     @InjectView(R.id.btn_publish) Button btnPublish;
     //顺序对应不能改变，否则id和服务器不同步
-    private String[] partLevel=new String[]{"普通","热门","精品","旅行"};
+    private String[] partHot =new String[]{"普通","热门","精品","旅行"};
     private String[] payMethods=new String[]{"月结","周结","日结","旅行"};
     private String[] wagesMethods=new String[]{"元/月","元/周","元/天","元/小时","元/次","义工"};
     private String[] sexs=new String[]{"仅限女","仅限男","不限男女","男女各需"};
@@ -153,7 +156,6 @@ public class PublishDetailActivity extends BaseActivity {
     private int MSG_REGISTER_SUCCESS = 3;
     private Handler mHandler = new Myhandler(this);
     private Context context = PublishDetailActivity.this;
-    private String fileName="";
     private String city_id="";// 城市ID
 
     private String aera_id="";//地区ID
@@ -164,7 +166,7 @@ public class PublishDetailActivity extends BaseActivity {
 
     private String name="";//      兼职名称
 
-    private String name_image;//    兼职图片
+    private String name_image="";//    兼职图片
 
     private String start_date="";//    开始日期
 
@@ -219,12 +221,16 @@ public class PublishDetailActivity extends BaseActivity {
             PublishDetailActivity activity = (PublishDetailActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    activity.sweetAlertDialog.dismiss();
-                    String sucessMessage = (String) msg.obj;
+                    if (activity.sweetAlertDialog.isShowing()){
+                        activity.sweetAlertDialog.dismiss();
+                    }
+                    String sucessMessage = "操作成功！";
                     Toast.makeText(activity, sucessMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
-                    activity.sweetAlertDialog.dismiss();
+                    if (activity.sweetAlertDialog.isShowing()){
+                        activity.sweetAlertDialog.dismiss();
+                    }
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
@@ -279,8 +285,8 @@ public class PublishDetailActivity extends BaseActivity {
                             activity.city_id=pickType.getPickId();
                             break;
                         case 1://兼职级别
-                            activity.tvLevel.setText(pickType.getPickName());
-                            activity.tvLevel.setTextColor(activity.getResources().getColor(R.color.black));
+                            activity.tvHot.setText(pickType.getPickName());
+                            activity.tvHot.setTextColor(activity.getResources().getColor(R.color.black));
                             activity.hot=pickType.getPickId();
                             break;
                         case 2://兼职种类
@@ -300,7 +306,7 @@ public class PublishDetailActivity extends BaseActivity {
                         case 5://性别选择
                             activity.tvSex.setText(pickType.getPickName());
                             activity.tvSex.setTextColor(activity.getResources().getColor(R.color.black));
-                            if (pickType.getPickName().equals("限制男女数")){
+                            if (pickType.getPickName().equals("男女各需")){
                                 activity.rlLimits.setVisibility(View.VISIBLE);
                                 activity.rlNoLimits.setVisibility(View.GONE);
                             }else {
@@ -344,10 +350,10 @@ public class PublishDetailActivity extends BaseActivity {
                 break;
             case R.id.rl_part_level:
                 List<PickType> listTemp= new ArrayList<>();
-                for (int i = 0; i <partLevel.length ; i++) {
+                for (int i = 0; i < partHot.length ; i++) {
                     PickType pickType=new PickType();
                     pickType.setPickId(String.valueOf(i));
-                    pickType.setPickName(partLevel[i]);
+                    pickType.setPickName(partHot[i]);
                     listTemp.add(pickType);
                 }
                 TypePickerPopuWin pickerPopup=new TypePickerPopuWin(context,listTemp,mHandler,1);
@@ -505,26 +511,56 @@ public class PublishDetailActivity extends BaseActivity {
 
                 break;
             case R.id.btn_save:
+                if (CheckStatus()){
+
+                    new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                            .setTitleText("保存为模板")
+                            .setContentEdit("请输入您的模板标题")
+                            .setCancelText("取消")
+                            .setConfirmText("保存")
+                            .showCancelButton(true)
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.cancel();
+                                    String job_model=sweetAlertDialog.getEditContent();
+                                    alike="0";
+                                    if (limit_sex.equals("3")){
+                                        alike="0";
+                                        PostPartInfoTask postPartInfo=new PostPartInfoTask("0",limit_sex,job_model);
+                                        postPartInfo.execute();
+                                    }else {
+                                        alike="0";
+                                        PostPartInfoTask postPartInfo=new PostPartInfoTask(etCount.getText().toString(),limit_sex,job_model);
+                                        postPartInfo.execute();
+                                    }
+
+                                }
+                            })
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.cancel();
+                                }
+                            })
+                            .show();
+                }
 
                 break;
             case R.id.btn_publish:
 
                 if (CheckStatus()){
-                    sweetAlertDialog=new SweetAlertDialog(mContext,SweetAlertDialog.PROGRESS_TYPE);
-                    sweetAlertDialog.setTitleText("提交中");
-                    sweetAlertDialog.getProgressHelper().setBarColor(R.color.app_bg);
-                    sweetAlertDialog.show();
-                    if (limit_sex.equals("3")){
-                        alike= String.valueOf(System.currentTimeMillis());
-                        PostPartInfoTask postPartInfoTask=new PostPartInfoTask(etGirlCount.getText().toString());
-                        postPartInfoTask.execute();
-                        PostPartInfoTask postPartInfo=new PostPartInfoTask(etBoyCount.getText().toString());
-                        postPartInfo.execute();
-                    }else {
-                        alike="0";
-                        PostPartInfoTask postPartInfo=new PostPartInfoTask(etCount.getText().toString());
-                        postPartInfo.execute();
-                    }
+                        if (limit_sex.equals("3")){
+                            alike= String.valueOf(System.currentTimeMillis());
+                            PostPartInfoTask postPartInfoTask=new PostPartInfoTask(etGirlCount.getText().toString(),"31");
+                            postPartInfoTask.execute();
+                            PostPartInfoTask postPartInfo=new PostPartInfoTask(etBoyCount.getText().toString(),"30");
+                            postPartInfo.execute();
+                        }else {
+                            alike="0";
+                            PostPartInfoTask postPartInfo=new PostPartInfoTask(etCount.getText().toString(),limit_sex);
+                            postPartInfo.execute();
+                        }
                 }
 
                 break;
@@ -558,7 +594,7 @@ public class PublishDetailActivity extends BaseActivity {
         else if(etWorkRequire.getText().toString()==null ||etWorkRequire.getText().toString().equals("")){
             showShortToast("请输入工作要求");
             return false;
-        }else if (fileName==null||fileName.equals("")){
+        }else if (name_image==null||name_image.equals("")){
             showShortToast("请设置兼职图片");
             return false;
         }else if (city_id==null||city_id.equals("")){
@@ -626,8 +662,6 @@ public class PublishDetailActivity extends BaseActivity {
         tel=etTel.getText().toString();
         work_content=etWorkContent.getText().toString();
         work_require=etWorkRequire.getText().toString();
-        name_image="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-
         return true;
     }
 
@@ -641,6 +675,70 @@ public class PublishDetailActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        Intent intent=getIntent();
+        String mType = intent.getStringExtra("type");
+        if (mType.equals("old")){
+            Model.ListTJobEntity modle= (Model.ListTJobEntity) intent.getSerializableExtra("job");
+            initModleData(modle);
+        }
+
+    }
+
+    private void initModleData( Model.ListTJobEntity modle) {
+        tvPublishLocation.setText(modle.getCity_id_name());
+        tvPublishLocation.setTextColor(getResources().getColor(R.color.black));
+        city_id= String.valueOf(modle.getCity_id());
+        tvPosition.setText(modle.getArea_id_name());
+        tvPosition.setTextColor(getResources().getColor(R.color.black));
+        aera_id= String.valueOf(modle.getArea_id());
+        tvCategory.setText(modle.getType_id_name());
+        tvCategory.setTextColor(getResources().getColor(R.color.black));
+        type_id=String.valueOf(modle.getType_id());
+        etTitle.setText(modle.getName());
+        name_image=modle.getName_image();
+        Picasso.with(mContext).load(name_image)
+                .placeholder(R.mipmap.icon_head_defult)
+                .error(R.mipmap.icon_head_defult)
+                .transform(new CropCircleTransfermation())
+                .into(imgJob);
+        tvDateStart.setText(DateUtils.getTime(Long.parseLong(modle.getStart_date()),"yyyy-MM-dd"));
+        tvDateEnd.setText(DateUtils.getTime(Long.parseLong(modle.getStop_date()),"yyyy-MM-dd"));
+        start_date=modle.getStart_date();
+        stop_date=modle.getStop_date();
+        tvTimeStart.setText(modle.getInfo_start_time());
+        tvTimeEnd.setText(modle.getInfo_stop_time());
+        start_time=modle.getInfo_start_time();
+        stop_time=modle.getInfo_stop_time();
+        etDetailPosition.setText(modle.getAddress());
+        tvPayMethod.setText(payMethods[modle.getMode()]);
+        tvPayMethod.setTextColor(getResources().getColor(R.color.black));
+        mode= String.valueOf(modle.getMode());
+        etWages.setText(String.valueOf(modle.getMoney()));
+        etWages.setTextColor(getResources().getColor(R.color.black));
+        tvWagesMethod.setText(wagesMethods[modle.getTerm()]);
+        term=String.valueOf(modle.getTerm());
+        limit_sex= String.valueOf(modle.getLimit_sex());
+        tvSex.setText(sexs[modle.getLimit_sex()]);
+        tvSex.setTextColor(getResources().getColor(R.color.black));
+        sum= String.valueOf(modle.getSum());
+        if (limit_sex.equals("30")){
+            etGirlCount.setText(sum);
+        }else if(limit_sex.equals("31")){
+            etBoyCount.setText(sum);
+        }else {
+            etCount.setText(sum);
+        }
+
+        tvHot.setText(partHot[modle.getHot()]);
+        hot= String.valueOf(modle.getHot());
+        tvHot.setTextColor(getResources().getColor(R.color.black));
+        etTel.setText(modle.getInfo_tel());
+
+        etWorkContent.setText(modle.getInfo_work_content());
+        etWorkRequire.setText(modle.getInfo_work_require());
+        etCollectionPosition.setText(modle.getInfo_set_place());
+        etCollectionTime.setText(modle.getInfo_set_time());
+
 
     }
 
@@ -692,11 +790,12 @@ public class PublishDetailActivity extends BaseActivity {
                 // 处理你自己的逻辑 ....
                 File imgFile = new File(path.get(0));
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
-                fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
+                String fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource =  Uri.fromFile(imgFile);
                 imgJob.setImageURI(imgSource);
                 BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 300, 300);
                 QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
+                name_image="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
             }
         }else if(requestCode == 1){
 //            tvBirthday.setText(data.getStringExtra("date"));
@@ -785,8 +884,16 @@ public class PublishDetailActivity extends BaseActivity {
     }
     public class PostPartInfoTask extends AsyncTask<Void, Void, Void> {
         private String mSum;
-        PostPartInfoTask(String sum){
+        private String mSex_limit;
+        private String mjob_model="0";
+        PostPartInfoTask(String sum,String Sex_limit){
             this.mSum=sum;
+            this.mSex_limit=Sex_limit;
+        }
+        PostPartInfoTask(String sum,String Sex_limit,String job_model){
+            this.mSum=sum;
+            this.mSex_limit=Sex_limit;
+            this.mjob_model=job_model;
         }
         @Override
         protected Void doInBackground(Void... params) {
@@ -800,6 +907,10 @@ public class PublishDetailActivity extends BaseActivity {
 
         @Override
         protected void onPreExecute() {
+            sweetAlertDialog=new SweetAlertDialog(mContext,SweetAlertDialog.PROGRESS_TYPE);
+            sweetAlertDialog.setTitleText("提交中");
+            sweetAlertDialog.getProgressHelper().setBarColor(R.color.app_bg);
+            sweetAlertDialog.show();
             super.onPreExecute();
         }
 
@@ -824,7 +935,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("mode", mode)
                     .addParams("money", money)
                     .addParams("term", term)
-                    .addParams("limit_sex", limit_sex)
+                    .addParams("limit_sex", mSex_limit)
                     .addParams("sum", mSum)
                     .addParams("hot", hot)
                     .addParams("alike", alike)
@@ -838,6 +949,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("other", "")
                     .addParams("work_content", work_content)
                     .addParams("work_require", work_require)
+                    .addParams("job_model", mjob_model)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)

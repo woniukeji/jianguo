@@ -120,7 +120,7 @@
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="19sp"
+        android:textSize="16dp"
         android:textColor="#575757"
         android:layout_marginTop="10dp"
         android:singleLine="true"
@@ -134,16 +134,49 @@
         android:layout_marginLeft="45dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:maxLines="2"
-        android:text="由于连接不到网络,您的直播已经中断"
+        android:hint="输入您的模板标题"
         android:textAlignment="center"
         android:gravity="center"
         android:textColor="#797979"
         android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/ll_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:visibility="gone"
+        >
+        <EditText
+            android:id="@+id/et_text"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:maxLines="1"
+            android:hint="输入您的模板标题"
+            android:textColorHint="#bfbfbf"
+            android:textAlignment="center"
+            android:background="#00000000"
+            android:gravity="center"
+            android:textColor="#797979"
+            android:visibility="visible" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#bfbfbf"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            />
+
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
