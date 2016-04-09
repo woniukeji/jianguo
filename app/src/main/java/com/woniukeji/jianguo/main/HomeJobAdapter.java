@@ -93,22 +93,26 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (position == 0) {
             return;
-        } else if (mValues.size() < 5) {
+        }
+        if (mValues.size() <1) {
             holder.itemView.setVisibility(View.GONE);
-        } else if (mValues.size() + 1 == position) {
-            mmswoon(holder);
-            holder.itemView.setVisibility(View.VISIBLE);
+        }
+        if (mValues.size() + 1 == position) {
+            if (mValues.size()>4){
+                mmswoon(holder);
+                holder.itemView.setVisibility(View.VISIBLE);
+            }
         } else {
-            final Jobs.ListTJobEntity job = mValues.get(position - 1);
+            final Jobs.ListTJobEntity job = mValues.get(position-1);
 
             // 1=月结，2=周结，3=日结，4=小时结
-            if (job.getTerm()==1){
+            if (job.getTerm()==0){
                 holder.tvPayMethod.setText("月结");
                 holder.tvWages.setText(job.getMoney()+"/月");
-            }else if(job.getTerm()==2){
+            }else if(job.getTerm()==1){
                 holder.tvPayMethod.setText("周结");
                 holder.tvWages.setText(job.getMoney()+"/周");
-            }else if(job.getTerm()==3){
+            }else if(job.getTerm()==2){
                 holder.tvPayMethod.setText("日结");
                 holder.tvWages.setText(job.getMoney()+"/日");
             }else {

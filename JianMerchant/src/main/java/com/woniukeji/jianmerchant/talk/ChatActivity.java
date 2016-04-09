@@ -172,8 +172,8 @@ public class ChatActivity extends KJActivity {
         mRealListView = (ListView) findViewById(R.id.chat_listview);
         mRealListView.setSelector(android.R.color.transparent);
         int loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        String img = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.SP_IMG, "");
-        String nickname = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.SP_NICK, "无名字");
+        String img = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.USER_IMG, "");
+        String nickname = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.USER_NICK, "无名字");
         initMessageInputToolBox(String.valueOf(loginId), nickname, img);
         initListView();
 

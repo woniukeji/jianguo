@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
+import com.woniukeji.jianguo.eventbus.JobTypeEvent;
 import com.woniukeji.jianguo.mine.MyPartJboActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -86,6 +88,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     LinearLayout mLlPartBottom;
     RelativeLayout mImgTravelJob;
     TextView mTvPart3;
+    private int lastVisibleItem;
+    private LinearLayoutManager mLayoutManager;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_GET_CITY_SUCCESS = 4;
@@ -114,6 +118,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             MainActivity mainActivity = (MainActivity) reference.get();
             switch (msg.what) {
                 case 0:
+                    if (refreshLayout.isRefreshing()) {
+                        refreshLayout.setRefreshing(false);
+                    }
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
                     jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
@@ -198,7 +205,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
         adapter = new HomeJobAdapter(jobList, getActivity());
         adapter.addHeaderView(headerView);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+         mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
         recycleList.setLayoutManager(mLayoutManager);
 //设置adapter
@@ -206,9 +213,12 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 //设置Item增加、移除动画
         recycleList.setItemAnimator(new DefaultItemAnimator());
 //添加分割线
+        refreshLayout.setColorSchemeResources(R.color.app_bg);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                GetTask getTask = new GetTask("0","0");
+                getTask.execute();
             }
         });
         return view;
@@ -230,18 +240,50 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         mImgMyJob.setOnClickListener(this);
 
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        recycleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1) {
+                    GetTask getTask=new GetTask("0",String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         MainActivity mainActivity= (MainActivity) getActivity();
             switch (view.getId()){
                 case R.id.img_gifts_job:
-
                     mainActivity.getMainPager().setCurrentItem(1);
+                    JobTypeEvent jobTypeEvent=new JobTypeEvent();
+                    jobTypeEvent.fragmentHotType=2;//热门（0=普通，1=热门，2=精品，3=旅行）
+
+                    EventBus.getDefault().post(jobTypeEvent);
                 break;
                 case R.id.img_day_job:
+                    JobTypeEvent jobTypeEv=new JobTypeEvent();
+                    jobTypeEv.fragmentHotType=4;
+                    EventBus.getDefault().post(jobTypeEv);
                     mainActivity.getMainPager().setCurrentItem(1);
                     break;
                 case R.id.img_travel_job:
+                    JobTypeEvent jobType=new JobTypeEvent();
+                    jobType.fragmentHotType=3;
+                    EventBus.getDefault().post(jobType);
                     mainActivity.getMainPager().setCurrentItem(1);
                     break;
                 case R.id.img_my_job:
@@ -254,7 +296,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private void initData() {
         GetCityTask getCityTask = new GetCityTask();
         getCityTask.execute();
-        GetTask getTask = new GetTask("0");
+        GetTask getTask = new GetTask("1","0");
         getTask.execute();
     }
 
@@ -324,9 +366,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
         private final String type;
+        private final String count;
 
-        GetTask(String type) {
+        GetTask(String type,String count) {
             this.type = type;
+            this.count=count;
         }
 
         @Override
@@ -342,9 +386,16 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
         @Override
         protected void onPreExecute() {
+            if (!refreshLayout.isRefreshing()){
+                refreshLayout.setProgressViewOffset(false, 0,dip2px(getActivity(), 24));
+                refreshLayout.setRefreshing(true);
+            }
             super.onPreExecute();
         }
-
+        public  int dip2px(Context context, float dipValue) {
+            float scale = context.getResources().getDisplayMetrics().density;
+            return (int) (scale * dipValue + 0.5f);
+        }
         /**
          * postInfo
          */
@@ -354,7 +405,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .get()
                     .url(Constants.GET_JOB)
                     .addParams("only", only)
-                    .addParams("hot", type)
+                    .addParams("hot", "1")
+                    .addParams("count", count)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)

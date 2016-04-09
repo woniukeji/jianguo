@@ -33,7 +33,7 @@ android:visibility="gone"
         android:layout_marginTop="10dp"
         >
 
-        <com.woniukeji.jianguo.widget.CircleImageView
+        <com.woniukeji.jianmerchant.widget.CircleImageView
             android:id="@+id/circle_talk_head03"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -95,7 +95,7 @@ android:visibility="gone"
                     android:layout_marginTop="10dp"
         >
 
-        <com.woniukeji.jianguo.widget.CircleImageView
+        <com.woniukeji.jianmerchant.widget.CircleImageView
             android:id="@+id/circle_talk_head04"
             android:layout_width="38dp"
             android:layout_height="38dp"
@@ -151,13 +151,13 @@ android:visibility="gone"
             />
     </RelativeLayout>
 
-    <com.woniukeji.jianguo.widget.FixedRecyclerView
+    <com.woniukeji.jianmerchant.widget.FixedRecyclerView
         android:layout_marginTop="10dp"
         android:id="@+id/talk_const_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.woniukeji.jianguo.widget.FixedRecyclerView>
+    </com.woniukeji.jianmerchant.widget.FixedRecyclerView>
 
 
 </LinearLayout>

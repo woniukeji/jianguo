@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rl_job"
+                android:layout_width="fill_parent"
+                android:layout_height="111dp"
+                android:background="#f3f3f3"
+    >
+<RelativeLayout
+    android:id="@+id/rl_top"
+    android:layout_marginTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:background="@color/white"
+    >
+
+
+    <ImageView
+        android:id="@+id/user_head"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/default_head"
+        />
+    <TextView
+        android:id="@+id/business_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/user_head"
+        android:layout_marginTop="14dp"
+        android:text="凯宾斯基酒店宴会服务员"
+        />
+    <RelativeLayout
+        android:layout_below="@+id/business_name"
+        android:layout_toRightOf="@+id/user_head"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="14dp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+        <ImageView
+            android:id="@+id/img_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_day"
+            />
+        <TextView
+            android:id="@+id/tv_work_date"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/img_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="月结"
+            android:textSize="12dp"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+
+            />
+
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#bfbfbf"
+        android:layout_alignParentBottom="true"
+        />
+    <TextView
+        android:id="@+id/tv_job_wages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1500/月"
+        android:textColor="#f87c7c"
+        android:layout_marginRight="39dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:background="@mipmap/icon_go"
+        />
+</RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_button"
+        android:layout_below="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="right|center"
+        android:background="@color/white"
+
+        >
+<Button
+    android:id="@+id/btn_cancel_actn"
+    android:layout_width="65dp"
+    android:layout_height="25dp"
+    android:layout_marginRight="15dp"
+    android:textColor="@color/white"
+    android:text="取消参加"
+    android:textSize="12dp"
+    android:background="@drawable/button_sign_backound_yellow"
+    />
+        <Button
+            android:id="@+id/btn_confirm_actn"
+            android:layout_width="65dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+            android:text="确定参加"
+            android:textSize="12dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_sign_background_red"
+            />
+    </LinearLayout>
+</RelativeLayout>

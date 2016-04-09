@@ -47,6 +47,7 @@ public class Constants {
     public static final String GET_RESUME= JIANGUO_USING+"T_user_resume_SelectId_Servlet";//查看简历
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
     public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
+    public static final String GET_JOB_DAY= JIANGUO_USING+"T_job_List_Day_Servlet";//日周月兼职列表获取
     public static final String POST_ATTENT= JIANGUO_USING+"T_attent_Insert_Servlet";//关注收藏接口
     public static final String GET_ATTENT= JIANGUO_USING+"T_attent_Select_Servlet";//关注收藏获
     public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
@@ -54,6 +55,11 @@ public class Constants {
 
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
     public static final String POST_SIGN= JIANGUO_USING+"T_enroll_Insert_Servlet";//兼职报名
+    public static final String POST_LOOK_JOB= JIANGUO_USING+"T_job_Look_Servlet";//浏览兼职记录接口
+    public static final String GET_SIGN_JOB= JIANGUO_USING+"T_enroll_User_Servlet";//浏览兼职记录接口
+    public static final String POST_AGREE_JOB= JIANGUO_USING+"T_enroll_Agree_Servlet";//确认参加兼职
+    public static final String POST_STATUS= JIANGUO_USING+"T_enroll_Offer_Servlet";//改变状态接口
+
 
 
     public static final String LOGIN_INFO = "loginInfo";

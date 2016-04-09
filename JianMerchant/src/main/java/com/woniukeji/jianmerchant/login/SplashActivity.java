@@ -119,9 +119,9 @@ public class SplashActivity extends BaseActivity {
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, user.getT_user_login().getId());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, user.getT_user_login().getStatus());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, user.getT_user_login().getQiniu());
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_MERCHANT_ID,user.getT_merchant().getId());
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_merchant().getName_image()!=null?user.getT_merchant().getName_image():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_MERCHANT_ID,user.getT_merchant().getId());
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_NAME,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
+        SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_IMG,user.getT_merchant().getName_image()!=null?user.getT_merchant().getName_image():"");
         final ChatManager chatManager = ChatManager.getInstance();
 //        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
 //            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));

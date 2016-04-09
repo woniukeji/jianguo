@@ -17,6 +17,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.entity.TabEntity;
 import com.woniukeji.jianmerchant.partjob.PartJobFragment;
+import com.woniukeji.jianmerchant.talk.TalkFragment;
 import com.woniukeji.jianmerchant.talk.leanmessage.ChatManager;
 import com.woniukeji.jianmerchant.talk.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
@@ -181,8 +182,8 @@ public class MainActivity extends BaseActivity {
             switch (position) {
                 case 0:
                     return new PartJobFragment();           //直播榜
-//                case 1:
-//                    return new PartJobFragment();          //话题榜
+                case 1:
+                    return new TalkFragment();          //话题榜
 //                case 2:
 //                    return new TalkFragment();
             }

@@ -163,14 +163,20 @@ public class JobDetailActivity extends BaseActivity {
 
     private void fillData() {
         tvWorkLocation.setText(jobinfo.getAddress());
-        String date = DateUtils.getTime(jobinfo.getStart_date(), jobinfo.getStop_date());
-        String time = DateUtils.getTime(jobinfo.getStart_time(), jobinfo.getStop_time(), "HH:mm");
-        String setTime = DateUtils.getTime(jobinfo.getSet_time(), "HH:mm");
+        if (jobinfo!=null){
+
+        String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
+        String time = jobinfo.getStart_time()+"-"+jobinfo.getStop_time();
+        String setTime =jobinfo.getSet_time();
         tvWorkDate.setText(date);
         tvWorkTime.setText(time);
         tvCollectionSites.setText(jobinfo.getSet_place());
         tvCollectionTime.setText(setTime);
 
+        if (jobinfo.getIs_enroll().equals("1")){
+            tvSignup.setText("已报名");
+            tvSignup.setBackgroundResource(R.color.gray);
+        }
         if (jobinfo.getIs_collection().equals("0")){
             Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -188,11 +194,11 @@ public class JobDetailActivity extends BaseActivity {
         } else
             tvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
         //期限（1=月结，2=周结，3=日结，4=小时结）
-        if (jobinfo.getTerm() == 1) {
+        if (jobinfo.getTerm() == 0) {
             tvPayMethod.setText("月结");
-        } else if (jobinfo.getTerm() == 2) {
+        } else if (jobinfo.getTerm() == 1) {
             tvPayMethod.setText("周结");
-        } else if (jobinfo.getTerm() == 3) {
+        } else if (jobinfo.getTerm() == 2) {
             tvPayMethod.setText("日结");
         } else
             tvPayMethod.setText("小时结");
@@ -216,12 +222,27 @@ public class JobDetailActivity extends BaseActivity {
                 .transform(new CropCircleTransfermation())
                 .into(userHead);
 
+        }
+
     }
 
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_job_detail);
         ButterKnife.inject(this);
+
+        Intent intent= getIntent();
+        jobid= intent.getIntExtra("job",0);
+        int merchantid=  intent.getIntExtra("merchant",0);
+        int money= (int) intent.getDoubleExtra("money",0);
+        String count=intent.getStringExtra("count");
+        img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
+        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
+        loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
+        getTask.execute();
+        tvWage.setText(String.valueOf(money));
+        tvJobsCount.setText(count);
     }
 
     @Override
@@ -239,19 +260,15 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void initData() {
 
-       Intent intent= getIntent();
-         jobid= intent.getIntExtra("job",0);
-        int merchantid=  intent.getIntExtra("merchant",0);
-        int money= (int) intent.getDoubleExtra("money",0);
-        String count=intent.getStringExtra("count");
-        tvWage.setText(String.valueOf(money));
-        tvJobsCount.setText(count);
 
-        img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
-        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
-        loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
-        getTask.execute();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        PostBrowseTask postBrowseTask=new PostBrowseTask(String.valueOf(loginId),String.valueOf(jobid));
+        postBrowseTask.execute();
     }
 
     @Override
@@ -283,7 +300,7 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_contact_company:
                 final int Id=merchantInfo.getId();
 //                String.valueOf(Id);
-                final String toUserId="48";
+                final String toUserId= String.valueOf(merchantInfo.getId());
                 Map<String, Object> attrs = new HashMap<>();
                 attrs.put(Constants.CREAT_NAME, name);
                 attrs.put(Constants.CREAT_IMG, img);
@@ -415,7 +432,81 @@ public class JobDetailActivity extends BaseActivity {
                     });
         }
     }
+    public class PostBrowseTask extends AsyncTask<Void, Void, Void> {
+        private final String login_id;
+        private final String jobid;
 
+        PostBrowseTask(String login_id,String jobid) {
+            this.jobid = jobid;
+            this.login_id = login_id;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                PostBrowse();
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * postInfo
+         */
+        public void PostBrowse() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.POST_LOOK_JOB)
+                    .addParams("only", only)
+                    .addParams("login_id", login_id)
+                    .addParams("job_id", jobid)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean<JobDetails>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+//                            Message message = new Message();
+//                            message.obj = e.toString();
+//                            message.what = 3;
+//                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+//                                Message message = new Message();
+//                                message.obj = baseBean.getMessage();
+//                                message.what = 3;
+//                                mHandler.sendMessage(message);
+                            } else {
+//                                Message message = new Message();
+//                                message.obj = baseBean.getMessage();
+//                                message.what = 3;
+//                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
+    }
     public class GetTask extends AsyncTask<Void, Void, Void> {
         private final String login_id;
         private final String job_id;
@@ -455,6 +546,7 @@ public class JobDetailActivity extends BaseActivity {
                     .addParams("login_id", login_id)
                     .addParams("job_id", job_id)
                     .addParams("merchant_id", merchant_id)
+                    .addParams("alike", "0")
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)

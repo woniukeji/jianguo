@@ -127,11 +127,11 @@ public class MyPartJboActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new WaitFragment();           //直播榜
+                    return signFragment.newInstance(0);           //直播榜
                 case 1:
-                    return new WaitFragment();
+                    return signFragment.newInstance(1);
                 case 2:
-                    return new WaitFragment();    //话题榜
+                    return signFragment.newInstance(2);
             }
             return new FragmentText();
         }

@@ -2,6 +2,7 @@ package com.woniukeji.jianguo.partjob;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,12 +24,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jayfang.dropdownmenu.DropDownMenu;
+import com.jayfang.dropdownmenu.OnMenuSelectedListener;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.eventbus.CityEvent;
+import com.woniukeji.jianguo.eventbus.JobTypeEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
@@ -42,6 +48,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -53,7 +60,6 @@ public class PartJobFragment extends BaseFragment {
 private Context context=getActivity();
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.dropDownMenu) com.yyydjk.library.DropDownMenu mDropDownMenu;
     @InjectView(R.id.list) FixedRecyclerView list;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     private String headers[] = {"职业", "排序", "地区"};
@@ -65,10 +71,14 @@ private Context context=getActivity();
     private ListDropDownAdapter sortAdapter;
     private ListDropDownAdapter jobAdapter;
     private PartJobAdapter adapter;
+    private int lastVisibleItem;
+    private LinearLayoutManager mLayoutManager;
     public List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private Handler mHandler = new Myhandler(this.getActivity());
+    private DropDownMenu mMenu;
+    private int mtype=0;
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -83,6 +93,9 @@ private Context context=getActivity();
           MainActivity mainActivity = (MainActivity) reference.get();
             switch (msg.what) {
                 case 0:
+                    if (refreshLayout.isRefreshing()) {
+                        refreshLayout.setRefreshing(false);
+                    }
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
                     jobs.getData().getList_t_job();
                    jobList.addAll(jobs.getData().getList_t_job());
@@ -112,14 +125,15 @@ private Context context=getActivity();
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_part_job, container, false);
         ButterKnife.inject(this, view);
-        initDropDownView();
+        EventBus.getDefault().register(this);
+        initDropDownView(view);
         initview();
         initData();
         return view;
     }
 
     private void initData() {
-        GetTask getTask = new GetTask("0");
+        GetTask getTask = new GetTask("1","0");
         getTask.execute();
     }
 
@@ -127,7 +141,7 @@ private Context context=getActivity();
         tvTitle.setText("兼职");
         imgBack.setVisibility(View.GONE);
         adapter = new PartJobAdapter(jobList, getActivity());
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+         mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
         list.setLayoutManager(mLayoutManager);
 //设置adapter
@@ -139,65 +153,55 @@ private Context context=getActivity();
 //        });
 //        recycleList.addItemDecoration(new DividerItemDecoration(
 //                getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        refreshLayout.setColorSchemeResources(R.color.app_bg);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                GetTask getTask = new GetTask("0","0");
+                getTask.execute();
             }
         });
     }
 
-    private void initDropDownView() {
-        final ListView cityView = new ListView(getActivity());
-        cityAdapter = new GirdDropDownAdapter(getActivity(), Arrays.asList(citys));
-        cityView.setDividerHeight(0);
-        cityView.setAdapter(cityAdapter);
-        final ListView sortView = new ListView(getActivity());
-        sortView.setDividerHeight(0);
-        sortAdapter = new ListDropDownAdapter(getActivity(), Arrays.asList(sort));
-        sortView.setAdapter(sortAdapter);
+    private void initDropDownView(View view) {
+//        final ListView cityView = new ListView(getActivity());
+//        cityAdapter = new GirdDropDownAdapter(getActivity(), Arrays.asList(citys));
+//        cityView.setDividerHeight(0);
+//        cityView.setAdapter(cityAdapter);
+//        final ListView sortView = new ListView(getActivity());
+//        sortView.setDividerHeight(0);
+//        sortAdapter = new ListDropDownAdapter(getActivity(), Arrays.asList(sort));
+//        sortView.setAdapter(sortAdapter);
 
         //init sex menu
-        final ListView jobView = new ListView(getActivity());
-        jobView.setDividerHeight(0);
-        jobAdapter = new ListDropDownAdapter(getActivity(), Arrays.asList(jobs));
-        jobView.setAdapter(jobAdapter);
-        cityView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mMenu=(DropDownMenu)view.findViewById(R.id.menu);
+        mMenu.setmMenuCount(3);
+        mMenu.setmShowCount(6);
+        mMenu.setShowCheck(true);//是否显示展开list的选中项
+        mMenu.setmMenuTitleTextSize(14);//Menu的文字大小
+        mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色
+        mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
+        mMenu.setmMenuListTextColor(Color.BLACK);//Menu展开list的文字颜色
+        mMenu.setmMenuBackColor(Color.WHITE);//Menu的背景颜色
+        mMenu.setmMenuPressedBackColor(Color.GRAY);//Menu按下的背景颜色
+        mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
+        mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
+        mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
+        mMenu.setDefaultMenuTitle(headers);//默认未选择任何过滤的Menu title
+        mMenu.setMenuSelectedListener(new OnMenuSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                cityAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[0] : citys[position]);
-                mDropDownMenu.closeMenu();
+            //Menu展开的list点击事件  RowIndex：list的索引  ColumnIndex：menu的索引
+            public void onSelected(View listview, int RowIndex, int ColumnIndex) {
+
+
             }
         });
-
-        sortView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                sortAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[1] : sort[position]);
-                mDropDownMenu.closeMenu();
-            }
-        });
-
-        jobView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                jobAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[2] : jobs[position]);
-                mDropDownMenu.closeMenu();
-            }
-        });
-
-        popupViews.add(cityView);
-        popupViews.add(sortView);
-        popupViews.add(jobView);
-
-        TextView contentView = new TextView(getActivity());
-        contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        contentView.setText("内容显示区域");
-        contentView.setGravity(Gravity.CENTER);
-        contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
+        List<String[]> items = new ArrayList<>();
+        items.add(jobs);
+        items.add(sort);
+        items.add(citys);
+        mMenu.setmMenuItems(items);
+        mMenu.setIsDebug(false);
     }
 
     @Override
@@ -205,11 +209,42 @@ private Context context=getActivity();
         super.onStart();
 
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1) {
+                    GetTask getTask=new GetTask("0",String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+    public void onEvent(JobTypeEvent event) {
+       mtype=event.fragmentHotType;
+       if (mtype==4){
+           GetTask getTask = new GetTask(String.valueOf(mtype),"0");
+           getTask.execute();
+       }else {
+           GetTask getTask = new GetTask(String.valueOf(mtype),"0");
+           getTask.execute();
+       }
+     }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.img_back)
@@ -218,17 +253,22 @@ private Context context=getActivity();
 
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String type;
+        private String type;
+        private  String count;
 
-        GetTask(String type) {
+        GetTask(String type,String count) {
             this.type = type;
+            this.count=count;
         }
-
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                getJobs();
+                if (type.equals("4")){
+                    type="3";
+                    getDayJobs();
+                }else
+                    getJobs();
             } catch (Exception e) {
             }
             return null;
@@ -238,7 +278,56 @@ private Context context=getActivity();
         protected void onPreExecute() {
             super.onPreExecute();
         }
+        /**
+         * postInfo
+         */
+        public void getDayJobs() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.GET_JOB_DAY)
+                    .addParams("only", only)
+                    .addParams("term", type)
+                    .addParams("count", count)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean<Jobs>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            }.getType());
+                            return baseBean;
+                        }
 
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_GET_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean;
+                                message.what = MSG_GET_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_GET_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
         /**
          * postInfo
          */
@@ -249,6 +338,7 @@ private Context context=getActivity();
                     .url(Constants.GET_JOB)
                     .addParams("only", only)
                     .addParams("hot", type)
+                    .addParams("count", count)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)

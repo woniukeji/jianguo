@@ -11,22 +11,22 @@
         >
         <ImageView
             android:id="@+id/img_renwu"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@mipmap/img_renwu"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="40dp"
             android:layout_centerHorizontal="true"
             />
         <TextView
             android:layout_below="@+id/img_renwu"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="7dp"
             android:textSize="12dp"
             android:textColor="#9B9B9B"
             android:layout_centerHorizontal="true"
-            android:text=""/>
+            android:text="暂无数据"/>
     </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -34,7 +34,7 @@
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+
         >
 
         <com.woniukeji.jianmerchant.widget.FixedRecyclerView

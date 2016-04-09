@@ -30,7 +30,7 @@ public class HistoryJobAdapter extends RecyclerView.Adapter<HistoryJobAdapter.Vi
     private  String mType;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
-    @InjectView(R.id.tv_title) TextView tvTitle;
+    @InjectView(R.id.tv_merchant_name) TextView tvTitle;
     @InjectView(R.id.tv_date) TextView tvDate;
     @InjectView(R.id.tv_location) TextView tvLocation;
     @InjectView(R.id.ll_publish_time) LinearLayout llPublishTime;
@@ -53,7 +53,7 @@ public class HistoryJobAdapter extends RecyclerView.Adapter<HistoryJobAdapter.Vi
         mValues = items;
         mContext = context;
         mType=type;
-        name= (String) SPUtils.getParam(mContext, Constants.USER_INFO,Constants.SP_NAME,"");
+        name= (String) SPUtils.getParam(mContext, Constants.USER_INFO,Constants.USER_NAME,"");
         deleCallBack=callBack;
     }
 
@@ -121,8 +121,12 @@ public class HistoryJobAdapter extends RecyclerView.Adapter<HistoryJobAdapter.Vi
             }
 
             holder.tvName.setText(name);
-            String date = job.getRegedit_time().substring(5,11);
-            holder.tvDate.setText(date);
+            if (null!=job.getRegedit_time()&& !job.getRegedit_time().equals("")){
+                String date = job.getRegedit_time().substring(5 ,11);
+                holder.tvDate.setText(date);
+            }
+
+
             //性别限制（0=只招女，1=只招男，2=不限男女）
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +177,7 @@ public class HistoryJobAdapter extends RecyclerView.Adapter<HistoryJobAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.tv_title) TextView tvTitle;
+        @InjectView(R.id.tv_merchant_name) TextView tvTitle;
         @InjectView(R.id.tv_date) TextView tvDate;
         @InjectView(R.id.tv_location) TextView tvLocation;
         @InjectView(R.id.ll_publish_time) LinearLayout llPublishTime;

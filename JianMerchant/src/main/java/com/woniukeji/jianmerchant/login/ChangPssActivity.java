@@ -48,7 +48,7 @@ import okhttp3.Call;
 public class ChangPssActivity extends BaseActivity {
 
     @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView title;
+    @InjectView(R.id.tv_merchant_name) TextView title;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.phoneCode) EditText phoneCode;

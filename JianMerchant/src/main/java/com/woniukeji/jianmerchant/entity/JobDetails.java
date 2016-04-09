@@ -85,6 +85,37 @@ public class JobDetails implements Serializable{
             private String work_content;
             private String work_require;
             private String is_collection;
+            private String nv_job_id;
+            private String nv_sum;
+
+            public String getNv_count() {
+                return nv_count;
+            }
+
+            public void setNv_count(String nv_count) {
+                this.nv_count = nv_count;
+            }
+
+            public String getNv_sum() {
+                return nv_sum;
+            }
+
+            public void setNv_sum(String nv_sum) {
+                this.nv_sum = nv_sum;
+            }
+
+            public String getNv_job_id() {
+                return nv_job_id;
+            }
+
+            public void setNv_job_id(String nv_job_id) {
+                this.nv_job_id = nv_job_id;
+            }
+
+            private String nv_count;
+
+
+
 
             private String wages;//本地保留字段 用于预览界面参数
             private String sum;

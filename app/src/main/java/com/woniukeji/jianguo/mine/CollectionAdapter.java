@@ -100,13 +100,13 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
             //等待数据设置
            // 1=月结，2=周结，3=日结，4=小时结
-            if (job.getTerm()==1){
+            if (job.getTerm()==0){
                 holder.tvPayMethod.setText("月结");
                 holder.tvWages.setText(job.getMoney()+"/月");
-            }else if(job.getTerm()==2){
+            }else if(job.getTerm()==1){
                 holder.tvPayMethod.setText("周结");
                 holder.tvWages.setText(job.getMoney()+"/周");
-            }else if(job.getTerm()==3){
+            }else if(job.getTerm()==2){
                 holder.tvPayMethod.setText("日结");
                 holder.tvWages.setText(job.getMoney()+"/日");
             }else {

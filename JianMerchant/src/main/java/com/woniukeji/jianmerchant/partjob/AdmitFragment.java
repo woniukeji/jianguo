@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -24,7 +23,6 @@ import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.Jobs;
 import com.woniukeji.jianmerchant.entity.Model;
-import com.woniukeji.jianmerchant.publish.HistoryJobAdapter;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
@@ -37,7 +35,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -48,6 +45,7 @@ import okhttp3.Response;
  */
 public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCallBack{
 
+    private static String params1;
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     @InjectView(R.id.list) FixedRecyclerView list;
@@ -61,6 +59,8 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
     private List<Model.ListTJobEntity> modleList=new ArrayList<>();
     private AdmitAdapter adapter;
     private LinearLayoutManager mLayoutManager;
+    private int merchant_id;
+    private int type=1;
 
     @Override
     public void onDestroyView() {
@@ -87,7 +87,9 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-
+                BaseBean<Model> modelBaseBean= (BaseBean<Model>) msg.obj;
+                modleList.addAll(modelBaseBean.getData().getList_t_job());
+                    adapter.notifyDataSetChanged();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -112,10 +114,19 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
             }
         }
     }
-
+    public static AdmitFragment newInstance(int pid) {
+        //通过Bundle保存数据
+        Bundle args = new Bundle();
+        args.putInt(params1, pid);
+        AdmitFragment fragment = new AdmitFragment();
+        //将Bundle设置为fragment的参数
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        type = getArguments().getInt(params1);
     }
 
     @Override
@@ -129,7 +140,6 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
     }
 
     private void initview() {
-        int type=((PartJobManagerActivity)getActivity()).getmType();
         adapter = new AdmitAdapter(modleList, getActivity(),type,this);
         mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
@@ -147,17 +157,19 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask=new GetTask("0");
+                GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
                 getTask.execute();
             }
         });
+        merchant_id= (int) SPUtils.getParam(getActivity(),Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
+        GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
+        getTask.execute();
 
     }
 
     @Override
     public void onAttach(Context context) {
-//        GetTask getTask = new GetTask(String.valueOf(loginId));
-//        getTask.execute();
+
         super.onAttach(context);
     }
 
@@ -168,10 +180,14 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
 
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
+        private final String merchantId;
+        private final String status;
+        private final String count;
 
-        GetTask(String loginId) {
-            this.loginId = loginId;
+        GetTask(String merId,String status,String count) {
+            this.merchantId = merId;
+            this.status = status;
+            this.count = count;
         }
 
         @Override
@@ -196,18 +212,20 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.GET_CITY)
+                    .url(Constants.GET_PART_JOB_PUBLISH)
                     .addParams("only", only)
-                    .addParams("login_id", loginId)
+                    .addParams("merchant_id", merchantId)
+                    .addParams("count", count)
+                    .addParams("status", status)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Jobs>>() {
+                    .execute(new Callback<BaseBean<Model>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
                             }.getType());
                             return baseBean;
                         }

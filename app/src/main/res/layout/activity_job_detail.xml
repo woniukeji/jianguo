@@ -49,7 +49,6 @@
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:layout_marginTop="4dp"
-            android:text="凯宾斯基酒店宴会服务员"
 
             />
         <RelativeLayout
@@ -72,7 +71,6 @@
                 android:layout_toRightOf="@+id/tv_notic4"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="1500/月份"
                 android:textSize="14dp"
                 android:gravity="center"
                 android:textColor="#ff8f93"
@@ -99,7 +97,6 @@
                 android:layout_toRightOf="@+id/tv_notic5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="152/200"
                 android:textColor="#ff8f93"
                 android:gravity="center"
                 android:textSize="14dp"
@@ -142,7 +139,6 @@
         android:layout_marginRight="18dp"
         android:layout_marginTop="4dp"
         android:textSize="12dp"
-        android:text="7天前"
         />
     <TextView
         android:layout_alignParentBottom="true"
@@ -178,7 +174,6 @@
         android:id="@+id/tv_work_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="海棠湾附近"
         android:textSize="15dp"
         />
     <TextView
@@ -211,7 +206,6 @@
                 android:id="@+id/tv_work_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4月1日-5月1日"
                 android:textSize="15dp"
                 />
 
@@ -235,7 +229,6 @@
                 android:id="@+id/tv_work_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8：00-18:00"
                 android:textSize="15dp"
                 />
 
@@ -259,7 +252,6 @@
                 android:id="@+id/tv_collection_sites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="琼州学院后门"
                 android:textSize="15dp"
                 />
 
@@ -283,7 +275,6 @@
                 android:id="@+id/tv_collection_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="18:30"
                 android:textSize="15dp"
                 />
 
@@ -307,7 +298,6 @@
                 android:id="@+id/tv_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="男女不限"
                 android:textSize="15dp"
                 />
 
@@ -331,7 +321,6 @@
                 android:id="@+id/tv_pay_method"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="日结"
                 android:textSize="15dp"
                 />
 
@@ -355,7 +344,6 @@
                 android:id="@+id/tv_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="包接送"
                 android:textSize="15dp"
                 />
 
@@ -409,7 +397,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="3"
-        android:text="宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花Jui听不那个工，宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花J"
         />
 </RelativeLayout>
         <RelativeLayout
@@ -432,7 +419,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:text="宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花Jui听不那个工，宴会厅帮贡，协助酒店正式员工完成1000人宴会。烟花J"
                 />
         </RelativeLayout>
     </RelativeLayout>
@@ -482,7 +468,6 @@
             android:layout_toRightOf="@id/cirimg_work"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="翼蜗牛网络科技有限公司"
             android:textSize="16dp"
             android:layout_marginTop="12dp"
             />
@@ -492,7 +477,6 @@
             android:layout_toRightOf="@id/cirimg_work"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="32个职位在招"
             android:textSize="12dp"
             />
 

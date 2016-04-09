@@ -2,24 +2,14 @@ package com.woniukeji.jianmerchant.publish;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.BaseActivity;
@@ -30,19 +20,12 @@ import com.woniukeji.jianmerchant.utils.CropCircleTransfermation;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 import com.woniukeji.jianmerchant.widget.CircleImageView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Response;
 
 public class PreviewJobActivity extends BaseActivity {
 
@@ -179,11 +162,11 @@ public class PreviewJobActivity extends BaseActivity {
         } else
             tvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
         //期限（1=月结，2=周结，3=日结，4=小时结）
-        if (jobinfo.getTerm() == 1) {
+        if (jobinfo.getTerm() == 0) {
             tvPayMethod.setText("月结");
-        } else if (jobinfo.getTerm() == 2) {
+        } else if (jobinfo.getTerm() == 1) {
             tvPayMethod.setText("周结");
-        } else if (jobinfo.getTerm() == 3) {
+        } else if (jobinfo.getTerm() == 2) {
             tvPayMethod.setText("日结");
         } else
             tvPayMethod.setText("小时结");
@@ -239,8 +222,8 @@ public class PreviewJobActivity extends BaseActivity {
 //        tvJobsCount.setText(count);
 
          loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
-        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
+        img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_IMG, "");
+        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_NAME, "");
         fillData();
     }
 

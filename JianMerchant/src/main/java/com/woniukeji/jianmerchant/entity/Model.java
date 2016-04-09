@@ -95,6 +95,28 @@ public class Model implements Serializable{
             private String info_other;
             private String info_work_content;
             private String info_work_require;
+            private String remarks;
+            private String look;
+            public String getRemarks() {
+                return remarks;
+            }
+
+            public void setRemarks(String remarks) {
+                this.remarks = remarks;
+            }
+
+            public String getLook() {
+                return look;
+            }
+
+            public void setLook(String look) {
+                this.look = look;
+            }
+
+
+
+
+
 
             public String getInfo_tel() {
                 return info_tel;

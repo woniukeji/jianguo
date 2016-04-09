@@ -22,7 +22,6 @@ import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.Model;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
-import com.woniukeji.jianmerchant.utils.CommonUtils;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
@@ -158,7 +157,7 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
 
     @Override
     public void initData() {
-        merchantid= (int) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.SP_MERCHANT_ID,0);
+        merchantid= (int) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
         GetTask getTask=new GetTask("0");
         getTask.execute();
 

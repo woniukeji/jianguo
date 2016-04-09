@@ -7,239 +7,261 @@ import java.util.List;
  */
 public class Jobs {
 
-    /**
-     * id : 1
-     * city_id : 1
-     * area_id : 1
-     * type_id : 1
-     * merchant_id : 2
-     * name : 校内派单
-     * name_image : http://7xlell.com2.z0.glb.qiniucdn.com/01678d545b4de3f2ba858ae90a1cce21
-     * start_date : 1458008358
-     * stop_date : 1458098520
-     * address : 学校里
-     * mode : 2
-     * money : 100.0
-     * term : 3
-     * limit_sex : 2
-     * count : 154
-     * sum : 200
-     * day : 0
-     * regedit_time : 2016-03-15 15:36:02:546
-     * status : 1
-     * hot : 0
-     * alike : 0
-     * reg_date : null
-     */
 
-    private List<ListTJobEntity> list_t_job;
+        /**
+         * id : 58
+         * city_id : 3
+         * area_id : 14
+         * type_id : 1
+         * merchant_id : 1
+         * name : 王府井大饭店
+         * name_image : http://7xlell.com2.z0.glb.qiniucdn.com/FgHuNorFtCH9QWWdgRozL_pgBinA
+         * start_date : 1459652281
+         * stop_date : 1462071484
+         * address : 王府井大饭店一楼大厅
+         * mode : 2
+         * money : 300.0
+         * term : 2
+         * limit_sex : 0
+         * count : 8
+         * sum : 33
+         * day : 0
+         * regedit_time : 2016-04-08 09:34:47:635
+         * status : 1
+         * hot : 0
+         * alike : 0
+         * reg_date : 2016-04-08 09:34:47
+         * look : 3
+         * user_status : 0
+         */
 
-    public List<ListTJobEntity> getList_t_job() {
-        return list_t_job;
-    }
+        private List<ListTJobEntity> list_t_job;
 
-    public void setList_t_job(List<ListTJobEntity> list_t_job) {
-        this.list_t_job = list_t_job;
-    }
-
-    public static class ListTJobEntity {
-        private int id;
-        private int city_id;
-        private int area_id;
-        private int type_id;
-        private int merchant_id;
-        private String name;
-        private String name_image;
-        private String start_date;
-        private String stop_date;
-        private String address;
-        private int mode;
-        private double money;
-        private int term;
-        private int limit_sex;
-        private int count;
-        private int sum;
-        private int day;
-        private String regedit_time;
-        private int status;
-        private int hot;
-        private String alike;
-        private String reg_date;
-
-        public int getId() {
-            return id;
+        public List<ListTJobEntity> getList_t_job() {
+            return list_t_job;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setList_t_job(List<ListTJobEntity> list_t_job) {
+            this.list_t_job = list_t_job;
         }
 
-        public int getCity_id() {
-            return city_id;
-        }
+        public static class ListTJobEntity {
+            private int id;
+            private int city_id;
+            private int area_id;
+            private int type_id;
+            private int merchant_id;
+            private String name;
+            private String name_image;
+            private String start_date;
+            private String stop_date;
+            private String address;
+            private int mode;
+            private double money;
+            private int term;
+            private int limit_sex;
+            private int count;
+            private int sum;
+            private int day;
+            private String regedit_time;
+            private int status;
+            private int hot;
+            private String alike;
+            private String reg_date;
+            private int look;
+            private String user_status;
 
-        public void setCity_id(int city_id) {
-            this.city_id = city_id;
-        }
+            public int getId() {
+                return id;
+            }
 
-        public int getArea_id() {
-            return area_id;
-        }
+            public void setId(int id) {
+                this.id = id;
+            }
 
-        public void setArea_id(int area_id) {
-            this.area_id = area_id;
-        }
+            public int getCity_id() {
+                return city_id;
+            }
 
-        public int getType_id() {
-            return type_id;
-        }
+            public void setCity_id(int city_id) {
+                this.city_id = city_id;
+            }
 
-        public void setType_id(int type_id) {
-            this.type_id = type_id;
-        }
+            public int getArea_id() {
+                return area_id;
+            }
 
-        public int getMerchant_id() {
-            return merchant_id;
-        }
+            public void setArea_id(int area_id) {
+                this.area_id = area_id;
+            }
 
-        public void setMerchant_id(int merchant_id) {
-            this.merchant_id = merchant_id;
-        }
+            public int getType_id() {
+                return type_id;
+            }
 
-        public String getName() {
-            return name;
-        }
+            public void setType_id(int type_id) {
+                this.type_id = type_id;
+            }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+            public int getMerchant_id() {
+                return merchant_id;
+            }
 
-        public String getName_image() {
-            return name_image;
-        }
+            public void setMerchant_id(int merchant_id) {
+                this.merchant_id = merchant_id;
+            }
 
-        public void setName_image(String name_image) {
-            this.name_image = name_image;
-        }
+            public String getName() {
+                return name;
+            }
 
-        public String getStart_date() {
-            return start_date;
-        }
+            public void setName(String name) {
+                this.name = name;
+            }
 
-        public void setStart_date(String start_date) {
-            this.start_date = start_date;
-        }
+            public String getName_image() {
+                return name_image;
+            }
 
-        public String getStop_date() {
-            return stop_date;
-        }
+            public void setName_image(String name_image) {
+                this.name_image = name_image;
+            }
 
-        public void setStop_date(String stop_date) {
-            this.stop_date = stop_date;
-        }
+            public String getStart_date() {
+                return start_date;
+            }
 
-        public String getAddress() {
-            return address;
-        }
+            public void setStart_date(String start_date) {
+                this.start_date = start_date;
+            }
 
-        public void setAddress(String address) {
-            this.address = address;
-        }
+            public String getStop_date() {
+                return stop_date;
+            }
 
-        public int getMode() {
-            return mode;
-        }
+            public void setStop_date(String stop_date) {
+                this.stop_date = stop_date;
+            }
 
-        public void setMode(int mode) {
-            this.mode = mode;
-        }
+            public String getAddress() {
+                return address;
+            }
 
-        public double getMoney() {
-            return money;
-        }
+            public void setAddress(String address) {
+                this.address = address;
+            }
 
-        public void setMoney(double money) {
-            this.money = money;
-        }
+            public int getMode() {
+                return mode;
+            }
 
-        public int getTerm() {
-            return term;
-        }
+            public void setMode(int mode) {
+                this.mode = mode;
+            }
 
-        public void setTerm(int term) {
-            this.term = term;
-        }
+            public double getMoney() {
+                return money;
+            }
 
-        public int getLimit_sex() {
-            return limit_sex;
-        }
+            public void setMoney(double money) {
+                this.money = money;
+            }
 
-        public void setLimit_sex(int limit_sex) {
-            this.limit_sex = limit_sex;
-        }
+            public int getTerm() {
+                return term;
+            }
 
-        public int getCount() {
-            return count;
-        }
+            public void setTerm(int term) {
+                this.term = term;
+            }
 
-        public void setCount(int count) {
-            this.count = count;
-        }
+            public int getLimit_sex() {
+                return limit_sex;
+            }
 
-        public int getSum() {
-            return sum;
-        }
+            public void setLimit_sex(int limit_sex) {
+                this.limit_sex = limit_sex;
+            }
 
-        public void setSum(int sum) {
-            this.sum = sum;
-        }
+            public int getCount() {
+                return count;
+            }
 
-        public int getDay() {
-            return day;
-        }
+            public void setCount(int count) {
+                this.count = count;
+            }
 
-        public void setDay(int day) {
-            this.day = day;
-        }
+            public int getSum() {
+                return sum;
+            }
 
-        public String getRegedit_time() {
-            return regedit_time;
-        }
+            public void setSum(int sum) {
+                this.sum = sum;
+            }
 
-        public void setRegedit_time(String regedit_time) {
-            this.regedit_time = regedit_time;
-        }
+            public int getDay() {
+                return day;
+            }
 
-        public int getStatus() {
-            return status;
-        }
+            public void setDay(int day) {
+                this.day = day;
+            }
 
-        public void setStatus(int status) {
-            this.status = status;
-        }
+            public String getRegedit_time() {
+                return regedit_time;
+            }
 
-        public int getHot() {
-            return hot;
-        }
+            public void setRegedit_time(String regedit_time) {
+                this.regedit_time = regedit_time;
+            }
 
-        public void setHot(int hot) {
-            this.hot = hot;
-        }
+            public int getStatus() {
+                return status;
+            }
 
-        public String getAlike() {
-            return alike;
-        }
+            public void setStatus(int status) {
+                this.status = status;
+            }
 
-        public void setAlike(String alike) {
-            this.alike = alike;
-        }
+            public int getHot() {
+                return hot;
+            }
 
-        public String getReg_date() {
-            return reg_date;
-        }
+            public void setHot(int hot) {
+                this.hot = hot;
+            }
 
-        public void setReg_date(String reg_date) {
-            this.reg_date = reg_date;
+            public String getAlike() {
+                return alike;
+            }
+
+            public void setAlike(String alike) {
+                this.alike = alike;
+            }
+
+            public String getReg_date() {
+                return reg_date;
+            }
+
+            public void setReg_date(String reg_date) {
+                this.reg_date = reg_date;
+            }
+
+            public int getLook() {
+                return look;
+            }
+
+            public void setLook(int look) {
+                this.look = look;
+            }
+
+            public String getUser_status() {
+                return user_status;
+
+            }
+
+            public void setUser_status(String user_status) {
+                this.user_status = user_status;
+            }
         }
-    }
 }

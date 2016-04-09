@@ -3,8 +3,13 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rl_job"
                 android:layout_width="wrap_content"
-                android:layout_height="108dp"
-                android:background="@color/white"
+                android:layout_height="117dp"
+                android:background="#f3f3f3"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="108dp"
+    android:background="@color/white"
     >
 
     <ImageView
@@ -180,4 +185,6 @@
         android:layout_height="1dp"
         android:background="@color/gray_btn_bg_color"
         />
+
+</RelativeLayout>
 </RelativeLayout>

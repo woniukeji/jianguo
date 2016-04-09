@@ -81,7 +81,7 @@ public class TalkFragment extends BaseFragment {
         ButterKnife.inject(this, view);
         imgBack.setVisibility(View.GONE);
         tvTitle.setText("果聊");
-        avatarUrl = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
+        avatarUrl = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_IMG, "");
         loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
 
 //        conversationManager = ConversationManager.getInstance();

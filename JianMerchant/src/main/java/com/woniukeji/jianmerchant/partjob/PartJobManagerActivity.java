@@ -1,7 +1,5 @@
 package com.woniukeji.jianmerchant.partjob;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -43,7 +41,7 @@ public class PartJobManagerActivity extends BaseActivity {
     private ViewPagerAdapter adapter;
 
 
-    public int mType;//用于判断是录取还是完成的fragment（同一个对象实例化，需要区分）
+    public int mType=1;//用于判断是录取还是完成的fragment（同一个对象实例化，需要区分）
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_part_job_manager);
@@ -134,11 +132,9 @@ public class PartJobManagerActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                        mType=0;
-                    return new AdmitFragment();           //录取
+                    return AdmitFragment.newInstance(1);           //录取
                 case 1:
-                    mType=0;
-                    return new AdmitFragment();          //完成
+                    return AdmitFragment.newInstance(0);          //完成
             }
             return new FragmentText();
         }

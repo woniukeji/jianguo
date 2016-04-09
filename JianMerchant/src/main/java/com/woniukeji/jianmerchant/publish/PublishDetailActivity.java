@@ -500,7 +500,7 @@ public class PublishDetailActivity extends BaseActivity {
                     }
 
 
-                    String merchantName= (String) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.SP_NAME,"");
+                    String merchantName= (String) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.USER_NAME,"");
                     merchantInfo.setName(merchantName);
                     merchantInfo.setName_image(name_image);
                     Intent intent =new Intent(PublishDetailActivity.this,PreviewJobActivity.class);
@@ -718,7 +718,11 @@ public class PublishDetailActivity extends BaseActivity {
         tvWagesMethod.setText(wagesMethods[modle.getTerm()]);
         term=String.valueOf(modle.getTerm());
         limit_sex= String.valueOf(modle.getLimit_sex());
-        tvSex.setText(sexs[modle.getLimit_sex()]);
+        if(limit_sex.equals("30")||limit_sex.equals("31")){
+            tvSex.setText("男女各需");
+        }else{
+            tvSex.setText(sexs[modle.getLimit_sex()]);
+        }
         tvSex.setTextColor(getResources().getColor(R.color.black));
         sum= String.valueOf(modle.getSum());
         if (limit_sex.equals("30")){
@@ -751,7 +755,7 @@ public class PublishDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        merchantid= (int) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.SP_MERCHANT_ID,0);
+        merchantid= (int) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
 
     }
 

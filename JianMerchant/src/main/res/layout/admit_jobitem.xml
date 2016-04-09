@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rl_job"
+                android:layout_width="wrap_content"
+                android:layout_height="145dp"
+                android:background="@color/gray"
+    >
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <include layout="@layout/split_line"
+            />
+        <RelativeLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/tv_merchant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:paddingLeft="15dp"
+                android:text="凯宾斯基酒店宴会服务员哈哈哈"
+                android:ellipsize="end"
+                android:maxLength="24"
+                android:maxLines="1"
+                android:maxWidth="182dp"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
+                android:id="@+id/img_type"
+                android:layout_toRightOf="@+id/tv_merchant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/icon_jing"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:id="@+id/tv_manager_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="宋荣"
+                android:layout_gravity="right"
+                android:textSize="12dp"
+                android:layout_centerVertical="true"
+                android:textColor="#bfbfbf"
+                android:layout_marginRight="13dp"
+                android:layout_alignParentRight="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/tv_manager_name"
+                android:layout_centerVertical="true"
+                android:text="负责人:"
+                android:textSize="12dp"
+                android:layout_gravity="right"
+                android:textColor="#bfbfbf"
+                android:layout_marginRight="10dp"
+                />
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="8dp"
+            android:background="#bfbfbf"
+            android:layout_below="@+id/ll_title"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_wages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="1500/月"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="70dp"
+            android:layout_marginRight="14dp"
+            android:textColor="#F87c7c"
+            />
+<LinearLayout
+    android:layout_below="@+id/ll_title"
+    android:id="@+id/ll_publish_time"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="18dp"
+    android:orientation="horizontal"
+    >
+        <TextView
+            android:layout_marginLeft="4dp"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="工作时间："
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:minEms="5"
+            android:textSize="12dp"
+
+            />
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/img_local"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="4月1号"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+            />
+
+</LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_browse"
+            android:layout_below="@+id/ll_title"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_merchant_name"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_chakan"
+                android:layout_toLeftOf="@+id/tv_chakan_browse"
+                />
+        <TextView
+            android:id="@+id/tv_chakan_browse"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="13dp"
+            android:text="123"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+            />
+
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_publisher"
+        android:layout_below="@+id/ll_publish_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/tv_human"
+            android:layout_marginLeft="4dp"
+            android:paddingLeft="15dp"
+            android:layout_toRightOf="@+id/img_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="总  录  取："
+            android:minEms="5"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+
+            />
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/img_local"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="哈哈"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+            />
+
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="10dp"
+            android:background="#bfbfbf"
+            android:layout_below="@+id/ll_publisher"
+            />
+
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#bfbfbf"
+        />
+
+        <include layout="@layout/split_line"
+                 android:layout_alignParentBottom="true"
+            />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="37dp"
+    android:layout_alignParentBottom="true"
+    >
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="有新的报名请赶快处理"
+        android:textSize="10dp"
+        android:textColor="#bfbfbf"
+        android:layout_centerInParent="true"
+        />
+    <Button
+        android:id="@+id/btn_admit_action"
+        android:layout_width="62dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/button_sign_background_gray"
+        android:text="录取中"
+        android:textColor="@color/white"
+        android:textSize="12dp"
+        android:layout_marginRight="13dp"
+        android:layout_centerVertical="true"
+        />
+</RelativeLayout>
+
+</RelativeLayout>
+
+</RelativeLayout>

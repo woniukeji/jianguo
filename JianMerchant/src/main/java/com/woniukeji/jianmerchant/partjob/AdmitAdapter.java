@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.Model;
-import com.woniukeji.jianmerchant.publish.PublishDetailActivity;
+import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 
 import java.util.List;
@@ -28,22 +28,10 @@ public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> 
 
     private final List<Model.ListTJobEntity> mValues;
     private final Context mContext;
-    private  int mType;
+
+    private int mType;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.tv_date) TextView tvDate;
-    @InjectView(R.id.tv_location) TextView tvLocation;
-    @InjectView(R.id.ll_publish_time) LinearLayout llPublishTime;
-    @InjectView(R.id.tv_human) TextView tvHuman;
-    @InjectView(R.id.tv_name) TextView tvName;
-    @InjectView(R.id.ll_publisher) LinearLayout llPublisher;
-    @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-    @InjectView(R.id.btn_muban_use) Button btnMubanUse;
-    @InjectView(R.id.btn_muban_delete) Button btnMubanDelete;
-    @InjectView(R.id.ll_muban) LinearLayout llMuban;
-    @InjectView(R.id.img_his) ImageView imgHis;
-    @InjectView(R.id.rl_job) RelativeLayout rlJob;
 
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
@@ -53,14 +41,15 @@ public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> 
     public AdmitAdapter(List<Model.ListTJobEntity> items, Context context, int type, RecyCallBack callBack) {
         mValues = items;
         mContext = context;
-        mType=type;
-        name= (String) SPUtils.getParam(mContext, Constants.USER_INFO,Constants.SP_NAME,"");
-        mCallBack=callBack;
+        mType = type;
+        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_NAME, "");
+        mCallBack = callBack;
     }
 
-   public interface RecyCallBack{
+    public interface RecyCallBack {
         public void RecyOnClick(int job_id, int merchant_id, int position);
     }
+
     public void setFooterChange(boolean isChange) {
         isFooterChange = isChange;
     }
@@ -84,7 +73,7 @@ public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> 
         ViewHolder holder = null;
         switch (viewType) {
             case NORMAL:
-                View VoteView = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_jobitem, parent, false);
+                View VoteView = LayoutInflater.from(parent.getContext()).inflate(R.layout.admit_jobitem, parent, false);
                 holder = new ViewHolder(VoteView, NORMAL);
                 return holder;
 
@@ -111,43 +100,63 @@ public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> 
             }
         } else {
             final Model.ListTJobEntity job = mValues.get(position);
-            if (mType==0){
-                holder.tvTitle.setText(job.getName());
-                holder.llMuban.setVisibility(View.GONE);
-                holder.imgHis.setVisibility(View.VISIBLE);
-            }else {
-                holder.tvTitle.setText(job.getModel_name());
-                holder.llMuban.setVisibility(View.VISIBLE);
-                holder.imgHis.setVisibility(View.GONE);
-            }
+            holder.tvTitle.setText(job.getName());
+//            if (mType == 0) {
+//                holder.tvTitle.setText(job.getName());
+//                holder.llMuban.setVisibility(View.GONE);
+//                holder.imgHis.setVisibility(View.VISIBLE);
+//            } else {
+//                holder.tvTitle.setText(job.getModel_name());
+//                holder.llMuban.setVisibility(View.VISIBLE);
+//                holder.imgHis.setVisibility(View.GONE);
+//            }
 
-            holder.tvName.setText(name);
-            String date = job.getRegedit_time().substring(5,11);
+//            String date = job.getRegedit_time().substring(5, 11);
+
+            String date = DateUtils.getTime(Long.valueOf(job.getStart_date()), Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
             //性别限制（0=只招女，1=只招男，2=不限男女）
+            holder.tvManagerName.setText(job.getMerchant_id_name());
+            holder.tvChakanBrowse.setText(job.getLook());
+            holder.tvMessage.setText(job.getRemarks());
 
+            if (job.getHot()==1){
+                holder.imgType.setImageResource(R.mipmap.icon_hot);
+            }else if(job.getHot()==2){
+                holder.imgType.setImageResource(R.mipmap.icon_jing);
+            }else if(job.getHot()==3){
+                holder.imgType.setImageResource(R.mipmap.icon_travel);
+            }
+            holder.tvCount.setText(job.getCount()+"/"+job.getSum());
+            if (job.getTerm()==0){//0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
+                holder.tvWages.setText(job.getMoney()+"/月");
+            }else if(job.getTerm()==1){
+                holder.tvWages.setText(job.getMoney()+"/周");
+            }else if(job.getTerm()==2){
+                holder.tvWages.setText(job.getMoney()+"/日");
+            }else if(job.getTerm()==3){
+                holder.tvWages.setText(job.getMoney()+"/小时");
+            }else if(job.getTerm()==6){
+                holder.tvWages.setText(job.getMoney()+"/次");
+            }else if(job.getTerm()==5){
+                holder.tvWages.setText("义工");
+            }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(mContext, PublishDetailActivity.class);
-                    intent.putExtra("job",job);
-                    intent.putExtra("type","old");
+                    Intent intent = new Intent(mContext, JobItemDetailActivity.class);
+                    intent.putExtra("job", job);
+                    intent.putExtra("merchantid", job.getMerchant_id());
                     mContext.startActivity(intent);
                 }
             });
-            holder.btnMubanUse.setOnClickListener(new View.OnClickListener() {
+            holder.btnAdmitAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(mContext, PublishDetailActivity.class);
-                    intent.putExtra("job",job);
-                    intent.putExtra("type","old");
-                    mContext.startActivity(intent);
-                }
-            });
-            holder.btnMubanDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mCallBack.RecyOnClick(job.getId(),job.getMerchant_id(),position);
+//                    Intent intent = new Intent(mContext, PublishDetailActivity.class);
+//                    intent.putExtra("job", job);
+//                    intent.putExtra("type", "old");
+//                    mContext.startActivity(intent);
                 }
             });
 
@@ -174,18 +183,19 @@ public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.tv_title) TextView tvTitle;
+        @InjectView(R.id.tv_merchant_name) TextView tvTitle;
+        @InjectView(R.id.img_type) ImageView imgType;
+        @InjectView(R.id.tv_manager_name) TextView tvManagerName;
+        @InjectView(R.id.tv_wages) TextView tvWages;
         @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.tv_location) TextView tvLocation;
         @InjectView(R.id.ll_publish_time) LinearLayout llPublishTime;
+        @InjectView(R.id.tv_chakan_browse) TextView tvChakanBrowse;
+        @InjectView(R.id.ll_browse) LinearLayout llBrowse;
         @InjectView(R.id.tv_human) TextView tvHuman;
-        @InjectView(R.id.tv_name) TextView tvName;
+        @InjectView(R.id.tv_count) TextView tvCount;
         @InjectView(R.id.ll_publisher) LinearLayout llPublisher;
-        @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-        @InjectView(R.id.btn_muban_use) Button btnMubanUse;
-        @InjectView(R.id.btn_muban_delete) Button btnMubanDelete;
-        @InjectView(R.id.ll_muban) LinearLayout llMuban;
-        @InjectView(R.id.img_his) ImageView imgHis;
+        @InjectView(R.id.tv_message) TextView tvMessage;
+        @InjectView(R.id.btn_admit_action) Button btnAdmitAction;
         @InjectView(R.id.rl_job) RelativeLayout rlJob;
 
         private ImageView animLoading;

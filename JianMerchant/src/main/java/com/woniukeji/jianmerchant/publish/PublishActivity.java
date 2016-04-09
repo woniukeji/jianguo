@@ -23,9 +23,7 @@ import com.woniukeji.jianmerchant.entity.CodeCallback;
 import com.woniukeji.jianmerchant.entity.SmsCode;
 import com.woniukeji.jianmerchant.entity.User;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
-import com.woniukeji.jianmerchant.utils.CommonUtils;
 import com.woniukeji.jianmerchant.utils.DateUtils;
-import com.woniukeji.jianmerchant.utils.MD5Util;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 

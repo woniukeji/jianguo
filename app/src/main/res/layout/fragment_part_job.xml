@@ -2,31 +2,29 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:background="#f3f3f3"
              tools:context="com.woniukeji.jianguo.partjob.PartJobFragment">
 
     <include
         android:id="@+id/top"
         layout="@layout/app_title_bar"
         />
-    <com.yyydjk.library.DropDownMenu
+    <com.jayfang.dropdownmenu.DropDownMenu
         android:layout_below="@+id/top"
-        android:id="@+id/dropDownMenu"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:id="@+id/menu"
+        android:background="@color/white"
+        android:layout_height="40dp"/>
+    <ImageView
+        android:layout_below="@+id/menu"
+        android:id="@+id/img_menu"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        app:ddmenuTextSize="12sp"
-        app:ddtextUnselectedColor="@color/drop_down_unselected"
-        app:ddtextSelectedColor="@color/app_bg"
-        app:dddividerColor="@color/gray"
-        app:ddunderlineColor="@color/gray"
-        app:ddmenuSelectedIcon="@mipmap/drop_down_selected_icon"
-        app:ddmaskColor="@color/mask_color"
-        app:ddmenuBackgroundColor="@color/white"
-        app:ddmenuUnselectedIcon="@mipmap/drop_down_unselected_icon"
-
+        android:layout_height="1px"
+        android:background="#f3f3f3"
     />
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/img_menu"
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

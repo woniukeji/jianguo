@@ -17,7 +17,7 @@
         <include layout="@layout/split_line"
             />
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_merchant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14dp"
@@ -25,7 +25,7 @@
         android:text="凯宾斯基酒店宴会服务员"
         />
 <LinearLayout
-    android:layout_below="@+id/tv_title"
+    android:layout_below="@+id/tv_merchant_name"
     android:id="@+id/ll_publish_time"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

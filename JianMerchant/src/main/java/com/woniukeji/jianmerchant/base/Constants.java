@@ -28,6 +28,7 @@ public class Constants {
     public static final String POST_PART_INFO= JIANGUO_USING+"T_Job_Insert_Servlet";//提交兼职信息
     public static final String GET_PART_HISTORY= JIANGUO_USING+"T_job_Model_List_Servlet";//获取兼职历史记录
     public static final String DELETE_JOB_MODEL= JIANGUO_USING+"T_job_Model_Delete_Servlet";//删除兼职模板
+    public static final String GET_PART_JOB_PUBLISH= JIANGUO_USING+"T_job_Merchant_Id_Zhong_Servlet";//获取发布的兼职列表
 
 
 
@@ -58,6 +59,9 @@ public class Constants {
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
     public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
     public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
+    public static final String GET_ADMIT_LIST= JIANGUO_USING+"T_enroll_Job_Servlet";//报名列表
+    public static final String POST_ADMIT= JIANGUO_USING+"T_enroll_Offer_Servlet";//商家录取
+
 
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
 
@@ -76,14 +80,14 @@ public class Constants {
     public static final String SP_QNTOKEN="qn_token";
 
     public static final String USER_INFO = "userInfo";
-    public static final String SP_NICK="nickname";
-    public static final String SP_NAME="name";
-    public static final String SP_IMG="name_image";
+    public static final String USER_NICK ="nickname";
+    public static final String USER_NAME ="name";
+    public static final String USER_IMG ="name_image";
     public static final String SP_SCHOOL="school";
     public static final String SP_INTEGRAL="integral";
     public static final String SP_CREDIT="credit";
 
-    public static final String SP_MERCHANT_ID="merchantid";
+    public static final String USER_MERCHANT_ID ="merchantid";
 
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguoMer"+ File.separator;
