@@ -36,6 +36,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
+import eventbus.FilterEvent;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -70,6 +72,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         ButterKnife.reset(this);
     }
 
@@ -94,8 +97,14 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
             switch (msg.what) {
                 case 0:
                 BaseBean<PublishUser> modelBaseBean= (BaseBean<PublishUser>) msg.obj;
-                modleList.addAll(modelBaseBean.getData().getList_t_user_info());
-                 adapter.notifyDataSetChanged();
+                    int count=msg.arg1;
+                    if (count==0){
+                        modleList.clear();
+                    }else {
+
+                    }
+                    modleList.addAll(modelBaseBean.getData().getList_t_user_info());
+                    adapter.notifyDataSetChanged();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -112,7 +121,11 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                 case 5:
                     String me = (String) msg.obj;
                     Toast.makeText(getActivity(), me, Toast.LENGTH_SHORT).show();
-                    modleList.remove(mPosition);
+                    FilterEvent filterEvent=new FilterEvent();
+                    EventBus.getDefault().post(filterEvent);
+//                    GetTask getTask=new GetTask(jobid,String.valueOf(type),String.valueOf(lastVisibleItem));
+//                    getTask.execute();
+//                    modleList.remove(mPosition);
                     break;
                 case 6:
                     String mes = (String) msg.obj;
@@ -138,6 +151,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
         super.onCreate(savedInstanceState);
         type = getArguments().getInt(params1);
         jobid=getArguments().getString(params2);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -177,10 +191,12 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
         getTask.execute();
 
     }
-
+     public void onEvent(FilterEvent filterEvent){
+         GetTask getTask=new GetTask(jobid,String.valueOf(type),"0");
+         getTask.execute();
+     }
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
     }
     @Override
@@ -275,6 +291,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {

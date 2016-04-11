@@ -22,6 +22,7 @@ import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.eventbus.SignEvent;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -69,6 +71,7 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -96,6 +99,12 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
             switch (msg.what) {
                 case 0:
                     BaseBean<Jobs> jobsBaseBean= (BaseBean<Jobs>) msg.obj;
+                    int count=msg.arg1;
+                    if (count==0){
+                        modleList.clear();
+                    }else {
+
+                    }
                     modleList.addAll(jobsBaseBean.getData().getList_t_job());
                     adapter.notifyDataSetChanged();
                     break;
@@ -114,7 +123,8 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
                 case 5:
                     String me = (String) msg.obj;
                     Toast.makeText(getActivity(), me, Toast.LENGTH_SHORT).show();
-                    modleList.remove(mPosition);
+                    SignEvent event=new SignEvent();
+                    EventBus.getDefault().post(event);
                     break;
                 case 6:
                     String mes = (String) msg.obj;
@@ -138,6 +148,7 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getInt(params1);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -177,7 +188,10 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
         getTask.execute();
 
     }
-
+    public void onEvent(SignEvent signEvent){
+        GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(type),"0");
+        getTask.execute();
+    }
     @Override
     public void onAttach(Context context) {
 
@@ -255,6 +269,7 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {

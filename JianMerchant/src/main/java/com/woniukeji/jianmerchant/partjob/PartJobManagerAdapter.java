@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> {
+public class PartJobManagerAdapter extends RecyclerView.Adapter<PartJobManagerAdapter.ViewHolder> {
 
     private final List<Model.ListTJobEntity> mValues;
     private final Context mContext;
@@ -38,7 +38,7 @@ public class AdmitAdapter extends RecyclerView.Adapter<AdmitAdapter.ViewHolder> 
     private String name;
     private RecyCallBack mCallBack;
 
-    public AdmitAdapter(List<Model.ListTJobEntity> items, Context context, int type, RecyCallBack callBack) {
+    public PartJobManagerAdapter(List<Model.ListTJobEntity> items, Context context, int type, RecyCallBack callBack) {
         mValues = items;
         mContext = context;
         mType = type;

@@ -21,7 +21,6 @@ import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.BaseFragment;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
-import com.woniukeji.jianmerchant.entity.Jobs;
 import com.woniukeji.jianmerchant.entity.Model;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
@@ -43,7 +42,7 @@ import okhttp3.Response;
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCallBack{
+public class PartJobManagerFragment extends BaseFragment implements PartJobManagerAdapter.RecyCallBack{
 
     private static String params1;
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
@@ -57,7 +56,7 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context mContext = this.getActivity();
     private List<Model.ListTJobEntity> modleList=new ArrayList<>();
-    private AdmitAdapter adapter;
+    private PartJobManagerAdapter adapter;
     private LinearLayoutManager mLayoutManager;
     private int merchant_id;
     private int type=1;
@@ -114,11 +113,11 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
             }
         }
     }
-    public static AdmitFragment newInstance(int pid) {
+    public static PartJobManagerFragment newInstance(int pid) {
         //通过Bundle保存数据
         Bundle args = new Bundle();
         args.putInt(params1, pid);
-        AdmitFragment fragment = new AdmitFragment();
+        PartJobManagerFragment fragment = new PartJobManagerFragment();
         //将Bundle设置为fragment的参数
         fragment.setArguments(args);
         return fragment;
@@ -140,7 +139,7 @@ public class AdmitFragment extends BaseFragment implements AdmitAdapter.RecyCall
     }
 
     private void initview() {
-        adapter = new AdmitAdapter(modleList, getActivity(),type,this);
+        adapter = new PartJobManagerAdapter(modleList, getActivity(),type,this);
         mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
         list.setLayoutManager(mLayoutManager);

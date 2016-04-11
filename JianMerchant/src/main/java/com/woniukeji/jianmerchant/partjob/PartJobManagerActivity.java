@@ -132,9 +132,9 @@ public class PartJobManagerActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return AdmitFragment.newInstance(1);           //录取
+                    return PartJobManagerFragment.newInstance(1);           //录取
                 case 1:
-                    return AdmitFragment.newInstance(0);          //完成
+                    return PartJobManagerFragment.newInstance(0);          //完成
             }
             return new FragmentText();
         }

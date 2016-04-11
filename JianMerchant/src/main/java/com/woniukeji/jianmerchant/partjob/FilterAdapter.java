@@ -229,7 +229,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
                     int type=0;
                     if (user.getUser_status().equals("0")){
                         type=2;
-                    }else if(user.getUser_status().equals("1")){
+                    }else if(user.getUser_status().equals("3")){
                         type=2;
                     }
                     else if(user.getUser_status().equals("5")){
