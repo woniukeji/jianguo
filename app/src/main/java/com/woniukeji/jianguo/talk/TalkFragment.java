@@ -38,7 +38,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-
 public class TalkFragment extends BaseFragment {
     @InjectView(R.id.text) TextView text;
     @InjectView(R.id.button) Button button;

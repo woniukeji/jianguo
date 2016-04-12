@@ -86,11 +86,20 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                 if ( refreshLayout.isRefreshing()){
+                     refreshLayout.setRefreshing(false);
+                 }
+                    if (msg.arg1==0){
+                        modleList.clear();
+                    }
                 BaseBean<Model> modelBaseBean= (BaseBean<Model>) msg.obj;
                 modleList.addAll(modelBaseBean.getData().getList_t_job());
-                    adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                     break;
                 case 1:
+                    if ( refreshLayout.isRefreshing()){
+                        refreshLayout.setRefreshing(false);
+                    }
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(getActivity(), ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
@@ -161,9 +170,15 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
             }
         });
         merchant_id= (int) SPUtils.getParam(getActivity(),Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
         getTask.execute();
-
     }
 
     @Override
@@ -243,6 +258,7 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {

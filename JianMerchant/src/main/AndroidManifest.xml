@@ -101,6 +101,10 @@
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
+        <activity android:name=".affordwages.AffordActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
+        </activity>
     </application>
 
 </manifest>

@@ -657,9 +657,9 @@
         <Button
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:id="@+id/btn_stop"
+            android:id="@+id/btn_change"
             android:layout_height="match_parent"
-            android:text="暂停"
+            android:text="修改"
             android:background="@drawable/btn_gray_bg"
             />
         <Button
@@ -679,5 +679,12 @@
             android:background="@drawable/btn_gray_bg"
             />
     </LinearLayout>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:text="去结算"
+        android:visibility="gone"
+        android:background="@drawable/btn_gray_bg"
+        />
 </RelativeLayout>

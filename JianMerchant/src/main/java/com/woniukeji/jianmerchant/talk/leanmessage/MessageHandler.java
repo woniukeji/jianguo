@@ -12,7 +12,6 @@ import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
 import de.greenrobot.event.EventBus;
-
 /**
  * Created by zhangxiaobo on 15/4/20.
  */

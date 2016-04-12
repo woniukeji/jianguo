@@ -121,6 +121,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     if (refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
+                    if (msg.arg1==0){
+                        jobList.clear();
+                    }
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
                     jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
@@ -434,6 +437,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {

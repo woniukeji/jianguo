@@ -25,7 +25,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import de.greenrobot.event.EventBus;
+import de.greenrobot.event.EventBus;;
 
 public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.ViewHolder> {
 

@@ -581,7 +581,7 @@
                     android:id="@+id/et_boy_count"
                     android:layout_width="wrap_content"
                     android:layout_height="43dp"
-                    android:hint="无需求可不填"
+                    android:hint="男生人数"
                     android:inputType="number"
                     android:textColorHint="#D8D8D8"
                     android:background="@color/transparent"
@@ -624,7 +624,7 @@
                     android:layout_toRightOf="@+id/count_split"
                     android:layout_width="wrap_content"
                     android:layout_height="43dp"
-                    android:hint="无需求可不填"
+                    android:hint="女生人数"
                     android:inputType="number"
                     android:textColorHint="#D8D8D8"
                     android:background="@color/transparent"
@@ -1246,13 +1246,29 @@
 </LinearLayout>
     </LinearLayout>
 </ScrollView>
-
     <LinearLayout
+        android:id="@+id/ll_change"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
+        >
+        <Button
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:id="@+id/btn_change"
+        android:layout_height="match_parent"
+        android:text="修改兼职"
+        android:background="@drawable/btn_gray_bg"
 
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_publish"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         >
         <Button
             android:layout_weight="1"

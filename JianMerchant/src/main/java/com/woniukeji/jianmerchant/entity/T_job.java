@@ -1,73 +1,71 @@
 package com.woniukeji.jianmerchant.entity;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
- * Created by invinjun on 2016/4/1.
+ * Created by invinjun on 2016/4/12.
  */
-public class Model implements Serializable{
+public class T_job {
 
+
+    /**
+     * t_job : {"id":23,"city_id":2,"area_id":7,"type_id":7,"merchant_id":2,"name":"男女不同","name_image":"http://7xlell.com2.z0.glb.qiniucdn.com/android_59096F6232581D4A42E919A57DAD8147","start_date":"1468598400","stop_date":"1471276800","address":"住兴趣三号","mode":2,"money":135,"term":2,"limit_sex":31,"count":1,"sum":12,"day":0,"regedit_time":"2016-04-11 14:49:51:380","status":0,"hot":1,"alike":"1460357386949","reg_date":"2016-04-11 14:49:51","look":3,"is_model":0,"model_name":"0","city_id_name":"海口","area_id_name":"秀英区","type_id_name":"家教","merchant_id_name":"张三","info_start_time":"10时30分","info_stop_time":"20时30分","info_set_place":"大街上","info_set_time":"鸡叫之时","info_limit_sex":"31","info_term":"2","info_other":"","info_work_content":"头巾能够","info_work_require":"安宁经济","info_tel":"18101050635","nv_job_id":"22","nv_sum":"12","nv_count":"0"}
+     */
 
         /**
-         * id : 1
-         * city_id : 1
-         * area_id : 1
-         * type_id : 1
+         * id : 23
+         * city_id : 2
+         * area_id : 7
+         * type_id : 7
          * merchant_id : 2
-         * name : 校内派单
-         * name_image : http://7xlell.com2.z0.glb.qiniucdn.com/01678d545b4de3f2ba858ae90a1cce21
-         * start_date : 1458008358
-         * stop_date : 1458098520
-         * address : 学校里
+         * name : 男女不同
+         * name_image : http://7xlell.com2.z0.glb.qiniucdn.com/android_59096F6232581D4A42E919A57DAD8147
+         * start_date : 1468598400
+         * stop_date : 1471276800
+         * address : 住兴趣三号
          * mode : 2
-         * money : 100.0
-         * term : 3
-         * limit_sex : 2
-         * count : 154
-         * sum : 200
+         * money : 135.0
+         * term : 2
+         * limit_sex : 31
+         * count : 1
+         * sum : 12
          * day : 0
-         * regedit_time : 2016-03-15 15:36:02:546
-         * status : 1
-         * hot : 0
-         * alike : 0
-         * reg_date : null
+         * regedit_time : 2016-04-11 14:49:51:380
+         * status : 0
+         * hot : 1
+         * alike : 1460357386949
+         * reg_date : 2016-04-11 14:49:51
+         * look : 3
+         * is_model : 0
          * model_name : 0
-         * city_id_name : 三亚
-         * area_id_name : 市辖区
-         * type_id_name : 礼仪模特
+         * city_id_name : 海口
+         * area_id_name : 秀英区
+         * type_id_name : 家教
          * merchant_id_name : 张三
-         * info_start_time : 1458008358
-         * info_stop_time : 1458098520
-         * info_set_place : 女生男生宿舍门口
-         * info_set_time : 1458008358
-         * info_limit_sex : 2
-         * info_term : 3
-         * info_other : 其他
-         * info_work_content : 在女生和男生宿舍楼发传单，发完立结工资
-         * info_work_require : 口齿伶俐;健康;
+         * info_start_time : 10时30分
+         * info_stop_time : 20时30分
+         * info_set_place : 大街上
+         * info_set_time : 鸡叫之时
+         * info_limit_sex : 31
+         * info_term : 2
+         * info_other :
+         * info_work_content : 头巾能够
+         * info_work_require : 安宁经济
+         * info_tel : 18101050635
+         * nv_job_id : 22
+         * nv_sum : 12
+         * nv_count : 0
          */
 
-        private List<ListTJobEntity> list_t_job;
+        private TJobEntity t_job;
 
-        public List<ListTJobEntity> getList_t_job() {
-            return list_t_job;
-        }
-    private ListTJobEntity t_job;
-
-    public ListTJobEntity getT_job() {
-        return t_job;
-    }
-
-    public void setT_job(ListTJobEntity t_job) {
-        this.t_job = t_job;
-    }
-
-    public void setList_t_job(List<ListTJobEntity> list_t_job) {
-            this.list_t_job = list_t_job;
+        public TJobEntity getT_job() {
+            return t_job;
         }
 
-        public static class ListTJobEntity implements Serializable{
+        public void setT_job(TJobEntity t_job) {
+            this.t_job = t_job;
+        }
+
+        public static class TJobEntity {
             private int id;
             private int city_id;
             private int area_id;
@@ -90,7 +88,7 @@ public class Model implements Serializable{
             private int hot;
             private String alike;
             private String reg_date;
-            private String look;
+            private int look;
             private int is_model;
             private String model_name;
             private String city_id_name;
@@ -110,68 +108,6 @@ public class Model implements Serializable{
             private String nv_job_id;
             private String nv_sum;
             private String nv_count;
-            private String remarks;
-
-            public int getIs_model() {
-                return is_model;
-            }
-
-            public void setIs_model(int is_model) {
-                this.is_model = is_model;
-            }
-
-            public String getNv_job_id() {
-                return nv_job_id;
-            }
-
-            public void setNv_job_id(String nv_job_id) {
-                this.nv_job_id = nv_job_id;
-            }
-
-            public String getNv_sum() {
-                return nv_sum;
-            }
-
-            public void setNv_sum(String nv_sum) {
-                this.nv_sum = nv_sum;
-            }
-
-            public String getNv_count() {
-                return nv_count;
-            }
-
-            public void setNv_count(String nv_count) {
-                this.nv_count = nv_count;
-            }
-
-            public String getRemarks() {
-                return remarks;
-            }
-
-            public void setRemarks(String remarks) {
-                this.remarks = remarks;
-            }
-
-            public String getLook() {
-                return look;
-            }
-
-            public void setLook(String look) {
-                this.look = look;
-            }
-
-
-
-
-
-
-            public String getInfo_tel() {
-                return info_tel;
-            }
-
-            public void setInfo_tel(String info_tel) {
-                this.info_tel = info_tel;
-            }
 
             public int getId() {
                 return id;
@@ -349,6 +285,22 @@ public class Model implements Serializable{
                 this.reg_date = reg_date;
             }
 
+            public int getLook() {
+                return look;
+            }
+
+            public void setLook(int look) {
+                this.look = look;
+            }
+
+            public int getIs_model() {
+                return is_model;
+            }
+
+            public void setIs_model(int is_model) {
+                this.is_model = is_model;
+            }
+
             public String getModel_name() {
                 return model_name;
             }
@@ -460,5 +412,37 @@ public class Model implements Serializable{
             public void setInfo_work_require(String info_work_require) {
                 this.info_work_require = info_work_require;
             }
+
+            public String getInfo_tel() {
+                return info_tel;
+            }
+
+            public void setInfo_tel(String info_tel) {
+                this.info_tel = info_tel;
+            }
+
+            public String getNv_job_id() {
+                return nv_job_id;
+            }
+
+            public void setNv_job_id(String nv_job_id) {
+                this.nv_job_id = nv_job_id;
+            }
+
+            public String getNv_sum() {
+                return nv_sum;
+            }
+
+            public void setNv_sum(String nv_sum) {
+                this.nv_sum = nv_sum;
+            }
+
+            public String getNv_count() {
+                return nv_count;
+            }
+
+            public void setNv_count(String nv_count) {
+                this.nv_count = nv_count;
+            }
         }
-    }
+}

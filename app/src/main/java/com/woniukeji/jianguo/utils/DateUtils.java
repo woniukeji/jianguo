@@ -234,8 +234,8 @@ public class DateUtils {
         return MD5Util.MD5(Constants.ONLY_PART1 + tempTime  + Constants.ONLY_PART2);
     }
     public static String getTime(long millis1, long millis2) {
-        Date date1=new Date(millis1);
-        Date date2=new Date(millis2);
+        Date date1=new Date(millis1*1000);
+        Date date2=new Date(millis2*1000);
 //        String tempTime=format(date, "yyyy-MM-dd HH");
 //        return MD5Util.MD5(Constants.ONLY_PART1 + tempTime + ":" + Constants.ONLY_PART2);
         String tempTime1=format(date1, "MM月dd日");

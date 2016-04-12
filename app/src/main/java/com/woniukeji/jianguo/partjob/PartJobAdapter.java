@@ -94,33 +94,51 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             final Jobs.ListTJobEntity job = mValues.get(position);
 
 
-            //等待数据设置
-           // 1=月结，2=周结，3=日结，4=小时结
+            // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
+            final String type;
             if (job.getTerm()==0){
-                holder.tvPayMethod.setText("月结");
                 holder.tvWages.setText(job.getMoney()+"/月");
+                type="/月";
             }else if(job.getTerm()==1){
-                holder.tvPayMethod.setText("周结");
                 holder.tvWages.setText(job.getMoney()+"/周");
+                type="/周";
             }else if(job.getTerm()==2){
-                holder.tvPayMethod.setText("日结");
                 holder.tvWages.setText(job.getMoney()+"/日");
+                type="/日";
+            }else if(job.getTerm()==3){
+                holder.tvWages.setText(job.getMoney()+"/时");
+                type="/时";
+            }else if(job.getTerm()==4){
+                holder.tvWages.setText(job.getMoney()+"/次");
+                type="/次";
             }else {
-                holder.tvPayMethod.setText("小时结");
-                holder.tvWages.setText(job.getMoney()+"/小时");
+                holder.tvWages.setText("义工");
+                type="义工";
             }
+            //结算方式（0=月结，1=周结，2=日结，3=旅行）
+            if (job.getMode()==0){
+                holder.tvPayMethod.setText("月结");
+            }else if(job.getMode()==1){
+                holder.tvPayMethod.setText("周结");
+            }else if(job.getMode()==2){
+                holder.tvPayMethod.setText("日结");
+            }else {
+                holder.tvPayMethod.setText("旅行");
+            }
+
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
             String date=DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStart_date()));
             holder.tvDate.setText(date);
             //性别限制（0=只招女，1=只招男，2=不限男女）
-            if (job.getLimit_sex()==0){
+            if (job.getLimit_sex()==0||job.getLimit_sex()==30){
+                holder.imgSex.setImageResource(R.mipmap.icon_woman);
+            }else if(job.getLimit_sex()==1||job.getLimit_sex()==31){
                 holder.imgSex.setImageResource(R.mipmap.icon_man);
-            }else if(job.getLimit_sex()==1){
-                holder.imgSex.setImageResource(R.mipmap.icon_man);
-            }
-            holder.imgSex.setVisibility(View.GONE);
+            }else
+                holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
+
 
 
             Picasso.with(mContext).load(job.getName_image())
@@ -130,8 +148,8 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                     .into(holder.userHead);
 
             //动画
-            float count=job.getCount();//已有人数
-            float sum=job.getSum();
+            final float count=job.getCount();//已有人数
+            final float sum=job.getSum();
             holder.demoTv.setText(job.getCount()+"/"+job.getSum() );
             final float score = count/sum*100;
             AnimatorSet set = new AnimatorSet();
@@ -149,8 +167,9 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                     Intent intent=new Intent(mContext, JobDetailActivity.class);
                     intent.putExtra("job",job.getId());
                     intent.putExtra("merchant",job.getMerchant_id());
-                    intent.putExtra("money",job.getMoney());
+                    intent.putExtra("money",job.getMoney()+type);
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());
+                    intent.putExtra("mername", job.getName());
                     mContext.startActivity(intent);
                 }
             });

@@ -163,8 +163,9 @@ public class JobDetailActivity extends BaseActivity {
 
     private void fillData() {
         tvWorkLocation.setText(jobinfo.getAddress());
-        if (jobinfo!=null){
 
+
+        if (jobinfo!=null){
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
         String time = jobinfo.getStart_time()+"-"+jobinfo.getStop_time();
         String setTime =jobinfo.getSet_time();
@@ -191,7 +192,11 @@ public class JobDetailActivity extends BaseActivity {
             tvSex.setText("女");
         } else if (jobinfo.getLimit_sex() == 1) {
             tvSex.setText("男");
-        } else
+        } else if (jobinfo.getLimit_sex() == 30) {
+            tvSex.setText("女");
+        }else if (jobinfo.getLimit_sex() == 31) {
+            tvSex.setText("男");
+        }else
             tvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
         //期限（1=月结，2=周结，3=日结，4=小时结）
         if (jobinfo.getTerm() == 0) {
@@ -203,7 +208,12 @@ public class JobDetailActivity extends BaseActivity {
         } else
             tvPayMethod.setText("小时结");
 
-        tvOther.setText(jobinfo.getOther());
+         if (jobinfo.getOther()==null||jobinfo.getOther().equals("null")||jobinfo.getOther().equals("")){
+             tvOther.setText("暂无");
+         }else{
+             tvOther.setText(jobinfo.getOther());
+         }
+
         tvWorkContent.setText(jobinfo.getWork_content());
         tvWorkRequire.setText(jobinfo.getWork_require());
 
@@ -234,22 +244,24 @@ public class JobDetailActivity extends BaseActivity {
         Intent intent= getIntent();
         jobid= intent.getIntExtra("job",0);
         int merchantid=  intent.getIntExtra("merchant",0);
-        int money= (int) intent.getDoubleExtra("money",0);
+        String money=  intent.getStringExtra("money");
         String count=intent.getStringExtra("count");
+        String mername=intent.getStringExtra("mername");
         img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
         name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
         getTask.execute();
-        tvWage.setText(String.valueOf(money));
-        tvJobsCount.setText(count);
+        tvWage.setText(money);
+        tvHiringCount.setText(count);
+        businessName.setText(mername);
+//        tvJobsCount.setText(modleJob.getCount() + "/" + modleJob.getSum());
     }
 
     @Override
     public void initViews() {
         tvTitle.setText("兼职详情");
         img_share.setVisibility(View.VISIBLE);
-
     }
 
     @Override

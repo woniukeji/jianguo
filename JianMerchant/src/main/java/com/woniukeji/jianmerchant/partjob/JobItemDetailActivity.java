@@ -17,11 +17,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianmerchant.R;
+import com.woniukeji.jianmerchant.affordwages.AffordActivity;
 import com.woniukeji.jianmerchant.base.BaseActivity;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.JobDetails;
 import com.woniukeji.jianmerchant.entity.Model;
+import com.woniukeji.jianmerchant.entity.PublishUser;
+import com.woniukeji.jianmerchant.publish.PublishDetailActivity;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
@@ -76,7 +79,7 @@ public class JobItemDetailActivity extends BaseActivity {
     @InjectView(R.id.tv_company_name) TextView tvCompanyName;
     @InjectView(R.id.tv_jobs_count) TextView tvJobsCount;
     @InjectView(R.id.rl_company) RelativeLayout rlCompany;
-    @InjectView(R.id.btn_stop) Button btnStop;
+    @InjectView(R.id.btn_change) Button btnChange;
     @InjectView(R.id.btn_finish) Button btnFinish;
     @InjectView(R.id.btn_down) Button btnDown;
     @InjectView(R.id.btn_no_limit) Button btnNoLimit;
@@ -103,7 +106,7 @@ public class JobItemDetailActivity extends BaseActivity {
         ButterKnife.inject(this);
     }
 
-    @OnClick({R.id.img_back, R.id.btn_boy, R.id.btn_girl,R.id.btn_no_limit, R.id.btn_stop, R.id.btn_finish, R.id.btn_down})
+    @OnClick({R.id.img_back, R.id.btn_boy, R.id.btn_girl,R.id.btn_no_limit, R.id.btn_change, R.id.btn_finish, R.id.btn_down})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -124,11 +127,25 @@ public class JobItemDetailActivity extends BaseActivity {
                 Intent.putExtra("jobid",String.valueOf(jobid));
                 startActivity(Intent);
                 break;
-            case R.id.btn_stop:
+            case R.id.btn_change:
+                Intent changeIntent=new Intent(this,PublishDetailActivity.class);
+                changeIntent.putExtra("jobid",String.valueOf(jobid));
+                changeIntent.putExtra("type","change");
+                startActivity(changeIntent);
+
                 break;
             case R.id.btn_finish:
+                PostActionTask postFinishTask=new PostActionTask(String.valueOf(loginId),String.valueOf(jobid),"9");
+                postFinishTask.execute();
                 break;
             case R.id.btn_down:
+                if(modleJob.getStatus()==3){
+                    startActivity(new Intent(mContext, AffordActivity.class));
+                }else{
+                    PostActionTask postDownTask=new PostActionTask(String.valueOf(loginId),String.valueOf(jobid),"13");
+                    postDownTask.execute();
+                }
+
                 break;
         }
     }
@@ -180,12 +197,11 @@ public class JobItemDetailActivity extends BaseActivity {
 //                    jobDetailActivity.tvSignup.setBackgroundResource(R.color.gray);
                     break;
                 case 5:
-//                    String msg1 = (String) msg.obj;
-//                    Toast.makeText(jobDetailActivity, msg1, Toast.LENGTH_SHORT).show();
-//                    Drawable drawable=jobDetailActivity.getResources().getDrawable(R.drawable.icon_collection_check);
-//                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-//                    jobDetailActivity.tvCollection.setCompoundDrawables(null,drawable,null,null);
-//                    jobDetailActivity.showShortToast("收藏成功");
+                    String Message = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, Message, Toast.LENGTH_SHORT).show();
+//                    jobDetailActivity.btnDown.setVisibility(View.GONE);
+//                    jobDetailActivity.btnChange.setVisibility(View.GONE);
+//                    jobDetailActivity.btnFinish.setVisibility();
                     break;
                 case 6:
                     String msg2 = (String) msg.obj;
@@ -200,6 +216,24 @@ public class JobItemDetailActivity extends BaseActivity {
     }
 
     private void fillData() {
+
+        if (modleJob.getStatus()==6){
+            btnFinish.setVisibility(View.GONE);
+            btnChange.setVisibility(View.GONE);
+            btnDown.setText("已下架");
+        }else if(modleJob.getStatus()==5){
+            btnFinish.setVisibility(View.GONE);
+            btnChange.setVisibility(View.GONE);
+        }else if(modleJob.getStatus()==4){
+            btnFinish.setVisibility(View.GONE);
+            btnChange.setVisibility(View.GONE);
+            btnDown.setText("去评价");
+        }else if(modleJob.getStatus()==3){
+            btnFinish.setVisibility(View.GONE);
+            btnChange.setVisibility(View.GONE);
+            btnDown.setText("去结算");
+        }
+
         tvTitle.setText(modleJob.getName());
         tvMerchantName.setText(modleJob.getName());
         tvWorkLocation.setText(jobinfo.getAddress());
@@ -261,7 +295,9 @@ public class JobItemDetailActivity extends BaseActivity {
             tvPayMethod.setText("日结");
         } else
             tvPayMethod.setText("小时结");
-
+        if (jobinfo.getOther()==null||jobinfo.getOther().equals("null")||jobinfo.getOther().equals("")){
+            tvOther.setText("暂无");
+        }else
         tvOther.setText(jobinfo.getOther());
         tvWorkContent.setText(jobinfo.getWork_content());
         tvWorkRequire.setText(jobinfo.getWork_require());
@@ -269,7 +305,6 @@ public class JobItemDetailActivity extends BaseActivity {
         //商家信息
 
         tvCompanyName.setText(merchantInfo.getName());
-//        tvHiringCount.setText(merchantInfo.getJob_count());
 
     }
 
@@ -300,12 +335,6 @@ public class JobItemDetailActivity extends BaseActivity {
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         GetTask getTask = new GetTask(String.valueOf(loginId), String.valueOf(jobid), String.valueOf(merchantid), alike);
         getTask.execute();
-//        jobinfo = (JobDetails.TJobInfoEntity) intent.getSerializableExtra("jobinfo");
-//        merchantInfo = (JobDetails.TMerchantEntity) intent.getSerializableExtra("merchantinfo");
-//        int money= (int) intent.getDoubleExtra("money",0);
-//        String count=intent.getStringExtra("count");
-//        tvWage.setText(String.valueOf(money));
-//        tvJobsCount.setText(count);
 
     }
 
@@ -393,6 +422,83 @@ public class JobItemDetailActivity extends BaseActivity {
                                 mHandler.sendMessage(message);
                             }
                         }
+                    });
+        }
+    }
+    public class PostActionTask extends AsyncTask<Void, Void, Void> {
+        private final String loginid;
+        private final String jobid;
+        private final String offer;
+
+        PostActionTask(String loginid,String jobid,String offer) {
+            this.loginid = loginid;
+            this.jobid = jobid;
+            this.offer = offer;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                postAction();
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * postInfo
+         */
+        public void postAction() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.POST_DOWN)
+                    .addParams("only", only)
+                    .addParams("job_id", jobid)
+                    .addParams("offer", offer)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_POST_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
                     });
         }
     }

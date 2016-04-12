@@ -23,11 +23,12 @@ import com.woniukeji.jianmerchant.talk.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 
+import de.greenrobot.event.EventBus;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 /**
  *

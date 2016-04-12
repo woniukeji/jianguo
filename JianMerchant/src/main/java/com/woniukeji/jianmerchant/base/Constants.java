@@ -61,6 +61,9 @@ public class Constants {
     public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
     public static final String GET_ADMIT_LIST= JIANGUO_USING+"T_enroll_Job_Servlet";//报名列表
     public static final String POST_ADMIT= JIANGUO_USING+"T_enroll_Offer_Servlet";//商家录取
+    public static final String POST_DOWN= JIANGUO_USING+"T_enroll_Agree_Servlet";//下架或者结束兼职
+    public static final String GET_SINGLE_JOB_INFO= JIANGUO_USING+"T_job_Id_Servlet";//查询单条目兼职信息
+    public static final String POST_JOB_INFO= JIANGUO_USING+"T_job_Update_Servlet";//修改兼职信息
 
 
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图

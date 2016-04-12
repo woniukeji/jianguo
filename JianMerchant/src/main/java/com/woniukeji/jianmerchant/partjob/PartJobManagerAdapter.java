@@ -141,6 +141,24 @@ public class PartJobManagerAdapter extends RecyclerView.Adapter<PartJobManagerAd
             }else if(job.getTerm()==5){
                 holder.tvWages.setText("义工");
             }
+
+
+            if (job.getStatus()==0){
+                holder.btnAdmitAction.setText("录取中");}
+            else if(job.getStatus()==1){
+                    holder.btnAdmitAction.setText("已招满");
+            }else if(job.getStatus()==2){
+                holder.btnAdmitAction.setText("工作中");
+            }else if(job.getStatus()==3){
+                holder.btnAdmitAction.setText("去结算");
+            }else if(job.getStatus()==4){
+                holder.btnAdmitAction.setText("去评价");
+            }else if(job.getStatus()==5){
+                holder.btnAdmitAction.setText("已完成");
+            }else if(job.getStatus()==6){
+                holder.btnAdmitAction.setText("已下架");
+            }
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

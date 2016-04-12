@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rl_job"
+                android:layout_width="wrap_content"
+                android:layout_height="73dp"
+                android:background="@color/gray"
+    >
+        <include layout="@layout/split_line"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="8dp"
+            android:background="#bfbfbf"
+            android:layout_below="@+id/ll_title"
+            />
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:id="@+id/cb_choose"
+        android:src="@mipmap/icon_xuanzhong"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"
+        />
+<ImageView
+    android:layout_width="38dp"
+    android:layout_height="38dp"
+    android:id="@+id/img_head"
+    android:src="@drawable/default_head"
+    android:layout_toRightOf="@+id/cb_choose"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    />
+
+<LinearLayout
+    android:layout_toRightOf="@+id/img_head"
+    android:id="@+id/ll_publish_time"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="18dp"
+    android:orientation="horizontal"
+    >
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_marginLeft="4dp"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="小强"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:minEms="5"
+            android:textSize="12dp"
+
+            />
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/img_local"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="1338766309"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+            />
+
+</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_wages"
+        android:layout_below="@+id/ll_publish_time"
+        android:layout_toRightOf="@+id/img_head"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_marginLeft="4dp"
+            android:paddingLeft="15dp"
+            android:layout_toRightOf="@+id/img_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="总工时："
+            android:minEms="5"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+
+            />
+      <Button
+          android:layout_width="15dp"
+          android:layout_height="wrap_content"
+          android:background="@mipmap/delete"
+          />
+        <EditText
+            android:id="@+id/tv_wages"
+            android:layout_toRightOf="@+id/img_local"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="150元"
+            android:background="@mipmap/et_background"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:textSize="12dp"
+            />
+        <Button
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/add"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="天"
+            />
+    </LinearLayout>
+
+    
+    <Button
+        android:layout_width="65dp"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:text="修改"
+        android:background="@drawable/button_blue"
+        android:visibility="gone"
+        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="10dp"
+            android:background="#bfbfbf"
+            android:layout_below="@+id/ll_publisher"
+            />
+
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#bfbfbf"
+        />
+
+        <include layout="@layout/split_line"
+                 android:layout_alignParentBottom="true"
+            />
+
+
+</RelativeLayout>
