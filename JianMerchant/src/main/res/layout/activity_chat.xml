@@ -22,7 +22,7 @@
         android:layout_height="1dp"
         android:background="#7fd8d8d8"/>
 
-    <com.woniukeji.jianguo.talk.widget.KJChatKeyboard
+    <com.woniukeji.jianmerchant.talk.widget.KJChatKeyboard
         android:id="@+id/chat_msg_input_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

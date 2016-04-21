@@ -151,7 +151,7 @@ public class PublishDetailActivity extends BaseActivity {
     private String[] payMethods = new String[]{"月结", "周结", "日结", "旅行"};
     private String[] wagesMethods = new String[]{"元/月", "元/周", "元/天", "元/小时", "元/次", "义工"};
     private String[] sexs = new String[]{"仅限女", "仅限男", "不限男女", "男女各需"};
-    private String[] second = new String[]{"00分", "15分", "30分", "45分"};
+    private String[] second = new String[]{"00","30"};
     BaseBean<CityCategory> cityCategoryBaseBean;
     private JobDetails.TMerchantEntity merchantInfo = new JobDetails.TMerchantEntity();
     private JobDetails.TJobInfoEntity jobinfo = new JobDetails.TJobInfoEntity();
@@ -280,11 +280,15 @@ public class PublishDetailActivity extends BaseActivity {
                             activity.stop_date = String.valueOf(DateUtils.getLongTime(size));
                             break;
                         case 9:
-                            activity.tvTimeStart.setText(size);
+                            StringBuilder sb1=new StringBuilder();
+                            sb1.append(size).insert(2, ":");
+                            activity.tvTimeStart.setText(sb1);
                             activity.start_time = size;
                             break;
                         case 10:
-                            activity.tvTimeEnd.setText(size);
+                            StringBuilder sb=new StringBuilder();
+                            sb.append(size).insert(2, ":");
+                            activity.tvTimeEnd.setText(sb);
                             activity.stop_time = size;
                             break;
                         case 11:
@@ -473,7 +477,10 @@ public class PublishDetailActivity extends BaseActivity {
                 List<String> secondlist = new ArrayList<String>(listSecond);
                 List<String> hourlist = new ArrayList<String>();
                 for (int i = 1; i < 25; i++) {
-                    hourlist.add(String.valueOf(i) + "时");
+                    if (i<10){
+                        hourlist.add("0"+String.valueOf(i));
+                    }else
+                        hourlist.add(String.valueOf(i));
                 }
                 TimePickerPopuWin pickerTimeS = new TimePickerPopuWin(context, hourlist, secondlist, mHandler, 9);
                 pickerTimeS.showShareWindow();
@@ -485,7 +492,10 @@ public class PublishDetailActivity extends BaseActivity {
                 List<String> secondlistE = new ArrayList<String>(listSecondE);
                 List<String> hourlistE = new ArrayList<String>();
                 for (int i = 1; i < 25; i++) {
-                    hourlistE.add(String.valueOf(i) + "时");
+                    if (i<10){
+                        hourlistE.add("0"+String.valueOf(i));
+                    }else
+                        hourlistE.add(String.valueOf(i));
                 }
                 TimePickerPopuWin pickerTimeE = new TimePickerPopuWin(context, hourlistE, secondlistE, mHandler, 10);
                 pickerTimeE.showShareWindow();
@@ -688,6 +698,8 @@ public class PublishDetailActivity extends BaseActivity {
         tel = etTel.getText().toString();
         work_content = etWorkContent.getText().toString();
         work_require = etWorkRequire.getText().toString();
+        start_time= String.valueOf(DateUtils.getLongTime(tvDateStart.getText().toString()+" "+tvTimeStart.getText().toString(),"yyyy-MM-dd HH:mm"));
+        stop_time=String.valueOf(DateUtils.getLongTime(tvDateEnd.getText().toString()+" "+tvTimeEnd.getText().toString(),"yyyy-MM-dd HH:mm"));
         return true;
     }
 
@@ -736,8 +748,8 @@ public class PublishDetailActivity extends BaseActivity {
         tvDateEnd.setText(DateUtils.getTime(Long.parseLong(modle.getStop_date()), "yyyy-MM-dd"));
         start_date = modle.getStart_date();
         stop_date = modle.getStop_date();
-        tvTimeStart.setText(modle.getInfo_start_time());
-        tvTimeEnd.setText(modle.getInfo_stop_time());
+        tvTimeStart.setText(DateUtils.getHm(Long.parseLong(modle.getInfo_start_time())));
+        tvTimeEnd.setText(DateUtils.getHm(Long.parseLong(modle.getInfo_stop_time())));
         start_time = modle.getInfo_start_time();
         stop_time = modle.getInfo_stop_time();
         etDetailPosition.setText(modle.getAddress());

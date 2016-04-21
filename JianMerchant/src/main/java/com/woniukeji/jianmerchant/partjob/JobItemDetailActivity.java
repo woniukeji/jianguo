@@ -17,13 +17,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianmerchant.R;
-import com.woniukeji.jianmerchant.affordwages.AffordActivity;
+import com.woniukeji.jianmerchant.affordwages.CalculateActivity;
 import com.woniukeji.jianmerchant.base.BaseActivity;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.JobDetails;
 import com.woniukeji.jianmerchant.entity.Model;
-import com.woniukeji.jianmerchant.entity.PublishUser;
 import com.woniukeji.jianmerchant.publish.PublishDetailActivity;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.DateUtils;
@@ -98,6 +97,7 @@ public class JobItemDetailActivity extends BaseActivity {
     private String name;
     private Model.ListTJobEntity modleJob;
     private int jobid;
+    BaseBean<JobDetails> jobDetailsBaseBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class JobItemDetailActivity extends BaseActivity {
                 break;
             case R.id.btn_girl:
                 Intent girgleIntent=new Intent(this,FilterActivity.class);
-                girgleIntent.putExtra("jobid",jobinfo.getId());
+                girgleIntent.putExtra("jobid",jobinfo.getNv_job_id());
                 startActivity(girgleIntent);
                 break;
             case R.id.btn_no_limit:
@@ -140,7 +140,13 @@ public class JobItemDetailActivity extends BaseActivity {
                 break;
             case R.id.btn_down:
                 if(modleJob.getStatus()==3){
-                    startActivity(new Intent(mContext, AffordActivity.class));
+                    Intent intent=new Intent(mContext, CalculateActivity.class);
+                    intent.putExtra("money",tvWages.getText().toString());
+                    intent.putExtra("name",tvMerchantName.getText().toString());
+                    intent.putExtra("jobid",String.valueOf(jobinfo.getJob_id()));
+                    intent.putExtra("jobNid",String.valueOf(jobinfo.getNv_job_id()));
+//                    intent.putExtra("")
+                    startActivity(intent);
                 }else{
                     PostActionTask postDownTask=new PostActionTask(String.valueOf(loginId),String.valueOf(jobid),"13");
                     postDownTask.execute();
@@ -166,9 +172,9 @@ public class JobItemDetailActivity extends BaseActivity {
 //                    if (null!=jobDetailActivity.pDialog){
 //                        jobDetailActivity.pDialog.dismiss();
 //                    }
-                    BaseBean<JobDetails> jobDetailsBaseBean = (BaseBean) msg.obj;
-                    jobDetailActivity.jobinfo = jobDetailsBaseBean.getData().getT_job_info();
-                    jobDetailActivity.merchantInfo = jobDetailsBaseBean.getData().getT_merchant();
+                    jobDetailActivity.jobDetailsBaseBean = (BaseBean) msg.obj;
+                    jobDetailActivity.jobinfo = jobDetailActivity.jobDetailsBaseBean.getData().getT_job_info();
+                    jobDetailActivity.merchantInfo = jobDetailActivity.jobDetailsBaseBean.getData().getT_merchant();
                     jobDetailActivity.fillData();
                     break;
                 case 1:
@@ -243,10 +249,9 @@ public class JobItemDetailActivity extends BaseActivity {
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()), Long.valueOf(jobinfo.getStop_date()));
         tvWorkDate.setText(date);
         tvDate.setText(date);
-        tvWorkTime.setText(jobinfo.getStart_time() + "-" + jobinfo.getStop_time());
+        tvWorkTime.setText(DateUtils.getHm(Long.parseLong(jobinfo.getStart_time())) + "-" + DateUtils.getHm(Long.parseLong(jobinfo.getStop_time())));
         tvCollectionSites.setText(jobinfo.getSet_place());
         tvCollectionTime.setText(jobinfo.getSet_time());
-        tvWages.setText(modleJob.getMoney() + "/" + modleJob.getTerm());
         tvJobsCount.setText(modleJob.getCount() + "/" + modleJob.getSum());
         if (modleJob.getTerm() == 0) {//0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
             tvWages.setText(modleJob.getMoney() + "/月");

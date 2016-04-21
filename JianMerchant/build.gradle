@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions{
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
@@ -29,10 +37,12 @@ dependencies {
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.google.code.gson:gson:2.2.+'
-    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
-    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }
+    compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
+    compile('cn.leancloud.android:avoscloud-push:v3.13.6@aar'){transitive = true}
     compile 'cn.leancloud.android:Java-WebSocket:1.3.1-leancloud'
     compile 'cn.leancloud.android:fastjson:1.1.37-leancloud'
+    compile ('com.android.support:support-v4:21.0.3')
+    compile 'com.rockerhieu.emojicon:library:1.3.1'
 
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.android.support:recyclerview-v7:23.2.1'

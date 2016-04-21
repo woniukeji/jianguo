@@ -89,22 +89,51 @@
             android:name=".publish.HistoryJobActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".partjob.PartJobManagerActivity"
+        <activity
+            android:name=".partjob.PartJobManagerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".partjob.JobItemDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".partjob.FilterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".affordwages.CalculateActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".affordwages.ChangeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".affordwages.FinishActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".affordwages.PassWordActivity"
+                         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        >
+        </activity>
+
+        <activity android:name=".talk.ChatActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
-        <activity android:name=".partjob.JobItemDetailActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-        </activity>
-        <activity android:name=".partjob.FilterActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-        </activity>
-        <activity android:name=".affordwages.AffordActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-        </activity>
+
+        <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
+        <service android:name="com.avos.avoscloud.PushService"/>
+
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
+        <!-- 实时通信模块、推送 END -->
+
     </application>
 
 </manifest>

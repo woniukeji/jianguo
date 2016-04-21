@@ -198,13 +198,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
 //            else if(user.getUser_status().equals("9")){
 //                holder.btnCancel.setText("催工资");
 //            }
-            else if(user.getUser_status().equals("10")||user.getUser_status().equals("9")){
-                holder.btnCancel.setText("去结算");
-                holder.btnCancel.setClickable(false);
-            }else if(user.getUser_status().equals("11")){
-                holder.btnCancel.setText("去评价");
-            }else if(user.getUser_status().equals("12")){
-                holder.btnCancel.setText("已完成");
+            else{
+                holder.btnCancel.setText("工作已结束");
                 holder.btnCancel.setClickable(false);
                 holder.btnCancel.setBackgroundResource(R.drawable.button_sign_background_gray);
             }

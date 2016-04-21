@@ -86,7 +86,7 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                 if ( refreshLayout.isRefreshing()){
+                 if (refreshLayout!=null&& refreshLayout.isRefreshing()){
                      refreshLayout.setRefreshing(false);
                  }
                     if (msg.arg1==0){

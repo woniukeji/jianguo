@@ -1,102 +1,76 @@
-package com.woniukeji.jianmerchant.partjob;
+package com.woniukeji.jianmerchant.affordwages;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianmerchant.R;
-import com.woniukeji.jianmerchant.affordwages.PassWordActivity;
-import com.woniukeji.jianmerchant.base.BaseFragment;
+import com.woniukeji.jianmerchant.base.BaseActivity;
 import com.woniukeji.jianmerchant.base.Constants;
+import com.woniukeji.jianmerchant.entity.AffordUser;
 import com.woniukeji.jianmerchant.entity.BaseBean;
-import com.woniukeji.jianmerchant.entity.Jobs;
-import com.woniukeji.jianmerchant.publish.PublishActivity;
+import com.woniukeji.jianmerchant.entity.Model;
+import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
+import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * create an instance of this fragment.
- */
-public class PartJobFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class PayActivity extends BaseActivity implements CalculateAdapter.deleteCallBack{
+
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
     @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.img_top) ImageView imgTop;
-    @InjectView(R.id.img_fabu) ImageView imgFabu;
-    @InjectView(R.id.publish) RelativeLayout publish;
-    @InjectView(R.id.img_gaunli) ImageView imgGaunli;
-    @InjectView(R.id.management) RelativeLayout management;
-    @InjectView(R.id.img_money) ImageView imgMoney;
-    @InjectView(R.id.money_management) RelativeLayout moneyManagement;
-    @InjectView(R.id.img_person) ImageView imgPerson;
-    @InjectView(R.id.manpower) RelativeLayout manpower;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @InjectView(R.id.list) FixedRecyclerView list;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
-    private int MSG_DELETE_SUCCESS = 5;
-    private int MSG_DELETE_FAIL = 6;
-    private Handler mHandler = new Myhandler(this.getActivity());
-    private Context mContext = this.getActivity();
-    private int loginId;
-    private int delePosition;
+    private int MSG_DELETE_SUCCESS = 2;
+    private int MSG_DELETE_FAIL = 3;
+    private Handler mHandler = new Myhandler(this);
+    private Context mContext = PayActivity.this;
+    private CalculateAdapter adapter;
+    private int merchantid;
+    private String type;
+    private List<AffordUser.ListTUserInfoEntity> userList=new ArrayList<>();
+    private int mPosition;
+    private SweetAlertDialog sweetAlertDialog;
+    private int lastVisibleItem;
+    private LinearLayoutManager mLayoutManager;
+
+    @OnClick(R.id.img_back)
+    public void onClick() {
+    }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
+    public void deleOnClick(String money, AffordUser.ListTUserInfoEntity user, int position) {
 
-    @OnClick({R.id.publish, R.id.management, R.id.money_management, R.id.manpower})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.publish:
-                startActivity(new Intent(getActivity(), PublishActivity.class));
-                break;
-            case R.id.management:
-                startActivity(new Intent(getActivity(), PartJobManagerActivity.class));
-                break;
-            case R.id.money_management:
-                startActivity(new Intent(getActivity(), PassWordActivity.class));
-                break;
-            case R.id.manpower:
-                break;
-        }
     }
 
 
-    private class Myhandler extends Handler {
+    private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
         public Myhandler(Context context) {
@@ -106,27 +80,27 @@ public class PartJobFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            PayActivity activity = (PayActivity) reference.get();
             switch (msg.what) {
                 case 0:
+                        BaseBean<AffordUser> modleBaseBean = (BaseBean<AffordUser>) msg.obj;
+                        activity.userList.addAll(modleBaseBean.getData().getList_t_user_info());
+                        activity.adapter.notifyDataSetChanged();
 
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(getActivity(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
+                    BaseBean baseBean = (BaseBean) msg.obj;
+                    activity.userList.remove(activity.mPosition);
+                    activity.adapter.notifyDataSetChanged();
+                    activity.showShortToast("刪除模板成功！");
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(getActivity(), sms, Toast.LENGTH_SHORT).show();
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    String mes = (String) msg.obj;
-                    Toast.makeText(getActivity(), mes, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -135,55 +109,98 @@ public class PartJobFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void setContentView() {
+        setContentView(R.layout.activity_pay_wages);
+        ButterKnife.inject(this);
+        Intent intent=getIntent();
+        type=intent.getStringExtra("type");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_part_job, container, false);
-        ButterKnife.inject(this, view);
-        initview();
-        return view;
+    public void initViews() {
+            tvTitle.setText("结算");
 
-    }
-
-    private void initview() {
-        tvTitle.setText("首页");
-        imgBack.setVisibility(View.GONE);
+//        adapter = new CalculateAdapter(userList, this,type,this);
+         mLayoutManager = new LinearLayoutManager(this);
+//设置布局管理器
+        list.setLayoutManager(mLayoutManager);
+//设置adapter
+        list.setAdapter(adapter);
+//设置Item增加、移除动画
+        list.setItemAnimator(new DefaultItemAnimator());
+//添加分割线
+//        recycleList.addItemDecoration(new RecyclerView.ItemDecoration() {
+//        });
+//        recycleList.addItemDecoration(new DividerItemDecoration(
+//                getActivity(), DividerItemDecoration.VERTICAL_LIST));
     }
 
     @Override
-    public void onAttach(Context context) {
-        loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-//        GetTask getTask = new GetTask(String.valueOf(loginId));
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initData() {
+        merchantid= (int) SPUtils.getParam(mContext,Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
+//        GetTask getTask=new GetTask("0");
 //        getTask.execute();
-        super.onAttach(context);
+
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    protected void onStart() {
+        super.onStart();
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (userList.size() > 5 && lastVisibleItem == userList.size()+1) {
+                    GetTask getTask=new GetTask(String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
+    @Override
+    public void addActivity() {
+        ActivityManager.getActivityManager().addActivity(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+//    @Override
+//    public void deleOnClick(int job_id, int merchant_id,int position) {
+//        mPosition=position;
+//        DeleteTask deleteTask=new DeleteTask(String.valueOf(job_id),String.valueOf(merchant_id));
+//        deleteTask.execute();
+//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
-
-        GetTask(String loginId) {
-            this.loginId = loginId;
-        }
-
+          private String count="0";
+          GetTask(String mCount){
+              this.count=mCount;
+          }
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                getJobs();
+                getHistoryJob();
             } catch (Exception e) {
             }
             return null;
@@ -192,27 +209,40 @@ public class PartJobFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+//            refreshLayout.setRefreshing(true);
+
+//             sweetAlertDialog=new SweetAlertDialog(mContext,SweetAlertDialog.PROGRESS_TYPE);
+//             sweetAlertDialog.setTitleText("请稍后");
+//             sweetAlertDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+//            sweetAlertDialog.dismissWithAnimation();
         }
 
         /**
          * postInfo
          */
-        public void getJobs() {
+        public void getHistoryJob() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.GET_CITY)
+                    .url(Constants.GET_PART_HISTORY)
                     .addParams("only", only)
-                    .addParams("login_id", loginId)
+                    .addParams("type", type)
+                    .addParams("count", count)
+                    .addParams("merchant_id",String.valueOf(merchantid))
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Jobs>>() {
+                    .execute(new Callback<BaseBean<Model>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
                             }.getType());
                             return baseBean;
                         }
@@ -246,19 +276,19 @@ public class PartJobFragment extends BaseFragment {
     }
 
     public class DeleteTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
-        private final String id;
+        private final String jobid;
+        private final String merchantid;
 
-        DeleteTask(String loginId, String id) {
-            this.loginId = loginId;
-            this.id = id;
+        DeleteTask(String jobid,String merchantid) {
+            this.jobid = jobid;
+            this.merchantid = merchantid;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                DeleteCollAtten();
+                deleteJobModel();
             } catch (Exception e) {
             }
             return null;
@@ -270,26 +300,25 @@ public class PartJobFragment extends BaseFragment {
         }
 
         /**
-         * postInfo
+         *刪除兼職模板
          */
-        public void DeleteCollAtten() {
+        public void deleteJobModel() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.GET_JOB_DETAIL)
+                    .url(Constants.DELETE_JOB_MODEL)
                     .addParams("only", only)
-                    .addParams("login_id", loginId)
-                    .addParams("id", id)
-                    .addParams("type", "1")
+                    .addParams("merchant_id", merchantid)
+                    .addParams("job_id", jobid)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Jobs>>() {
+                    .execute(new Callback<BaseBean>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
                             return baseBean;
                         }
@@ -306,12 +335,13 @@ public class PartJobFragment extends BaseFragment {
                         public void onResponse(BaseBean baseBean) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
+                                message.obj = baseBean;
                                 message.what = MSG_DELETE_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
                                 message.obj = baseBean.getMessage();
-                                message.what = MSG_DELETE_FAIL;
+                                message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }

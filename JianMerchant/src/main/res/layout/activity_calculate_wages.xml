@@ -89,4 +89,55 @@
             android:listSelector="@color/transparent"
             android:overScrollMode="never"
             android:scrollbarStyle="outsideOverlay" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        >
+        
+        <CheckBox
+            android:id="@+id/ch_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/app_bg"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:layout_toRightOf="@id/ch_all"
+            android:id="@+id/quanxuan"
+            android:textColor="@color/app_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="全选"
+            android:layout_marginLeft="13dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            />
+        <TextView
+            android:layout_toRightOf="@id/quanxuan"
+            android:id="@+id/tv_choose_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="共计3人"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            />
+           <Button
+               android:layout_width="111dp"
+               android:layout_height="match_parent"
+               android:layout_alignParentRight="true"
+               android:layout_centerVertical="true"
+               android:background="@drawable/button_calculate"
+               android:text="计算工资"
+               />
+        <include
+            android:id="@+id/top"
+            layout="@layout/split_line"
+            />
+    </RelativeLayout>
+
 </RelativeLayout>

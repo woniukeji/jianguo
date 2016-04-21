@@ -64,7 +64,9 @@ public class Constants {
     public static final String POST_DOWN= JIANGUO_USING+"T_enroll_Agree_Servlet";//下架或者结束兼职
     public static final String GET_SINGLE_JOB_INFO= JIANGUO_USING+"T_job_Id_Servlet";//查询单条目兼职信息
     public static final String POST_JOB_INFO= JIANGUO_USING+"T_job_Update_Servlet";//修改兼职信息
-
+    public static final String GET_PAY_LIST= JIANGUO_USING+"T_enroll_Job_User_Servlet";//获取发放工资用用户列表
+    public static final String POST_WAGES= JIANGUO_USING+"T_wages_Insert_Servlet";//工资结算接口
+    public static final String POST_PAY_PASSWORD= JIANGUO_USING+"T_mechant_pay_Update_Servlet";//结算密码
 
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
 
@@ -91,7 +93,7 @@ public class Constants {
     public static final String SP_CREDIT="credit";
 
     public static final String USER_MERCHANT_ID ="merchantid";
-
+    public static final String USER_PAY_PASS ="pay_password";
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguoMer"+ File.separator;
     public static final String UPDATED_AT = "updatedAt";

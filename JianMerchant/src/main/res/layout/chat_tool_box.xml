@@ -46,6 +46,7 @@
             android:background="@drawable/selector_chat_more"
             android:visibility="gone"
             android:button="@null"/>
+        <!--com.rockerhieu.emojicon.EmojiconEditText-->
 
         <com.rockerhieu.emojicon.EmojiconEditText
             android:id="@+id/toolbox_et_message"

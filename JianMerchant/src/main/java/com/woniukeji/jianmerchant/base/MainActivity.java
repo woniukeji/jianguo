@@ -6,8 +6,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.LogUtil;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
@@ -118,6 +123,16 @@ public class MainActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+//        AVObject testObject = new AVObject("TestObject");
+//        testObject.put("words","Hello World!");
+//        testObject.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(AVException e) {
+//                if(e == null){
+//                    Log.d("saved","success!");
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -132,6 +147,15 @@ public class MainActivity extends BaseActivity {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (null == e) {
+                    AVObject testObject = new AVObject("TestObject");
+                    testObject.put("words","eeeeHello World!");
+                    testObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if(e == null){
+                            }
+                        }
+                    });
 //                    finish();
 //                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                    startActivity(intent);
@@ -140,6 +164,9 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        // 测试 SDK 是否正常工作的代码
+
     }
 
     @Override

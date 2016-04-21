@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+    >
+    <include
+        android:id="@id/top"
+        layout="@layout/app_title_bar"
+        />
+    <RelativeLayout
+        android:layout_below="@+id/top"
+                    android:id="@+id/rl_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="73dp"
+                    android:background="@color/white"
+        >
+        <include layout="@layout/split_line"
+            />
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:id="@+id/img_head"
+            android:src="@drawable/default_head"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            />
+
+        <LinearLayout
+            android:layout_toRightOf="@+id/img_head"
+            android:id="@+id/ll_publish_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            >
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_marginLeft="4dp"
+                android:paddingLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="小强呵呵呵"
+                android:textColor="#9b9b9b"
+                android:gravity="center|left"
+                android:minEms="3"
+                android:textSize="12dp"
+
+                />
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_real_tel"
+                />
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/img_local"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="1338766309"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
+                android:textSize="12dp"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_wages"
+            android:layout_below="@+id/ll_publish_time"
+            android:layout_toRightOf="@+id/img_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:paddingLeft="15dp"
+                android:layout_toRightOf="@+id/img_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="应发工资："
+                android:minEms="5"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
+                android:textSize="12dp"
+
+                />
+            <TextView
+                android:id="@+id/tv_wages"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/img_local"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="150元"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
+                android:textSize="12dp"
+                />
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="65dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="修改"
+            android:visibility="gone"
+            android:background="@drawable/button_calculate"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="10dp"
+            android:background="#bfbfbf"
+            android:layout_below="@+id/ll_publisher"
+            />
+
+
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#bfbfbf"
+            />
+
+        <include layout="@layout/split_line"
+                 android:layout_alignParentBottom="true"
+            />
+
+
+    </RelativeLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@+id/rl_info"
+    android:layout_marginTop="10dp"
+    android:background="@color/white"
+    >
+
+    <include layout="@layout/split_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="应发工资:"
+            android:textColor="#9b9b9b"
+            android:gravity="center_vertical"
+            android:maxEms="5"
+            android:minEms="4"
+            />
+
+        <TextView
+            android:id="@+id/tv_base_wages"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="150元"
+            android:gravity="center_vertical"
+            />
+    </LinearLayout>
+    <include layout="@layout/split_line"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="实发工资:"
+            android:minEms="4"
+            android:textColor="#9b9b9b"
+            android:gravity="center_vertical"
+            />
+        <EditText
+            android:id="@+id/et_pay_wages"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:hint="请输入实际发放工资数"
+            android:textColorHint="#bfbfbf"
+            android:textSize="14dp"
+            android:inputType="number"
+            />
+        <TextView
+            android:id="@+id/tv_change_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:gravity="center_vertical"
+            />
+    </LinearLayout>
+    <include layout="@layout/split_line"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:paddingLeft="15dp"
+        android:gravity="center_vertical"
+        android:text="备注："
+        android:textColor="#9b9b9b"
+        />
+    <EditText
+        android:id="@+id/et_note"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#efefef"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="15dp"
+        android:hint="请输入15字以内的备注"
+        android:textColorHint="#bfbfbf"
+        android:textSize="14dp"
+        android:gravity="center"
+        />
+    <include layout="@layout/split_line"
+        />
+</LinearLayout>
+
+    <Button
+        android:id="@+id/btn_confirm_change"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="确认修改"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

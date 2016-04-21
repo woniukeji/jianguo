@@ -140,7 +140,7 @@ public class PreviewJobActivity extends BaseActivity {
         tvWorkLocation.setText(jobinfo.getAddress());
         String date = DateUtils.getTime(jobinfo.getStart_date(), jobinfo.getStop_date());
         tvWorkDate.setText(date);
-        tvWorkTime.setText(jobinfo.getStart_time()+"-"+jobinfo.getStop_time());
+        tvWorkTime.setText(DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time())));
         tvCollectionSites.setText(jobinfo.getSet_place());
         tvCollectionTime.setText(jobinfo.getSet_time());
         tvWage.setText(jobinfo.getWages());

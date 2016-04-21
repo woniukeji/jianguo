@@ -14,13 +14,10 @@ public class User  implements Serializable {
      */
 
         /**
-         * id : 43
-         * tel : 222222
-         * password : E10ADC3949BA59ABBE56E057F20F883E
-         * qqwx_token : null
-         * status : 1
-         * qiniu : l8JTtsVLzAV4yEvMvLd7Jno_4pDBwg180-_sGPbP:ND7kawNfpCzoLSPKpROgPM-0TBk=:eyJzY29wZSI6ImppYW5ndW8iLCJkZWFkbGluZSI6MTQ1OTc0MjM2Mn0=
-         */
+         {"message":"登录成功","data":{"t_user_login":{"id":43,"tel":"222222","password":"E10ADC3949BA59ABBE56E057F20F883E",
+         "qqwx_token":"null","status":1,"qiniu":"l8JTtsVLzAV4yEvMvLd7Jno_4pDBwg180-_sGPbP:_OFx6EsAre1PKrOrxawasOjsr_c\u003d:eyJzY29wZSI6ImppYW5ndW8iLCJkZWFkbGluZSI6MTQ2MTczMDc0OX0\u003d"},
+         "t_merchant":{"id":2,"login_id":43,"name":"张三","name_image":"http://7xlell.com2.z0.glb.qiniucdn.com/01678d545b4de3f2ba858ae90a1cce21","about":"在女生和男生宿舍楼发传单，发完立结工资。
+         ","label":"口齿伶俐;健康;","score":0.0,"job_count":0,"user_count":0,"fans_count":0,"post":0,"regedit_time":"2016-03-15 15:00:57","login_time":"2016-03-15 15:00:57","pay_password":"111111"}},"code":"200"}*/
 
         private TUserLoginEntity t_user_login;
         /**
@@ -128,6 +125,15 @@ public class User  implements Serializable {
             private int post;
             private String regedit_time;
             private String login_time;
+            private String pay_password;
+
+            public String getPay_password() {
+                return pay_password;
+            }
+
+            public void setPay_password(String pay_password) {
+                this.pay_password = pay_password;
+            }
 
             public int getId() {
                 return id;

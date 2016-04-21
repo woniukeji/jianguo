@@ -7,7 +7,7 @@
                     android:paddingLeft="15dp"
             >
 
-<com.woniukeji.jianguo.widget.CircleImageView
+<com.woniukeji.jianmerchant.widget.CircleImageView
     android:id="@+id/circle_talk_head"
     android:layout_width="38dp"
     android:layout_height="38dp"

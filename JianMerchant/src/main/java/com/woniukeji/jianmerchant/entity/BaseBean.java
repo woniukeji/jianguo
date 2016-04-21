@@ -6,7 +6,16 @@ package com.woniukeji.jianmerchant.entity;
 public class BaseBean <T>{
     private String message;
     private String code;
-    private String status;
+    private String sum;
+
+    public String getSum() {
+        return sum;
+    }
+
+    public void setSum(String sum) {
+        this.sum = sum;
+    }
+
     private T data;
 
     public T getData() {
@@ -33,6 +42,9 @@ public class BaseBean <T>{
     public void setCode(String code) {
         this.code = code;
     }
+
+
+
 
 
 }

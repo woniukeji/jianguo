@@ -8,59 +8,59 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.Constants;
-import com.woniukeji.jianmerchant.entity.Model;
+import com.woniukeji.jianmerchant.entity.AffordUser;
+import com.woniukeji.jianmerchant.eventbus.UserWagesEvent;
 import com.woniukeji.jianmerchant.publish.PublishDetailActivity;
+import com.woniukeji.jianmerchant.utils.CropCircleTransfermation;
 import com.woniukeji.jianmerchant.utils.SPUtils;
+import com.woniukeji.jianmerchant.widget.CircleImageView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
-public class AffordAdapter extends RecyclerView.Adapter<AffordAdapter.ViewHolder> {
+public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.ViewHolder> {
 
-    private final List<Model.ListTJobEntity> mValues;
+    private final List<AffordUser.ListTUserInfoEntity> mValues;
+    private List<Boolean> isSelected;
+
     private final Context mContext;
-    private  String mType;
+    private String money;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
-    @InjectView(R.id.tv_merchant_name) TextView tvTitle;
-    @InjectView(R.id.tv_date) TextView tvDate;
-    @InjectView(R.id.tv_location) TextView tvLocation;
-    @InjectView(R.id.ll_publish_time) LinearLayout llPublishTime;
-    @InjectView(R.id.tv_human) TextView tvHuman;
-    @InjectView(R.id.tv_name) TextView tvName;
-    @InjectView(R.id.ll_publisher) LinearLayout llPublisher;
-    @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-    @InjectView(R.id.btn_muban_use) Button btnMubanUse;
-    @InjectView(R.id.btn_muban_delete) Button btnMubanDelete;
-    @InjectView(R.id.ll_muban) LinearLayout llMuban;
-    @InjectView(R.id.img_his) ImageView imgHis;
-    @InjectView(R.id.rl_job) RelativeLayout rlJob;
 
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
     private String name;
     private deleteCallBack deleCallBack;
 
-    public AffordAdapter(List<Model.ListTJobEntity> items, Context context, String type, deleteCallBack callBack) {
+    public CalculateAdapter(List<AffordUser.ListTUserInfoEntity> items,List<Boolean>  list, Context context, String money, deleteCallBack callBack) {
         mValues = items;
         mContext = context;
-        mType=type;
-        name= (String) SPUtils.getParam(mContext, Constants.USER_INFO,Constants.USER_NAME,"");
-        deleCallBack=callBack;
+        isSelected=list;
+        this.money = money;
+        name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_NAME, "");
+        deleCallBack = callBack;
     }
 
-   public interface deleteCallBack{
-        public void deleOnClick(int job_id, int merchant_id, int position);
+    public interface deleteCallBack {
+        public void deleOnClick(String money, AffordUser.ListTUserInfoEntity user, int position);
     }
+
     public void setFooterChange(boolean isChange) {
         isFooterChange = isChange;
     }
@@ -84,7 +84,7 @@ public class AffordAdapter extends RecyclerView.Adapter<AffordAdapter.ViewHolder
         ViewHolder holder = null;
         switch (viewType) {
             case NORMAL:
-                View VoteView = LayoutInflater.from(parent.getContext()).inflate(R.layout.afford_wages_item, parent, false);
+                View VoteView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_pay_wages_item, parent, false);
                 holder = new ViewHolder(VoteView, NORMAL);
                 return holder;
 
@@ -110,50 +110,62 @@ public class AffordAdapter extends RecyclerView.Adapter<AffordAdapter.ViewHolder
                 holder.itemView.setVisibility(View.VISIBLE);
             }
         } else {
-            final Model.ListTJobEntity job = mValues.get(position);
-            if (mType.equals("0")){
-                holder.tvTitle.setText(job.getName());
-                holder.llMuban.setVisibility(View.GONE);
-                holder.imgHis.setVisibility(View.VISIBLE);
+            final AffordUser.ListTUserInfoEntity user = mValues.get(position);
+            if (user.getRealname()!=null&&!user.getRealname().equals("0")){
+                holder.userName.setText(user.getRealname());
             }else {
-                holder.tvTitle.setText(job.getModel_name());
-                holder.llMuban.setVisibility(View.VISIBLE);
-                holder.imgHis.setVisibility(View.GONE);
+                holder.userName.setText("未实名");
             }
 
-            holder.tvName.setText(name);
-            if (null!=job.getRegedit_time()&& !job.getRegedit_time().equals("")){
-                String date = job.getRegedit_time().substring(5 ,11);
-                holder.tvDate.setText(date);
-            }
+            holder.tvPhone.setText(user.getTel());
+            holder.tvWages.setText(user.getReal_money()+"元");
+            Picasso.with(mContext).load(user.getName_image()).transform(new CropCircleTransfermation()).error(R.drawable.default_head).into(holder.imgHead);
+            holder.cbUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked){
+                        isSelected.set(position,true);
+//                        UserWagesEvent userWagesEvent=new UserWagesEvent();
+//                        userWagesEvent.userInfoEntity=user;
+//                        userWagesEvent.isChoose=true;
+//                        EventBus.getDefault().post(userWagesEvent);
+                    }else{
+                        isSelected.set(position,false);
+                    }
 
+                    UserWagesEvent userWagesEvent=new UserWagesEvent();
+                    userWagesEvent.userInfoEntity=user;
+                    userWagesEvent.isChoose=false;
+                    EventBus.getDefault().post(userWagesEvent);
+                }
+            });
 
-            //性别限制（0=只招女，1=只招男，2=不限男女）
+           if (isSelected.get(position)){
+               holder.cbUser.setChecked(true);
+           }else {
+               holder.cbUser.setChecked(false);
+           }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(mContext, PublishDetailActivity.class);
+//                    intent.putExtra("type", "old");
+//                    mContext.startActivity(intent);
+//                }
+//            });
+            holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(mContext, PublishDetailActivity.class);
-                    intent.putExtra("job",job);
-                    intent.putExtra("type","old");
-                    mContext.startActivity(intent);
+                    deleCallBack.deleOnClick(money,user,position);
                 }
             });
-            holder.btnMubanUse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent(mContext, PublishDetailActivity.class);
-                    intent.putExtra("job",job);
-                    intent.putExtra("type","old");
-                    mContext.startActivity(intent);
-                }
-            });
-            holder.btnMubanDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleCallBack.deleOnClick(job.getId(),job.getMerchant_id(),position);
-                }
-            });
+//            holder.btnMubanDelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    deleCallBack.deleOnClick(job.getId(),job.getMerchant_id(),position);
+//                }
+//            });
 
 
         }
@@ -178,19 +190,16 @@ public class AffordAdapter extends RecyclerView.Adapter<AffordAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.tv_merchant_name) TextView tvTitle;
-        @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.tv_location) TextView tvLocation;
+        @InjectView(R.id.img_head) ImageView imgHead;
+        @InjectView(R.id.user_name) TextView userName;
+        @InjectView(R.id.tv_phone) TextView tvPhone;
         @InjectView(R.id.ll_publish_time) LinearLayout llPublishTime;
-        @InjectView(R.id.tv_human) TextView tvHuman;
-        @InjectView(R.id.tv_name) TextView tvName;
-        @InjectView(R.id.ll_publisher) LinearLayout llPublisher;
-        @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-        @InjectView(R.id.btn_muban_use) Button btnMubanUse;
-        @InjectView(R.id.btn_muban_delete) Button btnMubanDelete;
-        @InjectView(R.id.ll_muban) LinearLayout llMuban;
-        @InjectView(R.id.img_his) ImageView imgHis;
+        @InjectView(R.id.tv_wages) TextView tvWages;
+        @InjectView(R.id.ll_wages) LinearLayout llWages;
         @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @InjectView(R.id.cb_user) CheckBox cbUser;
+        @InjectView(R.id.btn_change_item) Button button;
+
 
         private ImageView animLoading;
         private TextView loading;

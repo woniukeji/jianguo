@@ -219,15 +219,34 @@ public class DateUtils {
         long mills=getMillis(date);
         return mills;
     }
+    public static long getLongTime(String strDate,String formate) {
+        DateFormat fmt =new SimpleDateFormat(formate);
+        Date date = null;
+        try {
+            date = fmt.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long mills=getMillis(date);
+        return mills;
+    }
     /**
      * 功能描述：返回字符型日期时间
      *
-     * @param date
+     * @param millis
      *            Date 日期
      * @return 返回字符型日期时间 yyyy/MM/dd HH:mm:ss 格式
      */
-    public static String getDateTime(Date date) {
-        return format(date, "yyyy-MM-dd HH");
+    public static String getHm(long millis) {
+        if (String.valueOf(millis).length()<13){
+            millis=millis*1000;
+        }
+        Date date=new Date(millis);
+        return format(date, "HH:mm");
+    }
+    public static String getHm(int millis) {
+        Date date=new Date(millis*1000);
+        return format(date, "HH:mm");
     }
     public static String getDate(long millis ) {
         Date date=new Date(millis);
