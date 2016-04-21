@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -298,6 +299,13 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         }
         return this;
     }
+    public SweetAlertDialog setInputType (String type) {
+        if (mLLedit != null) {
+            mContentEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+        return this;
+    }
+
     public String getEditContent () {
         if (mContentEditText != null) {
             mContentEditText.getText().toString();
