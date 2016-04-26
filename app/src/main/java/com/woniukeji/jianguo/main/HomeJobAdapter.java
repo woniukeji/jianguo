@@ -189,7 +189,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mValues.size() > 0 ? mValues.size() + 2 : 0;
+        return mValues.size() > 0 ? mValues.size() + 2 : 2;
     }
 
 

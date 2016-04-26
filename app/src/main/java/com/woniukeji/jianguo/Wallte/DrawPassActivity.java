@@ -1,8 +1,7 @@
-package com.woniukeji.jianguo.login;
+package com.woniukeji.jianguo.wallte;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.BaseCallback;
 import com.woniukeji.jianguo.entity.CodeCallback;
@@ -44,7 +42,7 @@ import okhttp3.Call;
 /**
  * A login screen that offers login via email/password.
  */
-public class ChangPssActivity extends BaseActivity  {
+public class DrawPassActivity extends BaseActivity  {
 
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView title;
@@ -66,7 +64,9 @@ public class ChangPssActivity extends BaseActivity  {
     private int MSG_PHONE_SUCCESS = 2;
     private int MSG_REGISTER_SUCCESS = 3;
     private Handler mHandler=new Myhandler(this);
-    private Context context= ChangPssActivity.this;
+    private Context context= DrawPassActivity.this;
+    private int loginId;
+
     private static class Myhandler extends Handler{
         private WeakReference<Context> reference;
         public Myhandler(Context context){
@@ -75,14 +75,17 @@ public class ChangPssActivity extends BaseActivity  {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ChangPssActivity registActivity= (ChangPssActivity) reference.get();
+            DrawPassActivity registActivity= (DrawPassActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    registActivity.saveToSP(user.getData());
-                    Intent intent=new Intent(registActivity,MainActivity.class);
-//                    intent.putExtra("user",user);
-                    registActivity.startActivity(intent);
+//                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+//                    registActivity.saveToSP(user.getData());
+//                    Intent intent=new Intent(registActivity,MainActivity.class);
+////                    intent.putExtra("user",user);
+//                    registActivity.startActivity(intent);
+//                    registActivity.finish();
+                    String Message= (String) msg.obj;
+                    Toast.makeText(registActivity, Message, Toast.LENGTH_SHORT).show();
                     registActivity.finish();
                     break;
                 case 1:
@@ -91,11 +94,11 @@ public class ChangPssActivity extends BaseActivity  {
                     break;
                 case 2:
                     registActivity.smsCode= (SmsCode) msg.obj;
-                    if (registActivity.smsCode.getIs_tel().equals("1")){
+//                    if (registActivity.smsCode.getIs_tel().equals("1")){
                         registActivity.showShortToast("验证码已经发送，请注意查收");
-                    }else{
-                        registActivity.showShortToast("您的手机号还没有注册，请先注册");
-                    }
+//                    }else{
+//                        registActivity.showShortToast("您的手机号还没有注册，请先注册");
+//                    }
 
                     break;
                 case 3:
@@ -115,14 +118,14 @@ public class ChangPssActivity extends BaseActivity  {
 
     @Override
     public void setContentView() {
-        setContentView(R.layout.activity_regist);
+        setContentView(R.layout.activity_draw_password);
         ButterKnife.inject(this);
     }
 
     @Override
     public void initViews() {
-        title.setText("密码找回");
-        phoneSignInButton.setText("确认修改");
+        title.setText("提现密码设置");
+        phoneSignInButton.setText("确认");
 
     }
 
@@ -133,12 +136,12 @@ public class ChangPssActivity extends BaseActivity  {
 
     @Override
     public void initData() {
-
+         loginId = (int) SPUtils.getParam(DrawPassActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
     }
 
     @Override
     public void addActivity() {
-        ActivityManager.getActivityManager().addActivity(ChangPssActivity.this);
+        ActivityManager.getActivityManager().addActivity(DrawPassActivity.this);
     }
 
     private void saveToSP(User user) {
@@ -167,7 +170,7 @@ public class ChangPssActivity extends BaseActivity  {
                 String phone=phoneNumber.getText().toString();
                 String pass=passWord2.getText().toString();
                 if (CheckStatus()){
-                    UserRegisterTask userRegisterTask=new UserRegisterTask(phone, MD5Util.MD5(pass));
+                    UserRegisterTask userRegisterTask=new UserRegisterTask(String.valueOf(loginId), MD5Util.MD5(pass));
                     userRegisterTask.execute();
                 }
                 break;
@@ -221,7 +224,7 @@ public class ChangPssActivity extends BaseActivity  {
     public class GetSMS extends AsyncTask<Void, Void, User> {
 
         private final String tel;
-        SweetAlertDialog pDialog = new SweetAlertDialog(ChangPssActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        SweetAlertDialog pDialog = new SweetAlertDialog(DrawPassActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
                 GetSMS(String phoneNum) {
                     this.tel = phoneNum;
@@ -236,7 +239,7 @@ public class ChangPssActivity extends BaseActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登陆中...");
+            pDialog.setTitleText("提交中...");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -293,7 +296,7 @@ public class ChangPssActivity extends BaseActivity  {
 
         private final String tel;
         private final String passWord;
-        SweetAlertDialog pDialog = new SweetAlertDialog(ChangPssActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        SweetAlertDialog pDialog = new SweetAlertDialog(DrawPassActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         UserRegisterTask(String phoneNum,String passWord) {
             this.tel = phoneNum;
@@ -309,7 +312,7 @@ public class ChangPssActivity extends BaseActivity  {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登陆中...");
+            pDialog.setTitleText("提交中...");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -327,9 +330,9 @@ public class ChangPssActivity extends BaseActivity  {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.CHANGE_PASSWORD)
+                    .url(Constants.POST_PAY_PASSWORD)
                     .addParams("only", only)
-                    .addParams("tel", tel)
+                    .addParams("login_id", tel)
                     .addParams("password", passWord)
                     .build()
                     .connTimeOut(30000)
@@ -348,7 +351,7 @@ public class ChangPssActivity extends BaseActivity  {
                         public void onResponse(BaseBean response) {
                             if (response.getCode().equals("200")){
                                 Message message=new Message();
-                                message.obj=response;
+                                message.obj=response.getMessage();
                                 message.what=MSG_USER_SUCCESS;
                                 mHandler.sendMessage(message);
                             }else {

@@ -93,7 +93,7 @@ public class BindPhoneActivity extends BaseActivity {
                     break;
                 case 2:
                     quickLoginActivity.smsCode= (SmsCode) msg.obj;
-                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
+                    if (quickLoginActivity.smsCode.getIs_tel().equals("0")){
                         quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
                     }else{
                         quickLoginActivity.showShortToast("该手机号码已经注册，不能重复注册");
@@ -340,7 +340,7 @@ public class BindPhoneActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.CHECK_PHONE_BLACK)
+                    .url(Constants.CHECK_PHONE)
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()

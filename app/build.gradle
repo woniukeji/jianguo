@@ -10,9 +10,9 @@ android {
         abortOnError false
     }
     repositories {
-        maven {
-            url "https://jitpack.io"
-        }
+//        maven {
+//            url "https://jitpack.io"
+//        }
     }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -24,7 +24,7 @@ android {
         versionCode 2
         versionName "2.0"
         generatedDensities = []
-
+        multiDexEnabled true
         ndk {
             //设置支持的SO库架构,tencent bugly
             abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
@@ -81,30 +81,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile files('lib/ShareSDK-Core-2.7.0.jar')
-    compile files('lib/ShareSDK-QQ-2.6.6.jar')
-    compile files('lib/ShareSDK-Wechat-2.6.6.jar')
-    compile files('lib/ShareSDK-Wechat-Core-2.6.6.jar')
-    compile files('lib/ShareSDK-Wechat-Favorite-2.6.6.jar')
-    compile files('lib/ShareSDK-Wechat-Moments-2.6.6.jar')
-    compile files('libs/ShareSDK-Core-2.7.0.jar')
-    compile files('libs/ShareSDK-QZone-2.7.0.jar')
-    compile files('libs/ShareSDK-Wechat-Favorite-2.7.0.jar')
-    compile files('libs/MobTools-2016.0301.1053.jar')
-    compile files('libs/MobCommons-2016.0301.1053.jar')
     compile project(':dialoglibrary')
     //avoscloud-sdk 为 LeanCloud基础包
 
     //avoscloud-push 为推送与实时聊天需要的包
-    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }
+
+    //    compile('cn.leancloud.android:avoscloud-push:v3.+@aar') { transitive = true }
+    compile('cn.leancloud.android:avoscloud-push:v3.13.6@aar') { transitive = true }
     compile project(':multi-image-selector')
-    compile files('libs/happy-dns-0.2.4.jar')
-    compile files('libs/android-async-http-1.4.9.jar')
-    compile files('libs/qiniu-android-sdk-7.0.9.jar')
-    compile files('libs/httpmime-4.2.4.jar')
-    compile files('libs/httpclient-4.4.1.1.jar')
-    compile files('libs/protobuf-java-2.6.1.jar')
-    compile files('libs/KJFrameForAndroid_v2.234.jar')
     compile project(path: ':DrioDownlibrary')
     compile project(path: ':viewPagerlibrary')
     compile 'com.android.support:design:23.2.1'
@@ -126,9 +110,8 @@ dependencies {
     //compile 'cn.lightsky.infiniteindicator:library:1.1.0'
     compile 'com.liulishuo.magicprogresswidget:library:1.0.8'
     compile 'com.rockerhieu.emojicon:library:1.3.1'
+    //    compile 'com.tencent.bugly:crashreport:1.2.9'
 
-    compile 'com.github.JayFang1993:DropDownMenu:v0.9'
-    compile 'com.tencent.bugly:crashreport:1.2.9'
     // bugly后续更新SDK，请直接更新版本号
 
     //    compile 'io.reactivex:rxjava:1.1.0'
@@ -136,5 +119,22 @@ dependencies {
     //    compile 'io.reactivex:rxandroid:1.1.0'
 
     //    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile files('libs/android-async-http-1.4.9.jar')
+    compile files('libs/happy-dns-0.2.4.jar')
+    compile files('libs/httpclient-4.4.1.1.jar')
+    compile files('libs/KJFrameForAndroid_v2.234.jar')
+    compile files('libs/MobCommons-2016.0301.1053.jar')
+    compile files('libs/MobTools-2016.0301.1053.jar')
+    compile files('libs/qiniu-android-sdk-7.0.9.jar')
+    compile files('libs/ShareSDK-Core-2.7.0.jar')
+    compile files('libs/ShareSDK-QQ-2.7.0.jar')
+    compile files('libs/ShareSDK-QZone-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-2.7.0.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.0.jar')
+    compile files('libs/TencentLocationSDK_v4.5.8_r160216_1427.jar')
+    compile project(path: ':DownMenulibrary')
+    compile project(':DownMenulibrary')
 }
 

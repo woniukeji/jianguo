@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/rl_job"
+                android:layout_width="fill_parent"
+                android:layout_height="68dp"
+                android:background="#f3f3f3"
+    >
+<RelativeLayout
+    android:id="@+id/rl_top"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:background="@color/white"
+    >
+
+
+
+    <TextView
+        android:id="@+id/tv_method_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/user_head"
+        android:layout_marginTop="8dp"
+        android:text="提现"
+        android:textColor="#666666"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_status"
+        android:layout_below="@+id/tv_method_name"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="14dp"
+        android:gravity="center"
+        android:layout_marginTop="4dp"
+        >
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_tixing"
+            android:layout_centerVertical="true"
+            android:text="已转出到支付宝"
+            android:textSize="12dp"
+            android:textColor="#9b9b9b"
+            />
+        <TextView
+            android:id="@+id/tv_content_remark"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/remark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="表现良好 绩效很高"
+            android:textSize="10dp"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@id/rl_date"
+        android:layout_below="@+id/rl_status"
+        android:layout_toRightOf="@+id/user_head"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:gravity="center"
+        android:layout_marginTop="4dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_out_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="四月2号到4月5号"
+            android:textSize="10dp"
+            android:textColor="#9b9b9b"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#bfbfbf"
+        android:layout_alignParentBottom="true"
+        />
+        <TextView
+            android:id="@+id/tv_out_wages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-1500"
+            android:layout_marginRight="39dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#666666"
+            />
+
+
+   
+</RelativeLayout>
+
+    
+</RelativeLayout>

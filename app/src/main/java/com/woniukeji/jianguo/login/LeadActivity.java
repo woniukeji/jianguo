@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.PicassoLoader;
+import com.woniukeji.jianguo.utils.SPUtils;
 
 import java.util.ArrayList;
 
@@ -90,7 +93,8 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
 
     @OnClick(R.id.btn_enter)
     public void onClick() {
-        startActivity(new Intent(LeadActivity.this,LoginActivity.class));
+        SPUtils.setParam(LeadActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "1");
+        startActivity(new Intent(LeadActivity.this,MainActivity.class));
         finish();
     }
 

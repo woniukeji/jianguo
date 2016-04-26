@@ -106,7 +106,7 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
 
                     }
                     modleList.addAll(jobsBaseBean.getData().getList_t_job());
-                    adapter.notifyDataSetChanged();
+                     adapter.notifyDataSetChanged();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;

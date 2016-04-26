@@ -28,6 +28,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.talk.ChatActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
@@ -93,6 +94,7 @@ public class JobDetailActivity extends BaseActivity {
     private String img;
     private String name;
     private int jobid;
+    private String resume;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -140,6 +142,7 @@ public class JobDetailActivity extends BaseActivity {
                     Toast.makeText(jobDetailActivity, signMessage, Toast.LENGTH_SHORT).show();
                     jobDetailActivity.tvSignup.setText("已报名");
                     jobDetailActivity.tvSignup.setBackgroundResource(R.color.gray);
+                    jobDetailActivity.tvSignup.setClickable(false);
                     break;
                 case 5:
 //                    String msg1 = (String) msg.obj;
@@ -167,7 +170,7 @@ public class JobDetailActivity extends BaseActivity {
 
         if (jobinfo!=null){
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
-        String time = jobinfo.getStart_time()+"-"+jobinfo.getStop_time();
+        String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
         String setTime =jobinfo.getSet_time();
         tvWorkDate.setText(date);
         tvWorkTime.setText(time);
@@ -177,6 +180,7 @@ public class JobDetailActivity extends BaseActivity {
         if (jobinfo.getIs_enroll().equals("1")){
             tvSignup.setText("已报名");
             tvSignup.setBackgroundResource(R.color.gray);
+            tvSignup.setClickable(false);
         }
         if (jobinfo.getIs_collection().equals("0")){
             Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
@@ -250,6 +254,7 @@ public class JobDetailActivity extends BaseActivity {
         img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
         name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
         GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
         getTask.execute();
         tvWage.setText(money);
@@ -310,6 +315,11 @@ public class JobDetailActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_contact_company:
+                if (loginId==0){
+                    showShortToast("报名前请先登录");
+                    startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                    return;
+                }
                 final int Id=merchantInfo.getId();
 //                String.valueOf(Id);
                 final String toUserId= String.valueOf(merchantInfo.getId());
@@ -347,12 +357,27 @@ public class JobDetailActivity extends BaseActivity {
 
                 break;
             case R.id.tv_collection:
+                if (loginId==0){
+                    showShortToast("报名前请先登录");
+                    startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                    return;
+                }
                 PostAttTask postAttTask=new PostAttTask(String.valueOf(loginId),"0",String.valueOf(jobinfo.getJob_id()));
                 postAttTask.execute();
 
 
                 break;
             case R.id.tv_signup:
+                    if (loginId==0){
+                        showShortToast("报名前请先登录");
+                        startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                        return;
+                    }
+                if (resume.equals("0")){
+                    showShortToast("报名前先完善简历");
+                    return;
+//                    startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                }
                 SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,jobid);
                 signUpPopuWin.showShareWindow();
                 Rect rect = new Rect();

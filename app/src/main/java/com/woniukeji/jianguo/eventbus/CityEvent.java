@@ -9,4 +9,5 @@ import com.woniukeji.jianguo.entity.CityBannerEntity;
  */
 public class CityEvent {
     public CityBannerEntity.ListTCityEntity city;
+    public boolean isGPS=false;
 }

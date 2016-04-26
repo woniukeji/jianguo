@@ -23,17 +23,23 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.Application;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
+import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
+import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.eventbus.JobTypeEvent;
 import com.woniukeji.jianguo.mine.MyPartJboActivity;
+import com.woniukeji.jianguo.partjob.PartJobActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.LocationUtil;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.PicassoLoader;
+import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -48,6 +54,7 @@ import butterknife.OnClick;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
 import cn.lightsky.infiniteindicator.page.Page;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -65,7 +72,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @InjectView(R.id.list) FixedRecyclerView recycleList;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     @InjectView(R.id.tv_location) TextView tvLocation;
-    @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
     @InjectView(R.id.top) RelativeLayout top;
     // TODO: Customize parameters
@@ -96,6 +102,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private int MSG_GET_CITY_FAIL = 5;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = this.getActivity();
+    private CityBannerEntity.ListTCityEntity defultCity;
+    BaseBean<CityBannerEntity> cityBannerEntityBaseBean;
+    private String cityName;
+    private int cityId;
+    private boolean NoGPS=true;
 
     @OnClick(R.id.tv_location)
     public void onClick() {
@@ -118,7 +129,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             MainActivity mainActivity = (MainActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    if (refreshLayout.isRefreshing()) {
+                    if (refreshLayout!=null&&refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
                     if (msg.arg1==0){
@@ -141,8 +152,15 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    BaseBean<CityBannerEntity> cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
+                    cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
                     banners = cityBannerEntityBaseBean.getData().getList_t_banner();
+                    defultCity=cityBannerEntityBaseBean.getData().getList_t_city().get(0);
+                    if (!Application.getInstance().isGPS()){
+                         LocationUtil.start(getActivity());
+                        Application.getInstance().setGPS(true);
+                    }
+                    //按照默认city初始化兼职数据
+                    initJobDataWithCity(defultCity);
                     initBannerData(banners);
                     adapter.notifyDataSetChanged();
                     break;
@@ -152,7 +170,20 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         }
     }
 
+    private void initJobDataWithCity(CityBannerEntity.ListTCityEntity defultCity) {
+        if (!cityName.equals("")){
+            tvLocation.setText(cityName);
+            GetTask getTask = new GetTask(String.valueOf(cityId),"0");
+            getTask.execute();
+            return;
+        }
+        tvLocation.setText(defultCity.getCity());
+        GetTask getTask = new GetTask(String.valueOf(defultCity.getId()),"0");
+        getTask.execute();
+    }
+
     private void initBannerData(List<CityBannerEntity.ListTBannerEntity> banners) {
+
         for (int i = 0; i < banners.size(); i++) {
             pageViews.add(new Page(String.valueOf(banners.get(i).getId()), banners.get(i).getImage(), this));
         }
@@ -192,13 +223,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 // Set the adapter
         ButterKnife.inject(this, view);
 
-
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
-
         assignViews(headerView);
-
-
-        initData();
         mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());
 
@@ -224,6 +250,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                 getTask.execute();
             }
         });
+
+        initData();
         return view;
     }
     private void assignViews(View view) {
@@ -253,7 +281,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1) {
-                    GetTask getTask=new GetTask("0",String.valueOf(lastVisibleItem));
+                    GetTask getTask=new GetTask(String.valueOf(defultCity.getId()),String.valueOf(lastVisibleItem));
                     getTask.execute();
                 }
             }
@@ -271,23 +299,23 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         MainActivity mainActivity= (MainActivity) getActivity();
             switch (view.getId()){
                 case R.id.img_gifts_job:
-                    mainActivity.getMainPager().setCurrentItem(1);
-                    JobTypeEvent jobTypeEvent=new JobTypeEvent();
-                    jobTypeEvent.fragmentHotType=2;//热门（0=普通，1=热门，2=精品，3=旅行）
-
-                    EventBus.getDefault().post(jobTypeEvent);
+//                    mainActivity.getMainPager().setCurrentItem(1);
+//                    JobTypeEvent jobTypeEvent=new JobTypeEvent();
+//                    jobTypeEvent.fragmentHotType=2;//热门（0=普通，1=热门，2=精品，3=旅行）
+                    Intent intent=new Intent(getActivity(), PartJobActivity.class);
+                    intent.putExtra("type",2);
+                    startActivity(intent);
+//                    EventBus.getDefault().post(jobTypeEvent);
                 break;
                 case R.id.img_day_job:
-                    JobTypeEvent jobTypeEv=new JobTypeEvent();
-                    jobTypeEv.fragmentHotType=4;
-                    EventBus.getDefault().post(jobTypeEv);
-                    mainActivity.getMainPager().setCurrentItem(1);
+                    Intent dayIntent=new Intent(getActivity(), PartJobActivity.class);
+                    dayIntent.putExtra("type",4);
+                    startActivity(dayIntent);
                     break;
                 case R.id.img_travel_job:
-                    JobTypeEvent jobType=new JobTypeEvent();
-                    jobType.fragmentHotType=3;
-                    EventBus.getDefault().post(jobType);
-                    mainActivity.getMainPager().setCurrentItem(1);
+                    Intent travelIntent=new Intent(getActivity(), PartJobActivity.class);
+                    travelIntent.putExtra("type",3);
+                    startActivity(travelIntent);
                     break;
                 case R.id.img_my_job:
                    startActivity(new Intent(getActivity(), MyPartJboActivity.class));
@@ -297,10 +325,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     }
 
     private void initData() {
+       cityName= (String) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,"");
+        cityId= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,0);
         GetCityTask getCityTask = new GetCityTask();
         getCityTask.execute();
-        GetTask getTask = new GetTask("1","0");
-        getTask.execute();
     }
 
     @Override
@@ -308,8 +336,54 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         mAnimCircleIndicator.start();
         super.onResume();
     }
-    public void onEvent(CityEvent event) {
-        tvLocation.setText(event.city.getCity());
+    public void onEvent(final CityEvent event) {
+        int tempCityId=0;
+        int mPosition=0;
+        //手动切换和自动定位点击确定切换两种方式，每种方式执行后需要通知兼职界面更新地址筛选条件
+        for (int i=0;i<cityBannerEntityBaseBean.getData().getList_t_city().size();i++){
+            if (cityBannerEntityBaseBean.getData().getList_t_city().get(i).getCity().contains(event.city.getCity())){
+                mPosition=i;
+                tempCityId=cityBannerEntityBaseBean.getData().getList_t_city().get(i).getId();
+                break;
+            }
+        }
+        if (!event.isGPS){
+            tvLocation.setText(event.city.getCity());
+            GetTask getTask = new GetTask(String.valueOf(tempCityId),"0");
+            getTask.execute();
+            SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,event.city.getCity());
+            SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,tempCityId);
+            SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,mPosition);
+            JobFilterEvent jobFilterEvent=new JobFilterEvent();
+            jobFilterEvent.cityId=tempCityId;
+            jobFilterEvent.position=mPosition;
+            EventBus.getDefault().post(jobFilterEvent);
+        }else if (tempCityId!=cityId){
+           final int finalTempCityId = tempCityId;
+            final int finalMPosition = mPosition;
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                   .setTitleText("切换城市到"+event.city.getCity()+"?")
+                   .setConfirmText("确定")
+                   .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                       @Override
+                       public void onClick(SweetAlertDialog sDialog) {
+                           tvLocation.setText(event.city.getCity());
+                           GetTask getTask = new GetTask(String.valueOf(finalTempCityId),"0");
+                           getTask.execute();
+                           SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,event.city.getCity());
+                           SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,finalTempCityId);
+                           SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,finalMPosition);
+                           JobFilterEvent jobFilterEvent=new JobFilterEvent();
+                           jobFilterEvent.cityId=finalTempCityId;
+                           jobFilterEvent.position= finalMPosition;
+                           EventBus.getDefault().post(jobFilterEvent);
+                           sDialog.dismissWithAnimation();
+                       }
+                   })
+                   .setCancelText("取消").show();
+       }
+
+
     }
     @Override
     public void onStart() {
@@ -366,13 +440,13 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
     }
-
+  //获取热门兼职
     public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String type;
+        private final String city_id;
         private final String count;
 
-        GetTask(String type,String count) {
-            this.type = type;
+        GetTask(String city_id,String count) {
+            this.city_id = city_id;
             this.count=count;
         }
 
@@ -409,6 +483,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .url(Constants.GET_JOB)
                     .addParams("only", only)
                     .addParams("hot", "1")
+                    .addParams("city_id", city_id)
                     .addParams("count", count)
                     .build()
                     .connTimeOut(60000)

@@ -1,20 +1,35 @@
 package com.woniukeji.jianguo.main;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.CityCategory;
+import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
@@ -25,13 +40,22 @@ import com.woniukeji.jianguo.mine.MineFragment;
 import com.woniukeji.jianguo.partjob.PartJobFragment;
 import com.woniukeji.jianguo.talk.TalkFragment;
 import com.woniukeji.jianguo.utils.ActivityManager;
+import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.LocationUtil;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  *
@@ -41,7 +65,7 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职", "果聊","我"};
+    private String[] titles = {"首页", "兼职", "果聊", "我"};
 
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
@@ -54,6 +78,48 @@ public class MainActivity extends BaseActivity {
             R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private long exitTime;
+    private int MSG_GET_SUCCESS = 0;
+    private int MSG_GET_FAIL = 1;
+
+    private Handler mHandler = new Myhandler(this);
+    private Context context = MainActivity.this;
+
+
+    private static class Myhandler extends Handler {
+        private WeakReference<Context> reference;
+
+        public Myhandler(Context context) {
+            reference = new WeakReference<>(context);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            MainActivity activity = (MainActivity) reference.get();
+            switch (msg.what) {
+                case 0:
+                    BaseBean<CityCategory> obj = (BaseBean<CityCategory>) msg.obj;
+                    CityJobTypeEvent cityJobTypeEvent=new CityJobTypeEvent();
+                    cityJobTypeEvent.cityCategory=obj.getData();
+                   EventBus.getDefault().post(cityJobTypeEvent);
+                    break;
+                case 1:
+                    String ErrorMessage = (String) msg.obj;
+                    Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    String sms = (String) msg.obj;
+                    Toast.makeText(activity, sms, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_main);
@@ -75,13 +141,14 @@ public class MainActivity extends BaseActivity {
         }
         tabhost();
     }
+
     private void tabhost() {
         tabHost.setTabData(mTabEntities);
 //        mTabWidget.setIconHeight();
         tabHost.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                        mainPager.setCurrentItem(position);
+                mainPager.setCurrentItem(position);
 
             }
 
@@ -101,8 +168,8 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                    tabHost.setCurrentTab(position);
-                if (position==2){
+                tabHost.setCurrentTab(position);
+                if (position == 2) {
                     tabHost.hideMsg(2);
                 }
 
@@ -128,7 +195,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-
         final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(loginId))) {
             chatManager.setupManagerWithUserId(this, String.valueOf(loginId));
@@ -159,13 +225,35 @@ public class MainActivity extends BaseActivity {
     public void onEvent(ImTypeMessageEvent event) {
         tabHost.showDot(2);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.inject(this);
+//        GetJobCityTask getJobCityTask=new GetJobCityTask();
+//        getJobCityTask.execute();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        timer.schedule(task,2000);
+    }
+//    Timer timer = new Timer();
+//    TimerTask task = new TimerTask(){
+//
+//        public void run() {
+//
+//            timer.cancel();
+//        }
+
+//    };
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -203,4 +291,21 @@ public class MainActivity extends BaseActivity {
             return 4;
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次就退出去了！", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

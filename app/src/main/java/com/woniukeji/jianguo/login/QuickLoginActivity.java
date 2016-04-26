@@ -7,11 +7,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +25,11 @@ import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -38,7 +43,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -59,46 +63,60 @@ public class QuickLoginActivity extends BaseActivity {
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.icon_pass) ImageView iconPass;
     SmsCode smsCode;
+    @InjectView(R.id.cb_rule) CheckBox cbRule;
+    @InjectView(R.id.tv_rule) TextView tvRule;
+    @InjectView(R.id.user_rule) LinearLayout userRule;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
     private int MSG_REGISTER_SUCCESS = 3;
-    private Handler mHandler=new Myhandler(this);
-    private Context context= QuickLoginActivity.this;
-    private static class Myhandler extends Handler{
+    private Handler mHandler = new Myhandler(this);
+    private Context context = QuickLoginActivity.this;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
+    }
+
+    private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
-        public Myhandler(Context context){
-            reference=new WeakReference<>(context);
+
+        public Myhandler(Context context) {
+            reference = new WeakReference<>(context);
         }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            QuickLoginActivity quickLoginActivity= (QuickLoginActivity) reference.get();
+            QuickLoginActivity quickLoginActivity = (QuickLoginActivity) reference.get();
             switch (msg.what) {
                 case 0:
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
                     quickLoginActivity.saveToSP(user.getData());
                     quickLoginActivity.showShortToast("登录成功！");
-                    Intent intent=new Intent(quickLoginActivity,MainActivity.class);
+                    Intent intent = new Intent(quickLoginActivity, MainActivity.class);
 //                    intent.putExtra("user",user);
                     quickLoginActivity.startActivity(intent);
                     quickLoginActivity.finish();
                     break;
                 case 1:
-                    String ErrorMessage= (String) msg.obj;
+                    String ErrorMessage = (String) msg.obj;
                     Toast.makeText(quickLoginActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    quickLoginActivity.smsCode= (SmsCode) msg.obj;
-                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
-                        quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
-                    }else{
-                        quickLoginActivity.showShortToast("该手机号码已经注册，不能重复注册");
-                    }
+                    quickLoginActivity.smsCode = (SmsCode) msg.obj;
+                    quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
+//                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
+//                        quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
+//                    }else{
+//                        quickLoginActivity.showShortToast("该手机号码已经注册，不能重复注册");
+//                    }
 
                     break;
                 case 3:
-                    String sms= (String) msg.obj;
+                    String sms = (String) msg.obj;
                     Toast.makeText(quickLoginActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
@@ -117,7 +135,8 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-
+        title.setText("登录");
+        createLink(tvRule);
     }
 
     @Override
@@ -135,21 +154,35 @@ public class QuickLoginActivity extends BaseActivity {
         ActivityManager.getActivityManager().addActivity(QuickLoginActivity.this);
     }
 
+    /**
+     * 创建一个超链接
+     */
+    private void createLink(TextView tv) {
+        // 创建一个 SpannableString对象
+        SpannableString sp = new SpannableString("我已阅读并同意《兼果用户协议》");
+        // 设置超链接
+        sp.setSpan(new URLSpan("http://101.200.205.243:8080/user_agreement.jsp"), 7, 15,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(sp);
+        //设置TextView可点击
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+    }
 
     private void saveToSP(User user) {
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_USERID,user.getT_user_login().getId());
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,user.getT_user_login().getStatus());
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_WQTOKEN, user.getT_user_login().getQqwx_token() != null ? user.getT_user_login().getQqwx_token() : "");
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TEL, user.getT_user_login().getTel() != null ? user.getT_user_login().getTel() : "");
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_PASSWORD, user.getT_user_login().getPassword() != null ? user.getT_user_login().getPassword() : "");
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, user.getT_user_login().getId());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, user.getT_user_login().getStatus());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, user.getT_user_login().getQiniu());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
 
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_CREDIT,user.getT_user_info().getCredit());
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_SCHOOL, user.getT_user_info().getSchool() != null ? user.getT_user_info().getSchool() : "");
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
     }
 
 
@@ -168,12 +201,12 @@ public class QuickLoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_get_code:
-                String tel=phoneNumber.getText().toString();
-                boolean isOK=CommonUtils.isMobileNO(tel);
-                if (isOK){
-                    GetSMS getSMS =new GetSMS(tel);
+                String tel = phoneNumber.getText().toString();
+                boolean isOK = CommonUtils.isMobileNO(tel);
+                if (isOK) {
+                    GetSMS getSMS = new GetSMS(tel);
                     getSMS.execute();
-                }else{
+                } else {
                     showLongToast("请输入正确的手机号");
                 }
 
@@ -199,12 +232,12 @@ public class QuickLoginActivity extends BaseActivity {
                 || !phoneCode.getText().toString().trim().equals(smsCode.getText())) {
             showShortToast("验证码不正确");
             return false;
+        }else if (!cbRule.isChecked()) {
+            showShortToast("请阅读《兼果用户协议");
+            return false;
         }
         return true;
     }
-
-
-
 
 
     public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
@@ -212,7 +245,7 @@ public class QuickLoginActivity extends BaseActivity {
         private final String tel;
         SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
-        PhoneLoginTask(String phoneNum  ) {
+        PhoneLoginTask(String phoneNum) {
             this.tel = phoneNum;
         }
 
@@ -231,7 +264,7 @@ public class QuickLoginActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("中...");
+            pDialog.setTitleText("登录中...");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -253,7 +286,7 @@ public class QuickLoginActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.LOGIN_QUICK)
+                    .url(Constants.REGISTER_PHONE)
                     .addParams("only", only)
                     .addParams("tel", tel)
                     .build()
@@ -264,9 +297,11 @@ public class QuickLoginActivity extends BaseActivity {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {
                             String string = response.body().string();
-                            BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
+                            BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
+                            }.getType());
                             return user;
                         }
+
                         @Override
                         public void onError(Call call, Exception e) {
                             Message message = new Message();
@@ -277,13 +312,13 @@ public class QuickLoginActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(BaseBean user) {
-                            if (user.getCode().equals("200")){
-                                SPUtils.setParam(QuickLoginActivity.this,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
+                            if (user.getCode().equals("200")) {
+                                SPUtils.setParam(QuickLoginActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = user;
                                 message.what = MSG_USER_SUCCESS;
                                 mHandler.sendMessage(message);
-                            }else {
+                            } else {
                                 Message message = new Message();
                                 message.obj = user.getMessage();
                                 message.what = MSG_USER_FAIL;
@@ -302,28 +337,30 @@ public class QuickLoginActivity extends BaseActivity {
      */
     public class GetSMS extends AsyncTask<Void, Void, User> {
         private final String tel;
-        SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+//        SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         GetSMS(String phoneNum) {
             this.tel = phoneNum;
         }
+
         protected User doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             CheckPhone();
             return null;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
+//            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//            pDialog.setTitleText("中...");
+//            pDialog.setCancelable(false);
+//            pDialog.show();
         }
 
         @Override
         protected void onPostExecute(final User user) {
-            pDialog.dismiss();
+//            pDialog.dismiss();
         }
 
         /**
@@ -334,7 +371,7 @@ public class QuickLoginActivity extends BaseActivity {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
-                    .url(Constants.CHECK_PHONE_BLACK)
+                    .url(Constants.GET_SMS)
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()
@@ -345,17 +382,17 @@ public class QuickLoginActivity extends BaseActivity {
 
                         @Override
                         public void onError(Call call, Exception e) {
-                            Message message=new Message();
-                            message.obj=e.toString();
-                            message.what=MSG_USER_FAIL;
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_USER_FAIL;
                             mHandler.sendMessage(message);
                         }
 
                         @Override
                         public void onResponse(SmsCode response) {
-                            Message message=new Message();
-                            message.obj=response;
-                            message.what=MSG_PHONE_SUCCESS;
+                            Message message = new Message();
+                            message.obj = response;
+                            message.what = MSG_PHONE_SUCCESS;
                             mHandler.sendMessage(message);
                         }
 

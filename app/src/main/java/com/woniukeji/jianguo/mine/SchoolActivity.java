@@ -272,22 +272,6 @@ public class SchoolActivity extends BaseActivity {
          * postInfo
          */
         public void getRealName() {
-            RequestBody formBody = new FormEncodingBuilder()
-                    .add("platform", "android")
-                    .add("name", "bug")
-                    .add("subject", "XXXXXXXXXXXXXXX")
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url("")
-                    .post(formBody)
-                    .build();
-            request = new Request.Builder()
-                    .url("https://api.github.com/repos/square/okhttp/issues")
-                    .header("User-Agent", "OkHttp Headers.java")
-                    .addHeader("Accept", "application/json; q=0.5")
-                    .addHeader("Accept", "application/vnd.github.v3+json")
-                    .build();
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()

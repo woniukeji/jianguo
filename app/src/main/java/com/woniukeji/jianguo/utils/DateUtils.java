@@ -219,6 +219,11 @@ public class DateUtils {
         String tempTime=format(date, "MM月dd日");
         return tempTime;
     }
+
+    public static String getHm(long millis) {
+        Date date=new Date(millis);
+        return format(date, "HH:mm");
+    }
     /**
      * 功能描述：返回字符型日期时间
      *

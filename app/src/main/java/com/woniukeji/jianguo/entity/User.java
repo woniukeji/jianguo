@@ -42,6 +42,7 @@ public class User  implements Serializable {
         private String regedit_time;//ע��ʱ��
         private String login_time;//��¼ʱ��
 
+
         public int getId() {
             return id;
         }
@@ -119,6 +120,16 @@ public class User  implements Serializable {
         private String qqwx_token;//QQ
         private int status;// 状态（0=被封号，1=可以登录，但没有实名认证，2=已实名认证）
         private String qiniu;//QQ
+
+        public String getResume() {
+            return resume;
+        }
+
+        public void setResume(String resume) {
+            this.resume = resume;
+        }
+
+        private String resume;//0=未填写，1=已经填写简历
 
         public String getQiniu() {
             return qiniu;

@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity {
                     splashActivity.finish();
                     break;
                 case 1:
-                    splashActivity.startActivity(new Intent(splashActivity, LoginActivity.class));
+                    splashActivity.startActivity(new Intent(splashActivity, QuickLoginActivity.class));
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     splashActivity.finish();
@@ -184,9 +184,11 @@ public class SplashActivity extends BaseActivity {
             startActivity(new Intent(context, LeadActivity.class));
             finish();
         }else if(loginType.equals("1")){
-            String token= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,"");
-            QWLoginTask QWLoginTask = new QWLoginTask(token);
-            QWLoginTask.execute();
+            startActivity(new Intent(context, MainActivity.class));
+            finish();
+//            String token= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,"");
+//            QWLoginTask QWLoginTask = new QWLoginTask(token);
+//            QWLoginTask.execute();
 
         }else {
             String phone= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,"");

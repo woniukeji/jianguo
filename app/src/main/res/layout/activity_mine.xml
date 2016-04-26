@@ -54,6 +54,7 @@
     android:orientation="vertical"
     android:layout_marginLeft="12dp"
     >
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +64,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="孙一鸣"
+            android:text="未填写"
             android:textSize="16dp"
             android:textColor="@color/white"
             />
@@ -78,6 +79,7 @@
             android:paddingRight="5dp"
             android:textColor="@color/white"
             android:background="@drawable/textview_bg"
+            android:visibility="gone"
             />
     </LinearLayout>
 
@@ -85,7 +87,7 @@
         android:id="@+id/school"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="海南省琼州学院"
+        android:text="未填写"
         android:textSize="14dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/white"
@@ -96,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14dp"
-        android:text="13382885656"
+        android:text="未填写"
         android:textColor="@color/white"
         />
 </LinearLayout>
@@ -162,6 +164,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="15dp"
+            android:visibility="gone"
             />
         <TextView
             android:layout_toLeftOf="@+id/img_enter"
@@ -171,9 +174,36 @@
             android:layout_above="@+id/ll_wallte_realname"
             android:layout_marginBottom="5dp"
             android:textSize="14dp"
+            android:visibility="gone"
             android:text="账户管理"
             />
+        <RelativeLayout
+            android:id="@+id/account1"
+            android:layout_width="match_parent"
+            android:background="@mipmap/img_bg"
+            android:visibility="gone"
+            android:layout_height="136dp">
+            <ImageView
+                android:id="@+id/img_head1"
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/icon_head_defult"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="63dp"
+                android:text="登录/注册"
+                android:textSize="20dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@+id/img_head1"
+                />
+        </RelativeLayout>
     </RelativeLayout>
+
+
     <RelativeLayout
         android:id="@+id/credit"
         android:layout_width="match_parent"
@@ -188,14 +218,14 @@
             android:id="@+id/or_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_xinyong"
+            android:src="@mipmap/icon_pingjia"
             android:gravity="center"
             />
         <TextView
             android:layout_toRightOf="@+id/or_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="我的信用"
+            android:text="我的简历"
             android:textSize="16dp"
             android:gravity="center_vertical"
             />
@@ -218,6 +248,7 @@
             android:textColor="#9B9B9B"
             android:layout_marginRight="7dp"
             android:gravity="center"
+            android:visibility="gone"
             />
         <TextView
             android:layout_width="match_parent"
@@ -235,6 +266,7 @@
         android:layout_gravity="center"
         android:background="@color/white"
         android:paddingLeft="15dp"
+        android:visibility="gone"
         >
         <ImageView
             android:id="@+id/or_img1"
@@ -332,6 +364,7 @@
         android:background="@color/white"
         android:layout_marginTop="10dp"
         android:paddingLeft="15dp"
+        android:visibility="gone"
         >
         <ImageView
             android:id="@+id/point_img1"
@@ -419,6 +452,7 @@
         android:layout_gravity="center"
         android:background="@color/white"
         android:paddingLeft="15dp"
+        android:visibility="gone"
         >
         <ImageView
             android:id="@+id/or_img3"
@@ -446,4 +480,56 @@
             />
 
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        >
+        <ImageView
+            android:id="@+id/img_03"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_pingjia"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_toRightOf="@+id/img_03"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="关于我们"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            />
+        <ImageView
+            android:id="@+id/img_04"
+            android:layout_alignParentRight="true"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_go"
+            android:gravity="center"
+            android:layout_marginRight="17dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            android:layout_marginLeft="3dp"
+            />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_background_logout"
+        android:text="退出登录"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        />
 </LinearLayout>

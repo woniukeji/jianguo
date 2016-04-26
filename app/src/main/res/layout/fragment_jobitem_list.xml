@@ -12,19 +12,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:textSize="12dp"
             android:textColor="@color/white"
             android:text="三亚"
-            />
-        <ImageView
-            android:layout_toRightOf="@+id/tv_location"
-            android:id="@+id/img_back"
-            android:src="@mipmap/icon_dingwei"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginLeft="5dp"
-            android:layout_centerVertical="true"
+            android:drawableRight="@mipmap/icon_dingwei"
+            android:drawablePadding="8dp"
+            android:padding="10dp"
             />
         <TextView
             android:id="@+id/tv_title"
@@ -37,21 +31,33 @@
             />
 
     </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="该城市暂无数据"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginBottom="130dp"
+        />
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_below="@+id/top"
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <com.woniukeji.jianguo.widget.FixedRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/rl_header"
             android:fastScrollEnabled="true"
             android:listSelector="@color/transparent"
             android:overScrollMode="never"
             android:scrollbarStyle="outsideOverlay" />
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 </RelativeLayout>

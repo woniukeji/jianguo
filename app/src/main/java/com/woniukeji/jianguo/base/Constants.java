@@ -24,7 +24,7 @@ public class Constants {
     public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
-    public static final String REC_SMS= JIANGUO_USING+"T_Text_Sms_T_user_login_Insert_ServletServlet";//获取短信
+    public static final String GET_SMS= JIANGUO_USING+"T_SMS_Servlet";//获取短信
     public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
 
     public static final String GET_QINIU_TOKEN= JIANGUO_USING+"T_QiNiu_Servlet";//七牛token 接口
@@ -48,6 +48,8 @@ public class Constants {
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
     public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
     public static final String GET_JOB_DAY= JIANGUO_USING+"T_job_List_Day_Servlet";//日周月兼职列表获取
+    public static final String GET_JOB_CATEGORY= JIANGUO_USING+"T_job_List_Filter_Servlet";//日周月兼职列表获取
+
     public static final String POST_ATTENT= JIANGUO_USING+"T_attent_Insert_Servlet";//关注收藏接口
     public static final String GET_ATTENT= JIANGUO_USING+"T_attent_Select_Servlet";//关注收藏获
     public static final String GET_JOB_DETAIL= JIANGUO_USING+"T_Job_info_Select_JobId_Servlet";//兼职详情获取
@@ -59,17 +61,27 @@ public class Constants {
     public static final String GET_SIGN_JOB= JIANGUO_USING+"T_enroll_User_Servlet";//浏览兼职记录接口
     public static final String POST_AGREE_JOB= JIANGUO_USING+"T_enroll_Agree_Servlet";//确认参加兼职
     public static final String POST_STATUS= JIANGUO_USING+"T_enroll_Offer_Servlet";//改变状态接口
-
+    public static final String GET_WAGES_INFO= JIANGUO_USING+"T_wages_User_Get_Servlet";//用户收益明细
+    public static final String GET_BALANCE_INFO= JIANGUO_USING+"T_user_money_LoginId_Servlet";//用户余额查询
+    public static final String POST_PAY_PASSWORD= JIANGUO_USING+"T_user_money_Password_Servlet";//用户修改支付密码
+    public static final String POST_ALIPAY_INFO= JIANGUO_USING+"T_user_money_Pay_Servlet";//用户修改支付密码
+    public static final String POST_DRAW_MONEY= JIANGUO_USING+"T_user_money_Out_Servlet";//用户提现金额
+    public static final String GET_DRAW_INFO= JIANGUO_USING+"T_user_money_OutLook_Servlet";//用户提现信息
+    public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
+    public static final String GET_USER_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_User_Servlet";//地区类型信息 兼职种类
 
 
     public static final String LOGIN_INFO = "loginInfo";
+    public static final String LOGIN_CITY="city_name";
+    public static final String LOGIN_CITY_ID="city_id";
+    public static final String LOGIN_CITY_POSITION="city_POSITION";
     public static final String SP_TYPE="type";//0代表手机登录 1微信 2未登录
     public static final String SP_TEL="tel";
     public static final String SP_PASSWORD="password";
     public static final String SP_USERID="id";
     public static final String SP_STATUS="status";
     public static final String SP_WQTOKEN="qqwx_token";
-
+    public static final String SP_RESUMM="resume";
     public static final String SP_QNTOKEN="qn_token";
 
     public static final String USER_INFO = "userInfo";

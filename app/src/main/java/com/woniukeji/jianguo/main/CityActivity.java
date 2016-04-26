@@ -120,6 +120,7 @@ public class CityActivity extends BaseActivity {
     private void sendEvent(CityBannerEntity.ListTCityEntity mCity) {
         CityEvent event = new CityEvent();
         event.city = mCity;
+        event.isGPS=false;
         EventBus.getDefault().post(event);
         finish();
     }

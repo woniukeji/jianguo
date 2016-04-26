@@ -150,7 +150,7 @@ public class ResumeActivity extends BaseActivity {
                 student="0";
                 break;
             case R.id.rl_school:
-                startActivityForResult(new Intent(context,SchoolActivity.class),3);
+                    startActivityForResult(new Intent(context,SchoolActivity.class),3);
                 break;
             case R.id.rl_date:
                 TimePickerPopuWin pickerPopup3=new TimePickerPopuWin(context,mHandler,4);
@@ -160,16 +160,11 @@ public class ResumeActivity extends BaseActivity {
                 break;
             case R.id.check_button:
                 String name=etRealName.getText().toString().trim();
-
                 String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-   //
                 PostTask postTask=new PostTask(true,String.valueOf(loginId),name,url2,tvSchool.getText().toString().trim(),
                         tvDate.getText().toString().trim(),sex,tvTall.getText().toString().trim().substring(0,3),student,tvBirthday.getText().toString().trim(),
                         tvShoes.getText().toString().trim(),tvClothse.getText().toString().trim());
                 postTask.execute();
-//                boolean isPost, String loginId, String name, String name_image,
-//                    String school, String intoschool_date, String sex, String height,
-//                    String student, String birth_date, String shoe_size, String clothing_size
                 break;
         }
     }

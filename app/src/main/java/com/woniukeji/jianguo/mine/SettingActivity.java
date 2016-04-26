@@ -1,7 +1,6 @@
 package com.woniukeji.jianguo.mine;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,8 +13,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
-import com.woniukeji.jianguo.login.ChangPssActivity;
-import com.woniukeji.jianguo.login.LoginActivity;
+import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
 
@@ -71,14 +69,13 @@ public class SettingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.changePassword:
-                startActivity(new Intent(SettingActivity.this, ChangPssActivity.class));
-                finish();
+//                startActivity(new Intent(SettingActivity.this, ChangPssActivity.class));
+//                finish();
                 break;
             case R.id.refresh:
                 showShortToast("已经是最新版本");
                 break;
             case R.id.btn_logout:
-
                 ChatManager chatManager = ChatManager.getInstance();
                 chatManager.closeWithCallback(new AVIMClientCallback() {
                     @Override
@@ -87,7 +84,7 @@ public class SettingActivity extends BaseActivity {
                 });
                 ActivityManager.getActivityManager().finishAllActivity();
                 SPUtils.deleteParams(SettingActivity.this);
-                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                startActivity(new Intent(SettingActivity.this, QuickLoginActivity.class));
                 finish();
                 break;
             case R.id.about:

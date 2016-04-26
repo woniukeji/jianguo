@@ -9,22 +9,30 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
+import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.main.MainActivity;
+import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -41,7 +49,7 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.school) TextView school;
     @InjectView(R.id.phone) TextView phone;
     @InjectView(R.id.lin_info) LinearLayout linInfo;
-    @InjectView(R.id.account) RelativeLayout account;
+    @InjectView(R.id.account1) RelativeLayout account1;
     @InjectView(R.id.or_img) ImageView orImg;
     @InjectView(R.id.img) ImageView img;
     @InjectView(R.id.point_img) ImageView pointImg;
@@ -55,20 +63,40 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.rl_point) RelativeLayout rlPoint;
     @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
     @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
+    @InjectView(R.id.btn_logout) Button btnLogout;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = getActivity();
+    private int status;
+    private int loginId;
 
 
-    @OnClick({R.id.ll_money,R.id.account, R.id.ll_real_name,R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.about:
+                startActivity(new Intent(getActivity(),AboutActivity.class));
+                break;
             case R.id.credit:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    return;
+                }
+                Intent intentRe = new Intent(getActivity().getApplicationContext(), ResumeActivity.class);
+                startActivity(intentRe);
                 break;
             case R.id.rl_evaluation:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    return;
+                }
                 Intent intentEvluation = new Intent(getActivity().getApplicationContext(), EvaluationActivity.class);
                 startActivity(intentEvluation);
                 break;
             case R.id.ll_collect:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    return;
+                }
                 Intent intentColl = new Intent(getActivity().getApplicationContext(), CollectActivity.class);
                 startActivity(intentColl);
                 break;
@@ -83,14 +111,42 @@ public class MineFragment extends BaseFragment {
                 startActivity(intentSet);
                 break;
             case R.id.ll_money:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    return;
+                }
+                if (status != 2 && status != 3) {//未认证 不可以查询信息
+                    Toast.makeText(getActivity(), "请先实名认证", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intentWallte = new Intent(getActivity().getApplicationContext(), WalletActivity.class);
+                    startActivity(intentWallte);
+                }
+
                 break;
             case R.id.ll_real_name:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    return;
+                }
                 Intent intent = new Intent(getActivity().getApplicationContext(), AuthActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.account:
-                Intent intentRe = new Intent(getActivity().getApplicationContext(), ResumeActivity.class);
-                startActivity(intentRe);
+            case R.id.account1:
+                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                break;
+            case R.id.btn_logout:
+                ChatManager chatManager = ChatManager.getInstance();
+                chatManager.closeWithCallback(new AVIMClientCallback() {
+                    @Override
+                    public void done(AVIMClient avimClient, AVIMException e) {
+                    }
+                });
+                ActivityManager.getActivityManager().finishAllActivity();
+                SPUtils.deleteParams(getActivity());
+                initData(false);
+                account1.setVisibility(View.VISIBLE);
+//                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+//                getActivity().finish();
                 break;
         }
     }
@@ -162,32 +218,55 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void onStart() {
-        String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, "");
-        String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
-        String tel = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, "");
-        String img= (String)SPUtils.getParam(getActivity(), Constants.USER_INFO,Constants.SP_IMG,"");
-        imgBack.setVisibility(View.GONE);
-        name.setText(nick);
-        school.setText(schoolStr);
-        phone.setText(tel);
-        Picasso.with(getActivity()).load(img)
-                .placeholder(R.mipmap.icon_head_defult)
-                .error(R.mipmap.icon_head_defult)
-                .transform(new CropCircleTransfermation())
-                .into(imgHead);
+        initData(true);
         super.onStart();
-        LogUtils.i("fragment","mine:onstart");
+        LogUtils.i("fragment", "mine:onstart");
     }
+     public void initData(boolean init){
+         if (init){
+             String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, "");
+             String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
+             String tel = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, "");
+             String img = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
+             status = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
+             loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+             if (loginId==0){
+                 btnLogout.setVisibility(View.GONE);
+                 account1.setVisibility(View.VISIBLE);
+             }
+             if (!schoolStr.equals("")){
+                 school.setText("未填写");
+             }else {
+                 school.setText(schoolStr);
+             }
+             imgBack.setVisibility(View.GONE);
+             name.setText(nick);
 
+             phone.setText(tel);
+             if (img != null && !img.equals("")) {
+                 Picasso.with(getActivity()).load(img)
+                         .placeholder(R.mipmap.icon_head_defult)
+                         .error(R.mipmap.icon_head_defult)
+                         .transform(new CropCircleTransfermation())
+                         .into(imgHead);
+             }
+         }
+         Picasso.with(getActivity()).load("http//null")
+                 .placeholder(R.mipmap.icon_head_defult)
+                 .error(R.mipmap.icon_head_defult)
+                 .transform(new CropCircleTransfermation())
+                 .into(imgHead);
+
+     }
     @Override
     public void onResume() {
         super.onResume();
-        LogUtils.i("fragment","mine:onresum");
+        LogUtils.i("fragment", "mine:onresum");
     }
 
     @Override
     public void onDestroy() {
-        LogUtils.i("fragment","mine:ondestroy");
+        LogUtils.i("fragment", "mine:ondestroy");
         super.onDestroy();
     }
 }

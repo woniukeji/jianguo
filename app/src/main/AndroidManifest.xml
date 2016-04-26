@@ -4,8 +4,8 @@
           xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
-        android:minSdkVersion="18"
         android:maxSdkVersion="21"
+        android:minSdkVersion="21"
         android:targetSdkVersion="21"/>
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_TASKS"/>
@@ -34,6 +34,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_LOGS"/>
+    <!-- 腾讯地图定位权限 开始 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 腾讯地图定位权限 结束 -->
 
     <application
         android:name=".base.Application"
@@ -56,23 +66,7 @@
             android:name=".main.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".login.RegistActivity"
-            android:label="@string/title_activity_regist"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
-            android:name=".login.LoginActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
             android:name=".login.QuickLoginActivity"
-            android:label="@string/title_activity_regist"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
-            android:name=".login.ChangPssActivity"
             android:label="@string/title_activity_regist"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
@@ -133,6 +127,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <!-- 腾讯地图配置 开始 -->
+        <meta-data android:name="TencentMapSDK" android:value="CIWBZ-PFOHV-6R6P3-U62N6-RCZ4E-WDFIH" />
+        <!-- 腾讯地图配置 结束 -->
+
         <activity
             android:name=".mine.AuthActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -202,9 +200,36 @@
             android:name=".mine.MyPartJboActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".login.LeadActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
+        <activity
+            android:name=".login.LeadActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".wallte.WalletActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".wallte.DrawMoneyActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".wallte.BindAliActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".wallte.BindYinlianActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".wallte.DrawPassActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".mine.AboutActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".partjob.PartJobActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>
 

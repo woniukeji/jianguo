@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:background="@color/gray_btn_bg_color"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+                    android:background="@color/app_bg"
+                    style="@style/title_bar_style">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:src="@mipmap/icon_back"
+            android:layout_width="20dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_height="20dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginLeft="23dp"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:text="绑定银行卡"
+            />
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:text="确认"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_change"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:background="@color/white"
+        android:layout_marginTop="5dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="真实姓名:"
+            android:textSize="14dp"
+            android:gravity="center"
+            android:minEms="4"
+            />
+
+        <EditText
+            android:id="@+id/et_yinlian_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:layout_marginLeft="5dp"
+            android:hint="务必与绑定银行卡姓名一致"
+            android:textColorHint="#bfbfbf"
+            android:textSize="14dp"
+            android:gravity="right|center_vertical"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_bank"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:background="@color/white"
+        android:layout_marginTop="5dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="开户银行:"
+            android:textSize="14dp"
+            android:gravity="center"
+            android:minEms="4"
+            />
+
+        <EditText
+            android:id="@+id/et_bank_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:layout_marginLeft="5dp"
+            android:hint="填写开户行名称（例：中国建设银行）"
+            android:textColorHint="#bfbfbf"
+            android:textSize="14dp"
+            android:gravity="right|center_vertical"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:background="@color/white"
+        android:layout_marginTop="5dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="银行卡号:"
+            android:textSize="14dp"
+            android:gravity="center"
+            />
+
+        <EditText
+            android:id="@+id/et_bank_number"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:layout_marginLeft="5dp"
+            android:hint="请填写正确的银行卡账号"
+            android:textColorHint="#bfbfbf"
+            android:inputType="number"
+            android:textSize="14dp"
+            android:gravity="right|center_vertical"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请确认银行卡账户信息准确无误，暂时不支持解绑，请仔细核对账户信息填写"
+        android:textColor="#ee5533"
+        android:textSize="8dp"
+        android:layout_margin="10dp"
+        />
+
+<LinearLayout
+    android:id="@+id/ll_changed"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="100dp"
+    >
+
+
+    <Button
+        android:id="@+id/btn_save_yinlian"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:text="保存"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background_login"
+        />
+</LinearLayout>
+
+</LinearLayout>
