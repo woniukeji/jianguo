@@ -58,10 +58,6 @@ import okhttp3.Response;
  * A simple {@link } subclass.
  */
 public class PartJobFragment extends BaseFragment {
-
-    @InjectView(R.id.spinner) Spinner spinner;
-    @InjectView(R.id.spinner2) Spinner spinner2;
-    @InjectView(R.id.spinner3) Spinner spinner3;
     private Context context = getActivity();
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
@@ -109,7 +105,7 @@ public class PartJobFragment extends BaseFragment {
             MainActivity mainActivity = (MainActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    if (refreshLayout.isRefreshing()) {
+                    if (refreshLayout!=null&&refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
@@ -131,7 +127,7 @@ public class PartJobFragment extends BaseFragment {
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -154,7 +150,7 @@ public class PartJobFragment extends BaseFragment {
     }
 
     private void initData() {
-        cityid = String.valueOf(SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, 0));
+        cityid = String.valueOf(SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, 1));
         position= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,0);
         GetJobCityTask getJobCityTask = new GetJobCityTask();
         getJobCityTask.execute();
@@ -176,8 +172,10 @@ public class PartJobFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //                GetTask getTask = new GetTask("0","0");
-                //                getTask.execute();
+                GetTask getTask = new GetTask(cityid,
+                        typeid, areid
+                        , "2", "0");
+                getTask.execute();
             }
         });
     }
@@ -196,7 +194,6 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
         mMenu.setmMenuListTextColor(Color.BLACK);//Menu展开list的文字颜色
         mMenu.setmMenuBackColor(Color.WHITE);//Menu的背景颜色
-        mMenu.setmMenuPressedBackColor(Color.GRAY);//Menu按下的背景颜色
         mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
         mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
         mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
@@ -206,8 +203,8 @@ public class PartJobFragment extends BaseFragment {
             @Override
             //Menu展开的list点击事件  RowIndex：list的索引  ColumnIndex：menu的索引
             public void onSelected(View listview, int RowIndex, int ColumnIndex,int sortId) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.showLongToast("选中了第" + ColumnIndex + "拍" + "xuanzhongle" + RowIndex);
+//                MainActivity mainActivity = (MainActivity) getActivity();
+//                mainActivity.showLongToast("选中了第" + ColumnIndex + "拍" + "xuanzhongle" + RowIndex);
                 if (ColumnIndex == 0) {
 //                    typeid = String.valueOf(cityCategoryBaseBean.getData().getList_t_type().get(RowIndex).getId());
                     typeid = String.valueOf(sortId);
@@ -271,13 +268,13 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
         mMenu.setmMenuListTextColor(Color.BLACK);//Menu展开list的文字颜色
         mMenu.setmMenuBackColor(Color.WHITE);//Menu的背景颜色
-        mMenu.setmMenuPressedBackColor(Color.GRAY);//Menu按下的背景颜色
+        mMenu.setmMenuPressedBackColor(getResources().getColor(R.color.gray_btn_bg_color));//Menu按下的背景颜色
         mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
         mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
         mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
         mMenu.setmMenuItems(items);
-        GetTask getTask = new GetTask(String.valueOf(cityCategoryBaseBean.getData().getList_t_city2().get(0).getId()),
-                String.valueOf(cityCategoryBaseBean.getData().getList_t_type().get(0).getId()), String.valueOf(cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().get(0).getId())
+        GetTask getTask = new GetTask(cityid,
+                typeid, areid
                 , "2", "0");
         getTask.execute();
     }
@@ -292,19 +289,6 @@ public class PartJobFragment extends BaseFragment {
             baseEntity.setId(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
-//        items.add(jobs);
-//        items.add(sort);
-//        items.add(citys);
-//        mMenu.setShowCheck(true);//是否显示展开list的选中项
-//        mMenu.setmMenuTitleTextSize(14);//Menu的文字大小
-//        mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色
-//        mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
-//        mMenu.setmMenuListTextColor(Color.BLACK);//Menu展开list的文字颜色
-//        mMenu.setmMenuBackColor(Color.WHITE);//Menu的背景颜色
-//        mMenu.setmMenuPressedBackColor(Color.GRAY);//Menu按下的背景颜色
-//        mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
-//        mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
-//        mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
         mMenu.setAreaText();
         GetTask getTask = new GetTask(cityid,
                 typeid, "0", filterid, "0");
@@ -318,7 +302,6 @@ public class PartJobFragment extends BaseFragment {
     }
 
     public void onEvent(final JobFilterEvent event) {
-        int tempCityId = 0;
         cityid= String.valueOf(event.cityId);
         position=event.position;
         resetDrawMenu();

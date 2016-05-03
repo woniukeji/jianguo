@@ -19,6 +19,7 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
@@ -55,6 +56,7 @@ public class TalkFragment extends BaseFragment {
     private AVIMClient client;
     private String avatarUrl;
     private int loginId;
+    private AVIMConversationQuery query;
 
 
     public static TalkFragment newInstance(String param1, String param2) {
@@ -78,6 +80,9 @@ public class TalkFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_talk, container, false);
         ButterKnife.inject(this, view);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         imgBack.setVisibility(View.GONE);
         tvTitle.setText("果聊");
         avatarUrl = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
@@ -95,10 +100,72 @@ public class TalkFragment extends BaseFragment {
     public void onStart() {
         LogUtils.i("fragment", "talk:onstart");
         super.onStart();
-        //查询对话
+        //当退出登陆的时候切换回果聊界面的时候，已经删除了sp信息 此时默认给值为1 防止再次查询为空
+        String loginType = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TYPE, "1");
+
+        if (!loginType.equals("1")){
+            //查询对话
+            client = ChatManager.getInstance().getImClient();
+            AVIMConversationQuery query = client.getQuery();
+            query.limit(100);
+            query.setQueryPolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            query.findInBackground(new AVIMConversationQueryCallback() {
+                @Override
+                public void done(List<AVIMConversation> convs, AVIMException e) {
+                    if (e == null) {
+                        conversations.clear();
+                        conversations.addAll(convs);
+                        itemAdapter.notifyDataSetChanged();
+                        String con = client.toString();
+                        LogUtils.e("conv", con);
+                        //convs就是获取到的conversation列表
+                        //注意：按每个对话的最后更新日期（收到最后一条消息的时间）倒序  排列
+                    }
+                }
+            });
+        }
+
+
+    }
+
+    public void onEvent(TalkMessageEvent event) {
+        //快速登陆之后通知界面获取聊天消息列表，登出的时候清空聊天列表
+        if (event.isLogin){
+            client = ChatManager.getInstance().getImClient();
+            LogUtils.e("client", client.toString());
+             query = client.getQuery();
+            query.limit(20);
+            query.setQueryPolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            query.findInBackground(new AVIMConversationQueryCallback() {
+                @Override
+                public void done(List<AVIMConversation> convs, AVIMException e) {
+                    if (e == null) {
+                        conversations.clear();
+                        conversations.addAll(convs);
+                        itemAdapter.notifyDataSetChanged();
+                        String con = client.toString();
+                        LogUtils.e("conv", con);
+                        //convs就是获取到的conversation列表
+                        //注意：按每个对话的最后更新日期（收到最后一条消息的时间）倒序  排列
+                    }
+                }
+            });
+        }else {
+            conversations.clear();
+            itemAdapter.notifyDataSetChanged();
+        }
+
+    }
+    /**
+     * 处理推送过来的消息
+     * 此处应该判断本地已经有的converid 和新推动过来的消息的convid对比 加入对应数据中更新
+     */
+    public void onEvent(ImTypeMessageEvent event) {
+//        event.message.getConversationId();
+//        text.setText(event.message.getContent());
         client = ChatManager.getInstance().getImClient();
         LogUtils.e("client", client.toString());
-        AVIMConversationQuery query = client.getQuery();
+        query = client.getQuery();
         query.limit(20);
         query.setQueryPolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findInBackground(new AVIMConversationQueryCallback() {
@@ -115,23 +182,6 @@ public class TalkFragment extends BaseFragment {
                 }
             }
         });
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendWelcomeMessage("42", avatarUrl);
-            }
-        });
-    }
-
-
-    /**
-     * 处理推送过来的消息
-     * 此处应该判断本地已经有的converid 和新推动过来的消息的convid对比 加入对应数据中更新
-     */
-    public void onEvent(ImTypeMessageEvent event) {
-        event.message.getConversationId();
-        text.setText(event.message.getContent());
     }
 
     @Override
@@ -145,7 +195,6 @@ public class TalkFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         LogUtils.i("fragment", "talk:onDetach");
-
         mListener = null;
     }
 

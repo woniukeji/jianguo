@@ -35,10 +35,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:text="该城市暂无数据"
+        android:text="当前城市和类别下无数据"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginBottom="130dp"
+        android:layout_marginBottom="140dp"
         />
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_below="@+id/top"

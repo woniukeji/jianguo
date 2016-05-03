@@ -195,22 +195,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        final ChatManager chatManager = ChatManager.getInstance();
-        if (!TextUtils.isEmpty(String.valueOf(loginId))) {
-            chatManager.setupManagerWithUserId(this, String.valueOf(loginId));
-        }
-        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (null == e) {
-//                    finish();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-                } else {
-                    showShortToast(e.toString());
-                }
-            }
-        });
     }
 
     @Override

@@ -91,6 +91,7 @@ public class ResumeActivity extends BaseActivity {
     private int loginId;
     private String sex="0";
     private String student="1";
+    private String url2;
 
 
     @OnClick({R.id.img_back, R.id.img_head, R.id.rb_girl, R.id.rb_boy, R.id.rl_birthday, R.id.rl_shoes, R.id.rl_clothse, R.id.rl_tall, R.id.rb_yes, R.id.rb_no, R.id.rl_school, R.id.rl_date, R.id.check_button})
@@ -160,7 +161,6 @@ public class ResumeActivity extends BaseActivity {
                 break;
             case R.id.check_button:
                 String name=etRealName.getText().toString().trim();
-                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
                 PostTask postTask=new PostTask(true,String.valueOf(loginId),name,url2,tvSchool.getText().toString().trim(),
                         tvDate.getText().toString().trim(),sex,tvTall.getText().toString().trim().substring(0,3),student,tvBirthday.getText().toString().trim(),
                         tvShoes.getText().toString().trim(),tvClothse.getText().toString().trim());
@@ -182,9 +182,10 @@ public class ResumeActivity extends BaseActivity {
             ResumeActivity resumeActivity = (ResumeActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean baseBean = (BaseBean) msg.obj;
+                    BaseBean<Resume> baseBean = (BaseBean<Resume>) msg.obj;
                     resumeActivity.showShortToast("信息修改成功！");
-//                    intent.putExtra("user",user);
+                    SPUtils.setParam(resumeActivity, Constants.LOGIN_INFO, Constants.SP_RESUMM, "1");
+                    SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.USER_SEX, resumeActivity.sex);
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -246,6 +247,7 @@ public class ResumeActivity extends BaseActivity {
 
     }
     private void initResumeInfo(Resume.UserResum userResum) {
+        url2=userResum.getName_image();
          etRealName.setText(userResum.getName());
         tvBirthday.setText(userResum.getBirth_date());
         tvShoes.setText(userResum.getShoe_size());
@@ -494,6 +496,7 @@ public class ResumeActivity extends BaseActivity {
                 imgHead.setImageURI(imgSource);
                 BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 300, 300);
                 QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
+                url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
             }
         }else if(requestCode == 1){
                tvBirthday.setText(data.getStringExtra("date"));

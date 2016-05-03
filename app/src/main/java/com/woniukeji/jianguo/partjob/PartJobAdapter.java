@@ -166,6 +166,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                 public void onClick(View view) {
                     Intent intent=new Intent(mContext, JobDetailActivity.class);
                     intent.putExtra("job",job.getId());
+                    intent.putExtra("jobbean",job);
                     intent.putExtra("merchant",job.getMerchant_id());
                     intent.putExtra("money",job.getMoney()+type);
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());

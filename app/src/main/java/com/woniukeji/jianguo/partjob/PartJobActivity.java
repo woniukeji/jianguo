@@ -12,27 +12,22 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jayfang.dropdownmenu.DropDownMenu;
-import com.jayfang.dropdownmenu.OnMenuSelectedListener;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
-import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
-import com.woniukeji.jianguo.eventbus.JobTypeEvent;
-import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -58,6 +53,10 @@ public class PartJobActivity extends BaseActivity {
     @InjectView(R.id.tv_title) TextView tvTitle;
     @InjectView(R.id.list) FixedRecyclerView list;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @InjectView(R.id.img_share) ImageView imgShare;
+    @InjectView(R.id.img_menu) ImageView imgMenu;
+    @InjectView(R.id.img_renwu) ImageView imgRenwu;
+    @InjectView(R.id.rl_null) RelativeLayout rlNull;
     private String headers[] = {"职业", "排序", "地区"};
     private String jobs[] = {"不限", "服务员", "厨师", "程序员", "摊煎饼", "城市猎人"};
     private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
@@ -77,12 +76,21 @@ public class PartJobActivity extends BaseActivity {
     BaseBean<CityCategory> cityCategoryBaseBean;
     private Handler mHandler = new Myhandler(this);
     private DropDownMenu mMenu;
-    private int mtype=0;
+    private int mtype = 0;
+    private int cityid=3;
 
     @Override
     public void onClick(View v) {
 
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
+    }
+
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -94,14 +102,16 @@ public class PartJobActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-          PartJobActivity mainActivity = (PartJobActivity) reference.get();
+            PartJobActivity mainActivity = (PartJobActivity) reference.get();
             switch (msg.what) {
                 case 0:
                     if (refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
-                    jobs.getData().getList_t_job();
+                    if (jobs.getData().getList_t_job().size() == 0) {
+                        rlNull.setVisibility(View.VISIBLE);
+                    }
                     jobList.addAll(jobs.getData().getList_t_job());
                     adapter.notifyDataSetChanged();
                     break;
@@ -110,7 +120,7 @@ public class PartJobActivity extends BaseActivity {
 //                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                   cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
+                    cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
                     break;
                 case 3:
                     String sms = (String) msg.obj;
@@ -123,8 +133,6 @@ public class PartJobActivity extends BaseActivity {
 
 
     }
-
-
 
 
     @Override
@@ -143,7 +151,6 @@ public class PartJobActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        tvTitle.setText("兼职");
         imgBack.setVisibility(View.GONE);
         adapter = new PartJobAdapter(jobList, this);
         mLayoutManager = new LinearLayoutManager(this);
@@ -162,7 +169,7 @@ public class PartJobActivity extends BaseActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask = new GetTask("0","0");
+                GetTask getTask = new GetTask("0", "0");
                 getTask.execute();
             }
         });
@@ -170,9 +177,17 @@ public class PartJobActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        Intent intent=getIntent();
-        int type=intent.getIntExtra("type",2);
-        GetTask getTask = new GetTask(String.valueOf(type),"0");
+        Intent intent = getIntent();
+          cityid = intent.getIntExtra("cityid", 3);
+        int type = intent.getIntExtra("type", 2);
+        if (type==3){
+            tvTitle.setText("兼职旅行");
+        }else if(type==2){
+            tvTitle.setText("日结兼职");
+        }else{
+            tvTitle.setText("精品兼职");
+        }
+        GetTask getTask = new GetTask(String.valueOf(type), "0");
         getTask.execute();
     }
 
@@ -180,6 +195,7 @@ public class PartJobActivity extends BaseActivity {
     public void initListeners() {
 
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -188,8 +204,8 @@ public class PartJobActivity extends BaseActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1) {
-                    GetTask getTask=new GetTask("0",String.valueOf(lastVisibleItem));
+                if (jobList.size() > 5 && lastVisibleItem == jobList.size() + 1) {
+                    GetTask getTask = new GetTask("0", String.valueOf(lastVisibleItem));
                     getTask.execute();
                 }
             }
@@ -213,7 +229,7 @@ public class PartJobActivity extends BaseActivity {
 //        sortView.setAdapter(sortAdapter);
 
         //init sex menu
-        mMenu=(DropDownMenu)findViewById(R.id.menu);
+        mMenu = (DropDownMenu) findViewById(R.id.menu);
         mMenu.setmMenuCount(3);
         mMenu.setmShowCount(6);
         mMenu.setShowCheck(true);//是否显示展开list的选中项
@@ -238,11 +254,11 @@ public class PartJobActivity extends BaseActivity {
     public void onEvent(CityJobTypeEvent event) {
         event.cityCategory.getList_t_city2().get(0).getList_t_area();
         event.cityCategory.getList_t_type().get(0).getId();
-        if (mtype==4){
-            GetTask getTask = new GetTask(String.valueOf(mtype),"0");
+        if (mtype == 4) {
+            GetTask getTask = new GetTask(String.valueOf(mtype), "0");
             getTask.execute();
-        }else {
-            GetTask getTask = new GetTask(String.valueOf(mtype),"0");
+        } else {
+            GetTask getTask = new GetTask(String.valueOf(mtype), "0");
             getTask.execute();
         }
     }
@@ -261,20 +277,20 @@ public class PartJobActivity extends BaseActivity {
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
         private String type;
-        private  String count;
+        private String count;
 
-        GetTask(String type,String count) {
+        GetTask(String type, String count) {
             this.type = type;
-            this.count=count;
+            this.count = count;
         }
+
         @Override
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                if (type.equals("4")){
-                    type="3";
+                if (type.equals("2")) {
                     getDayJobs();
-                }else
+                } else
                     getJobs();
             } catch (Exception e) {
             }
@@ -285,6 +301,7 @@ public class PartJobActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
         }
+
         /**
          * postInfo
          */
@@ -294,8 +311,8 @@ public class PartJobActivity extends BaseActivity {
                     .get()
                     .url(Constants.GET_JOB_DAY)
                     .addParams("only", only)
-                    .addParams("term", type)
-                    .addParams("city_id", "3")
+                    .addParams("mode", type)
+                    .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
                     .connTimeOut(60000)
@@ -336,6 +353,7 @@ public class PartJobActivity extends BaseActivity {
 
                     });
         }
+
         /**
          * postInfo
          */
@@ -346,7 +364,7 @@ public class PartJobActivity extends BaseActivity {
                     .url(Constants.GET_JOB)
                     .addParams("only", only)
                     .addParams("hot", type)
-                    .addParams("city_id", "3")
+                    .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
                     .connTimeOut(60000)

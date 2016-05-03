@@ -1,5 +1,6 @@
 package com.woniukeji.jianguo.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class Jobs {
             this.list_t_job = list_t_job;
         }
 
-        public static class ListTJobEntity {
+        public static class ListTJobEntity implements Serializable{
             private int id;
             private int city_id;
             private int area_id;
@@ -70,6 +71,24 @@ public class Jobs {
             private String reg_date;
             private int look;
             private String user_status;
+            private long info_start_time;
+            private long info_stop_time;
+
+            public long getInfo_start_time() {
+                return info_start_time;
+            }
+
+            public void setInfo_start_time(long info_start_time) {
+                this.info_start_time = info_start_time;
+            }
+
+            public long getInfo_stop_time() {
+                return info_stop_time;
+            }
+
+            public void setInfo_stop_time(long info_stop_time) {
+                this.info_stop_time = info_stop_time;
+            }
 
             public int getId() {
                 return id;

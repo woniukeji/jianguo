@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="工作内容："
+                android:text="工作地点："
                 android:textSize="15dp"
                 />
             <TextView
@@ -238,26 +238,12 @@
                 android:text="包接送"
                 android:textSize="15dp"
                 />
-
-
         </LinearLayout>
-
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
 <Button
 android:id="@+id/tv_ok"
 android:layout_width="match_parent"
-android:layout_height="40dp"
+android:layout_height="45dp"
 android:layout_alignParentBottom="true"
 android:layout_marginTop="10dp"
 android:gravity="center"

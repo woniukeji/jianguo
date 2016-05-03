@@ -144,19 +144,6 @@ public class ChatActivity extends KJActivity {
                 }
             }
         });
-//                    AVIMConversationQuery query = client.getQuery();
-//                    query.whereEqualTo("objectId",mConversationId);
-//                    query.findInBackground(new AVIMConversationQueryCallback(){
-//                        @Override
-//                        public void done(List<AVIMConversation> convs, AVIMException e){
-//                            if(e==null){
-//                                if(convs!=null && !convs.isEmpty()){
-//                                    //convs.get(0) 就是想要的conversation
-//
-//                                }
-//                            }
-//                        }
-//                    });
     }
 
     @Override
@@ -186,14 +173,6 @@ public class ChatActivity extends KJActivity {
             @Override
             public void send(String content) {
                 AVIMTextMessage message = new AVIMTextMessage();
-//                datas.add(message);
-//                adapter.refresh(datas);
-//                sendWelcomeMessage("42",loginid,nickname,img,content);
-//                createReplayMsg(message);
-                //                createReplayMsg(message);
-
-//                message.setFrom(loginid);
-
                 sendMessage("42", loginid, nickname, img, content);
             }
 

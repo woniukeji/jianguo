@@ -138,6 +138,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        start();
     }
 
     @Override
@@ -154,7 +155,7 @@ public class InfiniteIndicator extends RelativeLayout implements RecyclingPagerA
             mViewPager.setCurrentItem(mRecyleAdapter.getRealCount() * 50 -
                     (mRecyleAdapter.getRealCount() * 50 % mRecyleAdapter.getRealCount()));
         } else {
-            setInfinite(false);
+            setInfinite(true);
             mViewPager.setCurrentItem(0);
         }
     }

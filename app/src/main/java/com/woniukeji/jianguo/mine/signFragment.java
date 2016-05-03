@@ -102,10 +102,16 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
                     int count=msg.arg1;
                     if (count==0){
                         modleList.clear();
-                    }else {
-
+                    }
+                    if (refreshLayout!=null&&refreshLayout.isRefreshing()) {
+                        refreshLayout.setRefreshing(false);
                     }
                     modleList.addAll(jobsBaseBean.getData().getList_t_job());
+                    if (modleList.size()>0){
+                        rlNull.setVisibility(View.GONE);
+                    }else {
+                        rlNull.setVisibility(View.VISIBLE);
+                    }
                      adapter.notifyDataSetChanged();
                     break;
                 case 1:

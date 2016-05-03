@@ -221,7 +221,7 @@ public class DateUtils {
     }
 
     public static String getHm(long millis) {
-        Date date=new Date(millis);
+        Date date=new Date(millis*1000);
         return format(date, "HH:mm");
     }
     /**

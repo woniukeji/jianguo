@@ -117,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
+                android:layout_marginRight="1dp"
                 android:background="@mipmap/img_xuanxiang_bg"
                 >
                 <ImageView
@@ -128,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的钱包"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     android:textColor="#3A9DFF"
                     />
             </LinearLayout>
@@ -140,6 +141,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:background="@mipmap/img_xuanxiang_bg"
+                android:layout_marginLeft="1dp"
                 >
                 <ImageView
                     android:layout_width="30dp"
@@ -151,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:text="实名认证  "
                     android:textColor="#3A9DFF"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -492,8 +494,9 @@
             android:id="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pingjia"
+            android:src="@mipmap/icon_we"
             android:gravity="center"
+            android:padding="3dp"
             />
         <TextView
             android:layout_toRightOf="@+id/img_03"

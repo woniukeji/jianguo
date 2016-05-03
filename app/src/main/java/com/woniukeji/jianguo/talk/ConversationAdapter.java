@@ -109,15 +109,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if(conversation.getCreator().equals(String.valueOf(loginId))){
             holder.tvNick.setText((String)conversation.getAttribute(Constants.OTHER_NAME));
             Picasso.with(mContext).load((String)conversation.getAttribute(Constants.OTHER_IMG))
-                    .placeholder(R.mipmap.icon_head_defult)
-                    .error(R.mipmap.icon_head_defult)
+                    .placeholder(R.drawable.default_head)
+                    .error(R.drawable.default_head)
                     .transform(new CropCircleTransfermation())
                     .into( holder.circleTalkHead);
         }else{
             holder.tvNick.setText((String)conversation.getAttribute(Constants.CREAT_NAME));
             Picasso.with(mContext).load((String)conversation.getAttribute(Constants.CREAT_IMG))
-                    .placeholder(R.mipmap.icon_head_defult)
-                    .error(R.mipmap.icon_head_defult)
+                    .placeholder(R.drawable.default_head)
+                    .error(R.drawable.default_head)
                     .transform(new CropCircleTransfermation())
                     .into( holder.circleTalkHead);
         }
@@ -127,7 +127,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             public void done(AVIMMessage avimMessage, AVIMException e) {
                 if (null != avimMessage) {
                     AVIMTextMessage avimTextMessage = (AVIMTextMessage) avimMessage;
-                        String avatorImag= (String) avimTextMessage.getAttrs().get("avatar");
+                     String avatorImag= (String) avimTextMessage.getAttrs().get("avatar");
                     String nickName = (String) avimTextMessage.getAttrs().get("nickname");
                     holder.tvContent.setText(avimTextMessage.getText());
                     avimTextMessage.getTimestamp();

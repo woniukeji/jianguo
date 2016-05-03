@@ -60,8 +60,55 @@
 -keep public class com.tencent.bugly.**{*;}
 
 
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keepattributes Signature
+-dontwarn com.jcraft.jzlib.**
+-keep class com.jcraft.jzlib.**  { *;}
 
+-dontwarn sun.misc.**
+-keep class sun.misc.** { *;}
 
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.** { *;}
+
+-dontwarn sun.security.**
+-keep class sun.security.** { *; }
+
+-dontwarn com.google.**
+-keep class com.google.** { *;}
+
+-dontwarn com.avos.**
+-keep class com.avos.** { *;}
+
+-keep public class android.net.http.SslError
+-keep public class android.webkit.WebViewClient
+
+-dontwarn android.webkit.WebView
+-dontwarn android.net.http.SslError
+-dontwarn android.webkit.WebViewClient
+
+-dontwarn android.support.**
+
+-dontwarn org.apache.**
+-keep class org.apache.** { *;}
+
+-dontwarn org.jivesoftware.smack.**
+-keep class org.jivesoftware.smack.** { *;}
+
+-dontwarn com.loopj.**
+-keep class com.loopj.** { *;}
+
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.** { *;}
+-keep interface com.squareup.okhttp.** { *; }
+
+-dontwarn okio.**
+
+-dontwarn org.xbill.**
+-keep class org.xbill.** { *;}
+
+-keepattributes *Annotation*
 
 
 
@@ -78,14 +125,42 @@
         -printmapping mapping.txt
         
 
+      #okhttputils
+      -dontwarn com.zhy.http.**
+      -keep class com.zhy.http.**{*;}
+      -keep interface com.zhy.http.**{*;}
+
+      #okhttp
+      -dontwarn okhttp3.**
+      -keep class okhttp3.**{*;}
+      -keep interface okhttp3.**{*;}
+
+      #okio
+      -dontwarn okio.**
+      -keep class okio.**{*;}
+      -keep interface okio.**{*;}
         
-        
 
         
 
+-keep class cn.sharesdk.**{*;}
+-keep class com.sina.**{*;}
+-keep class **.R$* {*;}
+-keep class **.R{*;}
 
+-keep class com.mob.**{*;}
+-dontwarn com.mob.**
+-dontwarn cn.sharesdk.**
+-dontwarn **.R$*
 
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
 
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
 
         
 
@@ -218,7 +293,7 @@
         # Gson specific classes
         -keep class sun.misc.Unsafe { *; }
         # Application classes that will be serialized/deserialized over Gson
--keep class tv.liangzi.sport.bean.** { *; }
+-keep class com.woniukeji.jianguo.entity.** { *; }
 
 
 
@@ -343,28 +418,28 @@
 -keepattributes *Annotation*
 
 #BeeCloud
--dontwarn cn.beecloud.**
+#-dontwarn cn.beecloud.**
 #PayPal
--dontwarn com.paypal.**
--dontwarn io.card.payment.**
+#-dontwarn com.paypal.**
+#-dontwarn io.card.payment.**
 
 #保留类签名声明
 -keepattributes Signature
 #BeeCloud
--keep class cn.beecloud.** { *; }
--keep class com.google.** { *; }
-#支付宝
--keep class com.alipay.** { *; }
-#微信
--keep class com.tencent.** { *; }
-#银联
--keep class com.unionpay.** { *; }
-#百度
--keep class com.baidu.** { *; }
--keep class com.dianxinos.** { *; }
-#PayPal
--keep class com.paypal.** { *; }
--keep class io.card.payment.** { *; }
+#-keep class cn.beecloud.** { *; }
+#-keep class com.google.** { *; }
+##支付宝
+#-keep class com.alipay.** { *; }
+##微信
+#-keep class com.tencent.** { *; }
+##银联
+#-keep class com.unionpay.** { *; }
+##百度
+#-keep class com.baidu.** { *; }
+#-keep class com.dianxinos.** { *; }
+##PayPal
+#-keep class com.paypal.** { *; }
+#-keep class io.card.payment.** { *; }
 
 # Keep Butterknife stuff
 -dontwarn butterknife.internal.**
@@ -373,4 +448,11 @@
 
 -keepclassmembers class ** {
     public void onEvent*(**);
+}
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-dontwarn android.location.Location
+-keepclassmembers class ** {
+    public void on*Event(...);
 }

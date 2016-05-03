@@ -11,6 +11,7 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
@@ -32,6 +33,7 @@ public class FeedBackActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_feed_back);
+        ButterKnife.inject(this);
     }
 
     @Override
@@ -65,10 +67,13 @@ public class FeedBackActivity extends BaseActivity {
             case R.id.btn_confirm:
                 if (etContent.getText().toString().equals("")){
                     showShortToast("请输入反馈内容");
+                    return;
                 }else if(etContact.getText().toString().equals("")){
                     showShortToast("请输入联系方式");
+                    return;
                 }
-
+               showShortToast("感谢您的反馈！我们将及时处理");
+                finish();
                 break;
         }
     }

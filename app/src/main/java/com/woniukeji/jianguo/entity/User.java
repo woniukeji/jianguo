@@ -41,7 +41,15 @@ public class User  implements Serializable {
         private int integral;//����
         private String regedit_time;//ע��ʱ��
         private String login_time;//��¼ʱ��
+        private String user_sex;
 
+        public String getUser_sex() {
+            return user_sex;
+        }
+
+        public void setUser_sex(String user_sex) {
+            this.user_sex = user_sex;
+        }
 
         public int getId() {
             return id;

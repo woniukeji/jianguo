@@ -5,6 +5,12 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.woniukeji.jianguo.leanmessage.MessageHandler;
+import com.woniukeji.jianguo.utils.LogUtils;
+
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * Created by invinjun on 2016/3/2.
@@ -25,6 +31,8 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         UmengConfig();
+        // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
+        init();
         instance = this;
         // 初始化参数依次为 this, AppId, AppKey
         AVOSCloud.initialize(this,"AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
@@ -36,6 +44,9 @@ public class Application extends android.app.Application {
     public void UmengConfig(){
 
 
+    }
+    private void init(){
+        JPushInterface.init(getApplicationContext());
     }
     public static Application getInstance(){
         return instance;

@@ -92,7 +92,6 @@ public class ChatManager {
   }
 
   public AVIMClient getImClient() {
-    LogUtils.e("client",imClient.toString());
     return imClient;
   }
 

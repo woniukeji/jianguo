@@ -20,7 +20,7 @@ import java.io.File;
 public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
-    public static final String JIANGUO_TEST2="http://101.200.205.243:8080/";
+    public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
     public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
@@ -87,6 +87,7 @@ public class Constants {
     public static final String USER_INFO = "userInfo";
     public static final String SP_NICK="nickname";
     public static final String SP_NAME="name";
+    public static final String USER_SEX="sex";
     public static final String SP_IMG="name_image";
     public static final String SP_SCHOOL="school";
     public static final String SP_INTEGRAL="integral";

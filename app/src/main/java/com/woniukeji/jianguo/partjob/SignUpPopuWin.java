@@ -2,6 +2,7 @@ package com.woniukeji.jianguo.partjob;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -50,12 +51,16 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     ImageView mImgOff;
     private int MSG_POST_FAIL=1;
     public int MSG_POST_SUCCESS=4;
-private int jobid;
-
-    public SignUpPopuWin(Context context, Handler handler, int id) {
+    private int jobid;
+    private JobDetails.TJobInfoEntity jobinfo;
+    private String payMethod;
+     private String money;
+    public SignUpPopuWin(Context context, Handler handler, int id, JobDetails.TJobInfoEntity jobinfo, String toString, String s) {
         this.context = context;
         this.mHandler=handler;
         jobid=id;
+        this.payMethod=s;
+        this.jobinfo=jobinfo;
 
     }
     public void showShareWindow() {
@@ -105,7 +110,40 @@ private int jobid;
 
     private void initDate() {
 
+        if (jobinfo!=null){
 
+            mTvWorkLocation.setText(jobinfo.getAddress());
+            String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
+            String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
+            String setTime =jobinfo.getSet_time();
+            mTvWage.setText(money);
+            mTvWorkDate.setText(date);
+            mTvWorkTime.setText(time);
+            mTvCollectionSites.setText(jobinfo.getSet_place());
+            mTvCollectionTime.setText(setTime);
+
+
+            if (jobinfo.getLimit_sex() == 0) {
+                mTvSex.setText("女");
+            } else if (jobinfo.getLimit_sex() == 1) {
+                mTvSex.setText("男");
+            } else if (jobinfo.getLimit_sex() == 30) {
+                mTvSex.setText("女");
+            }else if (jobinfo.getLimit_sex() == 31) {
+                mTvSex.setText("男");
+            }else{
+                mTvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
+            }
+
+            //期限（1=月结，2=周结，3=日结，4=小时结）
+                mTvPayMethod.setText(payMethod);
+
+            if (jobinfo.getOther()==null||jobinfo.getOther().equals("null")||jobinfo.getOther().equals("")){
+                mTvOther.setText("暂无");
+            }else {
+                mTvOther.setText(jobinfo.getOther());
+            }
+            }
 
     }
 

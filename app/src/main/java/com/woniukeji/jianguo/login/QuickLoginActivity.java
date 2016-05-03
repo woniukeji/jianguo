@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.view.View;
@@ -20,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -29,20 +34,28 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.util.Set;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -54,7 +67,6 @@ public class QuickLoginActivity extends BaseActivity {
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.phone_code) EditText phoneCode;
     @InjectView(R.id.sign_in_button) Button signInButton;
@@ -72,6 +84,7 @@ public class QuickLoginActivity extends BaseActivity {
     private int MSG_REGISTER_SUCCESS = 3;
     private Handler mHandler = new Myhandler(this);
     private Context context = QuickLoginActivity.this;
+    private TimeCount time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +140,8 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void setContentView() {
-
         setContentView(R.layout.activity_login_quick);
         ButterKnife.inject(this);
-
     }
 
     @Override
@@ -141,7 +152,7 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
-
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
     }
 
     @Override
@@ -175,7 +186,7 @@ public class QuickLoginActivity extends BaseActivity {
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, user.getT_user_login().getId());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, user.getT_user_login().getStatus());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, user.getT_user_login().getQiniu());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
+
 
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
@@ -183,6 +194,33 @@ public class QuickLoginActivity extends BaseActivity {
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_SCHOOL, user.getT_user_info().getSchool() != null ? user.getT_user_info().getSchool() : "");
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
+        SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
+
+        final ChatManager chatManager = ChatManager.getInstance();
+        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+            //登陆leancloud服务器 给极光设置别名
+                        chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+                        JPushInterface.setAlias(getApplicationContext(), "jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+                            @Override
+                            public void gotResult(int i, String s, Set<String> set) {
+                                LogUtils.e("jpush",s+",code="+i);
+                            }
+            });
+        }
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+                    TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
+                    talkMessageEvent.isLogin=true;
+                    EventBus.getDefault().post(talkMessageEvent);
+                } else {
+                    showShortToast(e.toString());
+                }
+            }
+        });
+
     }
 
 
@@ -204,6 +242,7 @@ public class QuickLoginActivity extends BaseActivity {
                 String tel = phoneNumber.getText().toString();
                 boolean isOK = CommonUtils.isMobileNO(tel);
                 if (isOK) {
+                    time.start();
                     GetSMS getSMS = new GetSMS(tel);
                     getSMS.execute();
                 } else {
@@ -238,7 +277,26 @@ public class QuickLoginActivity extends BaseActivity {
         }
         return true;
     }
+    class TimeCount extends CountDownTimer {
 
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            btnGetCode.setClickable(false);
+            btnGetCode.setBackgroundColor(Color.GRAY);
+            btnGetCode.setText(millisUntilFinished / 1000 + "秒");
+        }
+
+        @Override
+        public void onFinish() {
+            btnGetCode.setText("验证码");
+            btnGetCode.setBackgroundDrawable(getDrawable(R.drawable.button_background_login));
+            btnGetCode.setClickable(true);
+        }
+    }
 
     public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
 

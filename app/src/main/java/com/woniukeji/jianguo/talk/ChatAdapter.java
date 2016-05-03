@@ -157,7 +157,8 @@ public class ChatAdapter extends BaseAdapter {
             String img= (String) data.getAttrs().get("avatar");
             kjb.display(holder.img_avatar, img );
         } else {
-//            kjb.display(holder.img_avatar, data.getToUserAvatar());
+            String img= (String) data.getAttrs().get("avatar");
+            kjb.display(holder.img_avatar,img);
         }
 
         if (listener != null) {

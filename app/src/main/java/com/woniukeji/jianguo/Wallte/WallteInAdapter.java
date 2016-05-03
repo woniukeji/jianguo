@@ -150,37 +150,37 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 //            set.setInterpolator(new AccelerateInterpolator());
 //            set.start();
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, JobDetailActivity.class);
-                    intent.putExtra("job", job.getId());
-//                    intent.putExtra("merchant", job.getMerchant_id());
-//                    intent.putExtra("money", job.getMoney());
-//                    intent.putExtra("count", job.getCount() + "/" + job.getSum());
-                    mContext.startActivity(intent);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    final SweetAlertDialog dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
-                    dialog.setTitleText("确定要删除该收藏?")
-                            .setConfirmText("确定")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    AttentionCollectionEvent event = new AttentionCollectionEvent();
-//                                    event.listTJob = job;
-                                    EventBus.getDefault().post(event);
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setCancelText("取消")
-                            .show();
-                    return false;
-                }
-            });
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(mContext, JobDetailActivity.class);
+//                    intent.putExtra("job", job.getId());
+////                    intent.putExtra("merchant", job.getMerchant_id());
+////                    intent.putExtra("money", job.getMoney());
+////                    intent.putExtra("count", job.getCount() + "/" + job.getSum());
+//                    mContext.startActivity(intent);
+//                }
+//            });
+//            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//                    final SweetAlertDialog dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
+//                    dialog.setTitleText("确定要删除该收藏?")
+//                            .setConfirmText("确定")
+//                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                @Override
+//                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                    AttentionCollectionEvent event = new AttentionCollectionEvent();
+////                                    event.listTJob = job;
+//                                    EventBus.getDefault().post(event);
+//                                    dialog.dismiss();
+//                                }
+//                            })
+//                            .setCancelText("取消")
+//                            .show();
+//                    return false;
+//                }
+//            });
         }
     }
 

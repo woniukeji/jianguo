@@ -156,6 +156,11 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
             }else if(jobEntity.getUser_status().equals("5")){
                 holder.btnCancelActn.setText("取消报名");
                 holder.btnConfirmActn.setVisibility(View.GONE);
+                if (jobEntity.getInfo_start_time()-System.currentTimeMillis()/1000<3600*8){
+                    holder.btnCancelActn.setText("准备出发");
+                    holder.btnCancelActn.setClickable(false);
+                    holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+                }
             }else if(jobEntity.getUser_status().equals("6")){
                 holder.btnCancelActn.setText("我已取消");
                 holder.btnCancelActn.setClickable(false);

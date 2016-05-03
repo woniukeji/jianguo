@@ -28,12 +28,12 @@
         <RelativeLayout
             android:id="@+id/chat_item_layout_content"
             style="@style/chat_item_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
             android:layout_toRightOf="@id/chat_item_avatar"
             android:background="@drawable/chat_from_bg_selector">
 
             <com.rockerhieu.emojicon.EmojiconTextView
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
                 android:id="@+id/chat_item_content_text"
                 style="@style/chat_item_text_content"/>
 

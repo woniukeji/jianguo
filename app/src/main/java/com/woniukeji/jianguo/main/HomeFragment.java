@@ -33,6 +33,7 @@ import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.eventbus.JobTypeEvent;
+import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.mine.MyPartJboActivity;
 import com.woniukeji.jianguo.partjob.PartJobActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -107,6 +108,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private String cityName;
     private int cityId;
     private boolean NoGPS=true;
+    private int loginId;
 
     @OnClick(R.id.tv_location)
     public void onClick() {
@@ -163,6 +165,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     initJobDataWithCity(defultCity);
                     initBannerData(banners);
                     adapter.notifyDataSetChanged();
+                    mAnimCircleIndicator.start();
                     break;
                 default:
                     break;
@@ -171,7 +174,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     }
 
     private void initJobDataWithCity(CityBannerEntity.ListTCityEntity defultCity) {
-        if (!cityName.equals("")){
+        if (cityName!=null&&!cityName.equals("")){
             tvLocation.setText(cityName);
             GetTask getTask = new GetTask(String.valueOf(cityId),"0");
             getTask.execute();
@@ -188,6 +191,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             pageViews.add(new Page(String.valueOf(banners.get(i).getId()), banners.get(i).getImage(), this));
         }
         mAnimCircleIndicator.addPages(pageViews);
+
+
+//        mAnimLineIndicator.start();
+        LogUtils.e("home","initBannerData");
+
     }
 
     /**
@@ -246,7 +254,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask = new GetTask("0","0");
+                GetTask getTask = new GetTask(String.valueOf(cityId),"0");
                 getTask.execute();
             }
         });
@@ -299,25 +307,42 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         MainActivity mainActivity= (MainActivity) getActivity();
             switch (view.getId()){
                 case R.id.img_gifts_job:
-//                    mainActivity.getMainPager().setCurrentItem(1);
-//                    JobTypeEvent jobTypeEvent=new JobTypeEvent();
+                    if (loginId == 0) {
+                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                        return;
+                    }
 //                    jobTypeEvent.fragmentHotType=2;//热门（0=普通，1=热门，2=精品，3=旅行）
                     Intent intent=new Intent(getActivity(), PartJobActivity.class);
-                    intent.putExtra("type",2);
+                    intent.putExtra("type",1);
+                    intent.putExtra("cityid",cityId);
                     startActivity(intent);
 //                    EventBus.getDefault().post(jobTypeEvent);
                 break;
                 case R.id.img_day_job:
+                    if (loginId == 0) {
+                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                        return;
+                    }
                     Intent dayIntent=new Intent(getActivity(), PartJobActivity.class);
-                    dayIntent.putExtra("type",4);
+                    dayIntent.putExtra("type",2);
+                    dayIntent.putExtra("cityid",cityId);
                     startActivity(dayIntent);
                     break;
                 case R.id.img_travel_job:
+                    if (loginId == 0) {
+                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                        return;
+                    }
                     Intent travelIntent=new Intent(getActivity(), PartJobActivity.class);
                     travelIntent.putExtra("type",3);
+                    travelIntent.putExtra("cityid",cityId);
                     startActivity(travelIntent);
                     break;
                 case R.id.img_my_job:
+                    if (loginId == 0) {
+                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                        return;
+                    }
                    startActivity(new Intent(getActivity(), MyPartJboActivity.class));
                     break;
 
@@ -325,15 +350,21 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     }
 
     private void initData() {
-       cityName= (String) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,"");
-        cityId= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,0);
+        loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        cityName= (String) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,"");
+        cityId= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,1);
         GetCityTask getCityTask = new GetCityTask();
         getCityTask.execute();
+
+//        pageViews = new ArrayList<>();
+//        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
+//        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
+//        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
+//        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
     }
 
     @Override
     public void onResume() {
-        mAnimCircleIndicator.start();
         super.onResume();
     }
     public void onEvent(final CityEvent event) {
@@ -355,6 +386,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,tempCityId);
             SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,mPosition);
             JobFilterEvent jobFilterEvent=new JobFilterEvent();
+            cityId=tempCityId;
             jobFilterEvent.cityId=tempCityId;
             jobFilterEvent.position=mPosition;
             EventBus.getDefault().post(jobFilterEvent);
@@ -367,7 +399,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                        @Override
                        public void onClick(SweetAlertDialog sDialog) {
-                           tvLocation.setText(event.city.getCity());
+                           if (tvLocation!=null){
+                               tvLocation.setText(event.city.getCity());
+                           }
+                           cityId=finalTempCityId;
                            GetTask getTask = new GetTask(String.valueOf(finalTempCityId),"0");
                            getTask.execute();
                            SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,event.city.getCity());
@@ -388,18 +423,20 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onStart() {
         super.onStart();
+        LogUtils.e("home","start");
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mAnimCircleIndicator.stop();
+        LogUtils.e("home","stop");
     }
 
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+//        mAnimCircleIndicator.start();
     }
 
     @Override
@@ -420,6 +457,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        LogUtils.e("home","attach");
     }
 
     @Override
@@ -463,7 +501,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
         @Override
         protected void onPreExecute() {
-            if (!refreshLayout.isRefreshing()){
+            if (refreshLayout!=null&&!refreshLayout.isRefreshing()){
                 refreshLayout.setProgressViewOffset(false, 0,dip2px(getActivity(), 24));
                 refreshLayout.setRefreshing(true);
             }

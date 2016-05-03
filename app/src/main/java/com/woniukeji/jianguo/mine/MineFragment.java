@@ -25,6 +25,7 @@ import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.main.MainActivity;
@@ -39,6 +40,7 @@ import java.lang.ref.WeakReference;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class MineFragment extends BaseFragment {
     @InjectView(R.id.img_back) ImageView imgBack;
@@ -141,12 +143,14 @@ public class MineFragment extends BaseFragment {
                     public void done(AVIMClient avimClient, AVIMException e) {
                     }
                 });
-                ActivityManager.getActivityManager().finishAllActivity();
+//                ActivityManager.getActivityManager().finishAllActivity();
                 SPUtils.deleteParams(getActivity());
                 initData(false);
                 account1.setVisibility(View.VISIBLE);
-//                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
-//                getActivity().finish();
+                btnLogout.setVisibility(View.GONE);
+                TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
+                talkMessageEvent.isLogin=false;
+                EventBus.getDefault().post(talkMessageEvent);
                 break;
         }
     }
@@ -224,7 +228,7 @@ public class MineFragment extends BaseFragment {
     }
      public void initData(boolean init){
          if (init){
-             String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, "");
+             String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, "");
              String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
              String tel = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, "");
              String img = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
@@ -234,7 +238,7 @@ public class MineFragment extends BaseFragment {
                  btnLogout.setVisibility(View.GONE);
                  account1.setVisibility(View.VISIBLE);
              }
-             if (!schoolStr.equals("")){
+             if (schoolStr.equals("")){
                  school.setText("未填写");
              }else {
                  school.setText(schoolStr);
@@ -250,12 +254,14 @@ public class MineFragment extends BaseFragment {
                          .transform(new CropCircleTransfermation())
                          .into(imgHead);
              }
+         }else{
+             Picasso.with(getActivity()).load("http//null")
+                     .placeholder(R.mipmap.icon_head_defult)
+                     .error(R.mipmap.icon_head_defult)
+                     .transform(new CropCircleTransfermation())
+                     .into(imgHead);
          }
-         Picasso.with(getActivity()).load("http//null")
-                 .placeholder(R.mipmap.icon_head_defult)
-                 .error(R.mipmap.icon_head_defult)
-                 .transform(new CropCircleTransfermation())
-                 .into(imgHead);
+
 
      }
     @Override

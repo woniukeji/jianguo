@@ -26,6 +26,7 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
+import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
@@ -95,6 +96,9 @@ public class JobDetailActivity extends BaseActivity {
     private String name;
     private int jobid;
     private String resume;
+    private String sex;
+    private Jobs.ListTJobEntity job;
+    private String money;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -167,7 +171,6 @@ public class JobDetailActivity extends BaseActivity {
     private void fillData() {
         tvWorkLocation.setText(jobinfo.getAddress());
 
-
         if (jobinfo!=null){
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
         String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
@@ -203,14 +206,15 @@ public class JobDetailActivity extends BaseActivity {
         }else
             tvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
         //期限（1=月结，2=周结，3=日结，4=小时结）
-        if (jobinfo.getTerm() == 0) {
-            tvPayMethod.setText("月结");
-        } else if (jobinfo.getTerm() == 1) {
-            tvPayMethod.setText("周结");
-        } else if (jobinfo.getTerm() == 2) {
-            tvPayMethod.setText("日结");
-        } else
-            tvPayMethod.setText("小时结");
+            if (job.getMode()==0){
+                tvPayMethod.setText("月结");
+            }else if(job.getMode()==1){
+                tvPayMethod.setText("周结");
+            }else if(job.getMode()==2){
+                tvPayMethod.setText("日结");
+            }else {
+                tvPayMethod.setText("旅行");
+            }
 
          if (jobinfo.getOther()==null||jobinfo.getOther().equals("null")||jobinfo.getOther().equals("")){
              tvOther.setText("暂无");
@@ -220,10 +224,16 @@ public class JobDetailActivity extends BaseActivity {
 
         tvWorkContent.setText(jobinfo.getWork_content());
         tvWorkRequire.setText(jobinfo.getWork_require());
-
+        tvReleaseDate.setText(job.getRegedit_time().substring(0,10)+" 发布");
         //商家信息
 
         tvCompanyName.setText(merchantInfo.getName());
+            if (merchantInfo.getJob_count()==0){
+                tvJobsCount.setText("多个职位在招");
+            }else {
+                tvJobsCount.setText(merchantInfo.getJob_count()+"个职位在招");
+            }
+
 //        tvHiringCount.setText(merchantInfo.getJob_count());
         Picasso.with(JobDetailActivity.this).load(merchantInfo.getName_image())
                 .placeholder(R.mipmap.icon_head_defult)
@@ -246,15 +256,17 @@ public class JobDetailActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         Intent intent= getIntent();
+        job= (Jobs.ListTJobEntity) intent.getSerializableExtra("jobbean");
         jobid= intent.getIntExtra("job",0);
         int merchantid=  intent.getIntExtra("merchant",0);
-        String money=  intent.getStringExtra("money");
+         money=  intent.getStringExtra("money");
         String count=intent.getStringExtra("count");
         String mername=intent.getStringExtra("mername");
         img = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_IMG, "");
         name = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.SP_NAME, "");
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
+        sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
         GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
         getTask.execute();
         tvWage.setText(money);
@@ -266,7 +278,7 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvTitle.setText("兼职详情");
-        img_share.setVisibility(View.VISIBLE);
+        img_share.setVisibility(View.GONE);
     }
 
     @Override
@@ -310,9 +322,9 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_location_detail:
                 break;
             case R.id.rl_company:
-                Intent intent=new Intent(this,MerchantActivity.class);
-                intent.putExtra("merchant",merchantInfo);
-                startActivity(intent);
+//                Intent intent=new Intent(this,MerchantActivity.class);
+//                intent.putExtra("merchant",merchantInfo);
+//                startActivity(intent);
                 break;
             case R.id.tv_contact_company:
                 if (loginId==0){
@@ -340,7 +352,7 @@ public class JobDetailActivity extends BaseActivity {
                             attributes.put("avatar", img);
                             attributes.put("type", 0);
                             AVIMTextMessage message = new AVIMTextMessage();
-                            message.setText("出来聊会天吧！");
+                            message.setText("您好，在么！");
                             message.setAttrs(attributes);
                             avimConversation.sendMessage(message, null);
 
@@ -373,12 +385,27 @@ public class JobDetailActivity extends BaseActivity {
                         startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
                         return;
                     }
+                resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
                 if (resume.equals("0")){
                     showShortToast("报名前先完善简历");
                     return;
 //                    startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
                 }
-                SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,jobid);
+
+                sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
+                if (jobinfo.getLimit_sex()==30||jobinfo.getLimit_sex()==0){
+                    if (sex.equals("1")){
+                        showShortToast("你的性别不符");
+                        return;
+                    }
+                }
+                if (jobinfo.getLimit_sex()==31||jobinfo.getLimit_sex()==1){
+                    if (sex.equals("0")){
+                        showShortToast("你的性别不符");
+                        return;
+                    }
+                }
+                SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,jobid,jobinfo,tvPayMethod.getText().toString(),money);
                 signUpPopuWin.showShareWindow();
                 Rect rect = new Rect();
                 JobDetailActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);

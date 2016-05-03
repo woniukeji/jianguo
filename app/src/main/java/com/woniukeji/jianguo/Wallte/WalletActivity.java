@@ -88,11 +88,11 @@ public class WalletActivity extends BaseActivity {
                      activity.balance= (Balance) msg.obj;
                     activity.tvMoneySum.setText(activity.balance.getData().getT_user_money().getMoney()+"");
 
-                    if (activity.balance.getData().getT_user_money().getPay_password().equals("0")){
-                        activity.startActivity(new Intent(activity,DrawPassActivity.class));
-                        activity.showShortToast("请先设置提现密码！");
-                        activity.finish();
-                    }
+//                    if (activity.balance.getData().getT_user_money().getPay_password().equals("0")){
+//                        activity.startActivity(new Intent(activity,DrawPassActivity.class));
+//                        activity.showShortToast("请先设置提现密码！");
+//                        activity.finish();
+//                    }
 
 
                     break;

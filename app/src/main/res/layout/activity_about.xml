@@ -39,6 +39,7 @@
         android:paddingTop="20dp"
         >
 <ImageView
+    android:id="@+id/img_good"
     android:layout_width="wrap_content"
     android:layout_height="54dp"
     android:src="@mipmap/icon_smile"
@@ -46,6 +47,7 @@
 
     />
         <ImageView
+            android:id="@+id/img_bad"
             android:layout_width="wrap_content"
             android:layout_height="54dp"
             android:src="@mipmap/icon_anger"
@@ -70,7 +72,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="点个赞"
+            android:text="吐个槽"
             android:layout_weight="1"
             android:gravity="center"
             />

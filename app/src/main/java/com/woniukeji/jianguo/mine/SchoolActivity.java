@@ -29,6 +29,7 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.base.MyApiEndpointInterface;
 import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.School;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -199,48 +200,6 @@ public class SchoolActivity extends BaseActivity {
         }
     }
 
-    private class School {
-        private tschool t_school;
-        private List<tschool> list_t_school;
-
-        public List<tschool> getList_t_school() {
-            return list_t_school;
-        }
-
-        public void setList_t_school(List<tschool> list_t_school) {
-            this.list_t_school = list_t_school;
-        }
-
-        private class tschool {
-            private int id;
-            private int city_id;
-            private String name;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public int getCity_id() {
-                return city_id;
-            }
-
-            public void setCity_id(int city_id) {
-                this.city_id = city_id;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-        }
-    }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
 

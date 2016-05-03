@@ -30,10 +30,11 @@
     >
     <ImageView
         android:id="@+id/user_head"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_marginTop="14dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/default_head"
         />
     <LinearLayout
@@ -109,9 +110,7 @@
             android:gravity="center"
             >
 
-
         </RelativeLayout>
-
     </LinearLayout>
 
 
@@ -137,6 +136,7 @@
         android:layout_marginRight="18dp"
         android:layout_marginTop="4dp"
         android:textSize="12dp"
+        android:text="123"
         />
     <TextView
         android:layout_alignParentBottom="true"
@@ -290,7 +290,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="性        别："
+                android:text="性别限制："
                 android:textSize="15dp"
                 />
             <TextView
@@ -454,6 +454,7 @@
             android:src="@mipmap/icon_go"
             android:layout_alignParentRight="true"
             android:layout_marginRight="18dp"
+            android:visibility="gone"
             />
         <com.woniukeji.jianguo.widget.CircleImageView
             android:id="@+id/cirimg_work"
@@ -467,6 +468,7 @@
             android:layout_toRightOf="@id/cirimg_work"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:textSize="16dp"
             android:layout_marginTop="12dp"
             />
@@ -475,6 +477,7 @@
             android:layout_below="@+id/tv_company_name"
             android:layout_toRightOf="@id/cirimg_work"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="15dp"
             android:layout_height="wrap_content"
             android:textSize="12dp"
             />
