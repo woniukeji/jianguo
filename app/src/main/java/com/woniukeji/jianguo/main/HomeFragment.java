@@ -105,6 +105,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private Context context = this.getActivity();
     private CityBannerEntity.ListTCityEntity defultCity;
     BaseBean<CityBannerEntity> cityBannerEntityBaseBean;
+    private List<CityBannerEntity.ListTBannerEntity> banners;
     private String cityName;
     private int cityId;
     private boolean NoGPS=true;
@@ -119,8 +120,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
-        private List<CityBannerEntity.ListTBannerEntity> banners;
-
         public Myhandler(Context context) {
             reference = new WeakReference<>(context);
         }
@@ -191,11 +190,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             pageViews.add(new Page(String.valueOf(banners.get(i).getId()), banners.get(i).getImage(), this));
         }
         mAnimCircleIndicator.addPages(pageViews);
-
-
-//        mAnimLineIndicator.start();
-        LogUtils.e("home","initBannerData");
-
     }
 
     /**
@@ -441,7 +435,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-
     }
 
     @Override
@@ -451,7 +444,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     @Override
     public void onPageClick(int position, Page page) {
-
+        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        intent.putExtra("url", banners.get(position).getUrl());
+       startActivity(intent);
     }
 
     @Override

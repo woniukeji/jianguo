@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -78,6 +80,14 @@ public class ResumeActivity extends BaseActivity {
     @InjectView(R.id.tv_date) TextView tvDate;
     @InjectView(R.id.rl_date) RelativeLayout rlDate;
     @InjectView(R.id.check_button) Button checkButton;
+    @InjectView(R.id.tv_necessary_name) TextView tvNecessaryName;
+    @InjectView(R.id.tv_necessary_nickname) TextView tvNecessaryNickname;
+    @InjectView(R.id.et_nick_name) EditText etNickName;
+    @InjectView(R.id.tv_necessary_sex) TextView tvNecessarySex;
+    @InjectView(R.id.tv_necessary_date) TextView tvNecessaryDate;
+    @InjectView(R.id.img_go) ImageView imgGo;
+    @InjectView(R.id.tv_necessary_school) TextView tvNecessarySchool;
+    @InjectView(R.id.img_edit) TextView tvEdit;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 4;
@@ -85,18 +95,45 @@ public class ResumeActivity extends BaseActivity {
     private Handler mHandler = new Myhandler(this);
     private Context context = ResumeActivity.this;
     private File imgFile;
-    private String fileName="";
-//    private String[] sheoes=new String[]{"35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"};
-    private String[] clothes=new String[]{"S","M","L","XL","XXL","XXXL"};
+    private String fileName = "";
+    //    private String[] sheoes=new String[]{"35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"};
+    private String[] clothes = new String[]{"S", "M", "L", "XL", "XXL", "XXXL"};
     private int loginId;
-    private String sex="0";
-    private String student="1";
+    private String sex = "0";
+    private String student = "1";
     private String url2;
+    private boolean save=false;
 
 
-    @OnClick({R.id.img_back, R.id.img_head, R.id.rb_girl, R.id.rb_boy, R.id.rl_birthday, R.id.rl_shoes, R.id.rl_clothse, R.id.rl_tall, R.id.rb_yes, R.id.rb_no, R.id.rl_school, R.id.rl_date, R.id.check_button})
-    public void onClick(View view) {
-        switch (view.getId()) {
+
+
+    private boolean chaeckContent() {
+        if (etRealName.getText().toString().trim() == null || etRealName.getText().toString().trim().equals("")) {
+            showShortToast("请填写真实姓名");
+            return false;
+        } else if (etNickName.getText().toString().trim() == null || etNickName.getText().toString().trim().equals("")) {
+            showShortToast("请填写昵称");
+            return false;
+        } else if (tvBirthday.getText().toString().trim() == null || tvBirthday.getText().toString().trim().equals("")) {
+            showShortToast("请填写出生日期");
+            return false;
+        } else if (student.equals("1") && tvSchool.getText().toString().trim() == null || tvSchool.getText().toString().trim().equals("")) {
+            showShortToast("请填写所在学校");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.img_back:
                 finish();
                 break;
@@ -105,66 +142,107 @@ public class ResumeActivity extends BaseActivity {
                 MultiImageSelectorActivity.startSelect(ResumeActivity.this, 0, 1, 0);
                 break;
             case R.id.rb_girl:
-                sex="0";
+                sex = "0";
                 break;
             case R.id.rb_boy:
-                sex="1";
+                sex = "1";
                 break;
             case R.id.rl_birthday:
-                TimePickerPopuWin pickerPopup1=new TimePickerPopuWin(context,mHandler,3);
+                TimePickerPopuWin pickerPopup1 = new TimePickerPopuWin(context, mHandler, 3);
                 pickerPopup1.showShareWindow();
                 pickerPopup1.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rl_shoes:
-                List<String> listShoes=new ArrayList<String>();
+                List<String> listShoes = new ArrayList<String>();
                 for (int i = 35; i < 52; i++) {
                     listShoes.add(String.valueOf(i));
                 }
-                SizePickerPopuWin pickerPopupWindow=new SizePickerPopuWin(context,listShoes,mHandler,0);
+                SizePickerPopuWin pickerPopupWindow = new SizePickerPopuWin(context, listShoes, mHandler, 0);
                 pickerPopupWindow.showShareWindow();
                 pickerPopupWindow.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rl_clothse:
-                List<String> listTemp=Arrays.asList(clothes);
-                List<String> listCloth=new ArrayList<String>(listTemp);
-                SizePickerPopuWin pickerPopup=new SizePickerPopuWin(context,listCloth,mHandler,1);
+                List<String> listTemp = Arrays.asList(clothes);
+                List<String> listCloth = new ArrayList<String>(listTemp);
+                SizePickerPopuWin pickerPopup = new SizePickerPopuWin(context, listCloth, mHandler, 1);
                 pickerPopup.showShareWindow();
                 pickerPopup.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rl_tall:
-                List<String> listTall=new ArrayList<String>();
+                List<String> listTall = new ArrayList<String>();
                 for (int i = 145; i < 190; i++) {
-                    listTall.add(String.valueOf(i)+"cm");
+                    listTall.add(String.valueOf(i) + "cm");
                 }
-                SizePickerPopuWin pickerPopupWin=new SizePickerPopuWin(context,listTall,mHandler,2);
+                SizePickerPopuWin pickerPopupWin = new SizePickerPopuWin(context, listTall, mHandler, 2);
                 pickerPopupWin.showShareWindow();
                 pickerPopupWin.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.rb_yes:
-                student="1";
+                student = "1";
+                String schoolHtml = "<font color='red'>*</font> 所在学校";
+                CharSequence schoolSequence = Html.fromHtml(schoolHtml);
+                tvNecessarySchool.setText(schoolSequence);
                 break;
             case R.id.rb_no:
-                student="0";
+                student = "0";
+                tvNecessarySchool.setText("所在学校");
+                tvSchool.setText("");
+                tvDate.setText("");
                 break;
             case R.id.rl_school:
-                    startActivityForResult(new Intent(context,SchoolActivity.class),3);
+                startActivityForResult(new Intent(context, SchoolActivity.class), 3);
                 break;
             case R.id.rl_date:
-                TimePickerPopuWin pickerPopup3=new TimePickerPopuWin(context,mHandler,4);
+                TimePickerPopuWin pickerPopup3 = new TimePickerPopuWin(context, mHandler, 4);
                 pickerPopup3.showShareWindow();
                 pickerPopup3.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
-            case R.id.check_button:
-                String name=etRealName.getText().toString().trim();
-                PostTask postTask=new PostTask(true,String.valueOf(loginId),name,url2,tvSchool.getText().toString().trim(),
-                        tvDate.getText().toString().trim(),sex,tvTall.getText().toString().trim().substring(0,3),student,tvBirthday.getText().toString().trim(),
-                        tvShoes.getText().toString().trim(),tvClothse.getText().toString().trim());
-                postTask.execute();
+            case R.id.img_edit:
+                if (save){
+                    String name = etRealName.getText().toString().trim();
+                    if (chaeckContent()) {
+                        PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
+                                tvDate.getText().toString().trim(), sex, tvTall.getText().toString().trim().substring(0, 3), student, tvBirthday.getText().toString().trim(),
+                                tvShoes.getText().toString().trim(), tvClothse.getText().toString().trim());
+                        postTask.execute();
+                        tvEdit.setText("编辑");
+                        imgHead.setClickable(false);
+                        rbGirl.setClickable(false);
+                        rbBoy.setClickable(false);
+                        rlBirthday.setClickable(false);
+                        rlShoes.setClickable(false);
+                        rlClothse.setClickable(false);
+                        rlTall.setClickable(false);
+                        rbYes.setClickable(false);
+                        rbNo.setClickable(false);
+                        rlSchool.setClickable(false);
+                        rlDate.setClickable(false);
+                        etRealName.setFocusableInTouchMode(false);
+                        etNickName.setFocusableInTouchMode(false);
+                    }
+                }else {
+                    save=true;
+                    tvEdit.setText("保存");
+                    imgHead.setOnClickListener(this);
+                    rbGirl.setOnClickListener(this);
+                    rbBoy.setOnClickListener(this);
+                    rlBirthday.setOnClickListener(this);
+                    rlShoes.setOnClickListener(this);
+                    rlClothse.setOnClickListener(this);
+                    rlTall.setOnClickListener(this);
+                    rbYes.setOnClickListener(this);
+                    rbNo.setOnClickListener(this);
+                    rlSchool.setOnClickListener(this);
+                    rlDate.setOnClickListener(this);
+                    etRealName.setFocusableInTouchMode(true);
+                    etNickName.setFocusableInTouchMode(true);
+                }
+
                 break;
         }
     }
@@ -193,9 +271,9 @@ public class ResumeActivity extends BaseActivity {
                     break;
                 case 2:
                     //选择器返回字符
-                    String size= (String) msg.obj;
-                    int type=msg.arg1;
-                    switch (type){
+                    String size = (String) msg.obj;
+                    int type = msg.arg1;
+                    switch (type) {
                         case 0:
                             resumeActivity.tvShoes.setText(size);
                             break;
@@ -219,9 +297,8 @@ public class ResumeActivity extends BaseActivity {
                     Toast.makeText(resumeActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    BaseBean<Resume> resumeBaseBean= (BaseBean) msg.obj;
+                    BaseBean<Resume> resumeBaseBean = (BaseBean) msg.obj;
                     resumeActivity.initResumeInfo(resumeBaseBean.getData().getT_user_resume());
-                    resumeActivity.showShortToast("信息获取成功！");
                     break;
                 default:
                     break;
@@ -240,36 +317,64 @@ public class ResumeActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvTitle.setText("我的简历");
+        String dateHtml = "<font color='red'>*</font> 出生日期";
+        CharSequence charSequence = Html.fromHtml(dateHtml);
+        tvNecessaryDate.setText(charSequence);
+        String nameHtml = "<font color='red'>*</font> 姓名";
+        CharSequence nameSequence = Html.fromHtml(nameHtml);
+        tvNecessaryName.setText(nameSequence);
+        String nickHtml = "<font color='red'>*</font> 昵称";
+        CharSequence nickSequence = Html.fromHtml(nickHtml);
+        tvNecessaryNickname.setText(nickSequence);
+        String sexHtml = "<font color='red'>*</font> 性别";
+        CharSequence sexSequence = Html.fromHtml(sexHtml);
+        tvNecessarySex.setText(sexSequence);
+        String schoolHtml = "<font color='red'>*</font> 所在学校";
+        CharSequence schoolSequence = Html.fromHtml(schoolHtml);
+        tvNecessarySchool.setText(schoolSequence);
     }
 
     @Override
     public void initListeners() {
-
+        tvEdit.setOnClickListener(this);
+        etRealName.setFocusableInTouchMode(false);
+        etNickName.setFocusableInTouchMode(false);
+        imgBack.setOnClickListener(this);
     }
+
     private void initResumeInfo(Resume.UserResum userResum) {
-        url2=userResum.getName_image();
-         etRealName.setText(userResum.getName());
+        url2 = userResum.getName_image();
+        etRealName.setText(userResum.getName());
+        etNickName.setText(userResum.getNickname());
         tvBirthday.setText(userResum.getBirth_date());
         tvShoes.setText(userResum.getShoe_size());
         tvClothse.setText(userResum.getClothing_size());
         tvTall.setText(userResum.getHeight());
-          tvSchool.setText(userResum.getSchool());
+        tvSchool.setText(userResum.getSchool());
         tvDate.setText(userResum.getIntoschool_date());
-       if (userResum.getSex().equals("0")){
-           rbGirl.setChecked(true);
-           rbBoy.setChecked(false);
-       }else {
-           rbGirl.setChecked(false);
-           rbBoy.setChecked(true);
-       }
-        if (userResum.getStudent().equals("0")){
+        if (userResum.getSex().equals("0")) {
+            rbGirl.setChecked(true);
+            rbBoy.setChecked(false);
+        } else {
+            rbGirl.setChecked(false);
+            rbBoy.setChecked(true);
+        }
+        if (userResum.getStudent().equals("0")) {
             rbYes.setChecked(false);
             rbNo.setChecked(true);
-        }else {
+//            String schoolHtml="<font color='red'>*</font> 所在学校";
+//            CharSequence schoolSequence=Html.fromHtml(schoolHtml);
+            tvNecessarySchool.setText("所在学校");
+            tvDate.setText("");
+            tvSchool.setText("");
+        } else {
             rbNo.setChecked(false);
             rbYes.setChecked(true);
+            String schoolHtml = "<font color='red'>*</font> 所在学校";
+            CharSequence schoolSequence = Html.fromHtml(schoolHtml);
+            tvNecessarySchool.setText(schoolSequence);
         }
-        fileName=userResum.getName_image();
+        fileName = userResum.getName_image();
         Picasso.with(context).load(userResum.getName_image())
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
@@ -277,10 +382,11 @@ public class ResumeActivity extends BaseActivity {
                 .into(imgHead);
 
     }
+
     @Override
     public void initData() {
         loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null, null,null,null,null,null,null,null);
+        PostTask postTask = new PostTask(false, String.valueOf(loginId), null, null, null, null, null, null, null, null, null, null, null);
         postTask.execute();
     }
 
@@ -294,6 +400,7 @@ public class ResumeActivity extends BaseActivity {
         private final boolean isPost;
         private final String loginId;
         private final String name;
+        private final String nickName;
         private final String name_image;
         private final String school;
         private final String intoschool_date;
@@ -319,13 +426,14 @@ public class ResumeActivity extends BaseActivity {
          * 传参：shoe_size		鞋码
          * 传参：clothing_size	服装尺码
          */
-        PostTask(boolean isPost, String loginId, String name, String name_image,
+        PostTask(boolean isPost, String loginId, String name, String nickName, String name_image,
                  String school, String intoschool_date, String sex, String height,
                  String student, String birth_date, String shoe_size, String clothing_size
         ) {
             this.isPost = isPost;
             this.loginId = loginId;
             this.name = name;
+            this.nickName = nickName;
             this.name_image = name_image;
             this.school = school;
             this.intoschool_date = intoschool_date;
@@ -381,6 +489,7 @@ public class ResumeActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .addParams("name", name)
+                    .addParams("nickname", nickName)
                     .addParams("school", school)
                     .addParams("height", height)
                     .addParams("student", student)
@@ -492,20 +601,20 @@ public class ResumeActivity extends BaseActivity {
                 imgFile = new File(path.get(0));
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
                 fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
-                Uri imgSource =  Uri.fromFile(imgFile);
+                Uri imgSource = Uri.fromFile(imgFile);
                 imgHead.setImageURI(imgSource);
                 BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 300, 300);
                 QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
-                url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
+                url2 = "http://7xlell.com2.z0.glb.qiniucdn.com/" + MD5Coder.getQiNiuName(fileName);
             }
-        }else if(requestCode == 1){
-               tvBirthday.setText(data.getStringExtra("date"));
-        }else if(requestCode == 2){
+        } else if (requestCode == 1) {
+            tvBirthday.setText(data.getStringExtra("date"));
+        } else if (requestCode == 2) {
             tvDate.setText(data.getStringExtra("date"));
-        }else if(requestCode == 3){
-                if (resultCode == RESULT_OK) {
-                    tvSchool.setText(data.getStringExtra("school"));
-                }
+        } else if (requestCode == 3) {
+            if (resultCode == RESULT_OK) {
+                tvSchool.setText(data.getStringExtra("school"));
+            }
 
         }
 

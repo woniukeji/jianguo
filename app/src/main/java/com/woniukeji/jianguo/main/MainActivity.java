@@ -65,18 +65,18 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职", "果聊", "我"};
+    private String[] titles = {"首页", "兼职",  "我"};//"果聊",
 
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
             R.mipmap.tab_partjob_unselect,
-            R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
+    //R.mipmap.tab_guo_talk_unselect,
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
             R.mipmap.tab_partjob_select,
-            R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
+    // R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private long exitTime;
     private int MSG_GET_SUCCESS = 0;
@@ -263,9 +263,10 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new PartJobFragment();          //话题榜
                 case 2:
-                    return new TalkFragment();
-                case 3:
                     return new MineFragment();  //用户榜
+
+                case 3:
+                    return new TalkFragment();
             }
             return new FragmentText();
         }

@@ -36,6 +36,7 @@ import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
+import com.woniukeji.jianguo.widget.Mdialog;
 import com.woniukeji.jianguo.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -328,49 +329,56 @@ public class JobDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_contact_company:
                 if (loginId==0){
-                    showShortToast("报名前请先登录");
+                    showShortToast("请先登录");
                     startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
                     return;
                 }
                 final int Id=merchantInfo.getId();
+                String tel=jobinfo.getTel();
+                if (tel==null||tel.equals("")){
+                    showShortToast("该商家暂无电话");
+                    return;
+                }
+                Mdialog mdialog=new Mdialog(mContext,tel);
+                mdialog.show();
 //                String.valueOf(Id);
-                final String toUserId= String.valueOf(merchantInfo.getId());
-                Map<String, Object> attrs = new HashMap<>();
-                attrs.put(Constants.CREAT_NAME, name);
-                attrs.put(Constants.CREAT_IMG, img);
-                attrs.put(Constants.OTHER_IMG, merchantInfo.getName_image());
-                attrs.put(Constants.OTHER_NAME, merchantInfo.getName());
-                attrs.put(Constants.C_TYPE, 0);
-                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), name, attrs, false, true, new AVIMConversationCreatedCallback() {
-                    @Override
-                    public void done(AVIMConversation avimConversation, AVIMException e) {
-                        if (e == null) {
-                            Map<String, Object> attributes = new HashMap<String, Object>();
-                            attributes.put("userid", String.valueOf(loginId));
-                            attributes.put("touserid", toUserId);
-                            attributes.put("nickname", name);
-                            attributes.put("avatar", img);
-                            attributes.put("type", 0);
-                            AVIMTextMessage message = new AVIMTextMessage();
-                            message.setText("您好，在么！");
-                            message.setAttrs(attributes);
-                            avimConversation.sendMessage(message, null);
-
-                            Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
-                            intent.putExtra("mConversationId",avimConversation.getConversationId());
-                            startActivity(intent);
-//                        finish();
-                        }else {
-                            String mes = e.getMessage();
-                            mes.trim();
-                        }
-                    }
-                });
+//                final String toUserId= String.valueOf(merchantInfo.getId());
+//                Map<String, Object> attrs = new HashMap<>();
+//                attrs.put(Constants.CREAT_NAME, name);
+//                attrs.put(Constants.CREAT_IMG, img);
+//                attrs.put(Constants.OTHER_IMG, merchantInfo.getName_image());
+//                attrs.put(Constants.OTHER_NAME, merchantInfo.getName());
+//                attrs.put(Constants.C_TYPE, 0);
+//                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), name, attrs, false, true, new AVIMConversationCreatedCallback() {
+//                    @Override
+//                    public void done(AVIMConversation avimConversation, AVIMException e) {
+//                        if (e == null) {
+//                            Map<String, Object> attributes = new HashMap<String, Object>();
+//                            attributes.put("userid", String.valueOf(loginId));
+//                            attributes.put("touserid", toUserId);
+//                            attributes.put("nickname", name);
+//                            attributes.put("avatar", img);
+//                            attributes.put("type", 0);
+//                            AVIMTextMessage message = new AVIMTextMessage();
+//                            message.setText("您好，在么！");
+//                            message.setAttrs(attributes);
+//                            avimConversation.sendMessage(message, null);
+//
+//                            Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
+//                            intent.putExtra("mConversationId",avimConversation.getConversationId());
+//                            startActivity(intent);
+////                        finish();
+//                        }else {
+//                            String mes = e.getMessage();
+//                            mes.trim();
+//                        }
+//                    }
+//                });
 
                 break;
             case R.id.tv_collection:
                 if (loginId==0){
-                    showShortToast("报名前请先登录");
+                    showShortToast("请先登录");
                     startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
                     return;
                 }

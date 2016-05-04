@@ -21,8 +21,11 @@
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:textSize="18dp"
+    android:maxEms="8"
     android:textColor="@color/white"
     android:text="兼果"
+    android:maxLines="1"
+   android:ellipsize="end"
     />
     <ImageView
         android:id="@+id/img_share"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,17 +7,67 @@
     android:orientation="vertical"
     android:background="@color/gray_btn_bg_color"
     tools:context="com.woniukeji.jianguo.mine.AuthActivity">
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+                    android:background="@color/app_bg"
+                    style="@style/title_bar_style">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:src="@mipmap/icon_back"
+            android:layout_width="20dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_height="20dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginLeft="23dp"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="18dp"
+            android:maxEms="8"
+            android:textColor="@color/white"
+            android:text="兼果"
+            android:maxLines="1"
+            android:ellipsize="end"
+            />
+        <TextView
+            android:id="@+id/img_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textSize="16dp"
+            android:text="编辑"
+            android:padding="6dp"
+            android:textColor="@color/white"
+            android:background="@color/transparent"
+            android:layout_marginLeft="23dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+    <ScrollView
+        android:layout_below="@id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/gray_btn_bg_color"
+        tools:context="com.woniukeji.jianguo.mine.AuthActivity">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginBottom="20dp"
     >
 
-
-    <include
-    android:id="@+id/title_bar"
-  layout="@layout/app_title_bar"
-  />
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -80,10 +130,11 @@
         >
 
         <TextView
+            android:id="@+id/tv_necessary_name"
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="姓名："
+            android:text="*姓名："
             android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -118,10 +169,50 @@
         >
 
         <TextView
+            android:id="@+id/tv_necessary_nickname"
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="性别："
+            android:text="*昵称："
+            android:textSize="14dp"
+            android:gravity="center_vertical"
+            />
+        <EditText
+            android:id="@+id/et_nick_name"
+            android:gravity="center|right"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="text|textPersonName"
+            android:hint="请填写您的昵称"
+            android:textColorHint="#D8D8D8"
+            android:maxLines="1"
+            android:textSize="14dp"
+            android:paddingRight="17dp"
+            android:background="@color/float_transparent"
+            android:singleLine="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:paddingLeft="12dp"
+        android:background="@color/white"
+
+        >
+
+        <TextView
+            android:id="@+id/tv_necessary_sex"
+            android:layout_toRightOf="@+id/img_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="*性别："
              android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -187,10 +278,11 @@
         >
 
         <TextView
+            android:id="@+id/tv_necessary_date"
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="出生日期："
+            android:text="*出生日期："
             android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -411,6 +503,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@null"
+                android:checked="true"
                 android:background="@android:color/transparent"
                 android:drawableRight="@drawable/icon_xuanxiang"
                 />
@@ -426,7 +519,6 @@
                 android:id="@+id/rb_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:button="@null"
                 android:background="@android:color/transparent"
                 android:drawableRight="@drawable/icon_xuanxiang"
@@ -453,10 +545,11 @@
         >
 
         <TextView
+            android:id="@+id/tv_necessary_school"
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="所在学校："
+            android:text="*所在学校："
             android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -543,9 +636,11 @@
         android:background="@drawable/button_background_login"
         android:text="保存"
         android:textSize="16dp"
+        android:visibility="gone"
         android:layout_marginBottom="20dp"
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
 </LinearLayout>
 </ScrollView>
+</RelativeLayout>

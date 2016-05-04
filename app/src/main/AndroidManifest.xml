@@ -11,6 +11,7 @@
         android:name="com.woniukeji.jianguo.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -153,7 +154,9 @@
         </activity>
         <activity
             android:name=".mine.ResumeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            >
         </activity>
         <activity
             android:name="me.nereo.multi_image_selector.PreviewPicturesActivity"
@@ -334,6 +337,10 @@
         </activity>
         <activity
             android:name=".partjob.PartJobActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".main.WebViewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>
