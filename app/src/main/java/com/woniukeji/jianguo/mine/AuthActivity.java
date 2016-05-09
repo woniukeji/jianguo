@@ -68,8 +68,6 @@ public class AuthActivity extends BaseActivity {
     @InjectView(R.id.rb_man) RadioButton rbMan;
     @InjectView(R.id.rb_woman) RadioButton rbWoman;
     @InjectView(R.id.check_button) Button checkButton;
-    @InjectView(R.id.tv_notic2) TextView tvNotic2;
-    @InjectView(R.id.tv_notic3) TextView tvNotic3;
     @InjectView(R.id.rl_phone) RelativeLayout rlPhone;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
@@ -107,6 +105,7 @@ public class AuthActivity extends BaseActivity {
                     //手动保存认证状态 防止未重新登录情况下再次进入该界面
                     SPUtils.setParam(authActivity,Constants.LOGIN_INFO,Constants.SP_STATUS,3);
                     authActivity.showShortToast("提交成功");
+                    authActivity.finish();
                     break;
                 case 1:
                     if (null!=authActivity.pDialog){
@@ -120,7 +119,7 @@ public class AuthActivity extends BaseActivity {
                         authActivity.pDialog.dismiss();
                     }
                     BaseBean<RealName> realNameBaseBean = (BaseBean<RealName>) msg.obj;
-                    authActivity.showShortToast("获取实名信息成功");
+//                    authActivity.showShortToast("获取实名信息成功");
                     authActivity.setInf(realNameBaseBean.getData());
                     break;
                 case 3:
@@ -180,7 +179,7 @@ public class AuthActivity extends BaseActivity {
         super.onStart();
         tel = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_TEL, "0");
         loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        showShortToast("用户id： "+loginId);
+//        showShortToast("用户id： "+loginId);
         status = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
         if (tel.equals("0")) {
             etPhoneAuth.setText("请认证手机号");
@@ -197,6 +196,7 @@ public class AuthActivity extends BaseActivity {
             PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
             postTask.execute();
             checkButton.setText("审核通过");
+            checkButton.setBackgroundResource(R.color.gray);
             checkButton.setClickable(false);
             checkButton.setFocusable(false);
             etRealName.setClickable(false);
@@ -207,10 +207,13 @@ public class AuthActivity extends BaseActivity {
             etId.setFocusableInTouchMode(false);
             rbMan.setClickable(false);
             rbWoman.setClickable(false);
+            imgFront.setClickable(false);
+            imgOpposite.setClickable(false);
         }else if(status==3){//审核中
             checkButton.setText("正在审核");
             checkButton.setClickable(false);
             checkButton.setFocusable(false);
+            checkButton.setBackgroundResource(R.color.gray);
             PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
             postTask.execute();
             etRealName.setClickable(false);
@@ -221,6 +224,8 @@ public class AuthActivity extends BaseActivity {
             etId.setFocusableInTouchMode(false);
             rbMan.setClickable(false);
             rbWoman.setClickable(false);
+            imgFront.setClickable(false);
+            imgOpposite.setClickable(false);
         }
     }
 

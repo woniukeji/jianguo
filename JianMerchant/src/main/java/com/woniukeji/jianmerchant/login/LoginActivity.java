@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianmerchant.R;
@@ -24,6 +28,7 @@ import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.base.MainActivity;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.User;
+import com.woniukeji.jianmerchant.talk.leanmessage.ChatManager;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.MD5Util;
@@ -34,10 +39,13 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -80,10 +88,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
                     //每次登录后保存用户信息
                         saveToSP(user.getData());
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        intent.putExtra("user", user);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+////                        intent.putExtra("user", user);
+//                        startActivity(intent);
+//                        finish();
                         showLongToast("登录成功");
                     break;
                 case 1:
@@ -109,6 +117,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_MERCHANT_ID,user.getT_merchant().getId());
         SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_PAY_PASS,user.getT_merchant().getPay_password());
         SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_IMG,user.getT_merchant().getName_image()!=null?user.getT_merchant().getName_image():"");
+        final ChatManager chatManager = ChatManager.getInstance();
+        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+            JPushInterface.setAlias(getApplicationContext(), "jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+                @Override
+                public void gotResult(int i, String s, Set<String> set) {
+                }
+            });
+        }
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+//                    finish();
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
+                    showShortToast("登录成功");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    showShortToast(e.toString());
+                }
+            }
+        });
+
+
     }
 
     @Override

@@ -3,7 +3,12 @@ package com.woniukeji.jianguo.mine;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -19,28 +24,42 @@ import android.widget.Toast;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.okhttp.Request;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.CityBannerEntity;
+import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
+import com.woniukeji.jianguo.main.HomeFragment;
 import com.woniukeji.jianguo.main.MainActivity;
-import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
+import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.wallte.WalletActivity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.FileCallBack;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class MineFragment extends BaseFragment {
     @InjectView(R.id.img_back) ImageView imgBack;
@@ -66,17 +85,41 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
     @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
     @InjectView(R.id.btn_logout) Button btnLogout;
+    @InjectView(R.id.refresh) RelativeLayout refresh;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = getActivity();
     private int status;
     private int loginId;
+    private int version;
+    private String apkurl;
 
 
-    @OnClick({R.id.about,R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.refresh:
+                if (version> getVersion()){//大于当前版本升级
+                    SweetAlertDialog downLoadDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                    downLoadDialog.setTitleText("正在下载新版本");
+                    downLoadDialog.show();
+                    downLoadTask downLoadTask=new downLoadTask(downLoadDialog);
+                    downLoadTask.execute();
+
+                }else {
+                   new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("已经是最新版本了")
+                            .setConfirmText("确定")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            }).show();
+                }
+
+                break;
             case R.id.about:
-                startActivity(new Intent(getActivity(),AboutActivity.class));
+                startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
             case R.id.credit:
                 if (loginId == 0) {
@@ -137,20 +180,42 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), QuickLoginActivity.class));
                 break;
             case R.id.btn_logout:
-                ChatManager chatManager = ChatManager.getInstance();
-                chatManager.closeWithCallback(new AVIMClientCallback() {
-                    @Override
-                    public void done(AVIMClient avimClient, AVIMException e) {
-                    }
-                });
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("确定要退出吗?")
+                        .setCancelText("取消")
+                        .setConfirmText("确定")
+                        .showCancelButton(true)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                                sweetAlertDialog.dismiss();
+                                ChatManager chatManager = ChatManager.getInstance();
+                                chatManager.closeWithCallback(new AVIMClientCallback() {
+                                    @Override
+                                    public void done(AVIMClient avimClient, AVIMException e) {
+                                    }
+                                });
+                                JPushInterface.stopPush(getActivity());
 //                ActivityManager.getActivityManager().finishAllActivity();
-                SPUtils.deleteParams(getActivity());
-                initData(false);
-                account1.setVisibility(View.VISIBLE);
-                btnLogout.setVisibility(View.GONE);
-                TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
-                talkMessageEvent.isLogin=false;
-                EventBus.getDefault().post(talkMessageEvent);
+                                SPUtils.deleteParams(getActivity());
+                                initData(false);
+                                account1.setVisibility(View.VISIBLE);
+                                btnLogout.setVisibility(View.GONE);
+                                TalkMessageEvent talkMessageEvent = new TalkMessageEvent();
+                                talkMessageEvent.isLogin = false;
+                                EventBus.getDefault().post(talkMessageEvent);
+                            }
+                        })
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                                sDialog.dismiss();
+                            }
+                        })
+                        .show();
+
                 break;
         }
     }
@@ -226,44 +291,49 @@ public class MineFragment extends BaseFragment {
         super.onStart();
         LogUtils.i("fragment", "mine:onstart");
     }
-     public void initData(boolean init){
-         if (init){
-             String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, "");
-             String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
-             String tel = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, "");
-             String img = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
-             status = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
-             loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-             if (loginId==0){
-                 btnLogout.setVisibility(View.GONE);
-                 account1.setVisibility(View.VISIBLE);
-             }
-             if (schoolStr.equals("")){
-                 school.setText("未填写");
-             }else {
-                 school.setText(schoolStr);
-             }
-             imgBack.setVisibility(View.GONE);
-             name.setText(nick);
 
-             phone.setText(tel);
-             if (img != null && !img.equals("")) {
-                 Picasso.with(getActivity()).load(img)
-                         .placeholder(R.mipmap.icon_head_defult)
-                         .error(R.mipmap.icon_head_defult)
-                         .transform(new CropCircleTransfermation())
-                         .into(imgHead);
-             }
-         }else{
-             Picasso.with(getActivity()).load("http//null")
-                     .placeholder(R.mipmap.icon_head_defult)
-                     .error(R.mipmap.icon_head_defult)
-                     .transform(new CropCircleTransfermation())
-                     .into(imgHead);
-         }
+    public void initData(boolean init) {
+        version = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
+        apkurl = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
+        if (init) {
+            String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, "");
+            String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
+            String tel = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, "");
+            String img = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
+            status = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
+            loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+
+            if (loginId == 0) {
+                btnLogout.setVisibility(View.GONE);
+                account1.setVisibility(View.VISIBLE);
+            }
+            if (schoolStr.equals("")) {
+                school.setText("未填写");
+            } else {
+                school.setText(schoolStr);
+            }
+            imgBack.setVisibility(View.GONE);
+            name.setText(nick);
+
+            phone.setText(tel);
+            if (img != null && !img.equals("")) {
+                Picasso.with(getActivity()).load(img)
+                        .placeholder(R.mipmap.icon_head_defult)
+                        .error(R.mipmap.icon_head_defult)
+                        .transform(new CropCircleTransfermation())
+                        .into(imgHead);
+            }
+        } else {
+            Picasso.with(getActivity()).load("http//null")
+                    .placeholder(R.mipmap.icon_head_defult)
+                    .error(R.mipmap.icon_head_defult)
+                    .transform(new CropCircleTransfermation())
+                    .into(imgHead);
+        }
 
 
-     }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -275,4 +345,87 @@ public class MineFragment extends BaseFragment {
         LogUtils.i("fragment", "mine:ondestroy");
         super.onDestroy();
     }
+    /**
+     * 获取版本号
+     * @return 当前应用的版本号
+     */
+    public int getVersion() {
+        try {
+            PackageManager manager = getActivity().getPackageManager();
+            PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
+            int version = info.versionCode;
+            return  version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    private void openFile(File file) {
+        // TODO Auto-generated method stub
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file),
+                "application/vnd.android.package-archive");
+        startActivity(intent);
+    }
+
+
+
+    public class downLoadTask extends AsyncTask<Void, Void, Void> {
+        private  SweetAlertDialog sweetAlertDialog;
+        downLoadTask(SweetAlertDialog sweetAlertDialog) {
+            this.sweetAlertDialog=sweetAlertDialog;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                getCitys();
+            } catch (Exception e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        /**
+         * postInfo
+         */
+        public void getCitys() {
+            OkHttpUtils
+                    .get()
+                    .url(apkurl)
+                    .build()
+                    .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
+                    {
+                        @Override
+                        public void inProgress(float progress)
+                        {
+//                            LogUtils.e("e",progress*100+"");
+//                            sweetAlertDialog.getProgressHelper().setProgress(progress);
+//                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+
+                        }
+
+
+                        @Override
+                        public void onResponse(File file)
+                        {
+                            sweetAlertDialog.dismissWithAnimation();
+                            openFile(file);
+
+                        }
+                    });
+        }
+    }
+
 }

@@ -316,9 +316,9 @@ public class PartJobFragment extends BaseFragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (jobList.size() > 5 && lastVisibleItem == jobList.size() + 1) {
-                    //                    GetTask getTask=new GetTask("0",String.valueOf(lastVisibleItem));
-                    //                    getTask.execute();
+                if (jobList.size() > 5 && lastVisibleItem == jobList.size() ) {
+                                        GetTask getTask=new GetTask(cityid, typeid, areid, filterid,String.valueOf(lastVisibleItem));
+                                        getTask.execute();
                 }
             }
 

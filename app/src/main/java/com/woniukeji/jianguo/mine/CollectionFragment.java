@@ -55,7 +55,7 @@ public class CollectionFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
     @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
 
     // TODO: Rename and change types of parameters
@@ -183,11 +183,11 @@ public class CollectionFragment extends BaseFragment {
 //        });
 //        recycleList.addItemDecoration(new DividerItemDecoration(
 //                getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-            }
-        });
+//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//            }
+//        });
     }
 
     @Override

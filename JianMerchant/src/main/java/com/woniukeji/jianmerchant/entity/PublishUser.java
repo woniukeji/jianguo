@@ -1,11 +1,12 @@
 package com.woniukeji.jianmerchant.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by invinjun on 2016/4/7.
  */
-public class PublishUser {
+public class PublishUser implements Serializable{
 
         /**
          * id : 48
@@ -38,7 +39,7 @@ public class PublishUser {
             this.list_t_user_info = list_t_user_info;
         }
 
-        public static class ListTUserInfoEntity {
+        public static class ListTUserInfoEntity implements Serializable{
             private int id;
             private int login_id;
             private String nickname;
@@ -53,6 +54,15 @@ public class PublishUser {
             private int complete_job;
             private int cancel_job;
             private String time_job;
+            private String tel;
+
+            public String getTel() {
+                return tel;
+            }
+
+            public void setTel(String tel) {
+                this.tel = tel;
+            }
 
             public String getUser_status() {
                 return user_status;

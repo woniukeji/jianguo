@@ -69,7 +69,7 @@ public class JobDetails implements Serializable{
 
         public static class TJobInfoEntity implements Serializable{
             private int id;
-            private int job_id;
+            private String job_id;
             private String address;
             private double lon;
             private double lat;
@@ -149,7 +149,7 @@ public class JobDetails implements Serializable{
                 this.id = id;
             }
 
-            public void setJob_id(int job_id) {
+            public void setJob_id(String job_id) {
                 this.job_id = job_id;
             }
 
@@ -217,7 +217,7 @@ public class JobDetails implements Serializable{
                 return id;
             }
 
-            public int getJob_id() {
+            public String getJob_id() {
                 return job_id;
             }
 

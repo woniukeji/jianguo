@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -149,9 +150,9 @@ public class PublishDetailActivity extends BaseActivity {
     //顺序对应不能改变，否则id和服务器不同步
     private String[] partHot = new String[]{"普通", "热门", "精品", "旅行"};
     private String[] payMethods = new String[]{"月结", "周结", "日结", "旅行"};
-    private String[] wagesMethods = new String[]{"元/月", "元/周", "元/天", "元/小时", "元/次", "义工"};
+    private String[] wagesMethods = new String[]{"元/月", "元/周", "元/天", "元/小时", "元/次", "义工","面议"};
     private String[] sexs = new String[]{"仅限女", "仅限男", "不限男女", "男女各需"};
-    private String[] second = new String[]{"00","30"};
+    private String[] second = new String[]{"00","05","10","15","20","25","30","35","40","45","50","55"};
     BaseBean<CityCategory> cityCategoryBaseBean;
     private JobDetails.TMerchantEntity merchantInfo = new JobDetails.TMerchantEntity();
     private JobDetails.TJobInfoEntity jobinfo = new JobDetails.TJobInfoEntity();
@@ -171,7 +172,7 @@ public class PublishDetailActivity extends BaseActivity {
 
     private String name = "";//      兼职名称
 
-    private String name_image = "";//    兼职图片
+    private String name_image = "http://v3.jianguojob.com/logo.png";//    兼职图片
 
     private String start_date = "";//    开始日期
 
@@ -221,6 +222,7 @@ public class PublishDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.inject(this);
+        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
 
@@ -259,6 +261,7 @@ public class PublishDetailActivity extends BaseActivity {
                 case 5:
                     String Message = (String) msg.obj;
                     Toast.makeText(activity, Message, Toast.LENGTH_SHORT).show();
+                    activity.finish();
                     break;
                 case 6:
                     BaseBean<Model> obj = (BaseBean<Model>) msg.obj;
@@ -512,7 +515,7 @@ public class PublishDetailActivity extends BaseActivity {
 
                 if (CheckStatus()) {
                     jobinfo.setTitle(etTitle.getText().toString());
-                    jobinfo.setAddress(tvPosition.getText().toString());
+                    jobinfo.setAddress(tvPublishLocation.getText().toString()+tvPosition.getText().toString()+etDetailPosition.getText().toString());
                     long startDate = DateUtils.getLongTime(tvDateStart.getText().toString());
                     long stopDate = DateUtils.getLongTime(tvDateEnd.getText().toString());
                     jobinfo.setStart_date(startDate);
@@ -599,8 +602,8 @@ public class PublishDetailActivity extends BaseActivity {
                 break;
             case R.id.btn_change:
                 //修改
-                if (CheckStatus()) {
-                    if (limit_sex.equals("3")) {
+                        if (CheckStatus()) {
+                            if (limit_sex.equals("3")) {
                         alike = String.valueOf(System.currentTimeMillis());
                         PostChangeJobTask postPartInfoTask = new PostChangeJobTask(etGirlCount.getText().toString(), "31",String.valueOf(listTJobEntity.getId()));
                         postPartInfoTask.execute();
@@ -689,18 +692,24 @@ public class PublishDetailActivity extends BaseActivity {
                 return false;
             }
         }
-
+        start_time= String.valueOf(DateUtils.getLongTime(tvDateStart.getText().toString()+" "+tvTimeStart.getText().toString(),"yyyy-MM-dd HH:mm"));
+        stop_time=String.valueOf(DateUtils.getLongTime(tvDateEnd.getText().toString()+" "+tvTimeEnd.getText().toString(),"yyyy-MM-dd HH:mm"));
+       if (DateUtils.getLongTime(tvDateStart.getText().toString()+" "+tvTimeStart.getText().toString(),"yyyy-MM-dd HH:mm")< System.currentTimeMillis()){
+           showShortToast("开始时间早于当前时间，请重新选择");
+           return false;
+       }else if(DateUtils.getLongTime(tvDateEnd.getText().toString()+" "+tvTimeEnd.getText().toString(),"yyyy-MM-dd HH:mm")<DateUtils.getLongTime(tvDateStart.getText().toString()+" "+tvTimeStart.getText().toString(),"yyyy-MM-dd HH:mm")){
+           showShortToast("结束时间早于开始时间，请重新选择");
+           return false;
+       }
         name = etTitle.getText().toString();
         money = etWages.getText().toString();
-        address = etDetailPosition.getText().toString();
+        address =etDetailPosition.getText().toString();
         set_place = etCollectionPosition.getText().toString();
         set_time = etCollectionTime.getText().toString();
         tel = etTel.getText().toString();
         work_content = etWorkContent.getText().toString();
         work_require = etWorkRequire.getText().toString();
-        start_time= String.valueOf(DateUtils.getLongTime(tvDateStart.getText().toString()+" "+tvTimeStart.getText().toString(),"yyyy-MM-dd HH:mm"));
-        stop_time=String.valueOf(DateUtils.getLongTime(tvDateEnd.getText().toString()+" "+tvTimeEnd.getText().toString(),"yyyy-MM-dd HH:mm"));
-        return true;
+            return true;
     }
 
 

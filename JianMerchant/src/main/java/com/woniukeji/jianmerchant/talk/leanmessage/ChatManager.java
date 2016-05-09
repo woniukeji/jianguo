@@ -58,10 +58,10 @@ public class ChatManager {
    * @param context
    */
   public void init(Context context) {
-//    AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(context));
-//    AVIMClient.setClientEventHandler(LeanchatClientEventHandler.getInstance());
+    AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(context));
+    AVIMClient.setClientEventHandler(LeanchatClientEventHandler.getInstance());
     //签名
-    //AVIMClient.setSignatureFactory(new SignatureFactory());
+//    AVIMClient.setSignatureFactory(new SignatureFactory());
   }
 
   /**
@@ -92,7 +92,6 @@ public class ChatManager {
   }
 
   public AVIMClient getImClient() {
-    LogUtils.e("client",imClient.toString());
     return imClient;
   }
 

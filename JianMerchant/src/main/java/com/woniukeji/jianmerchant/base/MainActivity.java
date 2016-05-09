@@ -14,23 +14,28 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.entity.TabEntity;
+import com.woniukeji.jianmerchant.mine.MineFragment;
 import com.woniukeji.jianmerchant.partjob.PartJobFragment;
 import com.woniukeji.jianmerchant.talk.TalkFragment;
 import com.woniukeji.jianmerchant.talk.leanmessage.ChatManager;
 import com.woniukeji.jianmerchant.talk.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
+import com.woniukeji.jianmerchant.utils.LogUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 
 import de.greenrobot.event.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -123,13 +128,13 @@ public class MainActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-//        AVObject testObject = new AVObject("TestObject");
-//        testObject.put("words","Hello World!");
+//        AVObject testObject = new AVObject("TestConversiation");
+//        testObject.put("words","测试会话获取异常发送是否有问题");
 //        testObject.saveInBackground(new SaveCallback() {
 //            @Override
 //            public void done(AVException e) {
 //                if(e == null){
-//                    Log.d("saved","success!");
+//                    Log.e("leancloudMes","success!");
 //                }
 //            }
 //        });
@@ -137,33 +142,41 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        final int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
 
-        final ChatManager chatManager = ChatManager.getInstance();
-        if (!TextUtils.isEmpty(String.valueOf(loginId))) {
-            chatManager.setupManagerWithUserId(this, String.valueOf(loginId));
-        }
-        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (null == e) {
-                    AVObject testObject = new AVObject("TestObject");
-                    testObject.put("words","eeeeHello World!");
-                    testObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(AVException e) {
-                            if(e == null){
-                            }
-                        }
-                    });
-//                    finish();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-                } else {
-                    showShortToast(e.toString());
-                }
-            }
-        });
+//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+//            @Override
+//            public void done(AVIMClient avimClient, AVIMException e) {
+//                if (null == e) {
+//                    AVObject testObject = new AVObject("TestObject");
+//                    testObject.put("words","测试代码");
+//                    testObject.saveInBackground(new SaveCallback() {
+//                        @Override
+//                        public void done(AVException e) {
+//                            if(e == null){
+//                                LogUtils.e("leancloudMes","main发送消息成功");
+//                            }else
+//                                LogUtils.e("leancloudMes","main发送失败"+e.getMessage());
+//                        }
+//                    });
+////                    finish();
+////                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+////                    startActivity(intent);
+//                    ChatManager.getInstance().getConversationQuery().findInBackground(new AVIMConversationQueryCallback() {
+//                        @Override
+//                        public void done(List<AVIMConversation> list, AVIMException e) {
+//                            if (e==null){
+//                                LogUtils.e("leancloudMes","main查询消息列表成功="+list.size());
+//                            }else {
+//                                LogUtils.e("leancloudMes","main查询消息列表失败="+e.getMessage());
+//                            }
+//                        }
+//                    });
+//                } else {
+//                    showShortToast("首页发送异常="+e.toString());
+//                }
+//            }
+//        });
 
         // 测试 SDK 是否正常工作的代码
 
@@ -212,8 +225,8 @@ public class MainActivity extends BaseActivity {
                     return new PartJobFragment();           //直播榜
                 case 1:
                     return new TalkFragment();          //话题榜
-//                case 2:
-//                    return new TalkFragment();
+                case 2:
+                    return  new MineFragment();
             }
             return new FragmentText();
         }

@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 
@@ -37,8 +38,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
     private int mType;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
-
-    private AnimationDrawable mAnimationDrawable;
+//    private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
     private RecyCallBack mCallBack;
 
@@ -85,7 +85,6 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_footer, parent, false);
                 holder = new ViewHolder(view, IS_FOOTER);
                 return holder;
-
             default:
                 break;
         }
@@ -104,148 +103,228 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
             }
         } else {
             final Jobs.ListTJobEntity jobEntity = mValues.get(position);
-//            if (mType == 0) {
-//                holder.tvTitle.setText(job.getName());
-//                holder.llMuban.setVisibility(View.GONE);
-//                holder.imgHis.setVisibility(View.VISIBLE);
-//            } else {
-//                holder.tvTitle.setText(job.getModel_name());
-//                holder.llMuban.setVisibility(View.VISIBLE);
-//                holder.imgHis.setVisibility(View.GONE);
-//            }
-
-//            String date = job.getRegedit_time().substring(5, 11);
 
             String date = DateUtils.getTime(Long.valueOf(jobEntity.getStart_date()), Long.valueOf(jobEntity.getStop_date()));
             holder.tvWorkDate.setText(date);
             holder.businessName.setText(jobEntity.getName());
+            // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
+            String type="";
             if (jobEntity.getTerm()==0){
                 holder.tvJobWages.setText(jobEntity.getMoney()+"/月");
-            }else if (jobEntity.getTerm()==1){
+                type="/月";
+            }else if(jobEntity.getTerm()==1){
                 holder.tvJobWages.setText(jobEntity.getMoney()+"/周");
-            }else if (jobEntity.getTerm()==2){
+                type="/周";
+            }else if(jobEntity.getTerm()==2){
                 holder.tvJobWages.setText(jobEntity.getMoney()+"/日");
-            }else if (jobEntity.getTerm()==3){
+                type="/日";
+            }else if(jobEntity.getTerm()==3){
                 holder.tvJobWages.setText(jobEntity.getMoney()+"/时");
-            }else if (jobEntity.getTerm()==4){
+                type="/时";
+            }else if(jobEntity.getTerm()==4){
                 holder.tvJobWages.setText(jobEntity.getMoney()+"/次");
-            }else if (jobEntity.getTerm()==5){
+                type="/次";
+            }else if(jobEntity.getTerm()==5){
                 holder.tvJobWages.setText("义工");
+                type="义工";
+            }else if(jobEntity.getTerm()==6){
+                holder.tvJobWages.setText("面议");
+                type="面议";
             }
-
             if (jobEntity.getUser_status().equals("0")){
                 holder.btnCancelActn.setText("取消报名");
+                holder.btnCancelActn.setVisibility(View.VISIBLE);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.GONE);
+                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_dailuqu);
             }else if(jobEntity.getUser_status().equals("1")){
-                holder.btnCancelActn.setText("已取消报名");
-                holder.btnCancelActn.setClickable(false);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_dailuqu);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_quxiao);
             }else if(jobEntity.getUser_status().equals("2")){
-                holder.btnCancelActn.setText("暂不录取");
-                holder.btnCancelActn.setClickable(false);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+//                holder.btnCancelActn.setText("暂不录取");
+//                holder.btnCancelActn.setClickable(false);
+//                holder.btnConfirmActn.setVisibility(View.GONE);
+//                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_dailuqu);
+//                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
             }else if(jobEntity.getUser_status().equals("3")){
                 holder.btnCancelActn.setText("取消参加");
                 holder.btnConfirmActn.setText("确定参加");
                 holder.btnConfirmActn.setVisibility(View.VISIBLE);
+                holder.btnCancelActn.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
                 holder.btnConfirmActn.setBackgroundResource(R.drawable.button_sign_background_red);
             }else if(jobEntity.getUser_status().equals("4")){
-                holder.btnCancelActn.setText("我已取消");
-                holder.btnCancelActn.setClickable(false);
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_quxiao);
             }else if(jobEntity.getUser_status().equals("5")){
-                holder.btnCancelActn.setText("取消报名");
+                holder.btnCancelActn.setText("取消参加");
                 holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.btnCancelActn.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
                 if (jobEntity.getInfo_start_time()-System.currentTimeMillis()/1000<3600*8){
                     holder.btnCancelActn.setText("准备出发");
                     holder.btnCancelActn.setClickable(false);
                     holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
                 }
             }else if(jobEntity.getUser_status().equals("6")){
-                holder.btnCancelActn.setText("我已取消");
-                holder.btnCancelActn.setClickable(false);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+//                holder.btnCancelActn.setText("我已取消");
+//                holder.btnCancelActn.setClickable(false);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_quxiao);
             }else if(jobEntity.getUser_status().equals("7")){
-                holder.btnCancelActn.setText("暂不录取");
-                holder.btnCancelActn.setClickable(false);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+//                holder.btnCancelActn.setText("未录取");
+//                holder.btnCancelActn.setClickable(false);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
             }else if(jobEntity.getUser_status().equals("8")){
                 holder.btnCancelActn.setText("工作中");
                 holder.btnCancelActn.setClickable(false);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.btnCancelActn.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
                 holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
             }else if(jobEntity.getUser_status().equals("9")){
                 holder.btnCancelActn.setText("催工资");
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.btnCancelActn.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setVisibility(View.GONE);
+                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_backound_yellow);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
             }else if(jobEntity.getUser_status().equals("10")){
                 holder.btnCancelActn.setText("已催工资");
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
                 holder.btnCancelActn.setClickable(false);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_yicuigongzi);
             }else if(jobEntity.getUser_status().equals("11")){
                 holder.btnCancelActn.setText("去评价");
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.btnCancelActn.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setVisibility(View.GONE);
             }else if(jobEntity.getUser_status().equals("12")){
-                holder.btnCancelActn.setText("已完成");
-                holder.btnCancelActn.setClickable(false);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+//                holder.btnCancelActn.setText("已完成");
+//                holder.btnCancelActn.setClickable(false);
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_fin_yiwancheng);
             }
-//
-//
-//
             Picasso.with(mContext).load(jobEntity.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
                     .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(mContext, JobDetailActivity.class);
-////                    intent.putExtra("job", job);
-////                    intent.putExtra("merchantid", job.getMerchant_id());
-//                    mContext.startActivity(intent);
-//                }
-//            });
+
+            if (type.equals("面议")||type.equals("义工")){
+
+            }else {
+                type=Integer.valueOf(String.valueOf(jobEntity.getMoney()))+ type;
+            }
+            final String finalType = type;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, JobDetailActivity.class);
+                    intent.putExtra("jobbean", jobEntity);
+                    intent.putExtra("merchantid", jobEntity.getMerchant_id());
+                    intent.putExtra("job",jobEntity.getId());
+                    intent.putExtra("jobbean",jobEntity);
+                    intent.putExtra("merchant",jobEntity.getMerchant_id());
+                    intent.putExtra("money", finalType);
+                    intent.putExtra("count", jobEntity.getCount()+"/"+jobEntity.getSum());
+                    intent.putExtra("mername", jobEntity.getName());
+                    mContext.startActivity(intent);
+                }
+            });
             holder.btnCancelActn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                     int type = 0;
+                    int type =0;
                     if (jobEntity.getUser_status().equals("0")){
                         type=1;
+                        final int finalType1 = type;
+                        new SweetAlertDialog(mContext,SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("确定取消报名吗？")
+                                .setConfirmText("确定")
+                                .setCancelText("取消")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        mCallBack.RecyOnClick(jobEntity.getId(), finalType1,position);
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        return;
+                                    }
+                                }).show();
                     }
-//                    else if(jobEntity.getUser_status().equals("1")){
-//                        return;
-//                    }
-//                    else if(jobEntity.getUser_status().equals("2")){
-//                        return;
-//                    }
                     else if(jobEntity.getUser_status().equals("3")){
                         type=4;
+                        final int finalType1 = type;
+                        new SweetAlertDialog(mContext,SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("确定取消报名吗？")
+                                .setConfirmText("确定")
+                                .setCancelText("取消")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        mCallBack.RecyOnClick(jobEntity.getId(), finalType1,position);
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        return;
+                                    }
+                                }).show();
                     }
-//                    else if(jobEntity.getUser_status().equals("4")){
-//
-//                    }
                     else if(jobEntity.getUser_status().equals("5")){
                         type=6;
+                        final int finalType1 = type;
+                        new SweetAlertDialog(mContext,SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("确定取消报名吗？")
+                                .setConfirmText("确定")
+                                .setCancelText("取消")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        mCallBack.RecyOnClick(jobEntity.getId(), finalType1,position);
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        return;
+                                    }
+                                }).show();
                     }
-//                    else if(jobEntity.getUser_status().equals("6")){
-//                    }
-//                    else if(jobEntity.getUser_status().equals("7")){
-//
-//                    }
-//                    else if(jobEntity.getUser_status().equals("8")){
-//
-//                    }
                     else if(jobEntity.getUser_status().equals("9")){
                         type=10;
+                        mCallBack.RecyOnClick(jobEntity.getId(),type,position);
                     }
-//                    else if(jobEntity.getUser_status().equals("10")){
-//
-//                    }
                     else if(jobEntity.getUser_status().equals("11")){
-                       type=12;
+                        type=12;
+                        mCallBack.RecyOnClick(jobEntity.getId(),type,position);
                     }
                     else {
                         return;
                     }
 
-                    mCallBack.RecyOnClick(jobEntity.getId(),type,position);
                 }
             });
             holder.btnConfirmActn.setOnClickListener(new View.OnClickListener() {
@@ -289,6 +368,8 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
         @InjectView(R.id.btn_confirm_actn) Button btnConfirmActn;
         @InjectView(R.id.ll_button) LinearLayout llButton;
         @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @InjectView(R.id.img_job_status) ImageView imgJobStatus;
+        @InjectView(R.id.img_finish_status) ImageView imgFinishStatus;
         private ImageView animLoading;
         private TextView loading;
 
@@ -308,7 +389,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 
         @Override
         public String toString() {
-            return super.toString() + " '" + "'";
+            return super.toString()+"";
         }
     }
 

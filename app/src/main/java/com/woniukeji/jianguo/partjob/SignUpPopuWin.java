@@ -235,7 +235,13 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
                                 message.what = MSG_POST_SUCCESS;
                                 mHandler.sendMessage(message);
                                 dismiss();
-                            } else {
+                            } else if(baseBean.getCode().equals("500")){
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_FAIL;
+                                mHandler.sendMessage(message);
+                                dismiss();
+                            }else if(baseBean.getCode().equals("403")){
                                 Message message = new Message();
                                 message.obj = baseBean.getMessage();
                                 message.what = MSG_POST_FAIL;

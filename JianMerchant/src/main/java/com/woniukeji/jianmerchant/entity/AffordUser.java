@@ -81,7 +81,16 @@ public class AffordUser implements Serializable{
             //本地维护数据
             private String hould_money;
             private double real_money;
-            private String note;
+
+            public String getRemarks() {
+                return remarks;
+            }
+
+            public void setRemarks(String remarks) {
+                this.remarks = remarks;
+            }
+
+            private String remarks;
 
             public String getHould_money() {
                 return hould_money;
@@ -99,13 +108,6 @@ public class AffordUser implements Serializable{
                 this.real_money = real_money;
             }
 
-            public String getNote() {
-                return note;
-            }
-
-            public void setNote(String note) {
-                this.note = note;
-            }
 
             public String getTel() {
                 return tel;

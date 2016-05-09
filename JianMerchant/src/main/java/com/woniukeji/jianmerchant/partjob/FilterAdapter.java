@@ -3,6 +3,7 @@ package com.woniukeji.jianmerchant.partjob;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+
+import static android.content.ClipData.newIntent;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
 
@@ -137,8 +140,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
 //            holder.tvChakanBrowse.setText(job.getLook());
 //            holder.tvMessage.setText(job.getRemarks());
 
-            if (null!=user.getRealname()&&!user.getRealname().equals("0")){
-                holder.tvUserName.setText(user.getRealname());
+            if (null!=user.getName()&&!user.getName().equals("0")){
+                holder.tvUserName.setText(user.getName());
             }else {
                 holder.tvUserName.setText("未填写");
             }
@@ -151,9 +154,9 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
             }
             holder.tvSchoolName.setText(user.getSchool());
             holder.tvFinishJobCount.setText("共完成"+user.getComplete_job()+"次兼职，"+"取消"+user.getCancel_job()+"次兼职");
-            holder.tvPublishDate.setText(user.getIntoschool_date_resume());
-            holder.tvCredit.setText("信用良好");
-            holder.tvAuthorInfo.setText("已经实名认证");
+            holder.tvPublishDate.setText(user.getTime_job());
+            holder.tvCredit.setText(" ");
+            holder.tvAuthorInfo.setText(user.getTel());
             //user.getRemarks_job()
           
 
@@ -209,15 +212,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
                     .error(R.mipmap.icon_head_defult)
                     .transform(new CropCircleTransfermation())
                     .into(holder.circleimgHead);
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(mContext, JobItemDetailActivity.class);
-////                    intent.putExtra("job", job);
-////                    intent.putExtra("merchantid", job.getMerchant_id());
-//                    mContext.startActivity(intent);
-//                }
-//            });
+            holder.tvAuthorInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + user.getTel()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
+            });
             holder.btnCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

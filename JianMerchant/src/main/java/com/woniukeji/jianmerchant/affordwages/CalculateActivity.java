@@ -171,6 +171,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                         }
                     }else {
                         tempList = modleBaseBean.getData().getList_t_user_info();
+                        activity.userList.clear();
                         for (int i = 0; i <tempList.size() ; i++) {
                             activity.isSelected.add(i,false);
                         }
@@ -208,7 +209,8 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                     Toast.makeText(activity, "结算成功", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(activity,FinishActivity.class);
                     intent.putExtra("sum",sum);
-                    activity.startActivity(intent);
+                    activity.startActivityForResult(intent,0);
+//                    activity.finish();
                     break;
                 case 6:
                     String sms6 = (String) msg.obj;
@@ -278,14 +280,13 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
     @Override
     public void initData() {
         merchantid = (int) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_MERCHANT_ID, 0);
+        GetTask getTask = new GetTask("0");
+        getTask.execute();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        userList.clear();
-        GetTask getTask = new GetTask("0");
-        getTask.execute();
     }
 
     @Override
@@ -340,7 +341,6 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
             }
             map.put("list_t_wages_Bean",tempList);
             String json=new Gson().toJson(map);
-
             PostTask postTask= new PostTask(jobid,jobNid,json
             );
 
@@ -499,7 +499,6 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         }
 
         /**
-         * 刪除兼職模板
          */
         public void PostJobWages() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
@@ -566,18 +565,28 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         intent.putExtra("user", user);
         intent.putExtra("position", position);
 //        startActivity(intent);
-        startActivityForResult(intent,0);
+        startActivityForResult(intent,1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        intent.putExtra("user",user);
-//        intent.putExtra("position",position);
-       int position= data.getIntExtra("position",0);
-        AffordUser.ListTUserInfoEntity user= (AffordUser.ListTUserInfoEntity) data.getSerializableExtra("user");
-        userList.set(position,user);
-        adapter.notifyDataSetChanged();
+        if (requestCode==1){//修改界面返回值
+            if (resultCode==RESULT_OK){
+                int position= data.getIntExtra("position",0);
+                AffordUser.ListTUserInfoEntity user= (AffordUser.ListTUserInfoEntity) data.getSerializableExtra("user");
+                userList.set(position,user);
+                adapter.notifyDataSetChanged();
+            }
+        }else {
+            if (resultCode==RESULT_OK){
+                GetTask getTask = new GetTask("0");
+                getTask.execute();
+            }
+        }
+
+
+
 
     }
 }

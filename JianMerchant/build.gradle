@@ -12,12 +12,14 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+
     defaultConfig {
         applicationId "com.woniukeji.jianmerchant"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -25,10 +27,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets { main {
+        jniLibs.srcDirs =['libs/jniLibs']
+    } }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.jakewharton:butterknife:6.1.0'
@@ -37,15 +43,25 @@ dependencies {
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.google.code.gson:gson:2.2.+'
-    compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
-    compile('cn.leancloud.android:avoscloud-push:v3.13.6@aar'){transitive = true}
-    compile 'cn.leancloud.android:Java-WebSocket:1.3.1-leancloud'
-    compile 'cn.leancloud.android:fastjson:1.1.37-leancloud'
-    compile ('com.android.support:support-v4:21.0.3')
+    compile 'com.android.support:support-v4:23.3.0'
     compile 'com.rockerhieu.emojicon:library:1.3.1'
-
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.android.support:recyclerview-v7:23.2.1'
     compile project(path: ':viewPagerlibrary')
     compile project(path: ':multi-image-selector')
+    compile files('libs/android-async-http-1.4.9.jar')
+    compile files('libs/avoscloud-push-v3.13.8.jar')
+    compile files('libs/avoscloud-sdk-v3.13.8.jar')
+    compile files('libs/fastjson.jar')
+    compile files('libs/happy-dns-0.2.4.jar')
+    compile files('libs/httpclient-4.4.1.1.jar')
+    compile files('libs/httpmime-4.2.4.jar')
+    compile files('libs/Java-WebSocket-1.3.1-leancloud.jar')
+    compile files('libs/KJFrameForAndroid_v2.234.jar')
+    compile files('libs/okhttp-2.6.0-leancloud.jar')
+    compile files('libs/okio-1.6.0-leancloud.jar')
+    compile files('libs/protobuf-java-2.6.1.jar')
+    compile files('libs/qiniu-android-sdk-7.0.9.jar')
+    compile files('libs/jxl.jar')
+    compile files('libs/jpush-android-2.1.3.jar')
 }

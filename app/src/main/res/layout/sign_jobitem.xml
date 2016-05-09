@@ -100,6 +100,14 @@
         android:background="@color/white"
 
         >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_finish_status"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            />
 <Button
     android:id="@+id/btn_cancel_actn"
     android:layout_width="65dp"
@@ -108,18 +116,24 @@
     android:textColor="@color/white"
     android:text="取消参加"
     android:textSize="12dp"
-    android:background="@drawable/button_sign_backound_yellow"
+    android:background="@drawable/button_sign_background_gray"
     />
         <Button
             android:id="@+id/btn_confirm_actn"
             android:layout_width="65dp"
             android:layout_height="25dp"
             android:layout_marginRight="15dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="确定参加"
             android:textSize="12dp"
             android:textColor="@color/white"
             android:background="@drawable/button_sign_background_red"
             />
     </LinearLayout>
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/img_job_status"
+        android:layout_height="21dp"
+        android:layout_width="61dp"
+    android:layout_alignParentBottom="true"
+    />
+    </RelativeLayout>

@@ -265,15 +265,15 @@ public class MainActivity extends BaseActivity {
                 case 2:
                     return new MineFragment();  //用户榜
 
-                case 3:
-                    return new TalkFragment();
+//                case 3:
+//                    return new TalkFragment();
             }
             return new FragmentText();
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
     }
 
@@ -281,8 +281,9 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), "再按一次就退出去了！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "再按一次退出程序！", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
+
             } else {
                 finish();
                 System.exit(0);

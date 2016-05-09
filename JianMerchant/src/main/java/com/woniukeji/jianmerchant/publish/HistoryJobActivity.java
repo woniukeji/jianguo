@@ -81,6 +81,8 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
                 case 0:
                     if (activity.refreshLayout.isRefreshing()){
                         activity.refreshLayout.setRefreshing(false);
+                    }
+                    if (msg.arg1==0){
                         activity.modleList.clear();
                         BaseBean<Model> modleBaseBean = (BaseBean<Model>) msg.obj;
                         activity.modleList.addAll(modleBaseBean.getData().getList_t_job());
@@ -89,6 +91,7 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
                         activity.modleList.addAll(modleBaseBean.getData().getList_t_job());
                         activity.adapter.notifyDataSetChanged();
                     }
+
 
                     break;
                 case 1:
@@ -152,7 +155,23 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
 
     @Override
     public void initListeners() {
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (modleList.size() > 5 && lastVisibleItem == modleList.size()) {
+                    GetTask getTask=new GetTask(String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
     @Override
@@ -281,6 +300,7 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
                                 Message message = new Message();
                                 message.obj = baseBean;
                                 message.what = MSG_GET_SUCCESS;
+                                message.arg1= Integer.parseInt(count);
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();

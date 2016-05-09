@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -145,12 +146,21 @@ public class ChangeActivity extends BaseActivity {
             case R.id.btn_confirm_change:
                 Intent intent=getIntent();
                 user.setReal_money(Double.parseDouble(etPayWages.getText().toString().trim()));
-                user.setNote(etNote.getText().toString().trim());
+                user.setRemarks(etNote.getText().toString().trim());
                 intent.putExtra("user",user);
                 intent.putExtra("position",position);
                 setResult(RESULT_OK,intent);
                 finish();
                 break;
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            Intent intent=getIntent();
+            setResult(RESULT_CANCELED,intent);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

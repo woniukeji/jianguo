@@ -181,6 +181,7 @@
         android:drawableLeft="@mipmap/icon_position"
         android:drawablePadding="5dp"
         android:textColor="@color/app_bg"
+        android:visibility="gone"
         />
 
 </LinearLayout>

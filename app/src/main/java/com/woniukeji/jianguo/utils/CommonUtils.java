@@ -1,5 +1,8 @@
 package com.woniukeji.jianguo.utils;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +14,8 @@ import java.util.regex.Pattern;
  * Created by invinjun on 2016/3/4.
  */
 public class CommonUtils {
+
+
     //判断号码是否合法
     public static boolean isMobileNO(String mobiles) {
 

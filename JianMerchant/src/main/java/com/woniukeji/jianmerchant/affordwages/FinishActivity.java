@@ -54,6 +54,8 @@ public class FinishActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_continue_pay:
+//                startActivity(new Intent(this,CalculateActivity.class));
+                setResult(RESULT_OK);
                 finish();
                 break;
         }

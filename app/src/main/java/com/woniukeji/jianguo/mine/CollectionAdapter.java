@@ -98,21 +98,43 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             final Jobs.ListTJobEntity job = mValues.get(position);
 
 
+            // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
+            String type="";
+            if (job.getTerm()==0){
+                holder.tvWages.setText(job.getMoney()+"/月");
+                type="/月";
+            }else if(job.getTerm()==1){
+                holder.tvWages.setText(job.getMoney()+"/周");
+                type="/周";
+            }else if(job.getTerm()==2){
+                holder.tvWages.setText(job.getMoney()+"/日");
+                type="/日";
+            }else if(job.getTerm()==3){
+                holder.tvWages.setText(job.getMoney()+"/时");
+                type="/时";
+            }else if(job.getTerm()==4){
+                holder.tvWages.setText(job.getMoney()+"/次");
+                type="/次";
+            }else if(job.getTerm()==5){
+                holder.tvWages.setText("义工");
+                type="义工";
+            }else if(job.getTerm()==6){
+                holder.tvWages.setText("面议");
+                type="面议";
+            }
             //等待数据设置
            // 1=月结，2=周结，3=日结，4=小时结
-            if (job.getTerm()==0){
+            //结算方式（0=月结，1=周结，2=日结，3=旅行）
+            if (job.getMode()==0){
                 holder.tvPayMethod.setText("月结");
-                holder.tvWages.setText(job.getMoney()+"/月");
-            }else if(job.getTerm()==1){
+            }else if(job.getMode()==1){
                 holder.tvPayMethod.setText("周结");
-                holder.tvWages.setText(job.getMoney()+"/周");
-            }else if(job.getTerm()==2){
+            }else if(job.getMode()==2){
                 holder.tvPayMethod.setText("日结");
-                holder.tvWages.setText(job.getMoney()+"/日");
             }else {
-                holder.tvPayMethod.setText("小时结");
-                holder.tvWages.setText(job.getMoney()+"/小时");
+                holder.tvPayMethod.setText("旅行");
             }
+
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
@@ -146,15 +168,26 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             set.setDuration(800);
             set.setInterpolator(new AccelerateInterpolator());
             set.start();
+            if (type.equals("面议")||type.equals("义工")){
 
+            }else {
+                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
+            }
+            final String finalType = type;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(mContext, JobDetailActivity.class);
+//                    intent.putExtra("job",job.getId());
+//                    intent.putExtra("merchant",job.getMerchant_id());
+//                    intent.putExtra("money",job.getMoney());
+//                    intent.putExtra("count", job.getCount()+"/"+job.getSum());
                     intent.putExtra("job",job.getId());
+                    intent.putExtra("jobbean",job);
                     intent.putExtra("merchant",job.getMerchant_id());
-                    intent.putExtra("money",job.getMoney());
+                    intent.putExtra("money", finalType);
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());
+                    intent.putExtra("mername", job.getName());
                     mContext.startActivity(intent);
                 }
             });

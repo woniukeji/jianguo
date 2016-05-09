@@ -328,7 +328,7 @@
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="鞋码："
+            android:text="  鞋码："
             android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -374,7 +374,7 @@
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="服装尺码："
+            android:text="  服装尺码："
             android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -420,7 +420,7 @@
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="身高："
+            android:text="  身高："
             android:gravity="center_vertical"
             android:textSize="14dp"
             />
@@ -463,7 +463,11 @@
         android:textColor="#F87C7C"
         android:gravity="center_vertical"
         />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_btn_bg_color"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -478,7 +482,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="学生"
+            android:text="  学生"
             android:textSize="14dp"
             android:gravity="center_vertical"
             />
@@ -594,7 +598,7 @@
             android:layout_toRightOf="@+id/img_phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="入学时间："
+            android:text="  入学时间"
             android:textSize="14dp"
             android:gravity="center_vertical"
             />

@@ -1,19 +1,38 @@
 package com.woniukeji.jianguo.mine;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
+import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.JobDetails;
+import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.utils.ActivityManager;
+import com.woniukeji.jianguo.utils.DateUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+
+import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class FeedBackActivity extends BaseActivity {
 
@@ -23,7 +42,9 @@ public class FeedBackActivity extends BaseActivity {
     @InjectView(R.id.et_content) EditText etContent;
     @InjectView(R.id.et_contact) EditText etContact;
     @InjectView(R.id.btn_confirm) Button btnConfirm;
-
+    private int MSG_POST_SUCCESS = 0;
+    private int MSG_POST_FAIL = 1;
+    private Handler mHandler = new Myhandler(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +93,128 @@ public class FeedBackActivity extends BaseActivity {
                     showShortToast("请输入联系方式");
                     return;
                 }
-               showShortToast("感谢您的反馈！我们将及时处理");
+                PostTask postTask=new PostTask(etContact.getText().toString(),etContent.getText().toString());
+                postTask.execute();
+                showShortToast("感谢您的反馈！我们将及时处理");
                 finish();
                 break;
+        }
+    }
+
+    private static class Myhandler extends Handler {
+        private WeakReference<Context> reference;
+
+        public Myhandler(Context context) {
+            reference = new WeakReference<>(context);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            FeedBackActivity jobDetailActivity = (FeedBackActivity) reference.get();
+            switch (msg.what) {
+                case 0:
+                    String ErrorMessage1 = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, ErrorMessage1, Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    String ErrorMessage = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    String sms = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, sms, Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    String sms1 = (String) msg.obj;
+                    Toast.makeText(jobDetailActivity, sms1, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+    }
+    public class PostTask extends AsyncTask<Void, Void, Void> {
+
+        private final String tel;
+        private final String text;
+
+//
+
+        PostTask(String tel, String text) {
+            this.tel = tel;
+            this.text = text;
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                    postOpinion();
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//
+        }
+
+
+        /**
+         * postInfo
+         */
+        public void postOpinion() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.POST_OPINION)
+                    .addParams("only", only)
+                    .addParams("tel", tel)
+                    .addParams("text", text)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_POST_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
         }
     }
 }

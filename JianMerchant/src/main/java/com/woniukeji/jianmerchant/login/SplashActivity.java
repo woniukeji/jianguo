@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -27,9 +31,12 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -60,9 +67,9 @@ public class SplashActivity extends BaseActivity {
                 case 0:
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
                     splashActivity.saveToSP(user.getData());
-                    Intent intent = new Intent(splashActivity, MainActivity.class);
-                    splashActivity.startActivity(intent);
-                    splashActivity.finish();
+//                    Intent intent = new Intent(splashActivity, MainActivity.class);
+//                    splashActivity.startActivity(intent);
+//                    splashActivity.finish();
                     break;
                 case 1:
                     splashActivity.startActivity(new Intent(splashActivity, LoginActivity.class));
@@ -124,21 +131,27 @@ public class SplashActivity extends BaseActivity {
         SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_NAME,user.getT_merchant().getName()!=null?user.getT_merchant().getName():"");
         SPUtils.setParam(context,Constants.USER_INFO,Constants.USER_IMG,user.getT_merchant().getName_image()!=null?user.getT_merchant().getName_image():"");
         final ChatManager chatManager = ChatManager.getInstance();
-//        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
-//            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
-//        }
-//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-//            @Override
-//            public void done(AVIMClient avimClient, AVIMException e) {
-//                if (null == e) {
-////                    finish();
-////                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-////                    startActivity(intent);
-//                } else {
-//                    showShortToast(e.toString());
-//                }
-//            }
-//        });
+        if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+            JPushInterface.setAlias(getApplicationContext(), "jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+                @Override
+                public void gotResult(int i, String s, Set<String> set) {
+                }
+            });
+        }
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+                    showShortToast("登录成功");
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                   finish();
+                } else {
+                    showShortToast(e.toString());
+                }
+            }
+        });
 //        chatManager.setConversationEventHandler(ConversationEventHandler.getInstance());
     }
 

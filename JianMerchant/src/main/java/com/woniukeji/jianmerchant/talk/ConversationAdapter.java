@@ -21,6 +21,7 @@ import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.utils.CropCircleTransfermation;
 import com.woniukeji.jianmerchant.utils.DateUtils;
+import com.woniukeji.jianmerchant.utils.LogUtils;
 import com.woniukeji.jianmerchant.widget.CircleImageView;
 
 import java.util.List;
@@ -108,15 +109,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         if(conversation.getCreator().equals(String.valueOf(loginId))){
             holder.tvNick.setText((String)conversation.getAttribute(Constants.OTHER_NAME));
             Picasso.with(mContext).load((String)conversation.getAttribute(Constants.OTHER_IMG))
-                    .placeholder(R.mipmap.icon_head_defult)
-                    .error(R.mipmap.icon_head_defult)
+                    .placeholder(R.drawable.default_head)
+                    .error(R.drawable.default_head)
                     .transform(new CropCircleTransfermation())
                     .into( holder.circleTalkHead);
         }else{
             holder.tvNick.setText((String)conversation.getAttribute(Constants.CREAT_NAME));
             Picasso.with(mContext).load((String)conversation.getAttribute(Constants.CREAT_IMG))
-                    .placeholder(R.mipmap.icon_head_defult)
-                    .error(R.mipmap.icon_head_defult)
+                    .placeholder(R.drawable.default_head)
+                    .error(R.drawable.default_head)
                     .transform(new CropCircleTransfermation())
                     .into( holder.circleTalkHead);
         }

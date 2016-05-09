@@ -58,13 +58,6 @@ public class PartJobActivity extends BaseActivity {
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     private String headers[] = {"职业", "排序", "地区"};
-    private String jobs[] = {"不限", "服务员", "厨师", "程序员", "摊煎饼", "城市猎人"};
-    private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
-    private String citys[] = {"不限", "武汉", "北京", "上海", "成都", "广州", "深圳", "重庆", "天津", "西安", "南京", "杭州"};
-    private List<View> popupViews = new ArrayList<>();
-    private GirdDropDownAdapter cityAdapter;
-    private ListDropDownAdapter sortAdapter;
-    private ListDropDownAdapter jobAdapter;
     private PartJobAdapter adapter;
     private int lastVisibleItem;
     private LinearLayoutManager mLayoutManager;
@@ -151,7 +144,6 @@ public class PartJobActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        imgBack.setVisibility(View.GONE);
         adapter = new PartJobAdapter(jobList, this);
         mLayoutManager = new LinearLayoutManager(this);
 //设置布局管理器
@@ -205,7 +197,7 @@ public class PartJobActivity extends BaseActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (jobList.size() > 5 && lastVisibleItem == jobList.size() + 1) {
-                    GetTask getTask = new GetTask("0", String.valueOf(lastVisibleItem));
+                    GetTask getTask = new GetTask(String.valueOf(cityid), String.valueOf(lastVisibleItem-1));
                     getTask.execute();
                 }
             }
@@ -272,6 +264,7 @@ public class PartJobActivity extends BaseActivity {
 
     @OnClick(R.id.img_back)
     public void onClick() {
+        finish();
     }
 
 

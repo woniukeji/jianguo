@@ -10,6 +10,25 @@ public class User  implements Serializable {
 
     private T_user_login_Bean t_user_login;
     private T_user_info_Bean t_user_info;
+    private String apk_url;
+    private int version;
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getApk_url() {
+
+        return apk_url;
+    }
+
+    public void setApk_url(String apk_url) {
+        this.apk_url = apk_url;
+    }
 
     public T_user_login_Bean getT_user_login() {
         return t_user_login;
@@ -29,7 +48,6 @@ public class User  implements Serializable {
 
     public class T_user_info_Bean implements Serializable{
 
-        //�û����ϱ�
         private int id;//ID
         private int login_id;//�û���¼�����ID
         private String nickname;//�ǳ�

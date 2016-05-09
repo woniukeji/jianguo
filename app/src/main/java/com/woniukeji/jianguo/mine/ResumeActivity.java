@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
@@ -32,6 +33,7 @@ import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.FileUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
 import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
@@ -99,10 +101,16 @@ public class ResumeActivity extends BaseActivity {
     //    private String[] sheoes=new String[]{"35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50"};
     private String[] clothes = new String[]{"S", "M", "L", "XL", "XXL", "XXXL"};
     private int loginId;
-    private String sex = "0";
+    private String sex = "1";
     private String student = "1";
     private String url2;
     private boolean save=false;
+
+    private String date="";
+    private String birDate="";
+    private String tall="";
+    private String shoes="";
+    private String clothse="";
 
 
 
@@ -121,6 +129,26 @@ public class ResumeActivity extends BaseActivity {
             showShortToast("请填写所在学校");
             return false;
         }
+       if (tvDate.getText().toString().trim()==null){
+           date="";
+       }
+        if (tvTall.getText().toString().trim()==null){
+            tall="";
+        }
+        if (tvBirthday.getText().toString().trim()==null){
+            birDate="";
+        }
+        if (tvShoes.getText().toString().trim()==null){
+            shoes="";
+        }
+        if (tvClothse.getText().toString().trim()==null){
+            clothse="";
+        }
+        date=tvDate.getText().toString().trim();
+        birDate=tvBirthday.getText().toString().trim();
+         shoes=  tvShoes.getText().toString().trim();
+        clothse=tvClothse.getText().toString().trim();
+        tall= tvTall.getText().toString().trim();
         return true;
     }
 
@@ -207,8 +235,8 @@ public class ResumeActivity extends BaseActivity {
                     String name = etRealName.getText().toString().trim();
                     if (chaeckContent()) {
                         PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
-                                tvDate.getText().toString().trim(), sex, tvTall.getText().toString().trim().substring(0, 3), student, tvBirthday.getText().toString().trim(),
-                                tvShoes.getText().toString().trim(), tvClothse.getText().toString().trim());
+                                date, sex, tall, student,birDate,
+                                shoes, clothse);
                         postTask.execute();
                         tvEdit.setText("编辑");
                         imgHead.setClickable(false);
@@ -224,6 +252,10 @@ public class ResumeActivity extends BaseActivity {
                         rlDate.setClickable(false);
                         etRealName.setFocusableInTouchMode(false);
                         etNickName.setFocusableInTouchMode(false);
+                        rbNo.setClickable(false);
+                        rbYes.setClickable(false);
+                        rbGirl.setClickable(false);
+                        rbBoy.setClickable(false);
                     }
                 }else {
                     save=true;
@@ -241,6 +273,10 @@ public class ResumeActivity extends BaseActivity {
                     rlDate.setOnClickListener(this);
                     etRealName.setFocusableInTouchMode(true);
                     etNickName.setFocusableInTouchMode(true);
+                    rbNo.setClickable(true);
+                    rbYes.setClickable(true);
+                    rbGirl.setClickable(true);
+                    rbBoy.setClickable(true);
                 }
 
                 break;
@@ -316,7 +352,7 @@ public class ResumeActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        tvTitle.setText("我的简历");
+        tvTitle.setText("我的资料");
         String dateHtml = "<font color='red'>*</font> 出生日期";
         CharSequence charSequence = Html.fromHtml(dateHtml);
         tvNecessaryDate.setText(charSequence);
@@ -340,6 +376,10 @@ public class ResumeActivity extends BaseActivity {
         etRealName.setFocusableInTouchMode(false);
         etNickName.setFocusableInTouchMode(false);
         imgBack.setOnClickListener(this);
+        rbNo.setClickable(false);
+        rbYes.setClickable(false);
+        rbGirl.setClickable(false);
+        rbBoy.setClickable(false);
     }
 
     private void initResumeInfo(Resume.UserResum userResum) {
@@ -603,8 +643,10 @@ public class ResumeActivity extends BaseActivity {
                 fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile);
                 imgHead.setImageURI(imgSource);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 300, 300);
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
+                File file = new File(Environment.getExternalStorageDirectory() + "/"+fileName+".png");
+                FileUtils.copyfile(imgFile,file,true);
+                BitmapUtils.compressBitmap(file.getAbsolutePath(), 300, 300);
+                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
                 url2 = "http://7xlell.com2.z0.glb.qiniucdn.com/" + MD5Coder.getQiNiuName(fileName);
             }
         } else if (requestCode == 1) {

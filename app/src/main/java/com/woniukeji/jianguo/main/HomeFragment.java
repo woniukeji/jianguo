@@ -35,6 +35,7 @@ import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.eventbus.JobTypeEvent;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.mine.MyPartJboActivity;
+import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.partjob.PartJobActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LocationUtil;
@@ -283,7 +284,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1) {
-                    GetTask getTask=new GetTask(String.valueOf(defultCity.getId()),String.valueOf(lastVisibleItem));
+                    GetTask getTask=new GetTask(String.valueOf(cityId),String.valueOf(lastVisibleItem-1));
                     getTask.execute();
                 }
             }
@@ -337,7 +338,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                         startActivity(new Intent(getActivity(), QuickLoginActivity.class));
                         return;
                     }
-                   startActivity(new Intent(getActivity(), MyPartJboActivity.class));
+                   startActivity(new Intent(getActivity(), SignActivity.class));
                     break;
 
             }

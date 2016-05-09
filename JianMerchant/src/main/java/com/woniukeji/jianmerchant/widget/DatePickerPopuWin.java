@@ -153,7 +153,7 @@ public class DatePickerPopuWin extends PopupWindow implements View.OnClickListen
 
     private void initDate() {
 
-        for (int i = 2016; i < 2017; i++) {
+        for (int i = 2016; i < 2018; i++) {
             years.add("" + i + " 年");
         }
         for (int i = 1; i < 13; i++) {

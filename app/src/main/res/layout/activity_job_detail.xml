@@ -413,6 +413,7 @@
        <TextView
         android:id="@+id/tv_work_content"
         android:textSize="15dp"
+        android:layout_marginLeft="12dp"
         android:layout_toRightOf="@+id/tv_notic6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -439,6 +440,7 @@
                 android:layout_toRightOf="@+id/tv_notic7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
                 android:maxLines="3"
                 />
         </RelativeLayout>

@@ -43,14 +43,15 @@ public class FilterActivity extends BaseActivity {
             R.mipmap.tab_about_me_select};
     private ViewPagerAdapter adapter;
     private String jobid;
+    private String jobName;
 
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_filter);
         ButterKnife.inject(this);
         Intent intent=getIntent();
-
         jobid=intent.getStringExtra("jobid");
+        jobName=intent.getStringExtra("jobname");
     }
 
     @Override
@@ -134,7 +135,7 @@ public class FilterActivity extends BaseActivity {
                 case 0:
                     return  FilterFragment.newInstance(0,jobid);           //已报名
                 case 1:
-                    return  FilterFragment.newInstance(1,jobid);           //已录取
+                    return  FilterFragment.newInstance(1,jobid,jobName);           //已录取
                 case 2:
                     return  FilterFragment.newInstance(2,jobid);    //取消
             }

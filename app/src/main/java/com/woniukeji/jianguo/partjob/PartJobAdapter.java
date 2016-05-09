@@ -95,7 +95,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
 
 
             // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
-            final String type;
+             String type = "";
             if (job.getTerm()==0){
                 holder.tvWages.setText(job.getMoney()+"/月");
                 type="/月";
@@ -111,9 +111,12 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             }else if(job.getTerm()==4){
                 holder.tvWages.setText(job.getMoney()+"/次");
                 type="/次";
-            }else {
+            }else if(job.getTerm()==5){
                 holder.tvWages.setText("义工");
                 type="义工";
+            }else if(job.getTerm()==6){
+                holder.tvWages.setText("面议");
+                type="面议";
             }
             //结算方式（0=月结，1=周结，2=日结，3=旅行）
             if (job.getMode()==0){
@@ -160,6 +163,12 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             set.setDuration(800);
             set.setInterpolator(new AccelerateInterpolator());
             set.start();
+            if (type.equals("面议")||type.equals("义工")){
+
+            }else {
+                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
+            }
+            final String finalType = type;
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,7 +177,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                     intent.putExtra("job",job.getId());
                     intent.putExtra("jobbean",job);
                     intent.putExtra("merchant",job.getMerchant_id());
-                    intent.putExtra("money",job.getMoney()+type);
+                    intent.putExtra("money",finalType);
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());
                     intent.putExtra("mername", job.getName());
                     mContext.startActivity(intent);

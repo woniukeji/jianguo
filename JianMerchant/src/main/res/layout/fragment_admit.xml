@@ -47,5 +47,18 @@
             android:overScrollMode="never"
             android:scrollbarStyle="outsideOverlay" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
+    <Button
+        android:id="@+id/btn_out_info"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_gray_low_bg"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:text="导出已录取的用户信息"
+        android:visibility="gone"
+        />
 </RelativeLayout>

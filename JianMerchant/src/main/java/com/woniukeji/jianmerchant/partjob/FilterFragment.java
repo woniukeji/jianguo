@@ -1,5 +1,6 @@
 package com.woniukeji.jianmerchant.partjob;
 
+import android.app.job.JobInfo;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -23,19 +25,24 @@ import com.woniukeji.jianmerchant.base.BaseFragment;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.BaseBean;
 import com.woniukeji.jianmerchant.entity.PublishUser;
+import com.woniukeji.jianmerchant.eventbus.FilterEvent;
 import com.woniukeji.jianmerchant.utils.DateUtils;
+import com.woniukeji.jianmerchant.utils.ExcelUtil;
+import com.woniukeji.jianmerchant.utils.LogUtils;
 import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
-import com.woniukeji.jianmerchant.eventbus.FilterEvent;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -44,27 +51,29 @@ import okhttp3.Response;
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCallBack{
+public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCallBack {
 
-    private static String params1="type";
-    private static String params2="jobid";
+    private static String params1 = "type";
+    private static String params2 = "jobid";
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     @InjectView(R.id.list) FixedRecyclerView list;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @InjectView(R.id.btn_out_info) Button btnOutInfo;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;
     private int MSG_POST_FAIL = 6;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context mContext = this.getActivity();
-    private List<PublishUser.ListTUserInfoEntity> modleList=new ArrayList<>();
+    private List<PublishUser.ListTUserInfoEntity> modleList = new ArrayList<>();
     private int lastVisibleItem;
     private FilterAdapter adapter;
     private LinearLayoutManager mLayoutManager;
     private int mPosition;
-    private int type=0;
+    private int type = 0;
     private String jobid;
+    private String jobName;
 
 
     @Override
@@ -77,8 +86,13 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
 
     @Override
     public void RecyOnClick(int loginid, int offer, int position) {
-        AdmitTask admitTask=new AdmitTask(String.valueOf(loginid),jobid,String.valueOf(offer));
+        AdmitTask admitTask = new AdmitTask(String.valueOf(loginid), jobid, String.valueOf(offer));
         admitTask.execute();
+    }
+
+    @OnClick(R.id.btn_out_info)
+    public void onClick() {
+        exportUser();
     }
 
 
@@ -94,15 +108,27 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                BaseBean<PublishUser> modelBaseBean= (BaseBean<PublishUser>) msg.obj;
-                    int count=msg.arg1;
-                    if (count==0){
+                    BaseBean<PublishUser> modelBaseBean = (BaseBean<PublishUser>) msg.obj;
+                    int count = msg.arg1;
+                    if (count == 0) {
                         modleList.clear();
-                    }else {
-
+                    }
+                    if (refreshLayout != null && refreshLayout.isRefreshing()) {
+                        refreshLayout.setRefreshing(false);
                     }
                     modleList.addAll(modelBaseBean.getData().getList_t_user_info());
+
+                    if (modleList.size() > 0) {//判断录取人数 是否显示图片
+                        rlNull.setVisibility(View.GONE);
+                        if (type==1){//导出录取人信息按钮
+                            btnOutInfo.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        rlNull.setVisibility(View.VISIBLE);
+                    }
+
                     adapter.notifyDataSetChanged();
+
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -119,7 +145,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                 case 5:
                     String me = (String) msg.obj;
                     Toast.makeText(getActivity(), me, Toast.LENGTH_SHORT).show();
-                    FilterEvent filterEvent=new FilterEvent();
+                    FilterEvent filterEvent = new FilterEvent();
                     EventBus.getDefault().post(filterEvent);
 //                    GetTask getTask=new GetTask(jobid,String.valueOf(type),String.valueOf(lastVisibleItem));
 //                    getTask.execute();
@@ -134,21 +160,34 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
             }
         }
     }
-    public static FilterFragment newInstance(int type,String jobid) {
+    public static FilterFragment newInstance(int type, String jobid) {
         //通过Bundle保存数据
         Bundle args = new Bundle();
         args.putInt(params1, type);
-        args.putString(params2,jobid);
+        args.putString(params2, jobid);
         FilterFragment fragment = new FilterFragment();
         //将Bundle设置为fragment的参数
         fragment.setArguments(args);
         return fragment;
     }
+    public static FilterFragment newInstance(int type, String jobid,String jobname) {
+        //通过Bundle保存数据
+        Bundle args = new Bundle();
+        args.putInt(params1, type);
+        args.putString(params2, jobid);
+        args.putString("jobname", jobname);
+        FilterFragment fragment = new FilterFragment();
+        //将Bundle设置为fragment的参数
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getInt(params1);
-        jobid=getArguments().getString(params2);
+        jobid = getArguments().getString(params2);
+        jobName = getArguments().getString("jobname");
         EventBus.getDefault().register(this);
     }
 
@@ -163,7 +202,8 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
     }
 
     private void initview() {
-        adapter = new FilterAdapter(modleList, getActivity(),type,jobid,this);
+
+        adapter = new FilterAdapter(modleList, getActivity(), type, jobid, this);
         mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
         list.setLayoutManager(mLayoutManager);
@@ -180,23 +220,26 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask=new GetTask(jobid,String.valueOf(type),"0");
+                GetTask getTask = new GetTask(jobid, String.valueOf(type), "0");
                 getTask.execute();
             }
         });
 //        merchant_id= (int) SPUtils.getParam(getActivity(),Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
-        GetTask getTask=new GetTask(jobid,String.valueOf(type),"0");
+        GetTask getTask = new GetTask(jobid, String.valueOf(type), "0");
         getTask.execute();
 
     }
-     public void onEvent(FilterEvent filterEvent){
-         GetTask getTask=new GetTask(jobid,String.valueOf(type),"0");
-         getTask.execute();
-     }
+
+    public void onEvent(FilterEvent filterEvent) {
+        GetTask getTask = new GetTask(jobid, String.valueOf(type), "0");
+        getTask.execute();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -206,7 +249,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (modleList.size() > 5 && lastVisibleItem == modleList.size()) {
-                    GetTask getTask=new GetTask(jobid,String.valueOf(type),String.valueOf(lastVisibleItem));
+                    GetTask getTask = new GetTask(jobid, String.valueOf(type), String.valueOf(lastVisibleItem));
                     getTask.execute();
                 }
             }
@@ -218,18 +261,35 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
             }
         });
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
     }
-
+    void exportUser() {
+      SweetAlertDialog sw=new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        sw.show();
+        try {
+            ExcelUtil excelUtils = new ExcelUtil(jobName+"已录用", modleList);
+            File file = excelUtils.create();
+            ExcelUtil.openFileByOtherApp(getActivity(), file);
+            if (sw.isShowing()) {
+                sw.dismiss();
+            }
+        } catch (Exception e) {
+            LogUtils.e("导出excel", e.getMessage());
+            if (sw.isShowing()) {
+                sw.dismiss();
+            }
+        }
+    }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
         private final String jobid;
         private final String type;
         private final String count;
 
-        GetTask(String merId,String type,String count) {
+        GetTask(String merId, String type, String count) {
             this.jobid = merId;
             this.type = type;
             this.count = count;
@@ -289,7 +349,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
-                                message.arg1= Integer.parseInt(count);
+                                message.arg1 = Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
@@ -303,12 +363,13 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                     });
         }
     }
+
     public class AdmitTask extends AsyncTask<Void, Void, Void> {
         private final String loginid;
         private final String jobid;
         private final String offer;
 
-        AdmitTask(String loginid,String jobid,String offer) {
+        AdmitTask(String loginid, String jobid, String offer) {
             this.loginid = loginid;
             this.jobid = jobid;
             this.offer = offer;

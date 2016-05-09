@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
     private LinearLayoutManager mLayoutManager;
     private int merchant_id;
     private int type=1;
+    private int lastVisibleItem;
 
     @Override
     public void onDestroyView() {
@@ -140,7 +142,7 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_admit, container, false);
+        View view = inflater.inflate(R.layout.fragment_part_manager, container, false);
         ButterKnife.inject(this, view);
         initview();
         return view;
@@ -171,6 +173,24 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
         });
         merchant_id= (int) SPUtils.getParam(getActivity(),Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
 
+
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (modleList.size() > 5 && lastVisibleItem == modleList.size()) {
+                    GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
 
     }
 
