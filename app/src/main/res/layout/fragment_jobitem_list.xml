@@ -38,7 +38,7 @@
         android:text="当前城市或类别下无数据"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="170dp"
         />
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_below="@+id/top"

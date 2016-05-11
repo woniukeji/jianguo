@@ -1,6 +1,7 @@
 package com.woniukeji.jianguo.wallte;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -74,6 +75,9 @@ public class BindYinlianActivity extends BaseActivity {
 //                    SPUtils.setParam(activity.context, Constants.USER_INFO,Constants.USER_PAY_PASS,activity.newPassWord);
                     String Message = (String) msg.obj;
                     Toast.makeText(activity, Message, Toast.LENGTH_SHORT).show();
+                    Intent intent=activity.getIntent();
+                    intent.putExtra("TYPE","1");
+                    activity.setResult(RESULT_OK,intent);
                     activity.finish();
                     break;
                 case 1:

@@ -32,7 +32,12 @@
 </RelativeLayout>
 
 
-
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+    <!--android:layout_below="@+id/img_menu"-->
+    <!--android:id="@+id/refresh_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--&gt;-->
         <com.woniukeji.jianguo.widget.FixedRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
@@ -42,4 +47,5 @@
             android:listSelector="@color/transparent"
             android:overScrollMode="never"
             android:scrollbarStyle="outsideOverlay" />
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 </RelativeLayout>

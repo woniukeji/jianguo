@@ -34,6 +34,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
@@ -93,7 +94,7 @@ public class QuickLoginActivity extends BaseActivity {
         ButterKnife.inject(this);
     }
 
-    private static class Myhandler extends Handler {
+    private class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
         public Myhandler(Context context) {
@@ -107,10 +108,13 @@ public class QuickLoginActivity extends BaseActivity {
             switch (msg.what) {
                 case 0:
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
+//                    BaseBean<User> user = msg.;
                     quickLoginActivity.saveToSP(user.getData());
-                    quickLoginActivity.showShortToast("登录成功！");
-                    Intent intent = new Intent(quickLoginActivity, MainActivity.class);
-//                    intent.putExtra("user",user);
+                    quickLoginActivity.showShortToast(user.getMessage());
+                    QuickLoginEvent quickLoginEvent=new QuickLoginEvent();
+                    quickLoginEvent.isQuickLogin=true;
+                    EventBus.getDefault().post(quickLoginEvent);
+                    Intent intent = new Intent(QuickLoginActivity.this, MainActivity.class);
                     quickLoginActivity.startActivity(intent);
                     quickLoginActivity.finish();
                     break;
@@ -200,30 +204,34 @@ public class QuickLoginActivity extends BaseActivity {
         SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
 
 
-
-        final ChatManager chatManager = ChatManager.getInstance();
+// 暂时关闭果聊功能
+//        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
+            if (JPushInterface.isPushStopped(getApplicationContext())){
+                JPushInterface.resumePush(getApplicationContext());
+            }
             //登陆leancloud服务器 给极光设置别名
-                        chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+//                        chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
                         JPushInterface.setAlias(getApplicationContext(), "jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
                             @Override
                             public void gotResult(int i, String s, Set<String> set) {
+
                                 LogUtils.e("jpush",s+",code="+i);
                             }
             });
         }
-        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (null == e) {
-                    TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
-                    talkMessageEvent.isLogin=true;
-                    EventBus.getDefault().post(talkMessageEvent);
-                } else {
-                    showShortToast(e.toString());
-                }
-            }
-        });
+//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+//            @Override
+//            public void done(AVIMClient avimClient, AVIMException e) {
+//                if (null == e) {
+//                    TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
+//                    talkMessageEvent.isLogin=true;
+//                    EventBus.getDefault().post(talkMessageEvent);
+//                } else {
+//                    showShortToast(e.toString());
+//                }
+//            }
+//        });
 
     }
 

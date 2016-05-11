@@ -28,6 +28,7 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Resume;
+import com.woniukeji.jianguo.eventbus.HeadImgEvent;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
@@ -50,6 +51,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -232,6 +234,7 @@ public class ResumeActivity extends BaseActivity {
                 break;
             case R.id.img_edit:
                 if (save){
+                    save=false;
                     String name = etRealName.getText().toString().trim();
                     if (chaeckContent()) {
                         PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
@@ -300,6 +303,11 @@ public class ResumeActivity extends BaseActivity {
                     resumeActivity.showShortToast("信息修改成功！");
                     SPUtils.setParam(resumeActivity, Constants.LOGIN_INFO, Constants.SP_RESUMM, "1");
                     SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.USER_SEX, resumeActivity.sex);
+                    SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_IMG, resumeActivity.url2);
+                    HeadImgEvent headImgEvent=new HeadImgEvent();
+                    headImgEvent.ImgUrl=resumeActivity.url2;
+                    EventBus.getDefault().post(headImgEvent);
+                    resumeActivity.finish();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;

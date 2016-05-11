@@ -14,8 +14,8 @@
     <ImageView
         android:id="@+id/img_log"
         android:layout_below="@+id/top"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@mipmap/img_logo"
         android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
@@ -24,7 +24,7 @@
     android:layout_below="@+id/img_log"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="兼果：v2.04"
+    android:text="兼果：v3.00"
     android:gravity="center"
     android:layout_marginTop="5dp"
     />
@@ -37,6 +37,7 @@
         android:gravity="center_vertical"
         android:background="@color/white"
         android:paddingTop="20dp"
+        android:visibility="gone"
         >
 <ImageView
     android:id="@+id/img_good"
@@ -55,6 +56,7 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:layout_below="@+id/ll_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,20 +81,95 @@
     </LinearLayout>
     <TextView
         android:id="@+id/bootom"
+        android:layout_below="@+id/tv_copration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:text="兼果在手，兼职我有"
         android:gravity="center"
         android:textSize="12dp"
-        android:layout_marginBottom="75dp"
+        android:layout_marginTop="20dp"
         />
     <RelativeLayout
-        android:id="@+id/tv_copration"
-        android:layout_above="@+id/bootom"
+        android:id="@+id/tv_leave_opinion"
         android:layout_width="match_parent"
         android:background="@color/white"
-        android:layout_marginBottom="50dp"
+       android:layout_marginTop="300dp"
+        android:layout_height="46dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="去评分"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            />
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_rule"
+        android:layout_below="@+id/tv_leave_opinion"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_marginTop="1dp"
+        android:layout_height="46dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="兼果用户协议"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            />
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_phone"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rl_rule"
+        android:background="@color/white"
+        android:layout_marginTop="1dp"
+        android:layout_height="46dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="商务合作"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            />
+        <TextView
+           android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="400-070-5176"
+            android:gravity="center_vertical"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/tv_copration"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rl_phone"
+        android:background="@color/white"
+        android:layout_marginTop="1dp"
         android:layout_height="46dp">
         <TextView
             android:layout_width="wrap_content"
@@ -109,29 +186,6 @@
             android:textColor="@color/app_bg"
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_above="@+id/tv_copration"
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_marginBottom="1dp"
-        android:layout_height="46dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="商务合作"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="8989-88557707"
-            android:gravity="center_vertical"
-            android:textColor="@color/app_bg"
-            android:layout_marginRight="15dp"
-            android:layout_alignParentRight="true"
             />
     </RelativeLayout>
 </RelativeLayout>

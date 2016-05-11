@@ -54,7 +54,7 @@ public class AttentionFragment extends BaseFragment {
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -170,11 +170,11 @@ public class AttentionFragment extends BaseFragment {
 //        });
 //        recycleList.addItemDecoration(new DividerItemDecoration(
 //                getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-            }
-        });
+//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//            }
+//        });
     }
 
     @Override

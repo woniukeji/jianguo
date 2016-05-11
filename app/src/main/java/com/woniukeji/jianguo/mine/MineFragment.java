@@ -35,6 +35,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.eventbus.HeadImgEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
@@ -190,12 +191,13 @@ public class MineFragment extends BaseFragment {
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.cancel();
                                 sweetAlertDialog.dismiss();
-                                ChatManager chatManager = ChatManager.getInstance();
-                                chatManager.closeWithCallback(new AVIMClientCallback() {
-                                    @Override
-                                    public void done(AVIMClient avimClient, AVIMException e) {
-                                    }
-                                });
+//                                暂时关闭果聊
+//                                ChatManager chatManager = ChatManager.getInstance();
+//                                chatManager.closeWithCallback(new AVIMClientCallback() {
+//                                    @Override
+//                                    public void done(AVIMClient avimClient, AVIMException e) {
+//                                    }
+//                                });
                                 JPushInterface.stopPush(getActivity());
 //                ActivityManager.getActivityManager().finishAllActivity();
                                 SPUtils.deleteParams(getActivity());
@@ -270,9 +272,17 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
-
+    public void onEvent(HeadImgEvent event) {
+        Picasso.with(getActivity()).load(event.ImgUrl)
+                .placeholder(R.mipmap.icon_head_defult)
+                .error(R.mipmap.icon_head_defult)
+                .transform(new CropCircleTransfermation())
+                .into(imgHead);
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -282,12 +292,11 @@ public class MineFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
-
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onStart() {
-        initData(true);
         super.onStart();
         LogUtils.i("fragment", "mine:onstart");
     }
@@ -313,7 +322,11 @@ public class MineFragment extends BaseFragment {
                 school.setText(schoolStr);
             }
             imgBack.setVisibility(View.GONE);
-            name.setText(nick);
+            if (nick.equals("")) {
+                name.setText("未填写");
+            } else {
+                name.setText(nick);
+            }
 
             phone.setText(tel);
             if (img != null && !img.equals("")) {
@@ -337,6 +350,7 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initData(true);
         LogUtils.i("fragment", "mine:onresum");
     }
 

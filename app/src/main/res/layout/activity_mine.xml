@@ -64,7 +64,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" "
+            android:text="尚未填写"
             android:textSize="16dp"
             android:textColor="@color/white"
             />
@@ -198,6 +198,7 @@
                 android:layout_height="63dp"
                 android:text="登录/注册"
                 android:textSize="20dp"
+                android:textColor="@color/white"
                 android:layout_marginLeft="20dp"
                 android:gravity="center_vertical"
                 android:layout_toRightOf="@+id/img_head1"

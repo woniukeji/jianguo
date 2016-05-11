@@ -211,6 +211,29 @@
             android:textColor="@color/white"
             />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提现过程中，如有疑问，请致电："
+            android:textSize="10dp"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="400-070-5176"
+            android:textColorHint="@color/app_bg"
+            android:textSize="10dp"
+            android:layout_marginTop="10dp"
+            />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_post"
         android:layout_width="match_parent"

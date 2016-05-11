@@ -1,10 +1,12 @@
 package com.woniukeji.jianguo.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -30,6 +32,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
+import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
@@ -120,6 +123,18 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_main);
@@ -209,15 +224,13 @@ public class MainActivity extends BaseActivity {
     public void onEvent(ImTypeMessageEvent event) {
         tabHost.showDot(2);
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
-//        GetJobCityTask getJobCityTask=new GetJobCityTask();
-//        getJobCityTask.execute();
+    public void onEvent(QuickLoginEvent event) {
+        if (event.isQuickLogin){
+            tabHost.setCurrentTab(0);
+            mainPager.setCurrentItem(0);
+        }
     }
+
 
     @Override
     protected void onStart() {
@@ -227,6 +240,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
 //        timer.schedule(task,2000);
     }
 //    Timer timer = new Timer();

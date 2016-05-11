@@ -22,6 +22,7 @@ import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
 
@@ -157,7 +158,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             Picasso.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
+//                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
 
             //动画
@@ -217,7 +218,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
+        @InjectView(R.id.user_head) CircleImageView userHead;
         @InjectView(R.id.business_name) TextView businessName;
         @InjectView(R.id.img_pay) ImageView imgPay;
         @InjectView(R.id.img_date) ImageView imgDate;

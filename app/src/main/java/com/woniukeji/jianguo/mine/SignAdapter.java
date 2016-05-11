@@ -20,6 +20,7 @@ import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.security.PublicKey;
 import java.util.List;
@@ -176,9 +177,15 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.imgFinishStatus.setVisibility(View.GONE);
                 holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
                 if (jobEntity.getInfo_start_time()-System.currentTimeMillis()/1000<3600*8){
-                    holder.btnCancelActn.setText("准备出发");
-                    holder.btnCancelActn.setClickable(false);
-                    holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+//                    holder.btnCancelActn.setText("准备出发");
+//                    holder.btnCancelActn.setClickable(false);
+//                    holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+
+                    holder.btnConfirmActn.setVisibility(View.GONE);
+                    holder.btnCancelActn.setVisibility(View.GONE);
+                    holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                    holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                    holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_zhunbei);
                 }
             }else if(jobEntity.getUser_status().equals("6")){
 //                holder.btnCancelActn.setText("我已取消");
@@ -197,13 +204,13 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
             }else if(jobEntity.getUser_status().equals("8")){
-                holder.btnCancelActn.setText("工作中");
-                holder.btnCancelActn.setClickable(false);
+//                holder.btnCancelActn.setText("工作中");
+//                holder.btnCancelActn.setClickable(false);
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.btnCancelActn.setVisibility(View.VISIBLE);
-                holder.imgFinishStatus.setVisibility(View.GONE);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
-                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_gongzuozhong);
             }else if(jobEntity.getUser_status().equals("9")){
                 holder.btnCancelActn.setText("催工资");
                 holder.btnConfirmActn.setVisibility(View.GONE);
@@ -212,10 +219,10 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_backound_yellow);
                 holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
             }else if(jobEntity.getUser_status().equals("10")){
-                holder.btnCancelActn.setText("已催工资");
+//                holder.btnCancelActn.setText("已催工资");
                 holder.btnConfirmActn.setVisibility(View.GONE);
                 holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
-                holder.btnCancelActn.setClickable(false);
+//                holder.btnCancelActn.setClickable(false);
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_yicuigongzi);
@@ -237,7 +244,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
             Picasso.with(mContext).load(jobEntity.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
+//                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
 
             if (type.equals("面议")||type.equals("义工")){
@@ -357,7 +364,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
+        @InjectView(R.id.user_head) CircleImageView userHead;
         @InjectView(R.id.business_name) TextView businessName;
         @InjectView(R.id.tv_job_wages) TextView tvJobWages;
 

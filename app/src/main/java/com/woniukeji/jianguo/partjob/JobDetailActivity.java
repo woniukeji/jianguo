@@ -401,7 +401,7 @@ public class JobDetailActivity extends BaseActivity {
                 }
 
                 sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
-                        if (jobinfo.getLimit_sex()==30||jobinfo.getLimit_sex()==0){
+                        if (jobinfo==null||jobinfo.getLimit_sex()==30||jobinfo.getLimit_sex()==0){
                     if (sex.equals("1")){
                         showShortToast("你的性别不符");
                         return;
@@ -420,7 +420,7 @@ public class JobDetailActivity extends BaseActivity {
                 int winHeight =JobDetailActivity.this. getWindow().getDecorView().getHeight();
                 signUpPopuWin.showAtLocation(JobDetailActivity.this.getWindow().getDecorView(),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, winHeight-rect.bottom);
-                showShortToast("每天可以报名三个兼职");
+                showShortToast("每天最多可以报名三个兼职！");
 //                shareBoard.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM, 0,winHeight-rect.bottom);
                 break;
         }

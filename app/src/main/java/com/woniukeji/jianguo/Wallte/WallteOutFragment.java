@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,8 @@ public class WallteOutFragment extends BaseFragment {
     private Context mContext = this.getActivity();
     private int loginId;
     private int delePosition;
+    private int lastVisibleItem;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public void onDestroyView() {
@@ -89,6 +92,13 @@ public class WallteOutFragment extends BaseFragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    if (refreshLayout!=null&&refreshLayout.isRefreshing()){
+                        refreshLayout.setRefreshing(false);
+                    }
+                    int count=msg.arg1;
+                    if (count==0){
+                        wagesList.clear();
+                    }
                     DrawMoney jobs = (DrawMoney) msg.obj;
                     wagesList.addAll(jobs.getData().getList_t_user_moneyout());
                     adapter.notifyDataSetChanged();
@@ -160,7 +170,7 @@ public class WallteOutFragment extends BaseFragment {
 //        tvTitle.setText("兼职");
 //        imgBack.setVisibility(View.GONE);
         adapter = new WallteOutAdapter(wagesList, getActivity());
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
 //设置布局管理器
         list.setLayoutManager(mLayoutManager);
 //设置adapter
@@ -175,6 +185,8 @@ public class WallteOutFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                GetTask getTask = new GetTask(String.valueOf(loginId),"0");
+                getTask.execute();
             }
         });
     }
@@ -182,22 +194,50 @@ public class WallteOutFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        GetTask getTask = new GetTask(String.valueOf(loginId));
-        getTask.execute();
         super.onAttach(context);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        GetTask getTask = new GetTask(String.valueOf(loginId),"0");
+        getTask.execute();
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (wagesList.size() > 5 && lastVisibleItem == wagesList.size() ) {
+                    GetTask getTask = new GetTask(String.valueOf(loginId),String.valueOf(lastVisibleItem));
+                    getTask.execute();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
     @Override
     public void onDetach() {
         super.onDetach();
     }
 
 
+
     public class GetTask extends AsyncTask<Void, Void, Void> {
+        private final String count;
         private final String loginId;
 
-        GetTask(String loginId) {
+        GetTask(String loginId,String count) {
             this.loginId = loginId;
+            this.count=count;
         }
 
         @Override
@@ -225,7 +265,7 @@ public class WallteOutFragment extends BaseFragment {
                     .url(Constants.GET_DRAW_INFO)
                     .addParams("only", only)
                     .addParams("login_id", loginId)
-                    .addParams("count", "0")
+                    .addParams("count", count)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
@@ -253,6 +293,7 @@ public class WallteOutFragment extends BaseFragment {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {

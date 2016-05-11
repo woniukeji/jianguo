@@ -521,9 +521,9 @@
     >
     <TextView
         android:id="@+id/tv_contact_company"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:paddingTop="3dp"
         android:text="在线咨询"
         android:drawableTop="@mipmap/icon_talk"
@@ -531,9 +531,9 @@
         />
     <TextView
         android:id="@+id/tv_collection"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:paddingTop="3dp"
         android:text="收藏"
         android:gravity="center"
@@ -542,7 +542,7 @@
         />
         <TextView
         android:id="@+id/tv_signup"
-        android:layout_weight="1.3"
+        android:layout_weight="1.5"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="我要报名"

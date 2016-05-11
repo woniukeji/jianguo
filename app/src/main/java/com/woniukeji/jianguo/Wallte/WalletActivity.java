@@ -181,7 +181,14 @@ public class WalletActivity extends BaseActivity {
     @Override
     public void initData() {
         int loginId = (int) SPUtils.getParam(WalletActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-       GetTask getTask=new GetTask(String.valueOf(loginId));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int loginId = (int) SPUtils.getParam(WalletActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+
+        GetTask getTask=new GetTask(String.valueOf(loginId));
         getTask.execute();
     }
 
@@ -230,7 +237,7 @@ public class WalletActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                getJobs();
+                getBalance();
             } catch (Exception e) {
             }
             return null;
@@ -244,7 +251,7 @@ public class WalletActivity extends BaseActivity {
         /**
          * postInfo
          */
-        public void getJobs() {
+        public void getBalance() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()

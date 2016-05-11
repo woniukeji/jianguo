@@ -1,11 +1,9 @@
 package com.woniukeji.jianguo.base;
 
 
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import com.woniukeji.jianguo.leanmessage.MessageHandler;
-import com.woniukeji.jianguo.utils.LogUtils;
+
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import java.util.Set;
 
@@ -30,21 +28,23 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        UmengConfig();
         // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
         init();
         instance = this;
-        // 初始化参数依次为 this, AppId, AppKey
-        AVOSCloud.initialize(this,"AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
-        MessageHandler msgHandler = new MessageHandler(this);
-        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
+        // 初始化参数依次为 this, AppId, AppKey，暂时关闭果聊，第二处splash和quick界面的账户登录
+//        AVOSCloud.initialize(this,"AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
+//        MessageHandler msgHandler = new MessageHandler(this);
+//        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
 
 //        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
     }
-    public void UmengConfig(){
 
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);//方法数过多 导致
     }
+
     private void init(){
         JPushInterface.init(getApplicationContext());
     }

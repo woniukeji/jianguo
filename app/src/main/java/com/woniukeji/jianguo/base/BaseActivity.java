@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.LogUtils;
 
@@ -30,11 +31,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onResume() {
         LogUtils.i("activity",":onResume");
         super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
     @Override
     protected void onStop() {
