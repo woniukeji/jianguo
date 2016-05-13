@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.woniukeji.jianguo.main.MainActivity;
+import com.woniukeji.jianguo.mine.SignActivity;
 
 /**
  * Created by invinjun on 2016/4/27.
@@ -21,7 +22,7 @@ import com.woniukeji.jianguo.main.MainActivity;
                 String extras = intent.getStringExtra(KEY_EXTRAS);
                 StringBuilder showMsg = new StringBuilder();
                 showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-                   context.startActivity(new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                   context.startActivity(new Intent(context, SignActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }
     }

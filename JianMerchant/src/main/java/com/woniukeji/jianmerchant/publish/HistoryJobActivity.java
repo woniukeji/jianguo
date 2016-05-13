@@ -63,6 +63,7 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
 
     @OnClick(R.id.img_back)
     public void onClick() {
+        finish();
     }
 
 

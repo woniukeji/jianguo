@@ -21,33 +21,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.okhttp.Request;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.CityBannerEntity;
-import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.HeadImgEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
-import com.woniukeji.jianguo.main.HomeFragment;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
-import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.FileCallBack;
 
 import java.io.File;
@@ -60,12 +48,9 @@ import cn.jpush.android.api.JPushInterface;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
-import okhttp3.Response;
 
 public class MineFragment extends BaseFragment {
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.title) TextView title;
-    @InjectView(R.id.title_bar) RelativeLayout titleBar;
+    @InjectView(R.id.title_bar) TextView titleBar;
     @InjectView(R.id.img_head) ImageView imgHead;
     @InjectView(R.id.name) TextView name;
     @InjectView(R.id.school) TextView school;
@@ -73,12 +58,10 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.lin_info) LinearLayout linInfo;
     @InjectView(R.id.account1) RelativeLayout account1;
     @InjectView(R.id.or_img) ImageView orImg;
-    @InjectView(R.id.img) ImageView img;
     @InjectView(R.id.point_img) ImageView pointImg;
     @InjectView(R.id.ll_money) LinearLayout llMoney;
     @InjectView(R.id.ll_real_name) LinearLayout llRealName;
     @InjectView(R.id.ll_wallte_realname) LinearLayout llWallteRealname;
-    @InjectView(R.id.img_enter) ImageView imgEnter;
     @InjectView(R.id.credit) RelativeLayout credit;
     @InjectView(R.id.rl_evaluation) RelativeLayout rlEvaluation;
     @InjectView(R.id.ll_collect) RelativeLayout llCollect;
@@ -87,6 +70,8 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
     @InjectView(R.id.btn_logout) Button btnLogout;
     @InjectView(R.id.refresh) RelativeLayout refresh;
+    @InjectView(R.id.ll_guanli) RelativeLayout llGuanli;
+    @InjectView(R.id.about) RelativeLayout about;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = getActivity();
     private int status;
@@ -95,19 +80,30 @@ public class MineFragment extends BaseFragment {
     private String apkurl;
 
 
-    @OnClick({R.id.about,R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.ll_guanli, R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.refresh:
-                if (version> getVersion()){//大于当前版本升级
-                    SweetAlertDialog downLoadDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-                    downLoadDialog.setTitleText("正在下载新版本");
-                    downLoadDialog.show();
-                    downLoadTask downLoadTask=new downLoadTask(downLoadDialog);
-                    downLoadTask.execute();
+                if (version > getVersion()) {//大于当前版本升级
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("检测到新版本，是否更新？")
+                            .setConfirmText("确定")
+                            .setCancelText("取消")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    SweetAlertDialog downLoadDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                                    downLoadDialog.setTitleText("正在下载新版本");
+                                    downLoadDialog.show();
+                                    downLoadTask downLoadTask = new downLoadTask(downLoadDialog);
+                                    downLoadTask.execute();
+                                }
+                            }).show();
 
-                }else {
-                   new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+
+                } else {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                             .setTitleText("已经是最新版本了")
                             .setConfirmText("确定")
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -121,6 +117,13 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.about:
                 startActivity(new Intent(getActivity(), AboutActivity.class));
+                break;
+            case R.id.ll_guanli:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    return;
+                }
+                startActivity(new Intent(getActivity(), SignActivity.class));
                 break;
             case R.id.credit:
                 if (loginId == 0) {
@@ -143,7 +146,8 @@ public class MineFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), QuickLoginActivity.class));
                     return;
                 }
-                Intent intentColl = new Intent(getActivity().getApplicationContext(), CollectActivity.class);
+//                Intent intentColl = new Intent(getActivity().getApplicationContext(), CollectActivity.class);,暂改收藏简直无商家
+                Intent intentColl = new Intent(getActivity().getApplicationContext(), CollTionActivity.class);
                 startActivity(intentColl);
                 break;
             case R.id.rl_point:
@@ -276,6 +280,7 @@ public class MineFragment extends BaseFragment {
             EventBus.getDefault().register(this);
         }
     }
+
     public void onEvent(HeadImgEvent event) {
         Picasso.with(getActivity()).load(event.ImgUrl)
                 .placeholder(R.mipmap.icon_head_defult)
@@ -283,6 +288,7 @@ public class MineFragment extends BaseFragment {
                 .transform(new CropCircleTransfermation())
                 .into(imgHead);
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -321,7 +327,6 @@ public class MineFragment extends BaseFragment {
             } else {
                 school.setText(schoolStr);
             }
-            imgBack.setVisibility(View.GONE);
             if (nick.equals("")) {
                 name.setText("未填写");
             } else {
@@ -359,8 +364,10 @@ public class MineFragment extends BaseFragment {
         LogUtils.i("fragment", "mine:ondestroy");
         super.onDestroy();
     }
+
     /**
      * 获取版本号
+     *
      * @return 当前应用的版本号
      */
     public int getVersion() {
@@ -368,28 +375,29 @@ public class MineFragment extends BaseFragment {
             PackageManager manager = getActivity().getPackageManager();
             PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
             int version = info.versionCode;
-            return  version;
+            return version;
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
     }
+
     private void openFile(File file) {
         // TODO Auto-generated method stub
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file),
                 "application/vnd.android.package-archive");
         startActivity(intent);
     }
 
 
-
     public class downLoadTask extends AsyncTask<Void, Void, Void> {
-        private  SweetAlertDialog sweetAlertDialog;
+        private SweetAlertDialog sweetAlertDialog;
+
         downLoadTask(SweetAlertDialog sweetAlertDialog) {
-            this.sweetAlertDialog=sweetAlertDialog;
+            this.sweetAlertDialog = sweetAlertDialog;
         }
 
         @Override
@@ -407,6 +415,7 @@ public class MineFragment extends BaseFragment {
         protected void onPreExecute() {
             super.onPreExecute();
         }
+
         /**
          * postInfo
          */
@@ -418,8 +427,7 @@ public class MineFragment extends BaseFragment {
                     .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
                     {
                         @Override
-                        public void inProgress(float progress)
-                        {
+                        public void inProgress(float progress) {
 //                            LogUtils.e("e",progress*100+"");
 //                            sweetAlertDialog.getProgressHelper().setProgress(progress);
 //                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
@@ -432,8 +440,7 @@ public class MineFragment extends BaseFragment {
 
 
                         @Override
-                        public void onResponse(File file)
-                        {
+                        public void onResponse(File file) {
                             sweetAlertDialog.dismissWithAnimation();
                             openFile(file);
 

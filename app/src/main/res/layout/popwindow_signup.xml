@@ -180,7 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="性别："
+                android:text="性别限制："
                 android:textSize="15dp"
                 />
             <TextView

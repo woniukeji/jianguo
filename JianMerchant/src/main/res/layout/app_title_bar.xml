@@ -6,12 +6,13 @@
     <ImageView
         android:id="@+id/img_back"
         android:src="@mipmap/icon_back"
-        android:layout_width="20dp"
+        android:layout_width="32dp"
        android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:layout_height="20dp"
+        android:layout_height="32dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
+        android:padding="8dp"
         android:layout_marginLeft="23dp"
         android:layout_centerVertical="true"
         />

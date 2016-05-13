@@ -14,14 +14,13 @@
 
     <Button
         android:id="@+id/btn_enter"
-        android:layout_width="140dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp"
-        android:background="@drawable/blue_bg"
+        android:layout_marginBottom="45dp"
+        android:background="@drawable/lead_btn_start_selector"
         android:textSize="14dp"
-        android:text="立即进入"
         android:textColor="@color/white"
         />
 </RelativeLayout>

@@ -25,6 +25,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="兼果：v3.00"
+    android:textSize="12dp"
     android:gravity="center"
     android:layout_marginTop="5dp"
     />
@@ -87,14 +88,14 @@
         android:text="兼果在手，兼职我有"
         android:gravity="center"
         android:textSize="12dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         />
     <RelativeLayout
         android:id="@+id/tv_leave_opinion"
         android:layout_width="match_parent"
         android:background="@color/white"
-       android:layout_marginTop="300dp"
-        android:layout_height="46dp">
+       android:layout_marginTop="260dp"
+        android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -119,7 +120,7 @@
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_marginTop="1dp"
-        android:layout_height="46dp">
+        android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -145,7 +146,7 @@
         android:layout_below="@+id/rl_rule"
         android:background="@color/white"
         android:layout_marginTop="1dp"
-        android:layout_height="46dp">
+        android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -170,7 +171,7 @@
         android:layout_below="@+id/rl_phone"
         android:background="@color/white"
         android:layout_marginTop="1dp"
-        android:layout_height="46dp">
+        android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

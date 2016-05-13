@@ -196,7 +196,7 @@
             />
         <EditText
             android:id="@+id/et_pay_wages"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
             android:hint="请输入实际发放工资数"
@@ -245,6 +245,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:text="确认修改"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background_change"
         android:layout_alignParentBottom="true"
         />
 </RelativeLayout>

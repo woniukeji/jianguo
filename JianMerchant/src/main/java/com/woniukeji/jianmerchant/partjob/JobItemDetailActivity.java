@@ -36,6 +36,7 @@ import java.lang.ref.WeakReference;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -135,28 +136,73 @@ public class JobItemDetailActivity extends BaseActivity {
                 startActivity(Intent);
                 break;
             case R.id.btn_change:
-                Intent changeIntent = new Intent(this, PublishDetailActivity.class);
-                changeIntent.putExtra("jobid", String.valueOf(jobid));
-                changeIntent.putExtra("type", "change");
-                startActivity(changeIntent);
+                new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("您确认修改当前兼职吗？")
+                        .setConfirmText("确定")
+                        .setCancelText("取消")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                Intent changeIntent = new Intent(JobItemDetailActivity.this, PublishDetailActivity.class);
+                                changeIntent.putExtra("jobid", String.valueOf(jobid));
+                                changeIntent.putExtra("type", "change");
+                                startActivity(changeIntent);
+                            }
+                        }).show();
+
 
                 break;
             case R.id.btn_finish:
-                PostActionTask postFinishTask = new PostActionTask(String.valueOf(loginId), String.valueOf(jobid), "9");
-                postFinishTask.execute();
+                new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("您确认结束当前兼职进入结算阶段吗？")
+                        .setConfirmText("确定")
+                        .setCancelText("取消")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                PostActionTask postFinishTask = new PostActionTask(String.valueOf(loginId), String.valueOf(jobid), "9");
+                                postFinishTask.execute();
+                            }
+                        }).show();
+
                 break;
             case R.id.btn_down:
                 if (modleJob.getStatus() == 3) {
-                    Intent intent = new Intent(mContext, CalculateActivity.class);
-                    intent.putExtra("money", tvWages.getText().toString());
-                    intent.putExtra("name", tvMerchantName.getText().toString());
-                    intent.putExtra("jobid", String.valueOf(jobinfo.getJob_id()));
-                    intent.putExtra("jobNid", String.valueOf(jobinfo.getNv_job_id()));
+
+//                    new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
+//                            .setTitleText("您确认将当前兼职下架吗？")
+//                            .setConfirmText("确定")
+//                            .setCancelText("取消")
+//                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                @Override
+//                                public void onClick(SweetAlertDialog sDialog) {
+//                                    sDialog.dismissWithAnimation();
+                                    Intent intent = new Intent(mContext, CalculateActivity.class);
+                                    intent.putExtra("money", tvWages.getText().toString());
+                                    intent.putExtra("name", tvMerchantName.getText().toString());
+                                    intent.putExtra("jobid", String.valueOf(jobinfo.getJob_id()));
+                                    intent.putExtra("jobNid", String.valueOf(jobinfo.getNv_job_id()));
 //                    intent.putExtra("")
-                    startActivity(intent);
+                                    startActivity(intent);
+//                                }
+//                            }).show();
+
                 } else {
-                    PostActionTask postDownTask = new PostActionTask(String.valueOf(loginId), String.valueOf(jobid), "13");
-                    postDownTask.execute();
+                    new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("您确认将当前兼职下架吗？")
+                            .setConfirmText("确定")
+                            .setCancelText("取消")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    PostActionTask postDownTask = new PostActionTask(String.valueOf(loginId), String.valueOf(jobid), "13");
+                                    postDownTask.execute();
+                                }
+                            }).show();
+
                 }
 
                 break;

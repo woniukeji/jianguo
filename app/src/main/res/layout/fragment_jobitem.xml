@@ -17,13 +17,13 @@
         android:id="@+id/user_head"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="18dp"
         android:layout_marginLeft="15dp"
        />
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_marginLeft="5dp"
+    android:layout_marginLeft="10dp"
     android:layout_toRightOf="@+id/user_head"
     android:orientation="vertical"
     >
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="16dp"
         android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
         android:maxEms="14"
         android:ellipsize="end"
@@ -124,7 +124,7 @@
         android:src="@mipmap/icon_man"
         android:layout_alignParentRight="true"
         android:layout_marginRight="75dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="23dp"
         />
     <RelativeLayout
         android:id="@+id/rl_progess"
@@ -132,7 +132,7 @@
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="14dp"
         android:layout_marginRight="15dp"
         >
 
@@ -178,7 +178,7 @@
         android:layout_marginBottom="14dp"
         android:text="1800/月"
         android:layout_marginRight="18dp"
-        android:textSize="12dp"
+        android:textSize="14dp"
         android:textColor="#f87c7c"
         />
     <TextView

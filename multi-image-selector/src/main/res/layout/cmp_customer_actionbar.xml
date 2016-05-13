@@ -36,7 +36,8 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
-        android:text="发送"
+        android:text="确定"
+        android:visibility="gone"
         android:textColor="@color/default_text_color"
         android:textSize="18sp" />
 

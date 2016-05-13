@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
@@ -589,9 +590,9 @@ public class PublishDetailActivity extends BaseActivity {
                 if (CheckStatus()) {
                     if (limit_sex.equals("3")) {
                         alike = String.valueOf(System.currentTimeMillis());
-                        PostPartInfoTask postPartInfoTask = new PostPartInfoTask(etGirlCount.getText().toString(), "31");
+                        PostPartInfoTask postPartInfoTask = new PostPartInfoTask(etBoyCount.getText().toString(), "31");
                         postPartInfoTask.execute();
-                        PostPartInfoTask postPartInfo = new PostPartInfoTask(etBoyCount.getText().toString(), "30");
+                        PostPartInfoTask postPartInfo = new PostPartInfoTask(etGirlCount.getText().toString(), "30");
                         postPartInfo.execute();
                     } else {
                         alike = "0";
@@ -622,6 +623,9 @@ public class PublishDetailActivity extends BaseActivity {
     private boolean CheckStatus() {
         if (etTitle.getText().toString() == null || etTitle.getText().toString().equals("")) {
             showShortToast("请输入兼职标题");
+            return false;
+        }else if (etTitle.getText().toString().length()>15) {
+            showShortToast("兼职标题过长");
             return false;
         } else if (etDetailPosition.getText().toString() == null || etDetailPosition.getText().toString().equals("")) {
             showShortToast("请输入详细工作地址");
@@ -678,16 +682,16 @@ public class PublishDetailActivity extends BaseActivity {
             showShortToast("请选择工作结束时间");
             return false;
         } else if (limit_sex.equals("3")) {//男女分别招收
-            if (etBoyCount.getText().toString().equals("") || etBoyCount.getText().toString() == null) {
+            if (etBoyCount.getText().toString().equals("") || etBoyCount.getText().toString() == null||etBoyCount.getText().toString().equals("0")) {
                 showShortToast("请输入男生人数");
                 return false;
             }
-            if (etGirlCount.getText().toString().equals("") || etGirlCount.getText().toString() == null) {
+            if (etGirlCount.getText().toString().equals("") || etGirlCount.getText().toString() == null||etGirlCount.getText().toString().equals("0")) {
                 showShortToast("请输入女生人数");
                 return false;
             }
         } else if (!limit_sex.equals("3")) {
-            if (etCount.getText().toString().equals("") || etCount.getText().toString() == null) {
+            if (etCount.getText().toString().equals("") || etCount.getText().toString() == null||etCount.getText().toString().equals("0")) {
                 showShortToast("请输入需要录取的人数");
                 return false;
             }
@@ -858,8 +862,10 @@ public class PublishDetailActivity extends BaseActivity {
                 String fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile);
                 imgJob.setImageURI(imgSource);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 300, 300);
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
+                File file = new File(Environment.getExternalStorageDirectory() + "/"+fileName+".png");
+                CommonUtils.copyfile(imgFile,file,true);
+                BitmapUtils.compressBitmap(file.getAbsolutePath(), 300, 300);
+                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
                 name_image = "http://7xlell.com2.z0.glb.qiniucdn.com/" + MD5Coder.getQiNiuName(fileName);
             }
         } else if (requestCode == 1) {

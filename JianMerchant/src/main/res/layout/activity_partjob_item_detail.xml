@@ -421,6 +421,7 @@
                 android:layout_height="wrap_content"
                 android:text="集合时间："
                 android:textSize="15dp"
+                android:maxEms="5"
                 />
             <TextView
                 android:id="@+id/tv_collection_time"
@@ -443,8 +444,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="性        别："
+                android:text="性别限制："
                 android:textSize="15dp"
+                android:maxEms="5"
                 />
             <TextView
                 android:id="@+id/tv_sex"

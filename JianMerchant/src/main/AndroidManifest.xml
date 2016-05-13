@@ -47,6 +47,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 极光推送权限 结束 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <application
         android:name=".base.Application"
         android:allowBackup="true"
@@ -236,6 +240,8 @@
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
         <meta-data android:name="JPUSH_APPKEY" android:value="b7b12502ea5672f603fb80c1" />
         <!-- 极光推送配置 结束 -->
+        <meta-data android:value="5732f43f67e58e1080000240" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
     </application>
 
 </manifest>

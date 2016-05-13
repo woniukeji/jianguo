@@ -64,7 +64,6 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
 
     @Override
     protected void onStart() {
-        mAnimCircleIndicator.start();
         super.onStart();
     }
 
@@ -77,12 +76,13 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
     @Override
     protected void onResume() {
         super.onResume();
+        mAnimCircleIndicator.start();
 //        mAnimCircleIndicator.start();
     }
 
     @Override
     protected void onStop() {
-//        mAnimCircleIndicator.stop();
+        mAnimCircleIndicator.stop();
         super.onStop();
     }
 
@@ -101,18 +101,22 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (position==2){
+        if (position==2||position==5||position==8||position==11){
             btnEnter.setVisibility(View.VISIBLE);
             mAnimCircleIndicator.stop();
-        }else{
+        } else{
             btnEnter.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onPageSelected(int position) {
-
-
+        if (position==2||position==5||position==8||position==11){
+            btnEnter.setVisibility(View.VISIBLE);
+            mAnimCircleIndicator.stop();
+        } else{
+            btnEnter.setVisibility(View.GONE);
+        }
     }
 
     @Override

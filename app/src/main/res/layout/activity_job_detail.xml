@@ -417,7 +417,8 @@
         android:layout_toRightOf="@+id/tv_notic6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="3"
+        android:maxLines="8"
+        android:paddingRight="8dp"
         />
 </RelativeLayout>
         <RelativeLayout
@@ -441,7 +442,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:maxLines="3"
+                android:paddingRight="8dp"
+                android:maxLines="8"
                 />
         </RelativeLayout>
     </RelativeLayout>
@@ -521,17 +523,17 @@
     >
     <TextView
         android:id="@+id/tv_contact_company"
-        android:layout_weight="0.8"
+        android:layout_weight="0.6"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:paddingTop="3dp"
-        android:text="在线咨询"
+        android:text="电话咨询"
         android:drawableTop="@mipmap/icon_talk"
         android:gravity="center"
         />
     <TextView
         android:id="@+id/tv_collection"
-        android:layout_weight="0.8"
+        android:layout_weight="0.6"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:paddingTop="3dp"
@@ -542,7 +544,7 @@
         />
         <TextView
         android:id="@+id/tv_signup"
-        android:layout_weight="1.5"
+        android:layout_weight="1.8"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="我要报名"

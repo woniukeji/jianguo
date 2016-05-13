@@ -208,7 +208,7 @@ public class PartJobFragment extends BaseFragment {
                 if (ColumnIndex == 0) {
 //                    typeid = String.valueOf(cityCategoryBaseBean.getData().getList_t_type().get(RowIndex).getId());
                     typeid = String.valueOf(sortId);
-                } else if (ColumnIndex == 1) {
+                } else if (ColumnIndex == 2) {
                     switch (RowIndex) {
                         case 0:
                             filterid = "2";
@@ -220,7 +220,7 @@ public class PartJobFragment extends BaseFragment {
                             filterid = "1";
                             break;
                     }
-                } else if (ColumnIndex == 2) {
+                } else if (ColumnIndex == 1) {
                     areid= String.valueOf(sortId);
 //                    areid = String.valueOf(cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().get(RowIndex));
                 }
@@ -256,12 +256,12 @@ public class PartJobFragment extends BaseFragment {
         baseEntity2.setName("工资最高");
         baseEntity2.setId(1);
         sort.add(baseEntity);
-        sort.add(baseEntity1);
         sort.add(baseEntity2);
+        sort.add(baseEntity1);
         //    sort.add("推荐排序");
         items.add(jobs);
-        items.add(sort);
         items.add(citys);
+        items.add(sort);
         mMenu.setShowCheck(true);//是否显示展开list的选中项
         mMenu.setmMenuTitleTextSize(14);//Menu的文字大小
         mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色

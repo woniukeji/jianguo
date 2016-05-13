@@ -241,7 +241,7 @@ public class JobDetailActivity extends BaseActivity {
                 .error(R.mipmap.icon_head_defult)
                 .transform(new CropCircleTransfermation())
                 .into(cirimgWork);
-        Picasso.with(JobDetailActivity.this).load(merchantInfo.getName_image())
+        Picasso.with(JobDetailActivity.this).load(job.getName_image())
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
                 .transform(new CropCircleTransfermation())

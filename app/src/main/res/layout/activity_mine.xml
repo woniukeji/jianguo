@@ -9,46 +9,35 @@
     tools:context=".mine.MineFragment">
 
 
-    <RelativeLayout
-        android:id="@+id/title_bar"
-         android:background="@color/app_bg"
-           style="@style/title_bar_style"
-        >
 
-        <ImageView
-            android:id="@+id/img_back"
-            android:src="@mipmap/icon_back"
-            android:layout_width="11dp"
-            android:layout_height="18dp"
-            android:layout_marginLeft="23dp"
-            android:layout_centerVertical="true"
-            />
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:text="兼果"
-            />
-
-    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:background="@mipmap/img_bg"
-        android:layout_height="136dp">
+        android:layout_height="180dp">
+
+            <TextView
+                android:id="@+id/title_bar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:text="兼果"
+                />
+
         <ImageView
             android:id="@+id/img_head"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:layout_marginLeft="15dp"
+            android:layout_below="@+id/title_bar"
             android:src="@mipmap/icon_head_defult"
             />
 <LinearLayout
     android:layout_toRightOf="@id/img_head"
     android:id="@+id/lin_info"
+    android:layout_below="@+id/title_bar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -60,6 +49,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
+
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
@@ -157,35 +147,23 @@
                     />
             </LinearLayout>
         </LinearLayout>
-        <ImageView
-            android:id="@+id/img_enter"
-            android:layout_above="@+id/ll_wallte_realname"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/icon_enter"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="15dp"
-            android:visibility="gone"
-            />
-        <TextView
-            android:layout_toLeftOf="@+id/img_enter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_above="@+id/ll_wallte_realname"
-            android:layout_marginBottom="5dp"
-            android:textSize="14dp"
-            android:visibility="gone"
-            android:text="账户管理"
-            />
         <RelativeLayout
             android:id="@+id/account1"
             android:layout_width="match_parent"
             android:background="@mipmap/img_bg"
             android:visibility="gone"
-            android:layout_height="136dp">
+            android:layout_height="180dp">
+            <TextView
+                android:id="@+id/title_bar1"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:text="兼果"
+                />
             <ImageView
+                android:layout_below="@+id/title_bar1"
                 android:id="@+id/img_head1"
                 android:layout_width="63dp"
                 android:layout_height="63dp"
@@ -194,6 +172,7 @@
                 />
 
             <TextView
+                android:layout_below="@+id/title_bar1"
                 android:layout_width="match_parent"
                 android:layout_height="63dp"
                 android:text="登录/注册"
@@ -221,7 +200,7 @@
             android:id="@+id/or_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pingjia"
+            android:src="@mipmap/icon_ziliao"
             android:gravity="center"
             />
         <TextView
@@ -231,27 +210,61 @@
             android:text="我的资料"
             android:textSize="16dp"
             android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             />
-        <ImageView
-            android:id="@+id/img"
-            android:layout_alignParentRight="true"
-            android:layout_width="10dp"
 
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
             />
         <TextView
-            android:layout_toLeftOf="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/ll_guanli"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        >
+        <ImageView
+            android:id="@+id/point_img9"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="90"
-            android:textSize="16dp"
-            android:textColor="#9B9B9B"
-            android:layout_marginRight="7dp"
+            android:src="@mipmap/icon_guanli"
             android:gravity="center"
-            android:visibility="gone"
+            />
+        <TextView
+            android:layout_toRightOf="@+id/point_img9"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="兼职管理"
+            android:textSize="16dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -327,34 +340,27 @@
             android:id="@+id/point_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_shoucang"
+            android:src="@mipmap/icon_guanzhu"
             android:gravity="center"
             />
         <TextView
             android:layout_toRightOf="@+id/point_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="收藏与关注"
+            android:text="收藏关注"
             android:textSize="16dp"
             android:gravity="center_vertical"
-            />
-        <ImageView
-            android:id="@+id/img2"
-            android:layout_alignParentRight="true"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+            android:layout_marginLeft="10dp"
             />
         <TextView
-            android:layout_toLeftOf="@+id/img2"
+            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=""
-            android:layout_marginRight="7dp"
-            android:textSize="16dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
             />
 
     </RelativeLayout>
@@ -429,15 +435,17 @@
             android:text="意见反馈"
             android:textSize="16dp"
             android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             />
-        <ImageView
-            android:id="@+id/img6"
+        <TextView
             android:layout_alignParentRight="true"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -461,25 +469,25 @@
             android:layout_height="match_parent"
             android:src="@mipmap/icon_gengxin"
             android:gravity="center"
-            android:padding="5dp"
             />
         <TextView
             android:layout_toRightOf="@+id/img_01"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="检测更新"
-            android:paddingLeft="1dp"
             android:gravity="center_vertical"
             android:textSize="16dp"
+            android:layout_marginLeft="10dp"
             />
-        <ImageView
-            android:id="@+id/img_02"
+        <TextView
             android:layout_alignParentRight="true"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -537,26 +545,27 @@
             android:id="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_we"
+            android:src="@mipmap/icon_women"
             android:gravity="center"
-            android:padding="4dp"
             />
         <TextView
             android:layout_toRightOf="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="关于我们"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:textSize="16dp"
             />
-        <ImageView
-            android:id="@+id/img_04"
+        <TextView
             android:layout_alignParentRight="true"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -564,14 +573,15 @@
             android:layout_alignParentBottom="true"
             android:background="@color/gray_btn_bg_color"
             android:layout_marginLeft="3dp"
+            android:visibility="gone"
             />
     </RelativeLayout>
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/button_background_logout"
         android:text="退出登录"

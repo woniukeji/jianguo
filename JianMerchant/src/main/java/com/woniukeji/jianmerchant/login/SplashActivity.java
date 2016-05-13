@@ -26,6 +26,7 @@ import com.woniukeji.jianmerchant.entity.User;
 import com.woniukeji.jianmerchant.talk.leanmessage.ChatManager;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.DateUtils;
+import com.woniukeji.jianmerchant.utils.LogUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -136,6 +137,7 @@ public class SplashActivity extends BaseActivity {
             JPushInterface.setAlias(getApplicationContext(), "jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
+                    LogUtils.e("jpush",s+",code="+i);
                 }
             });
         }

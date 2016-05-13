@@ -318,7 +318,11 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
 
     }
     public void  onEvent(UserWagesEvent event){
-      int sum = 0;
+        Calculate();
+    }
+
+    private void Calculate() {
+        int sum = 0;
         int person=0;
         for (int i = 0; i <userList.size() ; i++) {
             if (isSelected.get(i)){
@@ -329,6 +333,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         tvWagesSum.setText("合计："+sum+"元");
         tvChooseSum.setText("选中"+person+"人");
     }
+
     public void  onEvent(PayPassWordEvent event){
 
         if (event.isCorrect){
@@ -576,6 +581,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                 int position= data.getIntExtra("position",0);
                 AffordUser.ListTUserInfoEntity user= (AffordUser.ListTUserInfoEntity) data.getSerializableExtra("user");
                 userList.set(position,user);
+                Calculate();
                 adapter.notifyDataSetChanged();
             }
         }else {

@@ -302,32 +302,32 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         MainActivity mainActivity= (MainActivity) getActivity();
             switch (view.getId()){
                 case R.id.img_gifts_job:
-                    if (loginId == 0) {
-                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
-                        return;
-                    }
-//                    jobTypeEvent.fragmentHotType=2;//热门（0=普通，1=热门，2=精品，3=旅行）
+//                    if (loginId == 0) {
+//                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+//                        return;
+//                    }
+//                  jobTypeEvent.fragmentHotType=2;//热门（0=普通，1=热门，2=精品，3=旅行）
                     Intent intent=new Intent(getActivity(), PartJobActivity.class);
-                    intent.putExtra("type",1);
+                    intent.putExtra("type",2);
                     intent.putExtra("cityid",cityId);
                     startActivity(intent);
 //                    EventBus.getDefault().post(jobTypeEvent);
                 break;
                 case R.id.img_day_job:
-                    if (loginId == 0) {
-                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
-                        return;
-                    }
+//                    if (loginId == 0) {
+//                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+//                        return;
+//                    }
                     Intent dayIntent=new Intent(getActivity(), PartJobActivity.class);
-                    dayIntent.putExtra("type",2);
+                    dayIntent.putExtra("type",5);
                     dayIntent.putExtra("cityid",cityId);
                     startActivity(dayIntent);
                     break;
                 case R.id.img_travel_job:
-                    if (loginId == 0) {
-                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
-                        return;
-                    }
+//                    if (loginId == 0) {
+//                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+//                        return;
+//                    }
                     Intent travelIntent=new Intent(getActivity(), PartJobActivity.class);
                     travelIntent.putExtra("type",3);
                     travelIntent.putExtra("cityid",cityId);

@@ -48,16 +48,18 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"兼职", "消息","个人"};
+    private String[] titles = {"兼职", "个人"};
+//    "消息",
 
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
-            R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
+//     R.mipmap.tab_guo_talk_unselect,
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
-            R.mipmap.tab_guo_talk_select,
+
             R.mipmap.tab_about_me_select};
+//      R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     @Override
     public void setContentView() {
@@ -224,16 +226,17 @@ public class MainActivity extends BaseActivity {
                 case 0:
                     return new PartJobFragment();           //直播榜
                 case 1:
-                    return new TalkFragment();          //话题榜
-                case 2:
                     return  new MineFragment();
+//                    return new TalkFragment();          //话题榜
+//                case 2:
+//                    return  new MineFragment();
             }
             return new FragmentText();
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
 }

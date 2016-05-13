@@ -127,9 +127,6 @@ public class ResumeActivity extends BaseActivity {
         } else if (tvBirthday.getText().toString().trim() == null || tvBirthday.getText().toString().trim().equals("")) {
             showShortToast("请填写出生日期");
             return false;
-        } else if (student.equals("1") && tvSchool.getText().toString().trim() == null || tvSchool.getText().toString().trim().equals("")) {
-            showShortToast("请填写所在学校");
-            return false;
         }
        if (tvDate.getText().toString().trim()==null){
            date="";
@@ -145,6 +142,12 @@ public class ResumeActivity extends BaseActivity {
         }
         if (tvClothse.getText().toString().trim()==null){
             clothse="";
+        }
+        if(student.equals("1")){
+            if (student.equals("1") && tvSchool.getText().toString().trim() == null || tvSchool.getText().toString().trim().equals("")) {
+                showShortToast("请填写所在学校");
+                return false;
+            }
         }
         date=tvDate.getText().toString().trim();
         birDate=tvBirthday.getText().toString().trim();
@@ -203,7 +206,7 @@ public class ResumeActivity extends BaseActivity {
                 break;
             case R.id.rl_tall:
                 List<String> listTall = new ArrayList<String>();
-                for (int i = 145; i < 190; i++) {
+                for (int i = 130; i < 210; i++) {
                     listTall.add(String.valueOf(i) + "cm");
                 }
                 SizePickerPopuWin pickerPopupWin = new SizePickerPopuWin(context, listTall, mHandler, 2);
@@ -304,6 +307,9 @@ public class ResumeActivity extends BaseActivity {
                     SPUtils.setParam(resumeActivity, Constants.LOGIN_INFO, Constants.SP_RESUMM, "1");
                     SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.USER_SEX, resumeActivity.sex);
                     SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_IMG, resumeActivity.url2);
+                    SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_NAME,resumeActivity.etRealName.getText().toString().trim() );
+                    SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_SCHOOL,resumeActivity.tvSchool.getText().toString().trim() );
+
                     HeadImgEvent headImgEvent=new HeadImgEvent();
                     headImgEvent.ImgUrl=resumeActivity.url2;
                     EventBus.getDefault().post(headImgEvent);
@@ -325,7 +331,7 @@ public class ResumeActivity extends BaseActivity {
                             resumeActivity.tvClothse.setText(size);
                             break;
                         case 2:
-                            resumeActivity.tvTall.setText(size);
+                            resumeActivity.tvTall.setText(size.substring(0,size.lastIndexOf("cm")));
                             break;
                         case 3:
                             resumeActivity.tvBirthday.setText(size);
@@ -423,11 +429,20 @@ public class ResumeActivity extends BaseActivity {
             tvNecessarySchool.setText(schoolSequence);
         }
         fileName = userResum.getName_image();
-        Picasso.with(context).load(userResum.getName_image())
+
+        if (userResum.getName_image() != null && !userResum.getName_image().equals("")) {
+            Picasso.with(context).load(userResum.getName_image())
+                    .placeholder(R.mipmap.icon_head_defult)
+                    .error(R.mipmap.icon_head_defult)
+                    .transform(new CropCircleTransfermation())
+                    .into(imgHead);
+        } else {
+        Picasso.with(context).load("http//null")
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
                 .transform(new CropCircleTransfermation())
                 .into(imgHead);
+    }
 
     }
 

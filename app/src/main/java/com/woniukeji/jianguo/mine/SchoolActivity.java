@@ -80,7 +80,6 @@ public class SchoolActivity extends BaseActivity {
                     BaseBean<School> schoolBaseBean = (BaseBean) msg.obj;
                     schoolActivity.tschools.clear();
                     schoolActivity.tschools.addAll(schoolBaseBean.getData().getList_t_school());
-                    schoolActivity.showShortToast("查询成功");
                     schoolActivity.adapter.notifyDataSetChanged();
                     break;
                 case 1:

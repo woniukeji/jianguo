@@ -69,8 +69,8 @@ public class PartJobActivity extends BaseActivity {
     BaseBean<CityCategory> cityCategoryBaseBean;
     private Handler mHandler = new Myhandler(this);
     private DropDownMenu mMenu;
-    private int mtype = 0;
     private int cityid=3;
+    private int type= 0;
 
     @Override
     public void onClick(View v) {
@@ -100,6 +100,10 @@ public class PartJobActivity extends BaseActivity {
                 case 0:
                     if (refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
+                    }
+                    int count=msg.arg1;
+                    if (count==0){
+                        jobList.clear();
                     }
                     BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
                     if (jobs.getData().getList_t_job().size() == 0) {
@@ -138,7 +142,7 @@ public class PartJobActivity extends BaseActivity {
     public void setContentView() {
         setContentView(R.layout.activity_part_job);
         ButterKnife.inject(this);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
 //        initDropDownView();
     }
 
@@ -161,7 +165,7 @@ public class PartJobActivity extends BaseActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask = new GetTask("0", "0");
+                GetTask getTask = new GetTask(String.valueOf(type), "0");
                 getTask.execute();
             }
         });
@@ -171,10 +175,10 @@ public class PartJobActivity extends BaseActivity {
     public void initData() {
         Intent intent = getIntent();
           cityid = intent.getIntExtra("cityid", 3);
-        int type = intent.getIntExtra("type", 2);
+         type = intent.getIntExtra("type", 2);
         if (type==3){
             tvTitle.setText("兼职旅行");
-        }else if(type==2){
+        }else if(type==5){
             tvTitle.setText("日结兼职");
         }else{
             tvTitle.setText("精品兼职");
@@ -197,7 +201,7 @@ public class PartJobActivity extends BaseActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (jobList.size() > 5 && lastVisibleItem == jobList.size() + 1) {
-                    GetTask getTask = new GetTask(String.valueOf(cityid), String.valueOf(lastVisibleItem-1));
+                    GetTask getTask = new GetTask(String.valueOf(type),String.valueOf(lastVisibleItem));
                     getTask.execute();
                 }
             }
@@ -243,23 +247,23 @@ public class PartJobActivity extends BaseActivity {
 //        mMenu.setIsDebug(false);
     }
 
-    public void onEvent(CityJobTypeEvent event) {
-        event.cityCategory.getList_t_city2().get(0).getList_t_area();
-        event.cityCategory.getList_t_type().get(0).getId();
-        if (mtype == 4) {
-            GetTask getTask = new GetTask(String.valueOf(mtype), "0");
-            getTask.execute();
-        } else {
-            GetTask getTask = new GetTask(String.valueOf(mtype), "0");
-            getTask.execute();
-        }
-    }
+//    public void onEvent(CityJobTypeEvent event) {
+//        event.cityCategory.getList_t_city2().get(0).getList_t_area();
+//        event.cityCategory.getList_t_type().get(0).getId();
+//        if (type == 4) {
+//            GetTask getTask = new GetTask(String.valueOf(type), "0");
+//            getTask.execute();
+//        } else {
+//            GetTask getTask = new GetTask(String.valueOf(type), "0");
+//            getTask.execute();
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.reset(this);
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.img_back)
@@ -281,7 +285,7 @@ public class PartJobActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                if (type.equals("2")) {
+                if (type.equals("5")) {
                     getDayJobs();
                 } else
                     getJobs();
@@ -304,7 +308,7 @@ public class PartJobActivity extends BaseActivity {
                     .get()
                     .url(Constants.GET_JOB_DAY)
                     .addParams("only", only)
-                    .addParams("mode", type)
+                    .addParams("mode", "2")
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
@@ -334,6 +338,7 @@ public class PartJobActivity extends BaseActivity {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
@@ -386,6 +391,7 @@ public class PartJobActivity extends BaseActivity {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
                                 message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {

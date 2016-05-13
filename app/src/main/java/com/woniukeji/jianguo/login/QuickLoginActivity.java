@@ -284,7 +284,7 @@ public class QuickLoginActivity extends BaseActivity {
             showShortToast("验证码不正确");
             return false;
         }else if (!cbRule.isChecked()) {
-            showShortToast("请阅读《兼果用户协议");
+            showShortToast("请阅读并确认《兼果用户协议》");
             return false;
         }
         return true;
@@ -305,7 +305,7 @@ public class QuickLoginActivity extends BaseActivity {
         @Override
         public void onFinish() {
             btnGetCode.setText("验证码");
-            btnGetCode.setBackgroundDrawable(getDrawable(R.drawable.button_background_login));
+            btnGetCode.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_login));
             btnGetCode.setClickable(true);
         }
     }
