@@ -1,6 +1,9 @@
 package com.woniukeji.jianmerchant.base;
 
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
@@ -35,5 +38,10 @@ public class Application extends android.app.Application {
     public void UmengConfig(){
 
 
+    }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);//方法数过多 导致
     }
 }

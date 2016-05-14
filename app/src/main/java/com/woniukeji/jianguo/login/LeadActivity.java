@@ -35,17 +35,6 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lead);
         ButterKnife.inject(this);
-
-
-        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-
-        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
-        mAnimCircleIndicator.setOnPageChangeListener(this);
-        initBannerData();
-        mAnimCircleIndicator.isStopScrollWhenTouch();
-        mAnimCircleIndicator.scrollOnce();
-
     }
 
 
@@ -65,6 +54,14 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
     @Override
     protected void onStart() {
         super.onStart();
+        mAnimCircleIndicator = (InfiniteIndicator) findViewById(R.id.indicator_default_circle);
+        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
+
+        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
+        mAnimCircleIndicator.setOnPageChangeListener(this);
+
+        mAnimCircleIndicator.isStopScrollWhenTouch();
+        mAnimCircleIndicator.scrollOnce();
     }
 
     @Override
@@ -76,6 +73,7 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
     @Override
     protected void onResume() {
         super.onResume();
+        initBannerData();
         mAnimCircleIndicator.start();
 //        mAnimCircleIndicator.start();
     }

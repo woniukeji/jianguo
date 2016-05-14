@@ -55,24 +55,15 @@ import okhttp3.Response;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.password) EditText password;
-    @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.register_in_button) Button registerInButton;
-    @InjectView(R.id.wechat) ImageView wechat;
-    @InjectView(R.id.qq) ImageView qq;
-    @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
-    @InjectView(R.id.login_form) LinearLayout loginForm;
-    @InjectView(R.id.login_bg) ImageView loginBg;
-    @InjectView(R.id.forget_pass) TextView forgetPass;
-    @InjectView(R.id.quick_login) TextView quickLogin;
 
     private Context context=LoginActivity.this;
     // UI references.
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    private EditText phoneNumber;
+    private EditText password;
+    private Button signInButton;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_AUTH_COMPLETE = 2;
@@ -160,7 +151,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void initListeners() {
-
+       phoneNumber= (EditText) findViewById(R.id.phoneNumber);
+        password= (EditText) findViewById(R.id.password);
+        signInButton= (Button) findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phone = phoneNumber.getText().toString().trim();
+                String pass = password.getText().toString().trim();
+                if (CheckStatus()) {
+                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, MD5Util.MD5(pass));
+                    phoneLoginTask.execute();
+                }
+            }
+        });
     }
 
     @Override
@@ -255,12 +259,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
-                String phone = phoneNumber.getText().toString().trim();
-                String pass = password.getText().toString().trim();
-                if (CheckStatus()) {
-                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, MD5Util.MD5(pass));
-                    phoneLoginTask.execute();
-                }
+//                String phone = phoneNumber.getText().toString().trim();
+//                String pass = password.getText().toString().trim();
+//                if (CheckStatus()) {
+//                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, MD5Util.MD5(pass));
+//                    phoneLoginTask.execute();
+//                }
                 break;
 
             case R.id.forget_pass:
@@ -288,12 +292,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
-    }
+
 
 
 

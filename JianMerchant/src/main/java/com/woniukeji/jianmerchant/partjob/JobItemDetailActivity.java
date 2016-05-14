@@ -305,7 +305,7 @@ public class JobItemDetailActivity extends BaseActivity {
             btnDown.setText("去结算");
         }
 
-        tvTitle.setText(modleJob.getName());
+        tvTitle.setText("兼职详情");
         tvMerchantName.setText(modleJob.getName());
         tvWorkLocation.setText(jobinfo.getAddress());
         tvManagerName.setText(modleJob.getMerchant_id_name());
@@ -338,23 +338,23 @@ public class JobItemDetailActivity extends BaseActivity {
         if (jobinfo.getLimit_sex() == 0) {
             btnNoLimit.setVisibility(View.VISIBLE);
             llLimitSex.setVisibility(View.GONE);
-            btnNoLimit.setText("报名人数： " + modleJob.getCount() + "/" + modleJob.getSum());
+            btnNoLimit.setText("报名人数： " + modleJob.getUser_count() + "/" + modleJob.getSum());
             tvSex.setText("女");
         } else if (jobinfo.getLimit_sex() == 1) {
             btnNoLimit.setVisibility(View.VISIBLE);
             llLimitSex.setVisibility(View.GONE);
-            btnNoLimit.setText("报名人数： " + modleJob.getCount() + "/" + modleJob.getSum());
+            btnNoLimit.setText("报名人数： " + modleJob.getUser_count() + "/" + modleJob.getSum());
             tvSex.setText("男");
         } else if (jobinfo.getLimit_sex() == 2) {
             btnNoLimit.setVisibility(View.VISIBLE);
             llLimitSex.setVisibility(View.GONE);
-            btnNoLimit.setText("报名人数： " + modleJob.getCount() + "/" + modleJob.getSum());
+            btnNoLimit.setText("报名人数： " + modleJob.getUser_count() + "/" + modleJob.getSum());
             tvSex.setText("男女不限");
         } else {
             btnNoLimit.setVisibility(View.GONE);
             llLimitSex.setVisibility(View.VISIBLE);
-            btnBoy.setText("男生部分：" + modleJob.getCount() + "/" + modleJob.getSum());
-            btnGirl.setText("女生部分: " + jobinfo.getNv_count() + "/" + jobinfo.getNv_sum());
+            btnBoy.setText("男生部分：" + modleJob.getUser_count() + "/" + modleJob.getSum());
+            btnGirl.setText("女生部分: " + jobinfo.getNv_user_count() + "/" + jobinfo.getNv_sum());
 
             tvSex.setText("男女各需");//性别限制（0=只招女，1=只招男，2=不限男女，30,31，男女各需）
         }

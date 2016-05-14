@@ -87,6 +87,16 @@ public class JobDetails implements Serializable{
             private String is_collection;
             private String nv_job_id;
             private String nv_sum;
+            private int nv_user_count;
+
+
+            public int getNv_user_count() {
+                return nv_user_count;
+            }
+
+            public void setNv_user_count(int nv_user_count) {
+                this.nv_user_count = nv_user_count;
+            }
 
             public String getNv_count() {
                 return nv_count;

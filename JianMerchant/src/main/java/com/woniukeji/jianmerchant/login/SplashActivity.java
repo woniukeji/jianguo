@@ -102,7 +102,7 @@ public class SplashActivity extends BaseActivity {
     public void initViews() {
         //初始化SDK
 //        ShareSDK.initSDK(this);
-        Picasso.with(context).load(R.mipmap.splash).into(imgSplash);
+//        Picasso.with(context).load(R.mipmap.splash).into(imgSplash);
     }
 
     @Override

@@ -111,6 +111,15 @@ public class Model implements Serializable{
             private String nv_sum;
             private String nv_count;
             private String remarks;
+            private String user_count;
+            public String getUser_count() {
+                return user_count;
+            }
+
+            public void setUser_count(String user_count) {
+                this.user_count = user_count;
+            }
+
 
             public int getIs_model() {
                 return is_model;

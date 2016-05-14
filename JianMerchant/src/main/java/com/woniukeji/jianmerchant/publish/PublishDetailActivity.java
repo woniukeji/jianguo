@@ -625,7 +625,7 @@ public class PublishDetailActivity extends BaseActivity {
             showShortToast("请输入兼职标题");
             return false;
         }else if (etTitle.getText().toString().length()>15) {
-            showShortToast("兼职标题过长");
+            showShortToast("兼职标题请控制在15字以内");
             return false;
         } else if (etDetailPosition.getText().toString() == null || etDetailPosition.getText().toString().equals("")) {
             showShortToast("请输入详细工作地址");

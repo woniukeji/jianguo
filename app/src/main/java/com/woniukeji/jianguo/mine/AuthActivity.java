@@ -226,6 +226,11 @@ public class AuthActivity extends BaseActivity {
             rbWoman.setClickable(false);
             imgFront.setClickable(false);
             imgOpposite.setClickable(false);
+        }else if(status==4){//未通过
+            checkButton.setText("重新审核");
+            checkButton.setBackgroundResource(R.drawable.button_background_login);
+            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
+            postTask.execute();
         }
     }
 

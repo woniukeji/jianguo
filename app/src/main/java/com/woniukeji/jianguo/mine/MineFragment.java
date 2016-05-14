@@ -165,7 +165,7 @@ public class MineFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), QuickLoginActivity.class));
                     return;
                 }
-                if (status != 2 && status != 3) {//未认证 不可以查询信息
+                if (status == 1 || status == 0) {//未认证 不可以查询信息
                     Toast.makeText(getActivity(), "请先实名认证", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intentWallte = new Intent(getActivity().getApplicationContext(), WalletActivity.class);

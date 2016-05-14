@@ -119,11 +119,12 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.cancel();
-                               money = Double.parseDouble(sweetAlertDialog.getEditContent());
+                              money = Double.parseDouble(sweetAlertDialog.getEditContent());
                              tvJobWages.setText(money+str);
                              for (int i=0; i<userList.size();i++){
                                  userList.get(i).setReal_money(money);
                              }
+                                Calculate();
                                 adapter.notifyDataSetChanged();
 
                             }

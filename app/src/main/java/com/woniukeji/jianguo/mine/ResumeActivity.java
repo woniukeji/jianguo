@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +52,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
@@ -113,8 +115,7 @@ public class ResumeActivity extends BaseActivity {
     private String tall="";
     private String shoes="";
     private String clothse="";
-
-
+    private File file;
 
 
     private boolean chaeckContent() {
@@ -168,7 +169,34 @@ public class ResumeActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back:
-                finish();
+                if (save){
+                    new SweetAlertDialog(ResumeActivity.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("是否保存修改？")
+                            .setConfirmText("确定")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    String name = etRealName.getText().toString().trim();
+                                    if (chaeckContent()) {
+                                        PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
+                                                date, sex, tall, student,birDate,
+                                                shoes, clothse);
+                                        postTask.execute();
+                                    }
+
+                                }
+                            })
+                            .setCancelText("取消")
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                            finish();
+                        }
+                    }).show();
+                }
+
                 break;
             case R.id.img_head:
                 //单选多选,requestCode,最多选择数，单选模式
@@ -514,6 +542,7 @@ public class ResumeActivity extends BaseActivity {
             // TODO: attempt authentication against a network service.
             try {
                 if (isPost) {
+                    QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
                     postResume();
                 } else
                     getResume();
@@ -666,10 +695,9 @@ public class ResumeActivity extends BaseActivity {
                 fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile);
                 imgHead.setImageURI(imgSource);
-                File file = new File(Environment.getExternalStorageDirectory() + "/"+fileName+".png");
+                file = new File(Environment.getExternalStorageDirectory() + "/"+fileName+".png");
                 FileUtils.copyfile(imgFile,file,true);
                 BitmapUtils.compressBitmap(file.getAbsolutePath(), 300, 300);
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
                 url2 = "http://7xlell.com2.z0.glb.qiniucdn.com/" + MD5Coder.getQiNiuName(fileName);
             }
         } else if (requestCode == 1) {
@@ -686,4 +714,39 @@ public class ResumeActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (save){
+                new SweetAlertDialog(ResumeActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("是否保存修改？")
+                        .setConfirmText("确定")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                String name = etRealName.getText().toString().trim();
+                                if (chaeckContent()) {
+                                    PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
+                                            date, sex, tall, student,birDate,
+                                            shoes, clothse);
+                                    postTask.execute();
+                                }
+
+                            }
+                        })
+                        .setCancelText("取消")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                                finish();
+                            }
+                        }).show();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 }
