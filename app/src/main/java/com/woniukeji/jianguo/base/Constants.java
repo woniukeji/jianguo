@@ -77,7 +77,8 @@ public class Constants {
     public static final String LOGIN_VERSION="version";
     public static final String LOGIN_APK_URL="apkurl";
     public static final String LOGIN_CITY_POSITION="city_POSITION";
-    public static final String SP_TYPE="type";//0代表手机登录 1微信 2未登录
+    public static final String SP_TYPE="type";//0登录
+    public static final String SP_FIRST="first";//0未点击 1 点击首页 2 点击了编辑界面引导
     public static final String SP_TEL="tel";
     public static final String SP_PASSWORD="password";
     public static final String SP_USERID="id";

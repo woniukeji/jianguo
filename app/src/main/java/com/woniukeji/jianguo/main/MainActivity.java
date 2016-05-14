@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -87,6 +88,8 @@ public class MainActivity extends BaseActivity {
 
     private Handler mHandler = new Myhandler(this);
     private Context context = MainActivity.this;
+    private ImageView imgeMainLead;
+    private int clickTime=0;
 
 
     private static class Myhandler extends Handler {
@@ -149,6 +152,7 @@ public class MainActivity extends BaseActivity {
         FragmentManager mFragmentManager = getSupportFragmentManager();
         tabHost = (CommonTabLayout) findViewById(R.id.tabHost);
         mainPager = (ViewPager) findViewById(R.id.mainPager);
+        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
         for (int i = 0; i < titles.length; i++) {
@@ -209,7 +213,28 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
         int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+            int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
+        if (First==0){
+            imgeMainLead.setVisibility(View.VISIBLE);
+            imgeMainLead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   if(clickTime==0){
+                        imgeMainLead.setBackgroundResource(R.mipmap.img_three);
+                    }else if(clickTime==1){
+                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
+                    }else if(clickTime==2){
+                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
+                        imgeMainLead.setVisibility(View.GONE);
+                        SPUtils.setParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 1);
+                    }
+                    clickTime++;
+                }
+            });
+        }
+
     }
 
     @Override

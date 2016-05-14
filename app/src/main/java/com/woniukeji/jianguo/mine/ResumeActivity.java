@@ -91,7 +91,7 @@ public class ResumeActivity extends BaseActivity {
     @InjectView(R.id.et_nick_name) EditText etNickName;
     @InjectView(R.id.tv_necessary_sex) TextView tvNecessarySex;
     @InjectView(R.id.tv_necessary_date) TextView tvNecessaryDate;
-    @InjectView(R.id.img_go) ImageView imgGo;
+    @InjectView(R.id.img_lead) ImageView imgLead;
     @InjectView(R.id.tv_necessary_school) TextView tvNecessarySchool;
     @InjectView(R.id.img_edit) TextView tvEdit;
     private int MSG_POST_SUCCESS = 0;
@@ -168,6 +168,10 @@ public class ResumeActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.img_lead:
+                    imgLead.setVisibility(View.GONE);
+                SPUtils.setParam(ResumeActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 2);
+                break;
             case R.id.img_back:
                 if (save){
                     new SweetAlertDialog(ResumeActivity.this, SweetAlertDialog.WARNING_TYPE)
@@ -414,6 +418,7 @@ public class ResumeActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
+        imgLead.setOnClickListener(this);
         tvEdit.setOnClickListener(this);
         etRealName.setFocusableInTouchMode(false);
         etNickName.setFocusableInTouchMode(false);
@@ -477,6 +482,10 @@ public class ResumeActivity extends BaseActivity {
     @Override
     public void initData() {
         loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+        int First = (int) SPUtils.getParam(ResumeActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
+        if (First<2){
+            imgLead.setVisibility(View.VISIBLE);
+        }
         PostTask postTask = new PostTask(false, String.valueOf(loginId), null, null, null, null, null, null, null, null, null, null, null);
         postTask.execute();
     }

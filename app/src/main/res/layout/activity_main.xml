@@ -29,9 +29,10 @@
         android:layout_above="@+id/tabHost" />
 
     <ImageView
+        android:id="@+id/img_main_lead"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/img_where"
+        android:background="@mipmap/img_one"
         android:visibility="gone"
         />
 </RelativeLayout>
