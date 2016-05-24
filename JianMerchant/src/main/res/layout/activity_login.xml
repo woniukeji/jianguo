@@ -49,7 +49,6 @@
                             android:gravity="center|left"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:inputType="text|phone"
                             android:hint="请输入商家账号"
                             android:maxLines="1"
                             android:textSize="14sp"

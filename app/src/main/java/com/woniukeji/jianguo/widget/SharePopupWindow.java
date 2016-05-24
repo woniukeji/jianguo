@@ -63,10 +63,10 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
         wechatFriends = (ImageView) view.findViewById(R.id.weichat_friends_share_icon);
         sina = (ImageView) view.findViewById(R.id.sina_share_icon);
 
+        share_dialog_close = (ImageView) view.findViewById(R.id.share_dialog_close);
         ll_subscribe_share = (RelativeLayout) view.findViewById(R.id.ll_subscribe_share);
         rl_red_bg = (RelativeLayout) view.findViewById(R.id.rl_red_bg);
         //取消分享
-        share_dialog_close = (ImageView) view.findViewById(R.id.share_dialog_close);
         //添加点击事件
         share_dialog_close.setOnClickListener(this);
         ll_subscribe_share.setOnClickListener(this);

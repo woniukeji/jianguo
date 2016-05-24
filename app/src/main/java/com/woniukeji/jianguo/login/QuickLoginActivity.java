@@ -75,7 +75,7 @@ public class QuickLoginActivity extends BaseActivity {
     @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.icon_pass) ImageView iconPass;
-    SmsCode smsCode;
+//    SmsCode smsCode;
     @InjectView(R.id.cb_rule) CheckBox cbRule;
     @InjectView(R.id.tv_rule) TextView tvRule;
     @InjectView(R.id.user_rule) LinearLayout userRule;
@@ -123,7 +123,7 @@ public class QuickLoginActivity extends BaseActivity {
                     Toast.makeText(quickLoginActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    quickLoginActivity.smsCode = (SmsCode) msg.obj;
+//                    quickLoginActivity.smsCode = (SmsCode) msg.obj;
                     quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
 //                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
 //                        quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
@@ -243,7 +243,7 @@ public class QuickLoginActivity extends BaseActivity {
                 String phone = phoneNumber.getText().toString().trim();
                 String code = phoneCode.getText().toString().trim();
                 if (CheckStatus()) {
-                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone);
+                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone,code);
                     phoneLoginTask.execute();
                 }
                 break;
@@ -276,14 +276,16 @@ public class QuickLoginActivity extends BaseActivity {
         } else if (phoneCode.getText().toString().equals("")) {
             showShortToast("验证码不能为空");
             return false;
-        } else if (smsCode == null) {
-            showShortToast("验证码不正确");
-            return false;
-        } else if (smsCode.getText().equals("")
-                || !phoneCode.getText().toString().trim().equals(smsCode.getText())) {
-            showShortToast("验证码不正确");
-            return false;
-        }else if (!cbRule.isChecked()) {
+        }
+//        else if (smsCode == null) {
+//            showShortToast("验证码不正确");
+//            return false;
+//        } else if (smsCode.getText().equals("")
+//                || !phoneCode.getText().toString().trim().equals(smsCode.getText())) {
+//            showShortToast("验证码不正确");
+//            return false;
+//        }
+        else if (!cbRule.isChecked()) {
             showShortToast("请阅读并确认《兼果用户协议》");
             return false;
         }
@@ -313,10 +315,12 @@ public class QuickLoginActivity extends BaseActivity {
     public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
 
         private final String tel;
+        private final String sms;
         SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
-        PhoneLoginTask(String phoneNum) {
+        PhoneLoginTask(String phoneNum,String sms) {
             this.tel = phoneNum;
+            this.sms=sms;
         }
 
         @Override
@@ -359,6 +363,7 @@ public class QuickLoginActivity extends BaseActivity {
                     .url(Constants.REGISTER_PHONE)
                     .addParams("only", only)
                     .addParams("tel", tel)
+                    .addParams("sms_code", sms)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)

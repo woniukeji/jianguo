@@ -125,10 +125,6 @@ public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.View
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked){
                         isSelected.set(position,true);
-//                        UserWagesEvent userWagesEvent=new UserWagesEvent();
-//                        userWagesEvent.userInfoEntity=user;
-//                        userWagesEvent.isChoose=true;
-//                        EventBus.getDefault().post(userWagesEvent);
                     }else{
                         isSelected.set(position,false);
                     }

@@ -133,7 +133,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
-            String date=DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStart_date()));
+            String date=DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
             //性别限制（0=只招女，1=只招男，2=不限男女）
             if (job.getLimit_sex()==0||job.getLimit_sex()==30){

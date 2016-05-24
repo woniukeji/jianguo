@@ -124,7 +124,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                    finish();
 //                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                    startActivity(intent);
-                    showShortToast("登录成功");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

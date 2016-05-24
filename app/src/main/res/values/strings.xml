@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jianguo</string>
+    <string name="app_name">"兼果"</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">手机号</string>

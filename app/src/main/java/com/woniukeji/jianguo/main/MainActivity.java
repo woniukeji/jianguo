@@ -1,8 +1,11 @@
 package com.woniukeji.jianguo.main;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +18,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -29,6 +34,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
@@ -132,6 +138,54 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
+        initSystemBar(this);
+    }
+    public static void initSystemBar(Activity activity) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            setTranslucentStatus(activity, true);
+
+        }
+
+        SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+
+        tintManager.setStatusBarTintEnabled(true);
+
+// 使用颜色资源
+
+        tintManager.setStatusBarTintResource(R.color.app_bg);
+
+    }
+
+
+
+
+
+
+
+    @TargetApi(19)
+
+    private static void setTranslucentStatus(Activity activity, boolean on) {
+
+        Window win = activity.getWindow();
+
+        WindowManager.LayoutParams winParams = win.getAttributes();
+
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+
+        if (on) {
+
+            winParams.flags |= bits;
+
+        } else {
+
+            winParams.flags &= ~bits;
+
+        }
+
+        win.setAttributes(winParams);
+
     }
 
     @Override

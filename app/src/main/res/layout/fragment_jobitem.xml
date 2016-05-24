@@ -34,7 +34,7 @@
         android:textSize="15dp"
         android:layout_marginTop="16dp"
         android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
-        android:maxEms="14"
+        android:maxEms="12"
         android:ellipsize="end"
         android:maxLines="1"
         />
@@ -96,7 +96,7 @@
         android:gravity="center"
         android:layout_marginTop="1dp"
         >
-        >
+
         <ImageView
             android:id="@+id/img_local"
             android:layout_width="wrap_content"
@@ -109,7 +109,10 @@
             android:layout_toRightOf="@+id/img_local"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="海棠湾附近"
+            android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
+            android:maxEms="13"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="#9b9b9b"
             android:gravity="center"
             android:textSize="13dp"

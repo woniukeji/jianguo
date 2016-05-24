@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/gray_btn_bg_color"
     tools:context="com.woniukeji.jianguo.mine.AboutActivity">
-<include
-    layout="@layout/app_title_bar"
-    android:id="@+id/top"
-    />
+    <include
+        layout="@layout/app_title_bar"
+        android:id="@+id/top"
+        />
 
     <ImageView
         android:id="@+id/img_log"

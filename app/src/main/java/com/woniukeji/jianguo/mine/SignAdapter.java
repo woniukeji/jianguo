@@ -240,6 +240,12 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_fin_yiwancheng);
+            }else if(jobEntity.getUser_status().equals("13")){
+                holder.btnConfirmActn.setVisibility(View.GONE);
+                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.btnCancelActn.setVisibility(View.GONE);
+                holder.imgFinishStatus.setVisibility(View.VISIBLE);
+                holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
             }
             Picasso.with(mContext).load(jobEntity.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)

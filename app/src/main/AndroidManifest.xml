@@ -153,6 +153,7 @@
         <!-- 腾讯地图配置 开始 -->
         <meta-data android:name="TencentMapSDK" android:value="CIWBZ-PFOHV-6R6P3-U62N6-RCZ4E-WDFIH" />
         <!-- 腾讯地图配置 结束 -->
+        <!--自动升级 结束 -->
 
         <activity
             android:name=".mine.AuthActivity"

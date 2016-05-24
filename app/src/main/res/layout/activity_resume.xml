@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rl_root_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gray_btn_bg_color"
-    tools:context="com.woniukeji.jianguo.mine.AuthActivity">
+    tools:context="com.woniukeji.jianguo.mine.AuthActivity"
+    >
 
     <RelativeLayout
         android:id="@+id/title_bar"

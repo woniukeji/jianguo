@@ -159,26 +159,7 @@ public class WallteOutAdapter extends RecyclerView.Adapter<WallteOutAdapter.View
                     mContext.startActivity(intent);
                 }
             });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    final SweetAlertDialog dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
-                    dialog.setTitleText("确定要删除该收藏?")
-                            .setConfirmText("确定")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    AttentionCollectionEvent event = new AttentionCollectionEvent();
-//                                    event.listTJob = job;
-                                    EventBus.getDefault().post(event);
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setCancelText("取消")
-                            .show();
-                    return false;
-                }
-            });
+
         }
     }
 
