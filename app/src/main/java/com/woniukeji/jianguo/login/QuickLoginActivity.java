@@ -252,7 +252,7 @@ public class QuickLoginActivity extends BaseActivity {
                 break;
             case R.id.btn_get_code:
                 String tel = phoneNumber.getText().toString();
-                boolean isOK = CommonUtils.isMobileNO(tel);
+                boolean isOK = tel.length()==11;
                 if (isOK) {
                     time.start();
                     GetSMS getSMS = new GetSMS(tel);

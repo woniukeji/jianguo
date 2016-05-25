@@ -100,6 +100,8 @@ public class WallteOutAdapter extends RecyclerView.Adapter<WallteOutAdapter.View
                      holder.tvStatus.setText("已转出到支付宝");
                  }else if(job.getType()==1){
                      holder.tvStatus.setText("已转出到银行卡");
+                 }else if(job.getType()==2){
+                     holder.tvStatus.setText(job.getRemarks());
                  }
             }else {
                 holder.tvStatus.setText("结算中");

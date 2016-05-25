@@ -21,7 +21,7 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_FACTORY;
+    public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN= JIANGUO_USING+"T_user_login_Login_Merchant_Servlet";//
     public static final String REC_SMS= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//忘记密码 快速登录
     public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
