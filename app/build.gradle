@@ -74,6 +74,11 @@ android {
             manifestPlaceholders = [CHANNEL_NAME: "C360"]
             minSdkVersion 14
         }
+        other {
+            manifestPlaceholders = [CHANNEL_NAME: "other"]
+            minSdkVersion 14
+        }
+
 
     }
     sourceSets { main {

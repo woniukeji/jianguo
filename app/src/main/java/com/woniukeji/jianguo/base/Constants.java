@@ -75,6 +75,7 @@ public class Constants {
     public static final String LOGIN_CITY="city_name";
     public static final String LOGIN_CITY_ID="city_id";
     public static final String LOGIN_VERSION="version";
+    public static final String LOGIN_CONTENT="upLog";
     public static final String LOGIN_APK_URL="apkurl";
     public static final String LOGIN_CITY_POSITION="city_POSITION";
     public static final String SP_TYPE="type";//0登录

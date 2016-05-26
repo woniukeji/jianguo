@@ -2,6 +2,8 @@ package com.woniukeji.jianguo.mine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -38,8 +40,26 @@ public class AboutActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.inject(this);
-    }
+        TextView tvVersion=(TextView)findViewById(R.id.tv_version);
+        tvVersion.setText("版本：" +getVersionName());
 
+    }
+    /**
+     * 获取版本号
+     *
+     * @return 当前应用的版本号
+     */
+    public String getVersionName() {
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            String version = info.versionName;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "3.0";
+        }
+    }
     @OnClick({R.id.img_back, R.id.tv_leave_opinion, R.id.rl_phone, R.id.rl_rule})
     public void onClick(View view) {
         switch (view.getId()) {

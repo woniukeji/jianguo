@@ -12,6 +12,15 @@ public class User  implements Serializable {
     private T_user_info_Bean t_user_info;
     private String apk_url;
     private int version;
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public int getVersion() {
         return version;

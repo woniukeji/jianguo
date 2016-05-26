@@ -102,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:text="您可以将白纸置于桌面，将身份证置于纸上"
+        android:text="您可以将身份证置于桌面，用手机横屏拍摄"
         android:gravity="center"
         android:textColor="#f5df9c"
         android:textSize="12dp"

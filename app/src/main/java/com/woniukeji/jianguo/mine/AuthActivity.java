@@ -316,7 +316,7 @@ public class AuthActivity extends BaseActivity {
                 Uri imgSource = Uri.fromFile(imgFile);
                 imgFront.setImageURI(imgSource);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(), 480, 360);
+                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),720, 480);
             }
         }
         if (requestCode == 1) {
@@ -330,7 +330,7 @@ public class AuthActivity extends BaseActivity {
                 Uri imgSource = Uri.fromFile(imgFile2);
                 imgOpposite.setImageURI(imgSource);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(), 480, 360);
+                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(), 720, 480);
                 BitmapUtils.saveBitmap(bitmap, imgFile2);
             }
         }
