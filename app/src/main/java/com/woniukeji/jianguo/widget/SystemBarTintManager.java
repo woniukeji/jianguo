@@ -83,7 +83,7 @@ public class SystemBarTintManager {
      * @param activity The host activity.
      */
     @TargetApi(19)
-    public SystemBarTintManager(Activity activity) {
+        public SystemBarTintManager(Activity activity) {
 
         Window win = activity.getWindow();
         ViewGroup decorViewGroup = (ViewGroup) win.getDecorView();
@@ -95,7 +95,7 @@ public class SystemBarTintManager {
             TypedArray a = activity.obtainStyledAttributes(attrs);
             try {
                 mStatusBarAvailable = a.getBoolean(0, false);
-                mNavBarAvailable = a.getBoolean(1, false);
+                mNavBarAvailable = a.getBoolean(0, false);
             } finally {
                 a.recycle();
             }

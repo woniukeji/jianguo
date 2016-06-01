@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -140,7 +142,50 @@ public class DrawMoneyActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
-        rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      etMoneySum.addTextChangedListener(new TextWatcher() {
+
+          @Override
+          public void onTextChanged(CharSequence s, int start, int before,
+                                    int count) {
+              if (s.toString().contains(".")) {
+                  if (s.length() - 1 - s.toString().indexOf(".") > 2) {
+                      s = s.toString().subSequence(0,
+                              s.toString().indexOf(".") + 3);
+                      etMoneySum.setText(s);
+                      etMoneySum.setSelection(s.length());
+                  }
+              }
+              if (s.toString().trim().substring(0).equals(".")) {
+                  s = "0" + s;
+                  etMoneySum.setText(s);
+                  etMoneySum.setSelection(2);
+              }
+
+              if (s.toString().startsWith("0")
+                      && s.toString().trim().length() > 1) {
+                  if (!s.toString().substring(1, 2).equals(".")) {
+                      etMoneySum.setText(s.subSequence(0, 1));
+                      etMoneySum.setSelection(1);
+                      return;
+                  }
+              }
+          }
+
+          @Override
+          public void beforeTextChanged(CharSequence s, int start, int count,
+                                        int after) {
+
+          }
+
+          @Override
+          public void afterTextChanged(Editable s) {
+              // TODO Auto-generated method stub
+
+          }
+
+    });
+
+rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {

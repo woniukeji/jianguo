@@ -192,7 +192,6 @@ public class JobDetailActivity extends BaseActivity {
                 }
             }
 
-
         if (jobinfo.getIs_collection().equals("0")){
             Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -410,15 +409,19 @@ public class JobDetailActivity extends BaseActivity {
                 sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
                         if (jobinfo==null||jobinfo.getLimit_sex()==30||jobinfo.getLimit_sex()==0){
                     if (sex.equals("1")){
-                        showShortToast("你的性别不符");
+                        showShortToast("您的性别不符");
                         return;
                     }
                 }
                 if (jobinfo.getLimit_sex()==31||jobinfo.getLimit_sex()==1){
                     if (sex.equals("0")){
-                        showShortToast("你的性别不符");
+                        showShortToast("您的性别不符");
                         return;
                     }
+                }
+                if (job.getCount()>=job.getSum()){
+                        showShortToast("该兼职已报满，再看看其它的吧！");
+                        return;
                 }
                 SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,jobid,jobinfo,tvPayMethod.getText().toString(),money);
                 signUpPopuWin.showShareWindow();

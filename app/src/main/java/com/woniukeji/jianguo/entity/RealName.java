@@ -30,6 +30,15 @@ public class RealName {
         private String realname;
         private String id_number;
         private String sex;
+        private int status;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
         public String getId() {
             return id;

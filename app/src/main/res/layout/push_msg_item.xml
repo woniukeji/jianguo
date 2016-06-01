@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#ebebeb"
+                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+
+    >
+    <LinearLayout
+        android:id="@+id/rl_job"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dialog_bg"
+                    android:padding="15dp"
+                    android:orientation="vertical"
+        >
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_toRightOf="@+id/user_head"
+        android:layout_marginTop="2dp"
+        android:text="您有一份工资已经结算"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1月2日"
+        android:textSize="9dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/tv_date"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="消息详情："
+        android:textSize="12dp"
+        android:id="@+id/tv_content"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="备注："
+        android:textSize="12dp"
+        android:id="@+id/tv_ps"/>
+</LinearLayout>
+</RelativeLayout>

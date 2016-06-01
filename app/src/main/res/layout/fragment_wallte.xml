@@ -28,7 +28,7 @@
         android:textSize="12dp"
         android:textColor="#9B9B9B"
         android:layout_centerHorizontal="true"
-        android:text="暂时还没有收藏过哦"/>
+        android:text="暂无相关数据"/>
 </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

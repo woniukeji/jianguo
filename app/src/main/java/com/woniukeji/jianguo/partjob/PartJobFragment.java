@@ -214,10 +214,10 @@ public class PartJobFragment extends BaseFragment {
                             filterid = "2";
                             break;
                         case 1:
-                            filterid = "0";
+                            filterid = "1";
                             break;
                         case 2:
-                            filterid = "1";
+                            filterid = "0";
                             break;
                     }
                 } else if (ColumnIndex == 1) {
@@ -251,10 +251,10 @@ public class PartJobFragment extends BaseFragment {
         baseEntity.setId(2);
         BaseEntity baseEntity1=new BaseEntity();
         baseEntity1.setName("最新发布");
-        baseEntity1.setId(0);
+        baseEntity1.setId(1);
         BaseEntity baseEntity2=new BaseEntity();
         baseEntity2.setName("工资最高");
-        baseEntity2.setId(1);
+        baseEntity2.setId(0);
         sort.add(baseEntity);
         sort.add(baseEntity2);
         sort.add(baseEntity1);

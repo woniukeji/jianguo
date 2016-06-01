@@ -77,6 +77,15 @@ public class Balance implements Serializable{
             private String yinhang;
             private String kahao;
             private String pay_password;
+            private int pay_status;
+
+            public int getPay_status() {
+                return pay_status;
+            }
+
+            public void setPay_status(int pay_status) {
+                this.pay_status = pay_status;
+            }
 
             public int getId() {
                 return id;

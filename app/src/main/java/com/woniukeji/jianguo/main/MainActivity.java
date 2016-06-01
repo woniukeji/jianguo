@@ -4,9 +4,14 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
@@ -21,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -29,6 +35,7 @@ import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.fenjuly.library.ArrowDownloadButton;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -39,6 +46,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
+import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
@@ -52,10 +60,13 @@ import com.woniukeji.jianguo.talk.TalkFragment;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LocationUtil;
+import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.FileCallBack;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -63,6 +74,7 @@ import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -75,8 +87,7 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职",  "我"};//"果聊",
-
+    private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
             R.mipmap.tab_partjob_unselect,
@@ -91,12 +102,15 @@ public class MainActivity extends BaseActivity {
     private long exitTime;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
-
+    ArrowDownloadButton button;
     private Handler mHandler = new Myhandler(this);
     private Context context = MainActivity.this;
     private ImageView imgeMainLead;
     private int clickTime=0;
+    private String apkurl;
 
+    int b = 0;
+    private RelativeLayout up_dialog;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -121,7 +135,9 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-
+//                    int pro=msg.arg1;
+//                    activity. button.setProgress((int)pro);
+//                    activity.loadingView.setPercent(pro);
                     break;
                 case 3:
                     String sms = (String) msg.obj;
@@ -137,9 +153,34 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//          loadingView = (CircleLoadingView) findViewById(R.id.loading);
         ButterKnife.inject(this);
         initSystemBar(this);
+        button = (ArrowDownloadButton)findViewById(R.id.arrow_download_button);
+        up_dialog= (RelativeLayout) findViewById(R.id.up_dialog);
+        int version = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
+        apkurl = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
+        if (version > getVersion()) {//大于当前版本升级
+            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("检测到新版本，是否更新？")
+                    .setConfirmText("确定")
+                    .setCancelText("取消")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+//                            SweetAlertDialog downLoadDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+//                            downLoadDialog.setTitleText("正在下载新版本");
+//                            downLoadDialog.show();
+                            up_dialog.setVisibility(View.VISIBLE);
+                            button.startAnimating();
+                            downLoadTask downLoadTask = new downLoadTask();
+                            downLoadTask.execute();
+                        }
+                    }).show();
+        }
     }
+
     public static void initSystemBar(Activity activity) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -158,10 +199,113 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    public class downLoadTask extends AsyncTask<Void, Void, Void> {
+        private SweetAlertDialog sweetAlertDialog;
+
+        downLoadTask(SweetAlertDialog sweetAlertDialog) {
+            this.sweetAlertDialog = sweetAlertDialog;
+        }
+        downLoadTask() {
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                getCitys();
+            } catch (Exception e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * postInfo
+         */
+        public void getCitys() {
+
+            OkHttpUtils
+                    .get()
+                    .url(apkurl)
+                    .build()
+                    .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
+                    {
+                        @Override
+                        public void inProgress( float progress) {
+                            Message message=new Message();
+                            message.what=2;
+                            float tem=progress*100;
+                             b = (int)tem;
+                            message.arg1=b;
+                            int i = (int) Math.round(progress+0.5);
+//                             mHandler.sendMessage(message);
+                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    button.setProgress(b);
+                                }
+                            });
+//                            loadingView.setImageBitmap(
+//                                    BitmapFactory.decodeResource(getResources(), R.drawable.icon_chat_photo));
+//                            sweetAlertDialog.getProgressHelper().setProgress(progress);
+//                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+
+                        }
 
 
+                        @Override
+                        public void onResponse(File file) {
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    up_dialog.setVisibility(View.GONE);
+                                }
+                            });
+
+                            openFile(file);
+
+                        }
+                    });
+        }
+    }
+    private void openFile(File file) {
+        // TODO Auto-generated method stub
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file),
+                "application/vnd.android.package-archive");
+        startActivity(intent);
+    }
 
 
+    /**
+     * 获取版本号
+     *
+     * @return 当前应用的版本号
+     */
+    public int getVersion() {
+        try {
+            PackageManager manager = MainActivity.this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(MainActivity.this.getPackageName(), 0);
+            int version = info.versionCode;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
 
     @TargetApi(19)

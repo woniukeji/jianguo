@@ -267,7 +267,7 @@ public class QuickLoginActivity extends BaseActivity {
     }
 
     private boolean CheckStatus() {
-        if (!CommonUtils.isMobileNO(phoneNumber.getText().toString().trim())) {
+        if (phoneNumber.getText().toString().trim().length()!=11) {
             showShortToast("手机号码格式不正确");
             return false;
         }

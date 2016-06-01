@@ -1234,14 +1234,14 @@
         android:layout_width="match_parent"
         android:layout_height="112dp"
         android:layout_marginTop="8dp"
-        android:hint="请填写您的工作要求 "
+        android:hint="请填写您的工作要求"
         android:textSize="13dp"
         android:gravity="left|top"
         android:paddingLeft="25dp"
         android:paddingTop="10dp"
         android:textColorHint="#bfbfbf"
         android:background="#efefef"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="200dp"
         />
 </LinearLayout>
     </LinearLayout>

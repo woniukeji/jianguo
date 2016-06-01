@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
@@ -32,12 +35,16 @@ import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.EditCheckUtil;
 import com.woniukeji.jianguo.utils.FileUtils;
+import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
 import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -56,6 +63,8 @@ public class AuthActivity extends BaseActivity {
     @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.img_front) ImageView imgFront;
     @InjectView(R.id.tv_front) TextView tvFront;
+    @InjectView(R.id.tv_not1) TextView tvNot1;
+    @InjectView(R.id.tv_not2) TextView tvNot2;
     @InjectView(R.id.img_opposite) ImageView imgOpposite;
     @InjectView(R.id.tv_opposite) TextView tvOpposite;
     @InjectView(R.id.ll_top) LinearLayout llTop;
@@ -64,7 +73,7 @@ public class AuthActivity extends BaseActivity {
     @InjectView(R.id.tv_phone_auth) TextView etPhoneAuth;
     @InjectView(R.id.et_real_name) EditText etRealName;
     @InjectView(R.id.et_id) EditText etId;
-    @InjectView(R.id.or_img) ImageView orImg;
+    @InjectView(R.id.img_pass) ImageView imgPass;
     @InjectView(R.id.rb_man) RadioButton rbMan;
     @InjectView(R.id.rb_woman) RadioButton rbWoman;
     @InjectView(R.id.check_button) Button checkButton;
@@ -137,7 +146,6 @@ public class AuthActivity extends BaseActivity {
 
     }
     private void setInf(RealName realName) {
-        etId.setText(realName.getT_user_realname().getId_number());
         etRealName.setText(realName.getT_user_realname().getRealname());
         if (realName.getT_user_realname().getSex().equals("0")){
             rbMan.setChecked(false);
@@ -146,9 +154,60 @@ public class AuthActivity extends BaseActivity {
             rbMan.setChecked(true);
             rbWoman.setChecked(false);
         }
-        Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
-        Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+          SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,realName.getT_user_realname().getStatus());
+        if (realName.getT_user_realname().getStatus()==2){//已经认证 可以查询信息
+//            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
+//            postTask.execute();
+            imgPass.setVisibility(View.VISIBLE);
+            tvNot1.setText("您已认证通过");
+            tvNot2.setText("为保证您的信息安全，兼果已为您隐藏个人信息");
+            checkButton.setText("审核通过");
+            checkButton.setBackgroundResource(R.color.gray);
+            checkButton.setClickable(false);
+            checkButton.setFocusable(false);
+            etRealName.setClickable(false);
+            etRealName.setFocusable(false);
+            etRealName.setFocusableInTouchMode(false);
+            etId.setClickable(false);
+            etId.setFocusable(false);
+            etId.setFocusableInTouchMode(false);
+            rbMan.setClickable(false);
+            rbWoman.setClickable(false);
+            imgFront.setClickable(false);
+            imgOpposite.setClickable(false);
+            String id=realName.getT_user_realname().getId_number();
+            etId.setText(id.substring(0,id.length()-6)+"******");
+        }else if(realName.getT_user_realname().getStatus()==3){//审核中
+            checkButton.setText("正在审核");
+            checkButton.setClickable(false);
+            checkButton.setFocusable(false);
+            checkButton.setBackgroundResource(R.color.gray);
+//            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
+//            postTask.execute();
+            etRealName.setClickable(false);
+            etRealName.setFocusable(false);
+            etRealName.setFocusableInTouchMode(false);
+            etId.setClickable(false);
+            etId.setFocusable(false);
+            etId.setFocusableInTouchMode(false);
+            rbMan.setClickable(false);
+            rbWoman.setClickable(false);
+            imgFront.setClickable(false);
+            imgOpposite.setClickable(false);
+            String id=realName.getT_user_realname().getId_number();
+            etId.setText(id.substring(0,id.length()-6)+"******");
+            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
+            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
 
+        }else if(realName.getT_user_realname().getStatus()==4){//未通过
+            checkButton.setText("重新审核");
+            etId.setText("");
+//            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
+//            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+            checkButton.setBackgroundResource(R.drawable.button_background_login);
+//            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
+//            postTask.execute();
+        }
     }
     @Override
     public void setContentView() {
@@ -191,47 +250,15 @@ public class AuthActivity extends BaseActivity {
             etPhoneAuth.setClickable(false);
             rlPhone.setClickable(false);
         }
+        PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
+        postTask.execute();
 
-        if (status==2){//已经认证 可以查询信息
-            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
-            postTask.execute();
-            checkButton.setText("审核通过");
-            checkButton.setBackgroundResource(R.color.gray);
-            checkButton.setClickable(false);
-            checkButton.setFocusable(false);
-            etRealName.setClickable(false);
-            etRealName.setFocusable(false);
-            etRealName.setFocusableInTouchMode(false);
-            etId.setClickable(false);
-            etId.setFocusable(false);
-            etId.setFocusableInTouchMode(false);
-            rbMan.setClickable(false);
-            rbWoman.setClickable(false);
-            imgFront.setClickable(false);
-            imgOpposite.setClickable(false);
-        }else if(status==3){//审核中
-            checkButton.setText("正在审核");
-            checkButton.setClickable(false);
-            checkButton.setFocusable(false);
-            checkButton.setBackgroundResource(R.color.gray);
-            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
-            postTask.execute();
-            etRealName.setClickable(false);
-            etRealName.setFocusable(false);
-            etRealName.setFocusableInTouchMode(false);
-            etId.setClickable(false);
-            etId.setFocusable(false);
-            etId.setFocusableInTouchMode(false);
-            rbMan.setClickable(false);
-            rbWoman.setClickable(false);
-            imgFront.setClickable(false);
-            imgOpposite.setClickable(false);
-        }else if(status==4){//未通过
-            checkButton.setText("重新审核");
-            checkButton.setBackgroundResource(R.drawable.button_background_login);
-//            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
-//            postTask.execute();
-        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.inject(this);
     }
 
     @Override
@@ -285,23 +312,39 @@ public class AuthActivity extends BaseActivity {
                 } else if (id==null||id.equals("")){
                     showShortToast("请填写身份证号码");
                     break;
+                }else if(!EditCheckUtil.IDCardValidate(id)){
+                    showShortToast("身份证号码不正确");
+                    break;
                 }
 
                 pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                 pDialog.setTitleText("请稍后...");
                 pDialog.setCancelable(false);
                 pDialog.show();
-
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile);
-                QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2);
-                String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
-                PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
-                postTask.execute();
+               upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile,1,name,id);
+               upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2,2,name,id);
                 break;
         }
     }
-
+    public  void upLoadQiNiu(Context context, String key, File imgFile, final int position, final String name, final String id) {
+        String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
+        // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
+        UploadManager uploadManager = new UploadManager();
+        uploadManager.put(imgFile, key, commonUploadToken,
+                new UpCompletionHandler() {
+                    @Override
+                    public void complete(String key, ResponseInfo info, JSONObject res) {
+                        //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
+                        LogUtils.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                        if (position==2){
+                            String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
+                            String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
+                            PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
+                            postTask.execute();
+                        }
+                    }
+                }, null);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -316,7 +359,7 @@ public class AuthActivity extends BaseActivity {
                 Uri imgSource = Uri.fromFile(imgFile);
                 imgFront.setImageURI(imgSource);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),720, 480);
+                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
             }
         }
         if (requestCode == 1) {
@@ -330,7 +373,7 @@ public class AuthActivity extends BaseActivity {
                 Uri imgSource = Uri.fromFile(imgFile2);
                 imgOpposite.setImageURI(imgSource);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(), 720, 480);
+                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(), 1080, 720);
                 BitmapUtils.saveBitmap(bitmap, imgFile2);
             }
         }
@@ -364,6 +407,7 @@ public class AuthActivity extends BaseActivity {
             // TODO: attempt authentication against a network service.
             try {
                 if (isPost){
+
                     postRealName();
                 }else
                     getRealName();

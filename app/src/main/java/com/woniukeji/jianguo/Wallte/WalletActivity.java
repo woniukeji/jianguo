@@ -85,15 +85,12 @@ public class WalletActivity extends BaseActivity {
 //                    if (null != schoolActivity.pDialog) {
 //                    schoolActivity.pDialog.dismiss();
 //                }
-                     activity.balance= (Balance) msg.obj;
+                    activity.balance= (Balance) msg.obj;
                     activity.tvMoneySum.setText(activity.balance.getData().getT_user_money().getMoney()+"");
 
-//                    if (activity.balance.getData().getT_user_money().getPay_password().equals("0")){
-//                        activity.startActivity(new Intent(activity,DrawPassActivity.class));
-//                        activity.showShortToast("请先设置提现密码！");
-//                        activity.finish();
-//                    }
-
+                    if (activity.balance.getData().getT_user_money().getPay_status()!=2){
+                        activity.showShortToast("实名认证尚未通过，不能进行提现操作");
+                    }
 
                     break;
                 case 1:
@@ -170,6 +167,10 @@ public class WalletActivity extends BaseActivity {
         tvActionGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (balance.getData().getT_user_money().getPay_status()!=2){
+                    showShortToast("实名认证尚未通过，不能进行提现操作");
+                    return;
+                }
                 Intent intent=new Intent(WalletActivity.this,DrawMoneyActivity.class);
                 intent.putExtra("balance",balance);
                 startActivity(intent);

@@ -29,7 +29,31 @@
             android:textColor="@color/white"
             android:text="兼果"
             />
+      <RelativeLayout
+          android:id="@+id/rl_message"
+          android:layout_width="21dp"
+          android:layout_height="17dp"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true"
+          android:layout_marginRight="15dp"
 
+          >
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@mipmap/icon_message"
+              android:paddingTop="2dp"
+              />
+          <com.woniukeji.jianguo.widget.CircleImageView
+              android:id="@+id/circle_dot"
+              android:layout_width="5dp"
+              android:layout_height="5dp"
+              android:src="@color/red"
+              android:visibility="gone"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentTop="true"
+              />
+      </RelativeLayout>
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"

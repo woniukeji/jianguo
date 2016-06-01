@@ -33,6 +33,7 @@ import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.eventbus.JobTypeEvent;
+import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.mine.MyPartJboActivity;
 import com.woniukeji.jianguo.mine.SignActivity;
@@ -42,6 +43,7 @@ import com.woniukeji.jianguo.utils.LocationUtil;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.PicassoLoader;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.widget.CircleImageView;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -111,6 +113,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private int cityId;
     private boolean NoGPS=true;
     private int loginId;
+    private CircleImageView circleImageView;
 
     @OnClick(R.id.tv_location)
     public void onClick() {
@@ -225,7 +228,15 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         View view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
 // Set the adapter
         ButterKnife.inject(this, view);
-
+        RelativeLayout rlMessage= (RelativeLayout) view.findViewById(R.id.rl_message);
+        circleImageView= (CircleImageView) view.findViewById(R.id.circle_dot);
+        rlMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),PushMessageActivity.class));
+                circleImageView.setVisibility(View.GONE);
+            }
+        });
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
         assignViews(headerView);
         mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
@@ -324,6 +335,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     startActivity(dayIntent);
                     break;
                 case R.id.img_travel_job:
+
 //                    if (loginId == 0) {
 //                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
 //                        return;
@@ -361,6 +373,15 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+
+    /**
+     * 顯示極光推送過來的消息提醒
+     * 首页信封險是紅點
+     */
+    public void onEvent(MessageEvent event) {
+        circleImageView.setVisibility(View.VISIBLE);
     }
     public void onEvent(final CityEvent event) {
         int tempCityId=0;

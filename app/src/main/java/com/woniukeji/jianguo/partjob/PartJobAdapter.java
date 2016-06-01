@@ -155,6 +155,10 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             final float count=job.getCount();//已有人数
             final float sum=job.getSum();
             holder.demoTv.setText(job.getCount()+"/"+job.getSum() );
+            if (job.getCount()>=job.getSum()){
+                holder.demoTv.setText("已招满");
+            }
+
             final float score = count/sum*100;
             AnimatorSet set = new AnimatorSet();
             set.playTogether(

@@ -70,6 +70,8 @@ public class Constants {
     public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
     public static final String GET_USER_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_User_Servlet";//地区类型信息 兼职种类
     public static final String POST_OPINION= JIANGUO_USING+"T_opinion_Insert_Servlet";//用户反馈接口
+    public static final String PUSH_MESSAGE= JIANGUO_USING+"T_push_List_Servlet";//推送消息
+
 
     public static final String LOGIN_INFO = "loginInfo";
     public static final String LOGIN_CITY="city_name";

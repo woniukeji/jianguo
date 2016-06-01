@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_btn_bg_color"
+    >
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -6,11 +15,11 @@
     android:orientation="vertical"
     android:background="@color/gray_btn_bg_color"
     >
-<include
-    android:id="@+id/top"
-    layout="@layout/app_title_bar"
-    />
 
+    <include
+        android:id="@+id/top"
+        layout="@layout/app_title_bar"
+        />
     <RelativeLayout
         android:id="@+id/rl_alipay"
         android:layout_width="match_parent"
@@ -154,7 +163,7 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:text=""
             android:hint="请输入提现金额 (至少50元)"
             android:textColorHint="#bfbfbf"
@@ -246,3 +255,4 @@
         android:background="@drawable/button_background_login"
         />
 </LinearLayout>
+</ScrollView>

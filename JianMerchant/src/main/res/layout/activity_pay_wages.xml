@@ -134,6 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:text="合计：000元"
+                android:textSize="12dp"
                 android:gravity="center_vertical"
                 />
             <TextView

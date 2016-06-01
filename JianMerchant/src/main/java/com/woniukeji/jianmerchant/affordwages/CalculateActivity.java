@@ -335,14 +335,20 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         tvChooseSum.setText("选中"+person+"人");
     }
 
-    public void  onEvent(PayPassWordEvent event){
+    public void  onEventMainThread(PayPassWordEvent event){
 
         if (event.isCorrect){
+            if (!sweetAlertDialog.isShowing()){
+                sweetAlertDialog.setTitleText("结算提交中，请稍后");
+                sweetAlertDialog.getProgressHelper().setBarColor(R.color.app_bg);
+                sweetAlertDialog.show();
+            }
             Map  map=new HashMap();
             List tempList=new ArrayList();
             for (int i = 0; i <userList.size() ; i++) {
                 if (isSelected.get(i)){
                     tempList.add(userList.get(i));
+                    LogUtils.e("json",userList.get(i).getReal_money()+"元");
                 }
             }
             map.put("list_t_wages_Bean",tempList);
@@ -459,15 +465,6 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         private  String jobnid="";
         private String remarks="";
         private  String json;
-//        PostTask(String jobid, String loginid,String real,String houle,String remark) {
-//            this.jobid = jobid;
-//            this.loginid = loginid;
-//            this.houle = houle;
-//            if (remark!=null){
-//                this.remarks = remark;
-//            }
-//
-//        }
         PostTask(String jobid, String jobnid,String json) {
             this.jobid = jobid;
             this.json=json;
@@ -489,7 +486,8 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!sweetAlertDialog.isShowing()) {
+            if (!sweetAlertDialog.isShowing()){
+
                 sweetAlertDialog.setTitleText("结算提交中，请稍后");
                 sweetAlertDialog.getProgressHelper().setBarColor(R.color.app_bg);
                 sweetAlertDialog.show();
@@ -499,7 +497,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (sweetAlertDialog.isShowing()) {
+            if (sweetAlertDialog.isShowing()){
                 sweetAlertDialog.dismiss();
             }
         }
@@ -519,9 +517,9 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                         .addParams("job_id", jobid)
                         .addParams("json", json)
                         .build()
-                        .connTimeOut(60000)
-                        .readTimeOut(20000)
-                        .writeTimeOut(20000)
+                        .connTimeOut(50000)
+                        .readTimeOut(300000)
+                        .writeTimeOut(300000)
                      .execute(new Callback<BaseBean<AffordUser>>() {
                          @Override
                          public BaseBean parseNetworkResponse(Response response) throws Exception {
@@ -583,6 +581,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                 AffordUser.ListTUserInfoEntity user= (AffordUser.ListTUserInfoEntity) data.getSerializableExtra("user");
                 userList.set(position,user);
                 Calculate();
+                LogUtils.e("json","修改"+user.getReal_money());
                 adapter.notifyDataSetChanged();
             }
         }else {
