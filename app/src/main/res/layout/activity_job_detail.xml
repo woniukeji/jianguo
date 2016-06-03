@@ -30,8 +30,8 @@
     >
     <ImageView
         android:id="@+id/user_head"
-        android:layout_width="37dp"
-        android:layout_height="37dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:layout_marginTop="14dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -151,7 +151,7 @@
 </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="228dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="15dp"
         android:orientation="vertical"
         android:background="@color/white"
@@ -171,15 +171,17 @@
         android:layout_height="wrap_content"
         android:text="工作地点："
         android:textSize="15dp"
+        android:textColor="#9b9b9b"
         />
     <TextView
         android:id="@+id/tv_work_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
-        android:maxEms="12"
+        android:text="凯宾斯基酒店宴会服务员水电费水电费是地方水电费打发斯蒂芬,是干什么的啊"
+        android:textColor="#666666"
         android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         />
     <TextView
         android:id="@+id/tv_location_detail"
@@ -207,6 +209,7 @@
                 android:layout_height="wrap_content"
                 android:text="工作日期："
                 android:textSize="15dp"
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_work_date"
@@ -231,6 +234,7 @@
                 android:layout_height="wrap_content"
                 android:text="工作时间："
                 android:textSize="15dp"
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_work_time"
@@ -255,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:text="集合地点："
                 android:textSize="15dp"
-
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_collection_sites"
@@ -280,6 +284,7 @@
                 android:layout_height="wrap_content"
                 android:text="集合时间："
                 android:textSize="15dp"
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_collection_time"
@@ -304,6 +309,7 @@
                 android:layout_height="wrap_content"
                 android:text="性别限制："
                 android:textSize="15dp"
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_sex"
@@ -328,6 +334,7 @@
                 android:layout_height="wrap_content"
                 android:text="结算方式："
                 android:textSize="15dp"
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_pay_method"
@@ -352,6 +359,7 @@
                 android:layout_height="wrap_content"
                 android:text="其他事项："
                 android:textSize="15dp"
+                android:textColor="#9b9b9b"
                 />
             <TextView
                 android:id="@+id/tv_other"
@@ -377,7 +385,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="工作详情"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textColor="#F87C7C"
             android:drawablePadding="3dp"
             android:paddingLeft="15dp"
@@ -403,27 +411,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:paddingLeft="15dp"
     >
     <TextView
         android:id="@+id/tv_notic6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="工作内容："
+        android:text="【工作内容】"
+        android:textColor="#9b9b9b"
         android:textSize="15dp"
+        android:paddingLeft="10dp"
         />
        <TextView
         android:id="@+id/tv_work_content"
         android:textSize="15dp"
-        android:layout_marginLeft="12dp"
-        android:layout_toRightOf="@+id/tv_notic6"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/tv_notic6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="8"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
         android:paddingRight="8dp"
         />
 </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rl_require"
             android:layout_below="@+id/rl_work"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -433,21 +445,45 @@
                 android:id="@+id/tv_notic7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="工作要求："
+                android:text="【工作要求】"
+                android:textColor="#9b9b9b"
                 android:textSize="15dp"
-                android:paddingLeft="15dp"
+                android:paddingLeft="10dp"
                 />
             <TextView
                 android:id="@+id/tv_work_require"
                 android:textSize="15dp"
-                android:layout_toRightOf="@+id/tv_notic7"
+                android:paddingLeft="15dp"
+                android:layout_below="@+id/tv_notic7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
                 android:paddingRight="8dp"
-                android:maxLines="8"
+                android:maxLines="2"
+                android:textColor="#666666"
+                android:ellipsize="end"
+                android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
                 />
         </RelativeLayout>
+        <ImageView
+            android:id="@+id/img_split"
+            android:layout_below="@+id/rl_require"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#bfbfbf"
+            android:layout_marginTop="8dp"
+            />
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_below="@+id/img_split"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="查看更多"
+            android:textSize="12dp"
+            android:padding="10dp"
+            android:textColor="@color/app_bg"
+
+            />
     </RelativeLayout>
 
     <TextView
@@ -459,7 +495,7 @@
         android:layout_marginTop="10dp"
         android:paddingLeft="15dp"
         android:drawablePadding="3dp"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:background="@color/white"
         android:drawableLeft="@mipmap/icon_attention"
         />

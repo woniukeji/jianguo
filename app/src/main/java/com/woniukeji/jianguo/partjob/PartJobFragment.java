@@ -91,6 +91,7 @@ public class PartJobFragment extends BaseFragment {
     private DropDownMenu mMenu;
     private int mtype = 0;
     private int position;
+    private boolean DataComplete=false;
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -116,6 +117,7 @@ public class PartJobFragment extends BaseFragment {
                     jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
                     adapter.notifyDataSetChanged();
+                    DataComplete=true;
                     break;
                 case 1:
                     //                    String ErrorMessage = (String) msg.obj;
@@ -189,7 +191,7 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmMenuCount(3);
         mMenu.setmShowCount(6);
         mMenu.setShowCheck(true);//是否显示展开list的选中项
-        mMenu.setmMenuTitleTextSize(14);//Menu的文字大小
+        mMenu.setmMenuTitleTextSize(12);//Menu的文字大小
         mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色
         mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
         mMenu.setmMenuListTextColor(Color.BLACK);//Menu展开list的文字颜色
@@ -316,9 +318,11 @@ public class PartJobFragment extends BaseFragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (jobList.size() > 5 && lastVisibleItem == jobList.size() ) {
+                if (jobList.size() > 5 && lastVisibleItem == jobList.size() &&DataComplete) {
                                         GetTask getTask=new GetTask(cityid, typeid, areid, filterid,String.valueOf(lastVisibleItem));
                                         getTask.execute();
+                    DataComplete=false;
+                    LogUtils.e("position",lastVisibleItem+"开始");
                 }
             }
 

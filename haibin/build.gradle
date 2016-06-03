@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        applicationId "com.haibin.haibin"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    testCompile 'junit:junit:4.12'
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.zhy:okhttputils:2.2.1'
+    compile 'com.jakewharton:butterknife:8.0.0'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.google.code.gson:gson:2.2.+'
+    compile project(':multi-image-selector')
+    compile files('libs/qiniu-android-sdk-7.0.9.jar')
+    compile project(':dialoglibrary')
+    compile files('libs/happy-dns-0.2.4.jar')
+    compile files('libs/httpclient-4.4.1.1.jar')
+    compile files('libs/httpmime-4.2.4.jar')
+    compile files('libs/android-async-http-1.4.9.jar')
+}

@@ -58,7 +58,7 @@ public class Jobs {
             private String stop_date;
             private String address;
             private int mode;
-            private int money;
+            private String money;
             private int term;
             private int limit_sex;
             private int count;
@@ -178,11 +178,11 @@ public class Jobs {
                 this.mode = mode;
             }
 
-            public int getMoney() {
+            public String getMoney() {
                 return money;
             }
 
-            public void setMoney(int money) {
+            public void setMoney(String money) {
                 this.money = money;
             }
 

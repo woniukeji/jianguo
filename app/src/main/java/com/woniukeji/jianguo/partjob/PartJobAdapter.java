@@ -94,23 +94,28 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
         } else {
             final Jobs.ListTJobEntity job = mValues.get(position);
 
-
+            String money = job.getMoney();
+            if(money.indexOf(".") > 0){
+                //正则表达
+                money = money.replaceAll("0+?$", "");//去掉后面无用的零
+                money = money.replaceAll("[.]$", "");//如小数点后面全是零则去掉小数点
+            }
             // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
              String type = "";
             if (job.getTerm()==0){
-                holder.tvWages.setText(job.getMoney()+"/月");
+                holder.tvWages.setText(money+"/月");
                 type="/月";
             }else if(job.getTerm()==1){
-                holder.tvWages.setText(job.getMoney()+"/周");
+                holder.tvWages.setText(money+"/周");
                 type="/周";
             }else if(job.getTerm()==2){
-                holder.tvWages.setText(job.getMoney()+"/日");
+                holder.tvWages.setText(money+"/日");
                 type="/日";
             }else if(job.getTerm()==3){
-                holder.tvWages.setText(job.getMoney()+"/时");
+                holder.tvWages.setText(money+"/时");
                 type="/时";
             }else if(job.getTerm()==4){
-                holder.tvWages.setText(job.getMoney()+"/次");
+                holder.tvWages.setText(money+"/次");
                 type="/次";
             }else if(job.getTerm()==5){
                 holder.tvWages.setText("义工");
@@ -171,7 +176,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             if (type.equals("面议")||type.equals("义工")){
 
             }else {
-                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
+                type=money+ type;
             }
             final String finalType = type;
 

@@ -84,6 +84,8 @@ public class JobDetailActivity extends BaseActivity {
     @InjectView(R.id.tv_contact_company) TextView tvContactCompany;
     @InjectView(R.id.tv_collection) TextView tvCollection;
     @InjectView(R.id.tv_signup) TextView tvSignup;
+    @InjectView(R.id.tv_more) TextView tvMore;
+
     private JobDetails.TMerchantEntity merchantInfo;
     private JobDetails.TJobInfoEntity jobinfo;
     private int MSG_GET_SUCCESS = 0;
@@ -100,6 +102,7 @@ public class JobDetailActivity extends BaseActivity {
     private String sex;
     private Jobs.ListTJobEntity job;
     private String money;
+    private boolean loadMore=false;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -313,9 +316,23 @@ public class JobDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_share,R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
+    @OnClick({R.id.img_share,R.id.tv_more,R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_more:
+                if (loadMore){
+                    tvWorkContent.setMaxLines(2);
+                    tvWorkRequire.setMaxLines(2);
+                    loadMore=false;
+                    tvMore.setText("查看更多");
+                }else {
+                    tvWorkContent.setMaxLines(20);
+                    tvWorkRequire.setMaxLines(20);
+                    loadMore=true;
+                    tvMore.setText("收起");
+                }
+
+                break;
             case R.id.img_back:
                 finish();
                 break;

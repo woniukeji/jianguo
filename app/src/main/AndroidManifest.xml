@@ -385,8 +385,12 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID"/>
 
-        <activity android:name=".main.PushMessageActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity
+            android:name=".main.PushMessageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".mine.PicTipActivity"
+                  android:theme="@style/Theme.AppCompat.Dialog"
             >
         </activity>
     </application>

@@ -36,6 +36,10 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         />
+    <!--<com.jcodecraeer.xrecyclerview.XRecyclerView-->
+        <!--android:id="@+id/recyclerview"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent" />-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_below="@+id/img_menu"
         android:id="@+id/refresh_layout"

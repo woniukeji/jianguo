@@ -278,12 +278,18 @@ public class AuthActivity extends BaseActivity {
                 break;
             case R.id.img_front:
                 //单选多选
-                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
+                Intent intent=new Intent(AuthActivity.this,PicTipActivity.class);
+                intent.putExtra("front",true);
+                startActivityForResult(intent,2);
+//                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
                 break;
             case R.id.tv_front:
                 break;
             case R.id.img_opposite:
-                MultiImageSelectorActivity.startSelect(AuthActivity.this, 1, 1, 0);
+                Intent intent1=new Intent(AuthActivity.this,PicTipActivity.class);
+                intent1.putExtra("front",false);
+                startActivityForResult(intent1,3);
+
                 break;
             case R.id.tv_opposite:
                 break;
@@ -375,6 +381,16 @@ public class AuthActivity extends BaseActivity {
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
                 Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(), 1080, 720);
                 BitmapUtils.saveBitmap(bitmap, imgFile2);
+            }
+        }
+        if (requestCode==2){//弹出提示 提示返回 然后跳转拍照界面 正面
+            if (resultCode == RESULT_OK) {
+                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
+            }
+        }
+        if (requestCode==3){//弹出提示 提示返回 然后跳转拍照界面 背面
+            if (resultCode == RESULT_OK) {
+                MultiImageSelectorActivity.startSelect(AuthActivity.this, 1, 1, 0);
             }
         }
     }

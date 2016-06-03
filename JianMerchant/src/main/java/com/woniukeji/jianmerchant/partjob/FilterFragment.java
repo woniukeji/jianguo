@@ -74,8 +74,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
     private int type = 0;
     private String jobid;
     private String jobName;
-
-
+    private boolean loadOk=false;
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -120,7 +119,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
 
                     if (modleList.size() > 0) {//判断录取人数 是否显示图片
                         rlNull.setVisibility(View.GONE);
-                        if (type==1){//导出录取人信息按钮
+                        if (type==1){//导出录取人信息按钮=
                             btnOutInfo.setVisibility(View.VISIBLE);
                         }
                     } else {
@@ -128,7 +127,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                     }
 
                     adapter.notifyDataSetChanged();
-
+                    loadOk=true;
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -248,10 +247,21 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (modleList.size() > 5 && lastVisibleItem == modleList.size()) {
+
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItem + 1 == adapter.getItemCount()&&loadOk) {
                     GetTask getTask = new GetTask(jobid, String.valueOf(type), String.valueOf(lastVisibleItem));
                     getTask.execute();
+                    refreshLayout.setRefreshing(true);
+                    loadOk=false;
+                    LogUtils.e("position",lastVisibleItem+"开始"+modleList.size());
                 }
+//                if (modleList.size() > 5 && lastVisibleItem == modleList.size()) {
+//                    GetTask getTask = new GetTask(jobid, String.valueOf(type), String.valueOf(lastVisibleItem));
+//                    getTask.execute();
+//                    LogUtils.e("position",lastVisibleItem+"开始"+modleList.size());
+//                }
             }
 
             @Override

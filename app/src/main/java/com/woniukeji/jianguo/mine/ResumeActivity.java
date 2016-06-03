@@ -417,9 +417,9 @@ public class ResumeActivity extends BaseActivity {
 
         imgLead.setOnClickListener(this);
         tvEdit.setOnClickListener(this);
+        imgBack.setOnClickListener(this);
         etRealName.setFocusableInTouchMode(false);
         etNickName.setFocusableInTouchMode(false);
-        imgBack.setOnClickListener(this);
         rbNo.setClickable(false);
         rbYes.setClickable(false);
         rbGirl.setClickable(false);
@@ -472,6 +472,14 @@ public class ResumeActivity extends BaseActivity {
         tvClothse.setText(userResum.getClothing_size());
         tvTall.setText(userResum.getHeight());
         tvSchool.setText(userResum.getSchool());
+        if (userResum.getSchool()==null||userResum.getSchool().equals("")){
+            rbNo.setChecked(true);
+            student="0";
+        }else {
+            rbYes.setChecked(true);
+            student="1";
+        }
+
         tvDate.setText(userResum.getIntoschool_date());
         if (userResum.getSex().equals("0")) {
             rbGirl.setChecked(true);

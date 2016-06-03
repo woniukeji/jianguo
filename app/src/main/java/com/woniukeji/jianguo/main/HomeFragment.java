@@ -114,7 +114,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private boolean NoGPS=true;
     private int loginId;
     private CircleImageView circleImageView;
-
+    private boolean DataComplete=false;
     @OnClick(R.id.tv_location)
     public void onClick() {
         startActivity(new Intent(getActivity(),CityActivity.class));
@@ -144,6 +144,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
                     adapter.notifyDataSetChanged();
+                    DataComplete=true;
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -294,9 +295,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1) {
+                if (jobList.size() > 5 && lastVisibleItem == jobList.size()+1&&DataComplete) {
                     GetTask getTask=new GetTask(String.valueOf(cityId),String.valueOf(lastVisibleItem-1));
                     getTask.execute();
+                    LogUtils.e("position",lastVisibleItem+"开始");
+                    DataComplete=false;
                 }
             }
 

@@ -21,8 +21,8 @@ android {
         applicationId "com.woniukeji.jianguo"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 14
-        versionName "3.0.3"
+        versionCode 13
+        versionName "3.0.2"
         generatedDensities = []
         multiDexEnabled true
         ndk {
@@ -121,7 +121,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.github.fenjuly:ArrowDownloadButton:9e15b85e8a'
-
+    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
 
     //    compile 'com.tencent.bugly:crashreport:1.2.9'
 

@@ -53,12 +53,11 @@
     />
 
 </LinearLayout>
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="10dp"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
 <TextView
     android:layout_width="match_parent"
@@ -72,19 +71,18 @@
     android:textSize="15dp"
     android:background="@color/white"
     />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:background="#bfbfbf"
             android:layout_marginTop="5dp"
-            layout="@layout/split_line"
             />
+
     <RelativeLayout
     android:id="@+id/rl_location"
     android:layout_width="match_parent"
@@ -136,12 +134,10 @@
         android:gravity="center|left"
         android:paddingLeft="10dp"
         />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
 
 </RelativeLayout>
@@ -196,12 +192,10 @@
             android:paddingLeft="10dp"
             android:gravity="center|left"
             />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -255,20 +249,23 @@
             android:gravity="center|left"
             android:paddingLeft="10dp"
             />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#bfbfbf"
+            android:layout_alignParentBottom="true"
             />
     </RelativeLayout>
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:background="#bfbfbf"
             android:layout_marginTop="10dp"
-            layout="@layout/split_line"
             />
     <TextView
         android:layout_width="match_parent"
@@ -282,18 +279,16 @@
         android:textSize="15dp"
         android:background="@color/white"
         />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:background="#bfbfbf"
             android:layout_marginTop="5dp"
-            layout="@layout/split_line"
             />
     <RelativeLayout
     android:id="@+id/rl_title"
@@ -336,12 +331,10 @@
         android:gravity="center|left"
         android:paddingLeft="10dp"
         />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
 </RelativeLayout>
     <RelativeLayout
@@ -395,12 +388,10 @@
             android:gravity="center|left"
             android:paddingLeft="10dp"
             />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -453,7 +444,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:hint="请填写薪资"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textColorHint="#D8D8D8"
             android:background="@color/transparent"
             android:textSize="14dp"
@@ -461,12 +452,10 @@
             android:paddingLeft="10dp"
             />
 
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -520,12 +509,10 @@
             android:gravity="center|left"
             android:paddingLeft="10dp"
             />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -603,13 +590,21 @@
 
 
 
-            <include
-                android:id="@+id/loc_split"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/count_split"
+            <!--<include-->
+                <!--android:id="@+id/loc_split"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@+id/count_split"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--layout="@layout/split_line"-->
+                <!--/>-->
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                layout="@layout/split_line"
+                android:background="#bfbfbf"
+                android:layout_marginTop="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/count_split"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -699,12 +694,10 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
     </RelativeLayout>
 
@@ -763,15 +756,16 @@
             android:textSize="14dp"
             android:gravity="center|left"
             />
-        <include
+        <ImageView
             android:id="@+id/loc_split"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="45dp"
             android:layout_toRightOf="@+id/position_split"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
+
         <EditText
             android:layout_toRightOf="@+id/position_split"
             android:id="@+id/et_detail_position"
@@ -785,12 +779,10 @@
             android:textSize="14dp"
             android:gravity="center|left"
             />
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -874,12 +866,16 @@
         />
 </LinearLayout>
 
-        <include
-            android:id="@+id/loc_split"
-            android:layout_alignParentBottom="true"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#bfbfbf"
+            android:layout_alignParentBottom="true"
             />
     </RelativeLayout>
         <RelativeLayout
@@ -963,20 +959,18 @@
                     />
             </LinearLayout>
 
-            <include
-                android:id="@+id/loc_split"
+            <ImageView
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                layout="@layout/split_line"
+                android:background="#bfbfbf"
                 />
         </RelativeLayout>
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="10dp"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
         <TextView
             android:layout_width="match_parent"
@@ -990,18 +984,16 @@
             android:textSize="15dp"
             android:background="@color/white"
             />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:background="#bfbfbf"
             android:layout_marginTop="5dp"
-            layout="@layout/split_line"
             />
         <RelativeLayout
             android:id="@+id/rl_collection_position"
@@ -1044,12 +1036,11 @@
                 android:background="@color/transparent"
                 android:gravity="center|left"
                 />
-            <include
-                android:id="@+id/loc_split"
+            <ImageView
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                layout="@layout/split_line"
+                android:background="#bfbfbf"
                 />
         </RelativeLayout>
         <RelativeLayout
@@ -1105,12 +1096,11 @@
                 android:background="@color/transparent"
                 android:gravity="center|left"
                 />
-            <include
-                android:id="@+id/loc_split"
+            <ImageView
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                layout="@layout/split_line"
+                android:background="#bfbfbf"
                 />
         </RelativeLayout>
         <RelativeLayout
@@ -1155,20 +1145,16 @@
                 android:textSize="14dp"
                 android:gravity="center|left"
                 />
-            <include
-                android:id="@+id/loc_split"
+            <ImageView
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                layout="@layout/split_line"
                 />
         </RelativeLayout>
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="10dp"
-            layout="@layout/split_line"
             />
         <TextView
             android:layout_width="match_parent"
@@ -1182,11 +1168,10 @@
             android:textSize="15dp"
             android:background="@color/white"
             />
-        <include
-            android:id="@+id/loc_split"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            layout="@layout/split_line"
+            android:background="#bfbfbf"
             />
 <LinearLayout
     android:layout_width="match_parent"

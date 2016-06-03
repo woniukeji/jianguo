@@ -18,11 +18,12 @@
         <ImageView
             android:id="@+id/img_back"
             android:src="@mipmap/icon_back"
-            android:layout_width="20dp"
+            android:layout_width="30dp"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
-            android:layout_height="20dp"
+            android:layout_height="22dp"
             android:paddingTop="2dp"
+            android:clickable="true"
             android:paddingBottom="2dp"
             android:layout_marginLeft="23dp"
             android:layout_centerVertical="true"
@@ -303,10 +304,10 @@
             android:id="@+id/tv_birthday"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="请选择您的出生日期"
-            android:textColor="#D8D8D8"
+            android:hint="请选择您的出生日期"
+            android:textColorHint="#D8D8D8"
             android:textSize="14dp"
-            android:gravity="center"
+            android:gravity="center|right"
             />
         <TextView
             android:layout_width="match_parent"
@@ -349,10 +350,10 @@
             android:id="@+id/tv_shoes"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="请选择您的鞋码"
-            android:textColor="#D8D8D8"
+            android:hint="请选择您的鞋码"
+            android:textColorHint="#D8D8D8"
             android:textSize="14dp"
-            android:gravity="center"
+            android:gravity="center|right"
             />
         <TextView
             android:layout_width="match_parent"
@@ -395,10 +396,10 @@
             android:id="@+id/tv_clothse"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="请选择您的服装码"
-            android:textColor="#D8D8D8"
+            android:hint="请选择您的服装码"
+            android:textColorHint="#D8D8D8"
             android:textSize="14dp"
-            android:gravity="center"
+            android:gravity="center|right"
             />
         <TextView
             android:layout_width="match_parent"
@@ -441,10 +442,10 @@
             android:id="@+id/tv_tall"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="请选择您的身高"
+            android:hint="请选择您的身高"
+            android:textColorHint="#D8D8D8"
             android:textSize="14dp"
-            android:textColor="#D8D8D8"
-            android:gravity="center"
+            android:gravity="center|right"
             />
         <TextView
             android:layout_width="match_parent"
@@ -574,9 +575,9 @@
             android:id="@+id/tv_school"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="请选择您所在的学校"
-            android:textColor="#D8D8D8"
-            android:gravity="center"
+            android:hint="请选择您所在的学校"
+            android:textColorHint="#D8D8D8"
+            android:gravity="center|right"
             android:textSize="14dp"
             />
         <TextView

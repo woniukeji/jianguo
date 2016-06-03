@@ -141,7 +141,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_dailuqu);
             }else if(jobEntity.getUser_status().equals("1")){
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_dailuqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_dailuqu));
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_quxiao);
@@ -152,7 +152,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 //                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_dailuqu);
 //                holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_background_gray);
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
@@ -162,11 +162,11 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnConfirmActn.setVisibility(View.VISIBLE);
                 holder.btnCancelActn.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.btnConfirmActn.setBackgroundResource(R.drawable.button_sign_background_red);
             }else if(jobEntity.getUser_status().equals("4")){
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_quxiao);
@@ -175,7 +175,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnConfirmActn.setVisibility(View.GONE);
                 holder.btnCancelActn.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 if (jobEntity.getInfo_start_time()-System.currentTimeMillis()/1000<3600*8){
 //                    holder.btnCancelActn.setText("准备出发");
 //                    holder.btnCancelActn.setClickable(false);
@@ -184,7 +184,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                     holder.btnConfirmActn.setVisibility(View.GONE);
                     holder.btnCancelActn.setVisibility(View.GONE);
                     holder.imgFinishStatus.setVisibility(View.VISIBLE);
-                    holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                    holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                     holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_zhunbei);
                 }
             }else if(jobEntity.getUser_status().equals("6")){
@@ -193,13 +193,13 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnConfirmActn.setVisibility(View.GONE);
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_quxiao);
             }else if(jobEntity.getUser_status().equals("7")){
 //                holder.btnCancelActn.setText("未录取");
 //                holder.btnCancelActn.setClickable(false);
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
@@ -209,7 +209,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnConfirmActn.setVisibility(View.GONE);
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_gongzuozhong);
             }else if(jobEntity.getUser_status().equals("9")){
                 holder.btnCancelActn.setText("催工资");
@@ -217,18 +217,18 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.btnCancelActn.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setVisibility(View.GONE);
                 holder.btnCancelActn.setBackgroundResource(R.drawable.button_sign_backound_yellow);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiwancheng));
             }else if(jobEntity.getUser_status().equals("10")){
 //                holder.btnCancelActn.setText("已催工资");
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiwancheng));
 //                holder.btnCancelActn.setClickable(false);
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_yicuigongzi);
             }else if(jobEntity.getUser_status().equals("11")){
                 holder.btnCancelActn.setText("去评价");
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiwancheng));
                 holder.btnConfirmActn.setVisibility(View.GONE);
                 holder.btnCancelActn.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setVisibility(View.GONE);
@@ -236,13 +236,13 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 //                holder.btnCancelActn.setText("已完成");
 //                holder.btnCancelActn.setClickable(false);
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiwancheng);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiwancheng));
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_fin_yiwancheng);
             }else if(jobEntity.getUser_status().equals("13")){
                 holder.btnConfirmActn.setVisibility(View.GONE);
-                holder.imgJobStatus.setBackgroundResource(R.mipmap.icon_yiluqu);
+                holder.imgJobStatus.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.icon_yiluqu));
                 holder.btnCancelActn.setVisibility(View.GONE);
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
@@ -256,7 +256,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
             if (type.equals("面议")||type.equals("义工")){
 
             }else {
-                type=Integer.valueOf(String.valueOf(jobEntity.getMoney()))+ type;
+                type=jobEntity.getMoney()+ type;
             }
             final String finalType = type;
             holder.itemView.setOnClickListener(new View.OnClickListener() {

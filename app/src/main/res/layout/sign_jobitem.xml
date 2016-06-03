@@ -135,8 +135,10 @@
     </LinearLayout>
     <ImageView
         android:id="@+id/img_job_status"
-        android:layout_height="21dp"
-        android:layout_width="61dp"
-    android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+    android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
     />
     </RelativeLayout>

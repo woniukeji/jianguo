@@ -185,6 +185,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
                 holder.btnCancel.setBackgroundResource(R.drawable.button_sign_background_gray);
             }else if(user.getUser_status().equals("5")){
                 holder.btnCancel.setText("取消录取");
+                holder.btnConfirm.setVisibility(View.GONE);
             }else if(user.getUser_status().equals("6")){
                 holder.btnCancel.setText("用户已取消");
                 holder.btnCancel.setClickable(false);
