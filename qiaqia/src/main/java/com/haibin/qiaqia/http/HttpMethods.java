@@ -4,6 +4,7 @@ import com.haibin.qiaqia.base.Constants;
 import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.service.MethodInterface;
+import com.haibin.qiaqia.utils.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +23,7 @@ import rx.schedulers.Schedulers;
 
 public class HttpMethods {
 
-    public static final String BASE_URL = "http://101.200.197.237:8080/";
+    public static final String BASE_URL = Constants.JIANGUO_FACTORY;
 
     private static final int DEFAULT_TIMEOUT = 5;
 
@@ -73,19 +74,33 @@ public class HttpMethods {
     /**
      * 用户注册
      * @param subscriber 由调用者传过来的观察者对象
-     * @param only 唯一
      * @param phone 手机号
      * @param password 密码
      * @param sms 验证码
      */
 
-    public void  toRegister(Subscriber<User> subscriber, String only, String phone, String password, String sms){
+    public void  toRegister(Subscriber<User> subscriber,  String phone, String password, String sms){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.toRegister(only, phone,password,sms)
-                .map(new HttpResultFunc<User>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-
+    public void getSms(Subscriber<String> subscriber ,String phone){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getSMS(only,phone)
+                .map(new HttpResultFunc<String>())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+        public void Login(Subscriber<User> subscriber ,String phone,String password){
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            methodInterface.toLogin(only,phone,password)
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(subscriber);
+        }
 }

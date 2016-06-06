@@ -16,7 +16,7 @@ import rx.Observable;
 
 public interface MethodInterface {
         @POST("I_user_login_Insert_Servlet")
-        Observable<HttpResult<User>> toRegister(@Query("only") String only, @Query("phone") String phone, @Query("password") String password, @Query("sms_code") String sms_code);
+        Observable<User> toRegister(@Query("only") String only, @Query("phone") String phone, @Query("password") String password, @Query("sms_code") String sms_code);
 /**
 *获取短信验证码
 */
@@ -26,7 +26,7 @@ public interface MethodInterface {
 *手机号码密码登陆
 */
         @GET("I_user_login_Login_Servlet")
-        Observable<HttpResult<User>> toLogin(@Query("only") String only, @Query("phone") String phone,@Query("password") String password);
+        Observable<User> toLogin(@Query("only") String only, @Query("phone") String phone,@Query("password") String password);
 /**
 *超市查看分类
 */

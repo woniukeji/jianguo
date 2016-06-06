@@ -8,18 +8,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseActivity;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.http.HttpMethods;
+import com.haibin.qiaqia.http.ProgressSubscriber;
+import com.haibin.qiaqia.http.SubscriberOnNextListener;
+import com.haibin.qiaqia.main.MainActivity;
+import com.haibin.qiaqia.utils.MD5Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscriber;
 
-public class LoginActivity extends BaseActivity {
+public class LoginPassWordActivity extends BaseActivity {
 
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.textView) TextView textView;
@@ -31,12 +35,14 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.btn_login) Button btnLogin;
     @BindView(R.id.tv_go_register) TextView tvGoRegister;
     @BindView(R.id.activity_login) RelativeLayout activityLogin;
+    private SubscriberOnNextListener<User> loginSubListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
     }
 
     @Override
@@ -51,7 +57,19 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
+        //处理接口返回的数据
+        loginSubListener= new SubscriberOnNextListener<User>() {
 
+            @Override
+            public void onNext(User user) {
+                if (user.getCode()==200){
+                    Toast.makeText(LoginPassWordActivity.this,"登录成功",Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(LoginPassWordActivity.this, MainActivity.class));
+                    finish();
+                }else
+                    Toast.makeText(LoginPassWordActivity.this,user.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        };
     }
 
     @Override
@@ -66,22 +84,7 @@ public class LoginActivity extends BaseActivity {
 
     //进行网络请求
     private void postRegister() {
-        HttpMethods.getInstance().toRegister(new Subscriber<User>() {
-            @Override
-            public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(User user) {
-
-            }
-        }, "only", "hha", "fd", "");
     }
 
     @OnClick({R.id.tv_sms_login, R.id.btn_login, R.id.tv_go_register})
@@ -90,10 +93,24 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_sms_login:
                 break;
             case R.id.btn_login:
+                if (checkStatus()){
+                    HttpMethods.getInstance().Login(new ProgressSubscriber<User>(loginSubListener,LoginPassWordActivity.this),phone.getText().toString().trim(),
+                            MD5Util.MD5( password.getText().toString().trim()));
+                }
                 break;
             case R.id.tv_go_register:
-                startActivity(new Intent(LoginActivity.this,RegiterActivity.class));
+                startActivity(new Intent(LoginPassWordActivity.this,RegiterActivity.class));
                 break;
         }
+    }
+    private boolean checkStatus() {
+        if (phone.getText().toString().trim()==null||phone.getText().toString().trim().equals("")){
+            showShortToast("请输入手机号码");
+            return false;
+        }else if (password.getText().toString().trim().length()==10){
+            showShortToast("密码不能为空");
+            return false;
+        }
+        return true;
     }
 }

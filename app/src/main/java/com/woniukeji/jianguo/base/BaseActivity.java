@@ -87,6 +87,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void showLongToast(String text) {
         Toast.makeText(BaseActivity.this,text,Toast.LENGTH_LONG).show();
     }
+
+
+
+
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {
         Window win = getWindow();

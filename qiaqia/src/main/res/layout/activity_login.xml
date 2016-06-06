@@ -73,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:background="#00000000"
+            android:inputType="textPassword"
             android:id="@+id/password"/>
     </LinearLayout>
     <ImageView
@@ -83,7 +84,7 @@
     <TextView
         android:id="@+id/tv_sms_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:text="短信登录"
         android:gravity="right|center"
         android:layout_marginRight="20dp"
