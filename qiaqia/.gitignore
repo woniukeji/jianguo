@@ -9,7 +9,7 @@
 
 # Java class files
 *.class
-app.iml
+*.iml
 
 # Generated files
 bin/
