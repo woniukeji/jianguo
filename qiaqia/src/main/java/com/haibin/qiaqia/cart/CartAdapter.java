@@ -21,7 +21,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class CartAdapter extends RecyclerView.Adapter< CartAdapter.ViewHolder> {
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     private final List<User> mValues;
     private final Context mContext;

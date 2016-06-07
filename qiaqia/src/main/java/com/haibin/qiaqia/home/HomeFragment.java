@@ -1,4 +1,4 @@
-package com.haibin.qiaqia.cart;
+package com.haibin.qiaqia.home;
 
 
 import android.content.Context;
@@ -7,16 +7,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseFragment;
+import com.haibin.qiaqia.cart.CartAdapter;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.main.MainActivity;
-import com.haibin.qiaqia.utils.LogUtils;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.lang.ref.WeakReference;
@@ -30,7 +29,7 @@ import de.greenrobot.event.EventBus;
 /**
  * A simple {@link } subclass.
  */
-public class CartFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment {
     @BindView(R.id.recyclerview) XRecyclerView recyclerview;
     private Context context = getActivity();
 

@@ -61,4 +61,5 @@ dependencies {
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0'
 
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
 }
