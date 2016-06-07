@@ -38,6 +38,7 @@ public class Application extends android.app.Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        //
 //        MultiDex.install(this);//方法数过多 导致
     }
 
