@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/white"
     >
 
@@ -47,18 +48,16 @@
             android:overScrollMode="never"
             android:scrollbarStyle="outsideOverlay" />
     </android.support.v4.widget.SwipeRefreshLayout>
-    <Button
+    <com.woniukeji.jianmerchant.widget.CircleImageView
         android:id="@+id/btn_out_info"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_gray_low_bg"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
         android:gravity="center"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:text="导出已录取的用户信息"
-        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:src="@mipmap/forward1"
+        android:layout_marginRight="20dp"
+        android:text="呵呵哒"
         />
 </RelativeLayout>

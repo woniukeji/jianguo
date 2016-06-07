@@ -9,9 +9,19 @@
         android:id="@+id/top"
         layout="@layout/app_title_bar"
         />
+    <com.jayfang.dropdownmenu.DropDownMenu
+        android:layout_below="@+id/top"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:id="@+id/menu"
+        android:visibility="visible"
+        android:background="@color/white"
+        android:layout_height="40dp"
+
+        />
 
     <ImageView
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/menu"
         android:id="@+id/img_menu"
         android:layout_width="match_parent"
         android:layout_height="1px"

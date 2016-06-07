@@ -42,7 +42,7 @@
                 android:id="@+id/img_front"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:src="@mipmap/img_zhengmian"
+                android:src="@mipmap/img_fanmian"
                 />
             <TextView
                 android:id="@+id/tv_front"
@@ -71,7 +71,7 @@
                 android:id="@+id/img_opposite"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:src="@mipmap/img_fanmian"
+                android:src="@mipmap/img_zhengmian"
                 />
             <TextView
                 android:id="@+id/tv_opposite"

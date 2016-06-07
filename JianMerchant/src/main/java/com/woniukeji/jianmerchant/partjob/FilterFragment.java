@@ -119,9 +119,9 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
 
                     if (modleList.size() > 0) {//判断录取人数 是否显示图片
                         rlNull.setVisibility(View.GONE);
-                        if (type==1){//导出录取人信息按钮=
+//                        if (type==1){//导出录取人信息按钮=
                             btnOutInfo.setVisibility(View.VISIBLE);
-                        }
+//                        }
                     } else {
                         rlNull.setVisibility(View.VISIBLE);
                     }
@@ -280,7 +280,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
       SweetAlertDialog sw=new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         sw.show();
         try {
-            ExcelUtil excelUtils = new ExcelUtil(jobName+"已录用", modleList);
+            ExcelUtil excelUtils = new ExcelUtil(jobName, modleList);
             File file = excelUtils.create();
             ExcelUtil.openFileByOtherApp(getActivity(), file);
             if (sw.isShowing()) {

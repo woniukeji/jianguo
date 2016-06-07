@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -332,6 +335,28 @@ public class AuthActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        try{
+            super.onRestoreInstanceState(savedInstanceState);
+        }catch(Exception e){
+            savedInstanceState = null;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        try{
+            super.onRestoreInstanceState(outState);
+        }catch(Exception e){
+            outState = null;
+        }
+
+    }
+
     public  void upLoadQiNiu(Context context, String key, File imgFile, final int position, final String name, final String id) {
         String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
         // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
@@ -354,6 +379,8 @@ public class AuthActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //ADW: sometimes on rotating the phone, some widgets fail to restore its states.... so... damn.
+
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 // 获取返回的图片列表
@@ -379,8 +406,10 @@ public class AuthActivity extends BaseActivity {
                 Uri imgSource = Uri.fromFile(imgFile2);
                 imgOpposite.setImageURI(imgSource);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(), 1080, 720);
-                BitmapUtils.saveBitmap(bitmap, imgFile2);
+                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+//                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),true, 1080, 720);
+//                Bitmap bitmap = BitmapUtils.compressImage(imgFile2.getAbsolutePath(),null, false,1000,);
+//                BitmapUtils.saveBitmap(bitmap, imgFile2);
             }
         }
         if (requestCode==2){//弹出提示 提示返回 然后跳转拍照界面 正面

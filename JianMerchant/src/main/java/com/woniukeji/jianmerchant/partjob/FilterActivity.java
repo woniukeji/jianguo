@@ -133,11 +133,11 @@ public class FilterActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return  FilterFragment.newInstance(0,jobid);           //已报名
+                    return  FilterFragment.newInstance(0,jobid,jobName+"(已报名)");           //已报名
                 case 1:
-                    return  FilterFragment.newInstance(1,jobid,jobName);           //已录取
+                    return  FilterFragment.newInstance(1,jobid,jobName+"(已录取)");           //已录取
                 case 2:
-                    return  FilterFragment.newInstance(2,jobid);    //取消
+                    return  FilterFragment.newInstance(2,jobid,jobName+"(已取消)");    //取消
             }
             return new FragmentText();
         }

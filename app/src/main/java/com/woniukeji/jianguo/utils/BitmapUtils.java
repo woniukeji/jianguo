@@ -218,18 +218,26 @@ public class BitmapUtils {
 
     /**
      * 等比压缩（宽高等比缩放）
-     * @param bitmap
+     * @param imgPath
      * @param needRecycle
      * @param targetWidth
      * @param targeHeight
      * @return
      */
-    public static Bitmap compressBitmap(Bitmap bitmap, boolean needRecycle, int targetWidth, int targeHeight) {
+    public static Bitmap compressBitmap(String imgPath, boolean needRecycle, int targetWidth, int targeHeight) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bitmap =  BitmapFactory.decodeFile(imgPath, options);
         float sourceWidth = bitmap.getWidth();
         float sourceHeight = bitmap.getHeight();
-
-        float scaleWidth = targetWidth / sourceWidth;
-        float scaleHeight = targeHeight / sourceHeight;
+        float scaleWidth;
+        float scaleHeight;
+        if (sourceHeight>sourceWidth){
+             scaleWidth = targetWidth / targeHeight;
+             scaleHeight = targeHeight / targetWidth;
+        }else {
+             scaleWidth = targetWidth / targetWidth;
+             scaleHeight = targeHeight / targeHeight;
+        }
 
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight); //长和宽放大缩小的比例
@@ -266,10 +274,10 @@ public class BitmapUtils {
         if (inSampleSize <= 0) {
             inSampleSize = 1;
         }
-        options.inSampleSize = inSampleSize;
+               options.inSampleSize = inSampleSize;
         Bitmap bitmap =  BitmapFactory.decodeFile(imageFile, options);//加载真正bitmap
 
-        bitmap = compressBitmap(bitmap, false, targetWidth, targeHeight); //等比缩放
+//        bitmap = compressBitmap(bitmap, false, targetWidth, targeHeight); //等比缩放
         if(qualityCompress) {
             bitmap = compressBitmap(bitmap, true, maxSize); //压缩质量
         }
