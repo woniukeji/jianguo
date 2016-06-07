@@ -102,8 +102,8 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.2.4" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="qiniu-android-sdk-7.0.9" level="project" />
