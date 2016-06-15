@@ -82,6 +82,7 @@ public class JobItemDetailActivity extends BaseActivity {
     @InjectView(R.id.btn_change) Button btnChange;
     @InjectView(R.id.btn_finish) Button btnFinish;
     @InjectView(R.id.btn_down) Button btnDown;
+    @InjectView(R.id.btn_clearing) Button btnClearing;
     @InjectView(R.id.btn_no_limit) Button btnNoLimit;
     @InjectView(R.id.btn_boy) Button btnBoy;
     @InjectView(R.id.btn_girl) Button btnGirl;
@@ -108,12 +109,17 @@ public class JobItemDetailActivity extends BaseActivity {
         ButterKnife.inject(this);
     }
 
-    @OnClick({R.id.img_back, R.id.btn_boy, R.id.btn_girl, R.id.btn_no_limit, R.id.btn_change, R.id.btn_finish, R.id.btn_down})
+    @OnClick({R.id.img_back, R.id.btn_boy, R.id.btn_girl, R.id.btn_no_limit, R.id.btn_change, R.id.btn_finish, R.id.btn_down,R.id.btn_clearing})
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.btn_out_info:
-//
-//                break;
+            case R.id.btn_clearing:
+                Intent intent1 = new Intent(mContext, CalculateActivity.class);
+                intent1.putExtra("money", tvWages.getText().toString());
+                intent1.putExtra("name", tvMerchantName.getText().toString());
+                intent1.putExtra("jobid", String.valueOf(jobinfo.getJob_id()));
+                intent1.putExtra("jobNid", String.valueOf(jobinfo.getNv_job_id()));
+                startActivity(intent1);
+                break;
             case R.id.img_back:
                 finish();
                 break;
@@ -155,7 +161,7 @@ public class JobItemDetailActivity extends BaseActivity {
                 break;
             case R.id.btn_finish:
                 new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("您确认结束当前兼职进入结算阶段吗？")
+                        .setTitleText("您确认结束该兼职？")
                         .setConfirmText("确定")
                         .setCancelText("取消")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -169,27 +175,6 @@ public class JobItemDetailActivity extends BaseActivity {
 
                 break;
             case R.id.btn_down:
-                if (modleJob.getStatus() == 3) {
-
-//                    new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
-//                            .setTitleText("您确认将当前兼职下架吗？")
-//                            .setConfirmText("确定")
-//                            .setCancelText("取消")
-//                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                @Override
-//                                public void onClick(SweetAlertDialog sDialog) {
-//                                    sDialog.dismissWithAnimation();
-                                    Intent intent = new Intent(mContext, CalculateActivity.class);
-                                    intent.putExtra("money", tvWages.getText().toString());
-                                    intent.putExtra("name", tvMerchantName.getText().toString());
-                                    intent.putExtra("jobid", String.valueOf(jobinfo.getJob_id()));
-                                    intent.putExtra("jobNid", String.valueOf(jobinfo.getNv_job_id()));
-//                    intent.putExtra("")
-                                    startActivity(intent);
-//                                }
-//                            }).show();
-
-                } else {
                     new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("您确认将当前兼职下架吗？")
                             .setConfirmText("确定")
@@ -203,7 +188,6 @@ public class JobItemDetailActivity extends BaseActivity {
                                 }
                             }).show();
 
-                }
 
                 break;
         }
@@ -259,20 +243,12 @@ public class JobItemDetailActivity extends BaseActivity {
                     String Message = (String) msg.obj;
                     Toast.makeText(jobDetailActivity, Message, Toast.LENGTH_SHORT).show();
                     int offer = msg.arg1;
-                    if (offer == 9) {
-                        jobDetailActivity.btnFinish.setVisibility(View.GONE);
-                        jobDetailActivity.btnChange.setVisibility(View.GONE);
-                        jobDetailActivity.btnDown.setText("去结算");
-                        jobDetailActivity.modleJob.setStatus(3);
-                    } else if (offer == 13) {
+                    if (offer == 13) {
                         jobDetailActivity.btnFinish.setVisibility(View.GONE);
                         jobDetailActivity.btnChange.setVisibility(View.GONE);
                         jobDetailActivity.btnDown.setText("已下架");
                         jobDetailActivity.btnDown.setClickable(false);
                     }
-//                    jobDetailActivity.btnDown.setVisibility(View.GONE);
-//                    jobDetailActivity.btnChange.setVisibility(View.GONE);
-//                    jobDetailActivity.btnFinish.setVisibility();
                     break;
                 case 6:
                     String msg2 = (String) msg.obj;
@@ -302,14 +278,14 @@ public class JobItemDetailActivity extends BaseActivity {
         } else if (modleJob.getStatus() == 3) {
             btnFinish.setVisibility(View.GONE);
             btnChange.setVisibility(View.GONE);
-            btnDown.setText("去结算");
+            btnDown.setVisibility(View.GONE);
         }
 
         tvTitle.setText("兼职详情");
         tvMerchantName.setText(modleJob.getName());
         tvWorkLocation.setText(jobinfo.getAddress());
         tvManagerName.setText(modleJob.getMerchant_id_name());
-
+        tvChakanBrowse.setText(modleJob.getLook());
 
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()), Long.valueOf(jobinfo.getStop_date()));
         tvWorkDate.setText(date);

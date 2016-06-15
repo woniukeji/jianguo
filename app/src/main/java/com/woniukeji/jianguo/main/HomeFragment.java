@@ -349,11 +349,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     startActivity(travelIntent);
                     break;
                 case R.id.img_my_job:
-                    if (loginId == 0) {
-                        startActivity(new Intent(getActivity(), QuickLoginActivity.class));
-                        return;
-                    }
-                   startActivity(new Intent(getActivity(), SignActivity.class));
+                    Intent LongIntent=new Intent(getActivity(), PartJobActivity.class);
+                    LongIntent.putExtra("type",6);
+                    LongIntent.putExtra("cityid",cityId);
+                    startActivity(LongIntent);
                     break;
 
             }

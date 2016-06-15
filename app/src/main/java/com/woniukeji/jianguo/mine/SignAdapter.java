@@ -108,6 +108,11 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
             String date = DateUtils.getTime(Long.valueOf(jobEntity.getStart_date()), Long.valueOf(jobEntity.getStop_date()));
             holder.tvWorkDate.setText(date);
             holder.businessName.setText(jobEntity.getName());
+            if (jobEntity.getMax()==1){
+                holder.businessName.setCompoundDrawablesWithIntrinsicBounds (null,null,mContext.getResources().getDrawable(R.mipmap.cq),null);
+            }else{
+                holder.businessName.setCompoundDrawables(null,null,null,null);
+            }
             // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
             String type="";
             if (jobEntity.getTerm()==0){
@@ -132,6 +137,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.tvJobWages.setText("面议");
                 type="面议";
             }
+
             if (jobEntity.getUser_status().equals("0")){
                 holder.btnCancelActn.setText("取消报名");
                 holder.btnCancelActn.setVisibility(View.VISIBLE);

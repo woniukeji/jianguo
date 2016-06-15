@@ -219,7 +219,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
                     mSuccessRightMask.startAnimation(mSuccessLayoutAnimSet.getAnimations().get(1));
                     break;
                 case WARNING_TYPE:
-                    mConfirmButton.setBackgroundResource(R.drawable.red_button_background);
+//                    mConfirmButton.setBackgroundResource(R.drawable.red_button_background);
                     mWarningFrame.setVisibility(View.VISIBLE);
                     break;
                 case CUSTOM_IMAGE_TYPE:

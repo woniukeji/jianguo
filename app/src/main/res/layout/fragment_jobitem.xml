@@ -20,115 +20,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginLeft="15dp"
        />
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_toRightOf="@+id/user_head"
-    android:orientation="vertical"
-    >
-    <TextView
-        android:id="@+id/business_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="16dp"
-        android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
-        android:maxEms="12"
-        android:ellipsize="end"
-        android:maxLines="1"
-        />
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:gravity="center"
-        android:layout_marginTop="1dp"
-        >
-        <ImageView
-            android:id="@+id/img_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_money"
-            />
-        <TextView
-            android:id="@+id/tv_pay_method"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/img_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="月结"
-            android:textSize="13dp"
-            android:textColor="#9b9b9b"
-            android:gravity="center"
 
-            />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:gravity="center"
-        android:layout_marginTop="1dp"
-        >
-        <ImageView
-            android:id="@+id/img_date"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_date"
-            />
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/img_date"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="4月1号-4月6号"
-            android:textColor="#9b9b9b"
-            android:gravity="center"
-            android:textSize="13dp"
-
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_height="20dp"
-        android:gravity="center"
-        android:layout_marginTop="1dp"
-        >
-
-        <ImageView
-            android:id="@+id/img_local"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_didian"
-            />
-        <TextView
-            android:id="@+id/tv_location"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/img_local"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
-            android:maxEms="13"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="#9b9b9b"
-            android:gravity="center"
-            android:textSize="13dp"
-            />
-    </RelativeLayout>
-
-</LinearLayout>
-    <ImageView
-        android:id="@+id/img_sex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/icon_man"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="75dp"
-        android:layout_marginTop="23dp"
-        />
     <RelativeLayout
         android:id="@+id/rl_progess"
         android:layout_width="50dp"
@@ -154,9 +46,10 @@
             android:id="@+id/demo_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:text="15/20"
-            android:textSize="9dp" />
+            android:textSize="9dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
     <TextView
@@ -190,6 +83,140 @@
         android:layout_height="1dp"
         android:background="@color/gray_btn_bg_color"
         />
+
+    <LinearLayout
+        android:layout_width="260dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="9dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/user_head"
+        android:layout_toEndOf="@+id/user_head"
+        android:layout_marginStart="9dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center|left"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/business_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="是干什么的啊,kaibinsiji凯宾斯基"
+            android:gravity="center|left"
+            android:layout_gravity="center"
+            android:maxEms="11"
+            android:ellipsize="end"
+            android:maxLines="1"
+            />
+
+        <ImageView
+            android:id="@+id/img_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/cq"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/img_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/m"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            />
+    </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            >
+            <ImageView
+                android:id="@+id/img_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/icon_money"
+                />
+            <TextView
+                android:id="@+id/tv_pay_method"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/img_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="月结"
+                android:textSize="13dp"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
+
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            >
+            <ImageView
+                android:id="@+id/img_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/icon_date"
+                />
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/img_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="4月1号-4月6号"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
+                android:textSize="13dp"
+
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            >
+
+            <ImageView
+                android:id="@+id/img_local"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/icon_didian"
+                />
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/img_local"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="凯宾斯基酒店宴会服务员,是干什么的啊"
+                android:maxEms="14"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
+                android:textSize="13dp"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
 </RelativeLayout>

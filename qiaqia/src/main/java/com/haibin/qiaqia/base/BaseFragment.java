@@ -44,8 +44,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        initView();
-        initData();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -110,6 +108,4 @@ public abstract class BaseFragment extends Fragment {
         return mActivity;
     }
 
-    public abstract void initView();
-    public abstract void initData();
 }

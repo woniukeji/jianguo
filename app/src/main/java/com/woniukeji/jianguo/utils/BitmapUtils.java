@@ -218,26 +218,26 @@ public class BitmapUtils {
 
     /**
      * 等比压缩（宽高等比缩放）
-     * @param imgPath
+     * @param
      * @param needRecycle
      * @param targetWidth
      * @param targeHeight
      * @return
      */
-    public static Bitmap compressBitmap(String imgPath, boolean needRecycle, int targetWidth, int targeHeight) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap bitmap =  BitmapFactory.decodeFile(imgPath, options);
+    public static Bitmap compressBitmap( Bitmap bitmap, boolean needRecycle, int targetWidth, int targeHeight) {
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        Bitmap bitmap =  BitmapFactory.decodeFile(imgPath, options);
         float sourceWidth = bitmap.getWidth();
         float sourceHeight = bitmap.getHeight();
         float scaleWidth;
         float scaleHeight;
-        if (sourceHeight>sourceWidth){
-             scaleWidth = targetWidth / targeHeight;
-             scaleHeight = targeHeight / targetWidth;
-        }else {
-             scaleWidth = targetWidth / targetWidth;
-             scaleHeight = targeHeight / targeHeight;
-        }
+//        if (sourceHeight>sourceWidth){
+             scaleWidth = targetWidth / sourceWidth;
+             scaleHeight = targeHeight / sourceHeight;
+//        }else {
+//             scaleWidth = targetWidth / targetWidth;
+//             scaleHeight = targeHeight / targeHeight;
+//        }
 
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight); //长和宽放大缩小的比例
@@ -274,12 +274,12 @@ public class BitmapUtils {
         if (inSampleSize <= 0) {
             inSampleSize = 1;
         }
-               options.inSampleSize = inSampleSize;
+        options.inSampleSize = inSampleSize;
+        LogUtils.e("bitmap","缩放："+inSampleSize);
         Bitmap bitmap =  BitmapFactory.decodeFile(imageFile, options);//加载真正bitmap
-
 //        bitmap = compressBitmap(bitmap, false, targetWidth, targeHeight); //等比缩放
         if(qualityCompress) {
-            bitmap = compressBitmap(bitmap, true, maxSize); //压缩质量
+            bitmap = compressBitmap(bitmap, false, maxSize); //压缩质量
         }
 
         if (isSave) {
@@ -331,7 +331,7 @@ public class BitmapUtils {
      * @return
      */
     public static Bitmap compressBitmap(String imageFile, int targetWidth, int targeHeight) {
-        return compressBitmap(imageFile, false, 0L, targetWidth, targeHeight);
+        return compressBitmap(imageFile, true, 100000, targetWidth, targeHeight);
     }
 
     /**

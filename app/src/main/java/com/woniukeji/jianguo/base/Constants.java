@@ -18,12 +18,12 @@ import android.os.Environment;
 import java.io.File;
 
 public class Constants {
-    public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
+    public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_TEST2;
+    public static final String JIANGUO_USING=JIANGUO_FACTORY;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
-    public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
+    public static final String CHECK_PHONE = JIANGUO_USING+" ";//检查有没有该手机号
     public static final String GET_SMS= JIANGUO_USING+"T_SMS_Servlet";//获取短信
     public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
 
@@ -48,6 +48,7 @@ public class Constants {
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
     public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
     public static final String GET_JOB_DAY= JIANGUO_USING+"T_job_List_Day_Servlet";//日周月兼职列表获取
+    public static final String GET_JOB_LONG= JIANGUO_USING+"T_job_List_Max_Servlet";//长期兼职
     public static final String GET_JOB_CATEGORY= JIANGUO_USING+"T_job_List_Filter_Servlet";//日周月兼职列表获取
 
     public static final String POST_ATTENT= JIANGUO_USING+"T_attent_Insert_Servlet";//关注收藏接口

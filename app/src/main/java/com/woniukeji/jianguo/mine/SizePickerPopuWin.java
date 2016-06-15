@@ -75,16 +75,19 @@ public class SizePickerPopuWin extends PopupWindow implements OnClickListener {
     }
 
     public void initView(View view) {
-        tvNo= (TextView) view.findViewById(R.id.tv_no);
-        tvOk= (TextView) view.findViewById(R.id.tv_ok);
-        packer= (PickerSize) view.findViewById(R.id.pcker);
+        tvNo = (TextView) view.findViewById(R.id.tv_no);
+        tvOk = (TextView) view.findViewById(R.id.tv_ok);
+        packer = (PickerSize) view.findViewById(R.id.pcker);
         packer.setData(stringList);
-        if (type==0){
-         textStr="43";
-        }else if(type==1){
-            textStr="XL";
-        }else
-            textStr="167cm";
+        if (type == 0) {
+            textStr = "43";
+        } else if (type == 1) {
+            textStr = "XL";
+        } else if (type == 2) {
+            textStr = "167cm";
+        } else {
+            textStr ="2013";
+        }
     }
 
     public void initListener() {

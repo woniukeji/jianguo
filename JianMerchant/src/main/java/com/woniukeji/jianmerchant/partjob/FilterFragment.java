@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import com.woniukeji.jianmerchant.eventbus.FilterEvent;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.ExcelUtil;
 import com.woniukeji.jianmerchant.utils.LogUtils;
+import com.woniukeji.jianmerchant.widget.CircleImageView;
 import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -59,7 +61,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     @InjectView(R.id.list) FixedRecyclerView list;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.btn_out_info) Button btnOutInfo;
+    @InjectView(R.id.btn_out_info) TextView btnOutInfo;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;

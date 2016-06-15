@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="238dp"
+              android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/caomei"
+        />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+<TextView
+    android:id="@+id/tv_goods_name"
+    android:layout_width="wrap_content"
+    android:layout_height="21dp"
+    android:text="泰国红草莓"
+    />
+    <TextView
+        android:layout_below="@+id/tv_goods_name"
+        android:id="@+id/tv_goods_price"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:text="7.00元/500g"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/jiahao_on"
+        android:layout_alignParentRight="true"
+
+        />
+</RelativeLayout>
+</LinearLayout>

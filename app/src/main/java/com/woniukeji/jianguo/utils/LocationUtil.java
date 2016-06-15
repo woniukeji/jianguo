@@ -48,7 +48,7 @@ public class LocationUtil  {
                     if(!StringUtils.isBlank(cityCode)){
                         city.city.setId(Integer.parseInt(cityCode));
                     }
-                    String cityName=tencentLocation.getCity().substring(0,tencentLocation.getCity().lastIndexOf("市"));
+                    String cityName=tencentLocation.getCity().substring(0,tencentLocation.getCity().length()-1);
                     city.city.setCity(cityName);
                     LogUtils.i("TencentLocation","定位成功，城市码："+city.city.getId()+"；城市名："+city.city.getCity());
                 } else {

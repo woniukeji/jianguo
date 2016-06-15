@@ -6,16 +6,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseFragment;
 import com.haibin.qiaqia.cart.CartAdapter;
+import com.haibin.qiaqia.entity.Goods;
+import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.User;
+import com.haibin.qiaqia.http.HttpMethods;
+import com.haibin.qiaqia.http.ProgressSubscriber;
+import com.haibin.qiaqia.http.SubscriberOnNextListener;
+import com.haibin.qiaqia.login.LoginPassWordActivity;
 import com.haibin.qiaqia.main.MainActivity;
+import com.haibin.qiaqia.utils.MD5Util;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.lang.ref.WeakReference;
@@ -33,7 +42,6 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.recyclerview) XRecyclerView recyclerview;
     private Context context = getActivity();
 
-    private String headers[] = {"职业", "排序", "地区"};
     //    private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
     //    private String citys[] = {"不限", "武汉", "北京", "上海", "成都", "广州", "深圳", "重庆", "天津", "西安", "南京", "杭州"};
     private List<View> popupViews = new ArrayList<>();
@@ -54,7 +62,7 @@ public class HomeFragment extends BaseFragment {
     private int mtype = 0;
     private int position;
     private boolean DataComplete = false;
-
+    SubscriberOnNextListener<List<Goods>> SubListener;
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -104,15 +112,16 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        initView();
+        initData();
         return view;
     }
 
-    @Override
     public void initView() {
-//        adapter = new CartAdapter(jobList, getActivity());
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        adapter = new CartAdapter(jobList, getActivity());
+        mLayoutManager = new GridLayoutManager(getActivity(),2);
         //设置布局管理器
         recyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
@@ -121,8 +130,15 @@ public class HomeFragment extends BaseFragment {
         recyclerview.setItemAnimator(new DefaultItemAnimator());
     }
 
-    @Override
     public void initData() {
+        SubListener = new SubscriberOnNextListener<List<Goods>>() {
+            @Override
+            public void onNext(List<Goods> goodsHttpResult) {
+                Toast.makeText(getActivity(),"获取成功", Toast.LENGTH_LONG).show();
+            }
+
+        };
+        HttpMethods.getInstance().getHomeData(new ProgressSubscriber<List<Goods>>(SubListener,getActivity()));
 
     }
 

@@ -33,6 +33,7 @@ import com.haibin.qiaqia.base.BaseActivity;
 import com.haibin.qiaqia.base.Constants;
 import com.haibin.qiaqia.cart.CartFragment;
 import com.haibin.qiaqia.entity.TabEntity;
+import com.haibin.qiaqia.home.HomeFragment;
 import com.haibin.qiaqia.utils.ActivityManager;
 import com.haibin.qiaqia.utils.LogUtils;
 import com.haibin.qiaqia.utils.SPUtils;
@@ -383,7 +384,7 @@ public class MainActivity extends BaseActivity {
         int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
             int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
         if (First==0){
-            imgeMainLead.setVisibility(View.VISIBLE);
+            imgeMainLead.setVisibility(View.GONE);
 //            imgeMainLead.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -460,7 +461,7 @@ public class MainActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new CartFragment();           //直播榜
+                    return new HomeFragment();           //直播榜
                 case 1:
                     return new CartFragment();          //话题榜
                 case 2:

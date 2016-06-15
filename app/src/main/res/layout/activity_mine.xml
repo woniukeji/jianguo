@@ -214,7 +214,7 @@
             android:layout_marginLeft="10dp"
             />
 
-        <TextView
+        <ImageView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:background="@mipmap/icon_go"
+            android:background="@mipmap/go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -257,7 +257,7 @@
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
             />
-        <TextView
+        <ImageView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -353,7 +353,7 @@
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
             />
-        <TextView
+        <ImageView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -361,7 +361,7 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:background="@mipmap/icon_go"
+            android:src="@mipmap/icon_go"
             />
 
     </RelativeLayout>
@@ -438,7 +438,7 @@
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
             />
-        <TextView
+        <ImageView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -446,7 +446,7 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:background="@mipmap/icon_go"
+            android:src="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -480,7 +480,7 @@
             android:textSize="16dp"
             android:layout_marginLeft="10dp"
             />
-        <TextView
+        <ImageView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -488,7 +488,7 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:background="@mipmap/icon_go"
+            android:src="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -558,7 +558,7 @@
             android:gravity="center_vertical"
             android:textSize="16dp"
             />
-        <TextView
+        <ImageView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -566,7 +566,7 @@
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:background="@mipmap/icon_go"
+            android:src="@mipmap/icon_go"
             />
         <TextView
             android:layout_width="match_parent"

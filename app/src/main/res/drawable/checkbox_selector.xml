@@ -1,0 +1,11 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@mipmap/checkbox_click"  android:state_checked="true"/>
+
+    <item android:drawable="@mipmap/checkbox_default" android:state_checked="false" />
+
+    <item android:drawable="@mipmap/checkbox_default"></item>
+
+    <item android:drawable="@mipmap/checkbox_default" android:state_checkable="false"></item>
+
+</selector>

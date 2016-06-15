@@ -134,7 +134,12 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             }else {
                 holder.tvPayMethod.setText("旅行");
             }
-
+            if (job.getMax()==1){
+                holder.imgType.setVisibility(View.VISIBLE);
+                holder.imgType.setImageResource(R.mipmap.cq);
+            }else{
+                holder.imgType.setVisibility(View.GONE);
+            }
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
@@ -221,6 +226,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
         @InjectView(R.id.img_date) ImageView imgDate;
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
+        @InjectView(R.id.img_type) ImageView imgType;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;

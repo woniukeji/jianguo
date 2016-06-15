@@ -27,4 +27,14 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@drawable/dialog_bg</item><!--除去背景色-->
     </style>
+
+    <style name="MyCheck_Box" parent="@android:style/Widget.CompoundButton.CheckBox">
+
+        <item name="android:button">@drawable/checkbox_selector</item>
+
+        <item name="android:paddingLeft">5.0dip</item>
+
+        <item name="android:textSize">14sp</item>
+
+    </style>
 </resources>

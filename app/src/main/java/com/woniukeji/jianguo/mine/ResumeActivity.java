@@ -17,9 +17,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +76,7 @@ public class ResumeActivity extends BaseActivity {
     @InjectView(R.id.img) ImageView img;
     @InjectView(R.id.tv_birthday) TextView tvBirthday;
     @InjectView(R.id.rl_birthday) RelativeLayout rlBirthday;
+    @InjectView(R.id.rl_root_view) LinearLayout root;
     @InjectView(R.id.tv_shoes) TextView tvShoes;
     @InjectView(R.id.rl_shoes) RelativeLayout rlShoes;
     @InjectView(R.id.tv_clothse) TextView tvClothse;
@@ -164,6 +167,9 @@ public class ResumeActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rl_root_view:
+                showShortToast("如果要修改资料，请点击右上角编辑按钮");
+                break;
             case R.id.img_lead:
                     imgLead.setVisibility(View.GONE);
                 SPUtils.setParam(ResumeActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 2);
@@ -195,6 +201,8 @@ public class ResumeActivity extends BaseActivity {
                             finish();
                         }
                     }).show();
+                }else{
+                    finish();
                 }
 
                 break;
@@ -258,7 +266,11 @@ public class ResumeActivity extends BaseActivity {
                 startActivityForResult(new Intent(context, SchoolActivity.class), 3);
                 break;
             case R.id.rl_date:
-                TimePickerPopuWin pickerPopup3 = new TimePickerPopuWin(context, mHandler, 4);
+                List<String> listYear = new ArrayList<String>();
+                for (int i = 2010; i < 2017; i++) {
+                    listYear.add(String.valueOf(i) );
+                }
+                SizePickerPopuWin pickerPopup3 = new SizePickerPopuWin(context,listYear, mHandler, 4);
                 pickerPopup3.showShareWindow();
                 pickerPopup3.showAtLocation(ResumeActivity.this.getLayoutInflater().inflate(R.layout.activity_resume, null),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -273,6 +285,9 @@ public class ResumeActivity extends BaseActivity {
                                 shoes, clothse);
                         postTask.execute();
                         tvEdit.setText("编辑");
+                        root.setClickable(true);
+                        imgBack.setClickable(true);
+                        imgBack.setFocusable(true);
                         imgHead.setClickable(false);
                         rbGirl.setClickable(false);
                         rbBoy.setClickable(false);
@@ -290,6 +305,8 @@ public class ResumeActivity extends BaseActivity {
                         rbYes.setClickable(false);
                         rbGirl.setClickable(false);
                         rbBoy.setClickable(false);
+                        imgBack.setClickable(true);
+                        imgBack.setOnClickListener(this);
                     }
                 }else {
                     save=true;
@@ -311,6 +328,8 @@ public class ResumeActivity extends BaseActivity {
                     rbYes.setClickable(true);
                     rbGirl.setClickable(true);
                     rbBoy.setClickable(true);
+                    imgBack.setClickable(true);
+                    imgBack.setOnClickListener(this);
                 }
 
                 break;
@@ -418,6 +437,7 @@ public class ResumeActivity extends BaseActivity {
         imgLead.setOnClickListener(this);
         tvEdit.setOnClickListener(this);
         imgBack.setOnClickListener(this);
+        root.setOnClickListener(this);
         etRealName.setFocusableInTouchMode(false);
         etNickName.setFocusableInTouchMode(false);
         rbNo.setClickable(false);

@@ -151,6 +151,13 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             holder.tvLocation.setText(job.getAddress());
             String date= DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
+
+            if (job.getMax()==1){
+                holder.imgType.setVisibility(View.VISIBLE);
+                holder.imgType.setImageResource(R.mipmap.cq);
+            }else{
+                holder.imgType.setVisibility(View.GONE);
+            }
             //性别限制（0=只招女，1=只招男，2=不限男女）
             if (job.getLimit_sex()==0||job.getLimit_sex()==30){
                 holder.imgSex.setImageResource(R.mipmap.icon_woman);
@@ -198,7 +205,6 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
                     intent.putExtra("money", finalType);
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());
                     intent.putExtra("mername", job.getName());
-
                     mContext.startActivity(intent);
                 }
             });
@@ -232,6 +238,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
         @InjectView(R.id.img_date) ImageView imgDate;
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
+        @InjectView(R.id.img_type) ImageView imgType;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;

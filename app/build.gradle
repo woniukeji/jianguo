@@ -14,6 +14,9 @@ android {
             url "https://jitpack.io"
         }
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
@@ -21,8 +24,8 @@ android {
         applicationId "com.woniukeji.jianguo"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 14
-        versionName "3.0.3"
+        versionCode 15
+        versionName "3.0.4"
         generatedDensities = []
         multiDexEnabled true
         ndk {

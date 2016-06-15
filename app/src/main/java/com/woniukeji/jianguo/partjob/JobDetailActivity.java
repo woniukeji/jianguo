@@ -183,6 +183,7 @@ public class JobDetailActivity extends BaseActivity {
         tvWorkTime.setText(time);
         tvCollectionSites.setText(jobinfo.getSet_place());
         tvCollectionTime.setText(setTime);
+            if (job!=null){
             if (job.getStatus()!=0){
                 tvSignup.setText("该兼职已过期");
                 tvSignup.setBackgroundResource(R.color.gray);
@@ -195,6 +196,7 @@ public class JobDetailActivity extends BaseActivity {
                 }
             }
 
+            }
         if (jobinfo.getIs_collection().equals("0")){
             Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());

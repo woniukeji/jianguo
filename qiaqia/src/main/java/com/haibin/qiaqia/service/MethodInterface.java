@@ -4,6 +4,8 @@ import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.User;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -49,7 +51,11 @@ public interface MethodInterface {
         @GET("I_chao_cart_List_Id_Servlet")
         Observable<HttpResult<Goods>> getCarInfo(@Query("only") String only, @Query("login_id") String loginId);
 
-
+        /**
+         *首页数据拉取
+         */
+        @GET("I_chao_commodity_List_Hot_Servlet")
+        Observable<HttpResult<List<Goods>>> getHomeInfo(@Query("only") String only);
 
 
 }

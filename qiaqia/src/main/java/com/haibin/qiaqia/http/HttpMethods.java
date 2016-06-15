@@ -1,11 +1,13 @@
 package com.haibin.qiaqia.http;
 
 import com.haibin.qiaqia.base.Constants;
+import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.service.MethodInterface;
 import com.haibin.qiaqia.utils.DateUtils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -14,6 +16,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -49,7 +52,7 @@ public class HttpMethods {
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{
         private static final HttpMethods INSTANCE = new HttpMethods();
-    }
+        }
 
     //获取单例
     public static HttpMethods getInstance(){
@@ -95,12 +98,29 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-        public void Login(Subscriber<User> subscriber ,String phone,String password){
+    /**
+     *获取首页数据
+     *@author invinjun
+     *created at 2016/6/15 11:30
+     * @param
+     * @param
+     * @param subscriber
+     */
+        public void getHomeData(Subscriber <List<Goods>> subscriber ){
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            methodInterface.toLogin(only,phone,password)
+            methodInterface.getHomeInfo(only)
+                    .map(new HttpResultFunc<List<Goods>>())
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(subscriber);
         }
+    public void Login(Subscriber<User> subscriber ,String phone,String password){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.toLogin(only,phone,password)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

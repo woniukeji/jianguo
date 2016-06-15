@@ -180,8 +180,10 @@ public class PartJobActivity extends BaseActivity {
             tvTitle.setText("兼职旅行");
         }else if(type==5){
             tvTitle.setText("日结兼职");
-        }else{
+        }else if(type==2){//2
             tvTitle.setText("精品兼职");
+        }else{
+            tvTitle.setText("长期兼职");
         }
         GetTask getTask = new GetTask(String.valueOf(type), "0");
         getTask.execute();
@@ -214,50 +216,7 @@ public class PartJobActivity extends BaseActivity {
         });
     }
 
-    private void initDropDownView() {
-//        final ListView cityView = new ListView(getActivity());
-//        cityAdapter = new GirdDropDownAdapter(getActivity(), Arrays.asList(citys));
-//        cityView.setDividerHeight(0);
-//        cityView.setAdapter(cityAdapter);
-//        final ListView sortView = new ListView(getActivity());
-//        sortView.setDividerHeight(0);
-//        sortAdapter = new ListDropDownAdapter(getActivity(), Arrays.asList(sort));
-//        sortView.setAdapter(sortAdapter);
 
-        //init sex menu
-        mMenu = (DropDownMenu) findViewById(R.id.menu);
-        mMenu.setmMenuCount(3);
-        mMenu.setmShowCount(6);
-        mMenu.setShowCheck(true);//是否显示展开list的选中项
-        mMenu.setmMenuTitleTextSize(14);//Menu的文字大小
-        mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色
-        mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
-        mMenu.setmMenuListTextColor(Color.BLACK);//Menu展开list的文字颜色
-        mMenu.setmMenuBackColor(Color.WHITE);//Menu的背景颜色
-        mMenu.setmMenuPressedBackColor(Color.GRAY);//Menu按下的背景颜色
-        mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
-        mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
-        mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
-        mMenu.setDefaultMenuTitle(headers);//默认未选择任何过滤的Menu title
-//        List<String[]> items = new ArrayList<>();
-//        items.add(jobs);
-//        items.add(sort);
-//        items.add(citys);
-//        mMenu.setmMenuItems(items);
-//        mMenu.setIsDebug(false);
-    }
-
-//    public void onEvent(CityJobTypeEvent event) {
-//        event.cityCategory.getList_t_city2().get(0).getList_t_area();
-//        event.cityCategory.getList_t_type().get(0).getId();
-//        if (type == 4) {
-//            GetTask getTask = new GetTask(String.valueOf(type), "0");
-//            getTask.execute();
-//        } else {
-//            GetTask getTask = new GetTask(String.valueOf(type), "0");
-//            getTask.execute();
-//        }
-//    }
 
     @Override
     protected void onDestroy() {
@@ -286,9 +245,13 @@ public class PartJobActivity extends BaseActivity {
             // TODO: attempt authentication against a network service.
             try {
                 if (type.equals("5")) {
-                    getDayJobs();
-                } else
-                    getJobs();
+                    getDayJobs();//日结
+                } else if(type.equals("2")||type.equals("3")){
+                    getJobs();//兼职旅行和精品兼职
+                }else{
+                    getLongJobs();
+                }
+
             } catch (Exception e) {
             }
             return null;
@@ -298,7 +261,57 @@ public class PartJobActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
         }
+        /**
+         * postInfo
+         */
+        public void getLongJobs() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.GET_JOB_LONG)
+                    .addParams("only", only)
+                    .addParams("city_id", String.valueOf(cityid))
+                    .addParams("count", count)
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean<Jobs>>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                            }.getType());
+                            return baseBean;
+                        }
 
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_GET_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean;
+                                message.arg1= Integer.parseInt(count);
+                                message.what = MSG_GET_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_GET_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
         /**
          * postInfo
          */

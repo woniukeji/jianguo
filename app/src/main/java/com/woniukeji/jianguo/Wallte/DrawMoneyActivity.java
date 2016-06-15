@@ -3,6 +3,7 @@ package com.woniukeji.jianguo.wallte;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -289,7 +290,13 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
         @Override
         public void onFinish() {
             btnSms.setText("验证码");
-            btnSms.setBackgroundDrawable(getDrawable(R.drawable.button_background_login));
+            Drawable rBlack;
+            if(android.os.Build.VERSION.SDK_INT >= 21){
+                rBlack = getResources().getDrawable(R.drawable.button_background_login, getTheme());
+            } else {
+                rBlack = getResources().getDrawable(R.drawable.button_background_login);
+            }
+            btnSms.setBackgroundDrawable(rBlack);
             btnSms.setClickable(true);
         }
     }
@@ -300,19 +307,19 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 finish();
                 break;
             case R.id.btn_sms:
-                if (type.equals("")) {
-                    showShortToast("请先绑定支付宝或银联卡！");
-                    return;
-                } else if (etMoneySum.getText().toString() == null || etMoneySum.getText().toString().equals("")) {
-                    showShortToast("请输入取现金额");
-                    return;
-                } else if (50 >Double.valueOf(etMoneySum.getText().toString())) {
-                    showShortToast("提现金额不能小于50元");
-                    return;
-                }else if (blanceMoney < Double.valueOf(etMoneySum.getText().toString())) {
-                    showShortToast("提现金额不能大于当前余额");
-                    return;
-                }
+//                if (type.equals("")) {
+//                    showShortToast("请先绑定支付宝或银联卡！");
+//                    return;
+//                } else if (etMoneySum.getText().toString() == null || etMoneySum.getText().toString().equals("")) {
+//                    showShortToast("请输入取现金额");
+//                    return;
+//                } else if (50 >Double.valueOf(etMoneySum.getText().toString())) {
+//                    showShortToast("提现金额不能小于50元");
+//                    return;
+//                }else if (blanceMoney < Double.valueOf(etMoneySum.getText().toString())) {
+//                    showShortToast("提现金额不能大于当前余额");
+//                    return;
+//                }
                 time.start();
                 String tel= (String) SPUtils.getParam(DrawMoneyActivity.this,Constants.LOGIN_INFO,Constants.SP_TEL,"");
                 GetSMS getSMS=new GetSMS(tel);

@@ -110,7 +110,6 @@ public class CartFragment extends BaseFragment {
         return view;
     }
 
-    @Override
     public void initView() {
 //        adapter = new CartAdapter(jobList, getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -122,7 +121,6 @@ public class CartFragment extends BaseFragment {
         recyclerview.setItemAnimator(new DefaultItemAnimator());
     }
 
-    @Override
     public void initData() {
 
     }

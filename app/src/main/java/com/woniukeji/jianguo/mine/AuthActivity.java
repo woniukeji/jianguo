@@ -331,7 +331,6 @@ public class AuthActivity extends BaseActivity {
                 pDialog.setCancelable(false);
                 pDialog.show();
                upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile,1,name,id);
-               upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2,2,name,id);
                 break;
         }
     }
@@ -357,7 +356,7 @@ public class AuthActivity extends BaseActivity {
 
     }
 
-    public  void upLoadQiNiu(Context context, String key, File imgFile, final int position, final String name, final String id) {
+    public  void upLoadQiNiu(final Context context, String key, File imgFile, final int position, final String name, final String id) {
         String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
         // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
         UploadManager uploadManager = new UploadManager();
@@ -367,11 +366,20 @@ public class AuthActivity extends BaseActivity {
                     public void complete(String key, ResponseInfo info, JSONObject res) {
                         //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
                         LogUtils.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                        if (position==1){
+                            upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2,2,name,id);
+                        }
                         if (position==2){
-                            String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-                            String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
-                            PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
-                            postTask.execute();
+                            if (res!=null){
+                                String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
+                                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
+                                PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
+                                postTask.execute();
+                            }else {
+                                pDialog.dismiss();
+                                showShortToast("上传失败，请重试！");
+                            }
+
                         }
                     }
                 }, null);
@@ -390,9 +398,9 @@ public class AuthActivity extends BaseActivity {
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
                 fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile);
-                imgFront.setImageURI(imgSource);
-//                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+//                imgFront.setImageURI(imgSource);
+                Bitmap bitmap=BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+                imgFront.setImageBitmap(bitmap);
             }
         }
         if (requestCode == 1) {
@@ -404,9 +412,12 @@ public class AuthActivity extends BaseActivity {
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
                 fileName2 = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile2);
-                imgOpposite.setImageURI(imgSource);
+//                imgOpposite.setImageURI(imgSource);
+                Bitmap bitmap=BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),1080, 720);
+                imgOpposite.setImageBitmap(bitmap);
+//                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+
 //                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),true, 1080, 720);
 //                Bitmap bitmap = BitmapUtils.compressImage(imgFile2.getAbsolutePath(),null, false,1000,);
 //                BitmapUtils.saveBitmap(bitmap, imgFile2);
@@ -485,9 +496,9 @@ public class AuthActivity extends BaseActivity {
                     .addParams("id_number", idNumber)
                     .addParams("sex", sex)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(100000)
+                    .readTimeOut(100000)
+                    .writeTimeOut(100000)
                     .execute(new Callback<BaseBean>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response) throws Exception {

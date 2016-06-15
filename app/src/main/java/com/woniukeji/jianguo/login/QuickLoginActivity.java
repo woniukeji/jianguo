@@ -12,6 +12,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.Button;
@@ -178,7 +179,9 @@ public class QuickLoginActivity extends BaseActivity {
         // 设置超链接
         sp.setSpan(new URLSpan("http://101.200.205.243:8080/user_agreement.jsp"), 7, 15,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_bg)), 7, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv.setText(sp);
+        tv.setTextSize(12);
         //设置TextView可点击
         tv.setMovementMethod(LinkMovementMethod.getInstance());
     }

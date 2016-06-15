@@ -186,7 +186,7 @@
             android:id="@+id/tv_hot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="热门/精品/旅行/正常"
+            android:text="短期/长期/实习生/旅行"
             android:textColor="#D8D8D8"
             android:textSize="14dp"
             android:paddingLeft="10dp"

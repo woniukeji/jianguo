@@ -151,7 +151,7 @@ public class PublishDetailActivity extends BaseActivity {
     @InjectView(R.id.ll_change) LinearLayout llChange;
     @InjectView(R.id.ll_publish) LinearLayout llPublish;
     //顺序对应不能改变，否则id和服务器不同步
-    private String[] partHot = new String[]{"普通", "热门", "精品", "旅行"};
+    private String[] partHot = new String[]{"短期", "长期", "实习生", "旅行"};
     private String[] payMethods = new String[]{"月结", "周结", "日结", "旅行"};
     private String[] wagesMethods = new String[]{"元/月", "元/周", "元/天", "元/小时", "元/次", "义工","面议"};
     private String[] sexs = new String[]{"仅限女", "仅限男", "不限男女", "男女各需"};
@@ -1088,7 +1088,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("term", term)
                     .addParams("limit_sex", mSex_limit)
                     .addParams("sum", mSum)
-                    .addParams("hot", hot)
+                    .addParams("max", hot)
                     .addParams("alike", alike)
                     .addParams("lon", "0")
                     .addParams("lat", "0")
