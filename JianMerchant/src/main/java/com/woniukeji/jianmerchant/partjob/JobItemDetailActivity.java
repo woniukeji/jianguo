@@ -490,7 +490,11 @@ public class JobItemDetailActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                postAction();
+                if (offer.equals("13")){
+                    postDown();
+                }else{
+                    postAction();
+                }
             } catch (Exception e) {
             }
             return null;
@@ -509,6 +513,58 @@ public class JobItemDetailActivity extends BaseActivity {
             OkHttpUtils
                     .get()
                     .url(Constants.POST_DOWN)
+                    .addParams("only", only)
+                    .addParams("job_id", jobid)
+                    .addParams("offer", offer)
+                    .addParams("alike", modleJob.getAlike())
+                    .build()
+                    .connTimeOut(60000)
+                    .readTimeOut(20000)
+                    .writeTimeOut(20000)
+                    .execute(new Callback<BaseBean>() {
+                        @Override
+                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                            String string = response.body().string();
+                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
+                            }.getType());
+                            return baseBean;
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_POST_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onResponse(BaseBean baseBean) {
+                            if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.arg1 = Integer.parseInt(offer);
+                                message.what = MSG_POST_SUCCESS;
+                                mHandler.sendMessage(message);
+                            } else {
+                                Message message = new Message();
+                                message.obj = baseBean.getMessage();
+                                message.what = MSG_POST_FAIL;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+
+                    });
+        }
+        /**
+         * postInfo
+         */
+        public void postDown() {
+            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+            OkHttpUtils
+                    .get()
+                    .url(Constants.POST_PART_JOB_DOWN)
                     .addParams("only", only)
                     .addParams("job_id", jobid)
                     .addParams("offer", offer)

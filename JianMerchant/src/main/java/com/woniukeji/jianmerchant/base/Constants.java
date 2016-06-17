@@ -18,10 +18,10 @@ import android.os.Environment;
 import java.io.File;
 
 public class Constants {
-    public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
+    public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_TEST2;
+    public static final String JIANGUO_USING=JIANGUO_FACTORY;
     public static final String LOGIN= JIANGUO_USING+"T_user_login_Login_Merchant_Servlet";//
     public static final String REC_SMS= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//忘记密码 快速登录
     public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
@@ -30,6 +30,8 @@ public class Constants {
     public static final String DELETE_JOB_MODEL= JIANGUO_USING+"T_job_Model_Delete_Servlet";//删除兼职模板
     public static final String GET_PART_JOB_PUBLISH= JIANGUO_USING+"T_job_Merchant_Id_Zhong_Servlet";//获取发布的兼职列表
 
+    public static final String POST_PART_JOB_WAGES= JIANGUO_USING+"T_wages_Insert_ChangServlet";//jeisuan
+    public static final String POST_PART_JOB_DOWN= JIANGUO_USING+"T_enroll_Agree_Chang_Servlet";//下架
 
 
 

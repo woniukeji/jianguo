@@ -508,7 +508,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
              OkHttpUtils
                         .post()
-                        .url(Constants.POST_WAGES)
+                        .url(Constants.POST_PART_JOB_WAGES)
 //                        .content(json)
                         .addParams("only", only)
 //                        .addParams("hould_money", houle)
