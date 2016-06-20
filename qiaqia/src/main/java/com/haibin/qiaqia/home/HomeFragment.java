@@ -17,14 +17,11 @@ import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseFragment;
 import com.haibin.qiaqia.cart.CartAdapter;
 import com.haibin.qiaqia.entity.Goods;
-import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
 import com.haibin.qiaqia.http.SubscriberOnNextListener;
-import com.haibin.qiaqia.login.LoginPassWordActivity;
 import com.haibin.qiaqia.main.MainActivity;
-import com.haibin.qiaqia.utils.MD5Util;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.lang.ref.WeakReference;
@@ -62,7 +59,7 @@ public class HomeFragment extends BaseFragment {
     private int mtype = 0;
     private int position;
     private boolean DataComplete = false;
-    SubscriberOnNextListener<List<Goods>> SubListener;
+    SubscriberOnNextListener<Goods> SubListener;
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -131,14 +128,14 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initData() {
-        SubListener = new SubscriberOnNextListener<List<Goods>>() {
+        SubListener = new SubscriberOnNextListener<Goods>() {
             @Override
-            public void onNext(List<Goods> goodsHttpResult) {
+            public void onNext(Goods goodsHttpResult) {
                 Toast.makeText(getActivity(),"获取成功", Toast.LENGTH_LONG).show();
             }
 
         };
-        HttpMethods.getInstance().getHomeData(new ProgressSubscriber<List<Goods>>(SubListener,getActivity()));
+        HttpMethods.getInstance().getHomeData(new ProgressSubscriber<Goods>(SubListener,getActivity()));
 
     }
 

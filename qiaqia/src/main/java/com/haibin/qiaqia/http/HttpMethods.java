@@ -7,7 +7,6 @@ import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.service.MethodInterface;
 import com.haibin.qiaqia.utils.DateUtils;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -16,7 +15,6 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -106,10 +104,10 @@ public class HttpMethods {
      * @param
      * @param subscriber
      */
-        public void getHomeData(Subscriber <List<Goods>> subscriber ){
+        public void getHomeData(Subscriber <Goods> subscriber ){
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             methodInterface.getHomeInfo(only)
-                    .map(new HttpResultFunc<List<Goods>>())
+                    .map(new HttpResultFunc<Goods>())
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
