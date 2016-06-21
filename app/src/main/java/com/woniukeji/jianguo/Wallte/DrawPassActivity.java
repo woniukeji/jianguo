@@ -167,7 +167,7 @@ public class DrawPassActivity extends BaseActivity  {
 
                 break;
             case R.id.phone_sign_in_button:
-                String phone=phoneNumber.getText().toString();
+                String phone1=phoneNumber.getText().toString();
                 String pass=passWord2.getText().toString();
                 if (CheckStatus()){
                     UserRegisterTask userRegisterTask=new UserRegisterTask(String.valueOf(loginId), MD5Util.MD5(pass));
