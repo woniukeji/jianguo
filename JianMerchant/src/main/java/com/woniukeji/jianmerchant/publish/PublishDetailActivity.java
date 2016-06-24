@@ -796,8 +796,8 @@ public class PublishDetailActivity extends BaseActivity {
             etCount.setText(sum);
         }
 
-        tvHot.setText(partHot[modle.getHot()]);
-        hot = String.valueOf(modle.getHot());
+        tvHot.setText(partHot[modle.getMax()]);
+        hot = String.valueOf(modle.getMax());
         tvHot.setTextColor(getResources().getColor(R.color.black));
         etTel.setText(modle.getInfo_tel());
 
@@ -1196,7 +1196,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("term", term)
                     .addParams("limit_sex", mSex_limit)
                     .addParams("sum", mSum)
-                    .addParams("hot", hot)
+                    .addParams("max", hot)
                     .addParams("alike", alike)
                     .addParams("lon", "0")
                     .addParams("lat", "0")

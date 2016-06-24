@@ -81,7 +81,6 @@ public class SplashActivity extends BaseActivity {
                     splashActivity.finish();
                     break;
                 case 2:
-
                     break;
                 case 3:
                     String sms = (String) msg.obj;

@@ -290,7 +290,7 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvTitle.setText("兼职详情");
-        img_share.setVisibility(View.GONE);
+        img_share.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -339,7 +339,7 @@ public class JobDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_share:
-                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler);
+                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler,String.valueOf(jobid),job,jobinfo,tvWorkDate.getText().toString(),tvWage.getText().toString());
                 share.showShareWindow();
                 // 显示窗口 (设置layout在PopupWindow中显示的位置)
                 share.showAtLocation(JobDetailActivity.this.getLayoutInflater().inflate(R.layout.activity_job_detail, null),

@@ -112,6 +112,16 @@ public class Model implements Serializable{
             private String nv_count;
             private String remarks;
             private String user_count;
+            private int max;
+
+            public int getMax() {
+                return max;
+            }
+
+            public void setMax(int max) {
+                this.max = max;
+            }
+
             public String getUser_count() {
                 return user_count;
             }

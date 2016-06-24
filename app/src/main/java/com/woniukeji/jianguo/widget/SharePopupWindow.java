@@ -14,6 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.entity.JobDetails;
+import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.entity.Wage;
 import com.woniukeji.jianguo.utils.LogUtils;
 
 import java.util.HashMap;
@@ -22,6 +25,7 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
@@ -37,8 +41,8 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     private ImageView wechatCircle;
     private ImageView wechatFriends;
     private ImageView sina;
+    private ImageView qzone;
     private Handler mHandler;
-    private String platform;
     private SharedPreferences SearchSp;
     private String accessToken;
     private String userId;
@@ -46,15 +50,23 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     private ImageView share_dialog_close;
     private RelativeLayout ll_subscribe_share;
     private RelativeLayout rl_red_bg;
+    private String date;
+    private String wage;
+    private String linkUrl="http://192.168.1.132/JianGuo_Server/Html_Job_Id_Servlet";
+    private String jobid;
+    private Jobs.ListTJobEntity job;
+    JobDetails.TJobInfoEntity jobinfo;
     //分享相关
 
-    public SharePopupWindow(Context cx, Handler handler) {
+    public SharePopupWindow(Context cx, Handler handler, String jobId, Jobs.ListTJobEntity job, JobDetails.TJobInfoEntity jobinfo, String date, String wage) {
         this.context = cx;
         this.mHandler = handler;
-
-
+        this.job=job;
+        this.jobid=jobId;
+        this.jobinfo=jobinfo;
+        this.date=date;
+        this.wage=wage;
     }
-
 
     public void showShareWindow() {
         View view = LayoutInflater.from(context).inflate(R.layout.share_popupwindow, null);
@@ -62,6 +74,7 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
         wechatCircle = (ImageView) view.findViewById(R.id.weichat_circle_share_icon);
         wechatFriends = (ImageView) view.findViewById(R.id.weichat_friends_share_icon);
         sina = (ImageView) view.findViewById(R.id.sina_share_icon);
+        qzone= (ImageView) view.findViewById(R.id.qzon_share_icon);
 
         share_dialog_close = (ImageView) view.findViewById(R.id.share_dialog_close);
         ll_subscribe_share = (RelativeLayout) view.findViewById(R.id.ll_subscribe_share);
@@ -74,7 +87,7 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
         wechatFriends.setOnClickListener(this);
         rl_red_bg.setOnClickListener(this);
         sina.setOnClickListener(this);
-
+        qzone.setOnClickListener(this);
         SearchSp = context.getSharedPreferences("userInfo", context.MODE_PRIVATE);
         userId = SearchSp.getString("userId", "0");
         accessToken = SearchSp.getString("accessToken", "0");
@@ -125,27 +138,27 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.weichat_friends_share_icon:
-                platform = "2";
+//                platform = "2";
                 Wechat.ShareParams sp = new Wechat.ShareParams();
                 //任何分享类型都需要title和text
                 //the two params of title and text are required in every share type
-                sp.setTitle("呵呵呵!");
+                sp.setTitle(job.getName());
                 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
 //                momentsp.setTitleUrl("http://sharesdk.cn");
                 // text是分享文本，所有平台都需要这个字段
-                sp.setText("我是分享文本");
+                sp.setText(wage+"\n"+date+"\n"+job.getAddress());
                 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
                 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
                 // url仅在微信（包括好友和朋友圈）中使用
-                sp.imageUrl = "http://7xlell.com2.z0.glb.qiniucdn.com/01678d545b4de3f2ba858ae90a1cce21";
-                sp.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.woniukeji.jianguo");
+                sp.imageUrl = job.getName_image();
+                sp.setUrl(linkUrl+"?job_id="+jobid);
 
                 sp.shareType = Platform.SHARE_WEBPAGE;
                 Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
                 wechat.setPlatformActionListener(new PlatformActionListener() {
                     @Override
                     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","分享成功");
                     }
 
                     @Override
@@ -162,20 +175,20 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
                 dismiss();
                 break;
             case R.id.weichat_circle_share_icon:
-                platform = "3";
+//                platform = "3";
                 WechatMoments.ShareParams momentsp = new WechatMoments.ShareParams();
                 //任何分享类型都需要title和text
                 //the two params of title and text are required in every share type
-                momentsp.setTitle("呵呵呵!");
+                momentsp.setTitle(job.getName());
                 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
 //                momentsp.setTitleUrl("http://sharesdk.cn");
                 // text是分享文本，所有平台都需要这个字段
-                momentsp.setText("我是分享文本");
+                momentsp.setText(wage+"\n"+date+"\n"+job.getAddress());
                 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
                 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
                 // url仅在微信（包括好友和朋友圈）中使用
-                momentsp.imageUrl = "http://7xlell.com2.z0.glb.qiniucdn.com/01678d545b4de3f2ba858ae90a1cce21";
-                momentsp.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.woniukeji.jianguo");
+                momentsp.imageUrl =job.getName_image();
+                momentsp.setUrl(linkUrl+"?job_id="+jobid);
                 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 //                momentsp.setComment("我是测试评论文本");
 //                momentsp.shareType = Platform.SHARE_IMAGE;
@@ -188,50 +201,80 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
                 wechatmom.setPlatformActionListener(new PlatformActionListener() {
                     @Override
                     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","分享成功");
                     }
 
                     @Override
                     public void onError(Platform platform, int i, Throwable throwable) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","分享成功");
                     }
 
                     @Override
                     public void onCancel(Platform platform, int i) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","成功");
                     }
                 });
                 wechatmom.share(momentsp);
                 dismiss();
                 break;
             case R.id.sina_share_icon:
-                platform = "1";
+//                platform = "1";
                 QQ.ShareParams qqsp = new QQ.ShareParams();
                 qqsp.setText("兼果科技");
-                qqsp.title = "ShareSDK wechat share title";
-                qqsp.text = "ShareSDK wechat share text";
-                qqsp.setImageUrl("http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1305/30/c0/21447200_1369886146048.jpg");
+                qqsp.title = job.getName();
+                qqsp.text =wage+"\n"+date+"\n"+job.getAddress();
+                qqsp.setImageUrl(job.getName_image());
 
                 Platform qq = ShareSDK.getPlatform(QQ.NAME);
 
                 qq.setPlatformActionListener(new PlatformActionListener() {
                     @Override
                     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","成功");
                     }
 
                     @Override
                     public void onError(Platform platform, int i, Throwable throwable) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","失败");
                     }
 
                     @Override
                     public void onCancel(Platform platform, int i) {
-                        LogUtils.e("share","分享陈工");
+                        LogUtils.e("share","成功");
                     }
                 }); // 设置分享事件回调
 // 执行图文分享
                 qq.share(qqsp);
+                dismiss();
+                break;
+            case R.id.qzon_share_icon:
+//                platform = "1";
+                QZone.ShareParams qz = new QZone.ShareParams();
+                qz.setTitle( job.getName());
+                qz.setTitleUrl(linkUrl+"?job_id="+jobid);
+                qz.setText(wage+"\n"+date+"\n"+job.getAddress());
+                qz.setImageUrl(job.getName_image());
+
+                Platform qzp = ShareSDK.getPlatform(QZone.NAME);
+
+                qzp.setPlatformActionListener(new PlatformActionListener() {
+                    @Override
+                    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                        LogUtils.e("share","成功");
+                    }
+
+                    @Override
+                    public void onError(Platform platform, int i, Throwable throwable) {
+                        LogUtils.e("share","失败");
+                    }
+
+                    @Override
+                    public void onCancel(Platform platform, int i) {
+                        LogUtils.e("share","取消");
+                    }
+                }); // 设置分享事件回调
+// 执行图文分享
+                qzp.share(qz);
                 dismiss();
                 break;
             case R.id.share_dialog_close:
