@@ -2,6 +2,7 @@ package com.haibin.qiaqia.service;
 
 import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.HttpResult;
+import com.haibin.qiaqia.entity.Market;
 import com.haibin.qiaqia.entity.User;
 
 import retrofit2.http.GET;
@@ -53,6 +54,15 @@ public interface MethodInterface {
          */
         @GET("I_chao_commodity_List_Hot_Servlet")
         Observable<HttpResult<Goods>> getHomeInfo(@Query("only") String only);
+/**
+ * 加减删除购物车商品
+ */
+        @POST("I_chao_cart_Insert_JJ_Servlet")
+        Observable<HttpResult<Goods>> getChangeCarGoods(@Query("only") String only,@Query("login_id") String login_id,@Query("commodity_id") String commodity_id,@Query("count") String count);
 
-
+/**
+ * 超市分类 chao_class_list
+ */
+        @GET("I_chao_class_List_Id_Servlet")
+        Observable<HttpResult<Market>> getMarketClass(@Query("only") String only,@Query("type") String type);
 }

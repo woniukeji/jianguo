@@ -3,6 +3,7 @@ package com.haibin.qiaqia.http;
 import com.haibin.qiaqia.base.Constants;
 import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.HttpResult;
+import com.haibin.qiaqia.entity.Market;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.service.MethodInterface;
 import com.haibin.qiaqia.utils.DateUtils;
@@ -116,6 +117,19 @@ public class HttpMethods {
     public void Login(Subscriber<User> subscriber ,String phone,String password){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.toLogin(only,phone,password)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    /**
+     * 获取超市分类
+     */
+    public void getMarketClass(Subscriber<Market> subscriber,String type){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getMarketClass(only,type)
+                .map(new HttpResultFunc<Market>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

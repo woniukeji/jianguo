@@ -2,6 +2,7 @@ package com.haibin.qiaqia.home;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
@@ -36,7 +38,10 @@ import de.greenrobot.event.EventBus;
  * A simple {@link } subclass.
  */
 public class HomeFragment extends BaseFragment {
-    @BindView(R.id.recyclerview) XRecyclerView recyclerview;
+    @BindView(R.id.recyclerview)
+    XRecyclerView recyclerview;
+    @BindView(R.id.market)
+    TextView market;
     private Context context = getActivity();
 
     //    private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
@@ -60,6 +65,7 @@ public class HomeFragment extends BaseFragment {
     private int position;
     private boolean DataComplete = false;
     SubscriberOnNextListener<Goods> SubListener;
+
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -118,7 +124,7 @@ public class HomeFragment extends BaseFragment {
 
     public void initView() {
         adapter = new CartAdapter(jobList, getActivity());
-        mLayoutManager = new GridLayoutManager(getActivity(),2);
+        mLayoutManager = new GridLayoutManager(getActivity(), 2);
         //设置布局管理器
         recyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
@@ -128,14 +134,20 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initData() {
+        market.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(),MarketActivity.class));
+            }
+        });
         SubListener = new SubscriberOnNextListener<Goods>() {
             @Override
             public void onNext(Goods goodsHttpResult) {
-                Toast.makeText(getActivity(),"获取成功", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "获取成功", Toast.LENGTH_LONG).show();
             }
 
         };
-        HttpMethods.getInstance().getHomeData(new ProgressSubscriber<Goods>(SubListener,getActivity()));
+        HttpMethods.getInstance().getHomeData(new ProgressSubscriber<Goods>(SubListener, getActivity()));
 
     }
 
