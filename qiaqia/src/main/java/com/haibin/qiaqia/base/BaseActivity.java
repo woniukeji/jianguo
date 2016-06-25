@@ -28,9 +28,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView();
 
         initViews();
-
         initListeners();
         initData();
+
         addActivity();
     }
     @Override
