@@ -62,4 +62,5 @@ dependencies {
 
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
     compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }

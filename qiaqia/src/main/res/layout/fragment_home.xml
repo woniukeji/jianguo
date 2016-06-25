@@ -4,20 +4,11 @@
              android:layout_height="match_parent"
              android:background="#f3f3f3"
              >
-    <TextView
-        android:id="@+id/market"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:background="#ffff55"
-        android:gravity="center"
-        android:text="超市"
-        android:layout_centerInParent="true"
-        android:textSize="20sp"
-        />
+
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
     <!--<android.support.v4.widget.SwipeRefreshLayout-->
         <!--android:id="@+id/refresh_layout"-->
         <!--android:layout_width="match_parent"-->
@@ -34,5 +25,11 @@
             <!--android:overScrollMode="never"-->
             <!--android:scrollbarStyle="outsideOverlay" />-->
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
-
+    <Button
+        android:id="@+id/bt_daindian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="diandiandian"/>
 </RelativeLayout>
