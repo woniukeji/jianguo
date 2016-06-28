@@ -1,38 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="270dp"
-              android:padding="15dp"
-              android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/caomei"
-        />
-<RelativeLayout
-    android:layout_width="156dp"
-    android:layout_height="59dp">
-<TextView
-    android:id="@+id/tv_goods_name"
-    android:layout_width="wrap_content"
-    android:layout_height="21dp"
-    android:text="泰国红草莓"
-    />
-    <TextView
-        android:layout_below="@+id/tv_goods_name"
-        android:id="@+id/tv_goods_price"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:text="7.00元/500g"
-        />
+              android:background="#f6f6f6"
+              android:layout_height="wrap_content">
+   <LinearLayout
+       android:layout_width="235dp"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_marginTop="13dp"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="15dp"
+       android:layout_marginBottom="13dp"
+       android:layout_centerInParent="true"
+       android:background="@drawable/bg_goods_item"
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/jiahao_on"
-        android:layout_alignParentRight="true"
+       >
+       <ImageView
+           android:id="@+id/img"
+           android:layout_width="match_parent"
+           android:layout_height="188dp"
+           android:src="@mipmap/caomei"
+           />
+       <RelativeLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="16dp"
+           android:layout_marginRight="9dp"
+           android:paddingBottom="25dp"
+           >
+           <TextView
+               android:id="@+id/tv_goods_name"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="20dp"
+               android:text="泰国红草莓"
+               android:maxEms="5"
+               android:singleLine="true"
+               android:ellipsize="end"
+               android:layout_marginTop="18dp"
+               />
+           <TextView
+               android:layout_below="@+id/tv_goods_name"
+               android:id="@+id/tv_goods_price"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="20dp"
+               android:textSize="18dp"
+               android:text="7.00元/500g"
+               />
 
-        />
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@mipmap/jiahao_on"
+               android:layout_marginTop="28dp"
+               android:layout_alignParentRight="true"
+
+               />
+       </RelativeLayout>
+   </LinearLayout>
+
 </RelativeLayout>
-</LinearLayout>
