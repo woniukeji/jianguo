@@ -14,6 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.Wage;
@@ -52,7 +53,7 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     private RelativeLayout rl_red_bg;
     private String date;
     private String wage;
-    private String linkUrl="http://192.168.1.132/JianGuo_Server/Html_Job_Id_Servlet";
+    private String linkUrl= Constants.JIANGUO_TEST2+"Html_Job_Id_Servlet";
     private String jobid;
     private Jobs.ListTJobEntity job;
     JobDetails.TJobInfoEntity jobinfo;

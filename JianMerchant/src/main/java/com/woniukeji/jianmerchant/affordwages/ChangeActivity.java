@@ -110,7 +110,7 @@ public class ChangeActivity extends BaseActivity {
         String money=intent.getStringExtra("money");
         position=intent.getIntExtra("position",0);
         if (user.getRealname()!=null&&!user.getRealname().equals("0")){
-          userName.setText(user.getRealname());
+          userName.setText(user.getName());
         }else {
            userName.setText("未实名");
         }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.woniukeji.jianmerchant.base.MainActivity;
+import com.woniukeji.jianmerchant.partjob.PartJobManagerActivity;
 
 
 /**
@@ -22,7 +23,7 @@ import com.woniukeji.jianmerchant.base.MainActivity;
                 String extras = intent.getStringExtra(KEY_EXTRAS);
                 StringBuilder showMsg = new StringBuilder();
                 showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-                   context.startActivity(new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                   context.startActivity(new Intent(context, PartJobManagerActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.woniukeji.jianguo.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.PushMessage;
+import com.woniukeji.jianguo.mine.AuthActivity;
+import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import java.util.List;
 
@@ -94,12 +98,12 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
          holder.tvTitle.setText(message.getTitle());
             holder.tvDate.setText(message.getTime());
             holder.tvContent.setText("消息详情："+message.getContent());
-            if (message.getType()==0){
-                //报名
-                holder.tvPs.setText("备注：请到\"我的—兼职管理\"中查看详情");
-            }else{
-                holder.tvPs.setText("备注：请到\"我的—我的钱包\"中查看详情");
-            }
+//            if (message.getType()==0){
+//                //报名
+//                holder.tvPs.setText("备注：请到\"我的—兼职管理\"中查看详情");
+//            }else{
+//                holder.tvPs.setText("备注：请到\"我的—我的钱包\"中查看详情");
+//            }
 
 
 
@@ -149,26 +153,22 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
 //            }
 //            holder.tvWorkDate.setText(DateUtils.getTime(Long.valueOf(job.getJob_start()), Long.valueOf(job.getJob_stop())));
 
-//            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    final SweetAlertDialog dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE);
-//                    dialog.setTitleText("确定要删除该收藏?")
-//                            .setConfirmText("确定")
-//                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                @Override
-//                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                                    AttentionCollectionEvent event = new AttentionCollectionEvent();
-////                                    event.listTJob = job;
-//                                    EventBus.getDefault().post(event);
-//                                    dialog.dismiss();
-//                                }
-//                            })
-//                            .setCancelText("取消")
-//                            .show();
-//                    return false;
-//                }
-//            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //（0=报名，1=钱包，2=实名）
+                    if (message.getType()==0){
+                        mContext.startActivity(new Intent(mContext, SignActivity.class));
+                    }else if (message.getType()==1){
+                        mContext.startActivity(new Intent(mContext, WalletActivity.class));
+                    }else if(message.getType()==2){
+                        mContext.startActivity(new Intent(mContext, AuthActivity.class));
+                    }else {
+                        mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    }
+                }
+            });
         }
     }
 

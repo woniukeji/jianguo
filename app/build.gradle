@@ -24,8 +24,8 @@ android {
         applicationId "com.woniukeji.jianguo"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 15
-        versionName "3.0.4"
+        versionCode 16
+        versionName "3.0.5"
         generatedDensities = []
         multiDexEnabled true
         ndk {

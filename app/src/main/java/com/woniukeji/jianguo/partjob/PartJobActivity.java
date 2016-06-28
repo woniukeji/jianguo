@@ -117,6 +117,7 @@ public class PartJobActivity extends BaseActivity {
 //                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
+                    rlNull.setVisibility(View.VISIBLE);
                     cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
                     break;
                 case 3:
@@ -287,7 +288,7 @@ public class PartJobActivity extends BaseActivity {
 
                         @Override
                         public void onError(Call call, Exception e) {
-                            Message message = new Message();
+                                                                     Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
                             mHandler.sendMessage(message);

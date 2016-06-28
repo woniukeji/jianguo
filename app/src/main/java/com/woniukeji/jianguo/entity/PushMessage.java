@@ -69,7 +69,7 @@ public class PushMessage {
             private String job_name;
             private String title;
             private String content;
-            private int type;
+            private int type;//（0=报名，1=钱包，2=实名）
             private String time;
 
             public int getId() {
