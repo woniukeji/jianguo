@@ -32,6 +32,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile project(':multi-image-selector')
     compile files('libs/qiniu-android-sdk-7.0.9.jar')
     compile project(':dialoglibrary')
@@ -59,7 +60,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile project(path: ':app')
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0'
-
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
     compile 'com.android.support:recyclerview-v7:23.2.1'
 }

@@ -28,11 +28,6 @@ public class Constants {
 
     public static final String GET_QINIU_TOKEN= JIANGUO_USING+"T_QiNiu_Servlet";//七牛token 接口
 
-    public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
-    public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
-    public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
-    public static final String CHECK_PHONE_BLACK= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//快速登录忘记密码
-    public static final String POST_BIND_PHONE= JIANGUO_USING+"T_user_login_BindingTel_Servlet";//绑定手机号
     public static final String ONLY_PART1 = "j39dkjhk12934dsn73b";
     public static final String ONLY_PART2 = "kh49032njkd38892nfw";
 
@@ -70,14 +65,12 @@ public class Constants {
     public static final String GET_USER_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_User_Servlet";//地区类型信息 兼职种类
     public static final String POST_OPINION= JIANGUO_USING+"T_opinion_Insert_Servlet";//用户反馈接口
 
-    public static final String LOGIN_INFO = "loginInfo";
-    public static final String LOGIN_CITY="city_name";
-    public static final String LOGIN_CITY_ID="city_id";
-    public static final String LOGIN_VERSION="version";
-    public static final String LOGIN_CONTENT="upLog";
-    public static final String LOGIN_APK_URL="apkurl";
-    public static final String LOGIN_CITY_POSITION="city_POSITION";
-    public static final String SP_TYPE="type";//0登录
+    public static final String USER_LOGIN = "userLogin";
+    public static final String LOGIN_PASSWORD="password";
+    public static final String LOGIN_PHONE="phone";
+    public static final String LOGIN_STATUS="status";
+    public static final String LOGIN_TYPE="type";//0登录
+
     public static final String SP_FIRST="first";//0未点击 1 点击首页 2 点击了编辑界面引导
     public static final String SP_TEL="tel";
     public static final String SP_PASSWORD="password";
@@ -88,10 +81,9 @@ public class Constants {
     public static final String SP_QNTOKEN="qn_token";
 
     public static final String USER_INFO = "userInfo";
-    public static final String SP_NICK="nickname";
-    public static final String SP_NAME="name";
-    public static final String USER_SEX="sex";
-    public static final String SP_IMG="name_image";
+    public static final String INFO_ID="loginid";
+    public static final String INFO_NAME="name";
+    public static final String INFO_IMG="nameImage";
     public static final String SP_SCHOOL="school";
     public static final String SP_INTEGRAL="integral";
     public static final String SP_CREDIT="credit";

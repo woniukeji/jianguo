@@ -30,13 +30,11 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseActivity;
-import com.haibin.qiaqia.base.Constants;
 import com.haibin.qiaqia.cart.CartFragment;
 import com.haibin.qiaqia.entity.TabEntity;
 import com.haibin.qiaqia.home.HomeFragment;
 import com.haibin.qiaqia.utils.ActivityManager;
 import com.haibin.qiaqia.utils.LogUtils;
-import com.haibin.qiaqia.utils.SPUtils;
 import com.haibin.qiaqia.widget.SystemBarTintManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
@@ -381,9 +379,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
 
-        int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-            int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
-        if (First==0){
+//        int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
+//            int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
+//        if (First==0){
             imgeMainLead.setVisibility(View.GONE);
 //            imgeMainLead.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -400,7 +398,7 @@ public class MainActivity extends BaseActivity {
 //                    clickTime++;
 //                }
 //            });
-        }
+//        }
 
     }
 

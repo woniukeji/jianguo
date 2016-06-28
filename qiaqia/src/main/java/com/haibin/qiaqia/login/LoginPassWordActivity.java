@@ -12,12 +12,14 @@ import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseActivity;
+import com.haibin.qiaqia.base.Constants;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
 import com.haibin.qiaqia.http.SubscriberOnNextListener;
 import com.haibin.qiaqia.main.MainActivity;
 import com.haibin.qiaqia.utils.MD5Util;
+import com.haibin.qiaqia.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,12 +60,19 @@ public class LoginPassWordActivity extends BaseActivity {
     @Override
     public void initListeners() {
         //处理接口返回的数据
-        loginSubListener= new SubscriberOnNextListener<User>() {
+        loginSubListener=new SubscriberOnNextListener<User>() {
 
             @Override
             public void onNext(User user) {
-                if (user.getCode()==200){
+                if (user.getCode().equals("200")){
                     Toast.makeText(LoginPassWordActivity.this,"登录成功",Toast.LENGTH_LONG).show();
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_LOGIN,Constants.LOGIN_PHONE,user.getData().getIUserLogin().getPhone());
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_LOGIN,Constants.LOGIN_PASSWORD,user.getData().getIUserLogin().getPassword());
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_LOGIN,Constants.LOGIN_STATUS,user.getData().getIUserLogin().getStatus());
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_LOGIN,Constants.LOGIN_TYPE,1);
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_INFO,Constants.INFO_IMG,user.getData().getIUserInfo().getNameImage());
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_INFO,Constants.INFO_ID,user.getData().getIUserInfo().getLoginId());
+                    SPUtils.setParam(LoginPassWordActivity.this, Constants.USER_INFO,Constants.INFO_NAME,user.getData().getIUserInfo().getName());
                     startActivity(new Intent(LoginPassWordActivity.this, MainActivity.class));
                     finish();
                 }else

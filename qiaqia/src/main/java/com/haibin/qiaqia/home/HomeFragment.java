@@ -17,9 +17,8 @@ import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseFragment;
-import com.haibin.qiaqia.cart.CartAdapter;
 import com.haibin.qiaqia.entity.Goods;
-import com.haibin.qiaqia.entity.User;
+import com.haibin.qiaqia.entity.ListChaoCommodity;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
 import com.haibin.qiaqia.http.SubscriberOnNextListener;
@@ -47,10 +46,10 @@ public class HomeFragment extends BaseFragment {
     //    private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
     //    private String citys[] = {"不限", "武汉", "北京", "上海", "成都", "广州", "深圳", "重庆", "天津", "西安", "南京", "杭州"};
     private List<View> popupViews = new ArrayList<>();
-    private CartAdapter adapter;
+    private HomeAdapter adapter;
     private int lastVisibleItem;
     private LinearLayoutManager mLayoutManager;
-    public List<User> jobList = new ArrayList<User>();
+    public List<ListChaoCommodity> listChaoCommodities = new ArrayList<ListChaoCommodity>();
     private String cityid = "1";
     String typeid = "0";
     String areid = "0";
@@ -85,10 +84,10 @@ public class HomeFragment extends BaseFragment {
 //                    BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
 //                    int count = msg.arg1;
 //                    if (count == 0) {
-//                        jobList.clear();
+//                        listChaoCommodities.clear();
 //                    }
 //                    jobs.getData().getList_t_job();
-//                    jobList.addAll(jobs.getData().getList_t_job());
+//                    listChaoCommodities.addAll(jobs.getData().getList_t_job());
 //                    adapter.notifyDataSetChanged();
 //                    DataComplete=true;
                     break;
@@ -123,8 +122,9 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initView() {
-        adapter = new CartAdapter(jobList, getActivity());
+        adapter = new HomeAdapter( getActivity(),listChaoCommodities);
         mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerview.setHasFixedSize(true);
         //设置布局管理器
         recyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
@@ -143,6 +143,8 @@ public class HomeFragment extends BaseFragment {
         SubListener = new SubscriberOnNextListener<Goods>() {
             @Override
             public void onNext(Goods goodsHttpResult) {
+                listChaoCommodities.addAll(goodsHttpResult.getListChaoCommodity());
+                adapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(), "获取成功", Toast.LENGTH_LONG).show();
             }
 
