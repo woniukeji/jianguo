@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.entity.ListChaoCommodity;
+import com.haibin.qiaqia.widget.RoundedImageView;
 
 import java.util.List;
 

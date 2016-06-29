@@ -350,6 +350,9 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 }else if (!etSms.getText().toString().equals(sms)) {
                     showShortToast("验证码不正确");
                     return;
+                }else if (Double.valueOf(etMoneySum.getText().toString())<50) {
+                    showShortToast("提现金额必须大于50");
+                    return;
                 }
                 PostTask postTask = new PostTask(String.valueOf(loginid), type, etMoneySum.getText().toString());
                 postTask.execute();

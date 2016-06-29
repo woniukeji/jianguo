@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -156,7 +158,7 @@ public class MainActivity extends BaseActivity {
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
         ButterKnife.inject(this);
         initSystemBar(this);
-        button = (ArrowDownloadButton)findViewById(R.id.arrow_download_button);
+        button = (ArrowDownloadButton)findViewById(R.id.download_button);
         up_dialog= (RelativeLayout) findViewById(R.id.up_dialog);
         int version = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
         apkurl = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
@@ -180,6 +182,8 @@ public class MainActivity extends BaseActivity {
                     }).show();
         }
     }
+
+
 
     public static void initSystemBar(Activity activity) {
 
@@ -353,6 +357,7 @@ public class MainActivity extends BaseActivity {
         imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
+        mainPager .setOffscreenPageLimit(2);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }

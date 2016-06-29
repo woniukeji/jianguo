@@ -98,7 +98,7 @@ public class PartJobActivity extends BaseActivity {
             PartJobActivity mainActivity = (PartJobActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    if (refreshLayout.isRefreshing()) {
+                    if (refreshLayout!=null&&refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
                     int count=msg.arg1;

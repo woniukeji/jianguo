@@ -3,9 +3,11 @@ package com.woniukeji.jianguo.base;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -17,7 +19,6 @@ import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.widget.SystemBarTintManager;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

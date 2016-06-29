@@ -174,7 +174,6 @@ public class JobDetailActivity extends BaseActivity {
 
     private void fillData() {
         tvWorkLocation.setText(jobinfo.getAddress());
-
         if (jobinfo!=null){
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
         String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
@@ -195,7 +194,16 @@ public class JobDetailActivity extends BaseActivity {
                     tvSignup.setClickable(false);
                 }
             }
-
+                //期限（1=月结，2=周结，3=日结，4=小时结）
+                if (job.getMode()==0){
+                    tvPayMethod.setText("月结");
+                }else if(job.getMode()==1){
+                    tvPayMethod.setText("周结");
+                }else if(job.getMode()==2){
+                    tvPayMethod.setText("日结");
+                }else {
+                    tvPayMethod.setText("旅行");
+                }
             }
         if (jobinfo.getIs_collection().equals("0")){
             Drawable drawable=getResources().getDrawable(R.drawable.icon_collection_normal);
@@ -217,16 +225,7 @@ public class JobDetailActivity extends BaseActivity {
             tvSex.setText("男");
         }else
             tvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
-        //期限（1=月结，2=周结，3=日结，4=小时结）
-            if (job.getMode()==0){
-                tvPayMethod.setText("月结");
-            }else if(job.getMode()==1){
-                tvPayMethod.setText("周结");
-            }else if(job.getMode()==2){
-                tvPayMethod.setText("日结");
-            }else {
-                tvPayMethod.setText("旅行");
-            }
+
 
          if (jobinfo.getOther()==null||jobinfo.getOther().equals("null")||jobinfo.getOther().equals("")){
              tvOther.setText("暂无");

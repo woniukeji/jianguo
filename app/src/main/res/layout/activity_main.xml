@@ -50,7 +50,7 @@
         android:visibility="gone"
         >
         <com.fenjuly.library.ArrowDownloadButton
-            android:id="@+id/arrow_download_button"
+            android:id="@+id/download_button"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_width="130dp"

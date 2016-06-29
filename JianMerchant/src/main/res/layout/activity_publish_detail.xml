@@ -1226,58 +1226,64 @@
         android:paddingTop="10dp"
         android:textColorHint="#bfbfbf"
         android:background="#efefef"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="15dp"
         />
 </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_change"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/btn_change"
+                android:layout_height="match_parent"
+                android:text="修改兼职"
+                android:background="@drawable/btn_gray_bg"
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_publish"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/btn_preview"
+                android:layout_height="match_parent"
+                android:text="预览兼职"
+                android:background="@drawable/btn_gray_bg"
+                />
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/btn_save"
+                android:layout_height="match_parent"
+                android:text="保存为模板"
+                android:background="@drawable/btn_gray_bg"
+                />
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/btn_publish"
+                android:layout_height="match_parent"
+                android:text="发布兼职"
+                android:background="@drawable/btn_gray_bg"
+                />
+        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
-    <LinearLayout
-        android:id="@+id/ll_change"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        >
-        <Button
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:id="@+id/btn_change"
-        android:layout_height="match_parent"
-        android:text="修改兼职"
-        android:background="@drawable/btn_gray_bg"
 
-        />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_publish"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        >
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/btn_preview"
-            android:layout_height="match_parent"
-            android:text="预览兼职"
-            android:background="@drawable/btn_gray_bg"
-            />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/btn_save"
-            android:layout_height="match_parent"
-            android:text="保存为模板"
-            android:background="@drawable/btn_gray_bg"
-            />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/btn_publish"
-            android:layout_height="match_parent"
-            android:text="发布兼职"
-            android:background="@drawable/btn_gray_bg"
-            />
-    </LinearLayout>
 </RelativeLayout>

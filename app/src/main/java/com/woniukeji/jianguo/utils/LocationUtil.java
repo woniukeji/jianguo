@@ -42,7 +42,7 @@ public class LocationUtil  {
             public void onLocationChanged(TencentLocation tencentLocation, int error, String reason) {
                 CityEvent city = new CityEvent();
                 city.city = new CityBannerEntity.ListTCityEntity();
-                if(TencentLocation.ERROR_OK == error){
+                if(TencentLocation.ERROR_OK == error&&!tencentLocation.getCity().equals("")){
                     // 定位成功
                     String cityCode = tencentLocation.getCityCode();
                     if(!StringUtils.isBlank(cityCode)){
