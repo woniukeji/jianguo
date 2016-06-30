@@ -202,16 +202,15 @@ public class PassWordActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new BaseCallback() {
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.getMessage();
                             message.what = MSG_USER_FAIL;
                             mHandler.sendMessage(message);
                         }
 
-
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response, int id) {
                             if (response.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = response.getMessage();
@@ -223,10 +222,7 @@ public class PassWordActivity extends BaseActivity {
                                 message.what = MSG_USER_FAIL;
                                 mHandler.sendMessage(message);
                             }
-
                         }
-
-
                     });
         }
     }

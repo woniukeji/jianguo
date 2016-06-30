@@ -136,8 +136,7 @@ public class CollectionFragment extends BaseFragment {
     public void onEvent(AttentionCollectionEvent event) {
         if (event.listTJob!=null){
             delePosition=event.position;
-            DeleteTask deleteTask=new DeleteTask(String.valueOf(loginId),String.valueOf( event.listTJob.getId()));
-            deleteTask.execute();
+            DeleteCollAtten(String.valueOf(loginId),String.valueOf( event.listTJob.getId()));
         }
     }
     /**
@@ -193,43 +192,16 @@ public class CollectionFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        GetTask getTask = new GetTask(String.valueOf(loginId));
-        getTask.execute();
+        getJobs(String.valueOf(loginId));
         super.onAttach(context);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
-
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
-
-        GetTask(String loginId) {
-            this.loginId = loginId;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getJobs();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * postInfo
          */
-        public void getJobs() {
+        public void getJobs(String loginId) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -242,7 +214,7 @@ public class CollectionFragment extends BaseFragment {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -250,7 +222,7 @@ public class CollectionFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -258,7 +230,7 @@ public class CollectionFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -275,35 +247,13 @@ public class CollectionFragment extends BaseFragment {
 
                     });
         }
-    }
-        public class DeleteTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
-            private final String id;
 
-            DeleteTask(String loginId,String id) {
-            this.loginId = loginId;
-                this.id = id;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                DeleteCollAtten();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * postInfo
+
          */
-        public void DeleteCollAtten() {
+        public void DeleteCollAtten(String loginId, String id) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -318,7 +268,7 @@ public class CollectionFragment extends BaseFragment {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -326,7 +276,7 @@ public class CollectionFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_DELETE_FAIL;
@@ -334,7 +284,7 @@ public class CollectionFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.what = MSG_DELETE_SUCCESS;
@@ -349,5 +299,4 @@ public class CollectionFragment extends BaseFragment {
 
                     });
         }
-    }
 }

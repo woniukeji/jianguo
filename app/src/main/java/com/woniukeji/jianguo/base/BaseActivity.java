@@ -17,6 +17,7 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.widget.SystemBarTintManager;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
@@ -64,6 +65,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onDestroy() {
         LogUtils.i("activity",":onDestroy");
         super.onDestroy();
+        //可以取消同一个tag的
+        OkHttpUtils.getInstance().cancelTag(this);//取消以Activity.this作为tag的请求
     }
 
 

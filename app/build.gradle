@@ -105,7 +105,7 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.zhy:okhttputils:2.2.1'
+    compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.flyco.roundview:FlycoRoundView_Lib:1.1.2@aar'

@@ -202,7 +202,7 @@ public class PushMessageActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<PushMessage>() {
                         @Override
-                        public PushMessage parseNetworkResponse(Response response) throws Exception {
+                        public PushMessage parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             PushMessage baseBean = new Gson().fromJson(string, new TypeToken<PushMessage>() {
                             }.getType());
@@ -210,7 +210,7 @@ public class PushMessageActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -218,7 +218,7 @@ public class PushMessageActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(PushMessage baseBean) {
+                        public void onResponse(PushMessage baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();

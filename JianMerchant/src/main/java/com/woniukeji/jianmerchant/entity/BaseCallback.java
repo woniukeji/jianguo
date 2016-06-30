@@ -13,8 +13,7 @@ import okhttp3.Response;
 public abstract class BaseCallback extends Callback<BaseBean>
 {
     @Override
-    public BaseBean parseNetworkResponse(Response response) throws IOException
-    {
+    public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
         String string = response.body().string();
         BaseBean user = new Gson().fromJson(string, BaseBean.class);
         return user;

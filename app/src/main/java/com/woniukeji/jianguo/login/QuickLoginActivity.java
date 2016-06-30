@@ -244,23 +244,21 @@ public class QuickLoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
-                String phone = phoneNumber.getText().toString().trim();
-                String code = phoneCode.getText().toString().trim();
+                String tel = phoneNumber.getText().toString().trim();
+                String sms = phoneCode.getText().toString().trim();
                 if (CheckStatus()) {
-                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone,code);
-                    phoneLoginTask.execute();
+                    PhoneLogin(tel,sms);
                 }
                 break;
             case R.id.img_back:
                 finish();
                 break;
             case R.id.btn_get_code:
-                String tel = phoneNumber.getText().toString();
-                boolean isOK = tel.length()==11;
+                String phone = phoneNumber.getText().toString();
+                boolean isOK = phone.length()==11;
                 if (isOK) {
                     time.start();
-                    GetSMS getSMS = new GetSMS(tel);
-                    getSMS.execute();
+                    CheckPhone(phone);
                 } else {
                     showLongToast("请输入正确的手机号");
                 }
@@ -281,14 +279,6 @@ public class QuickLoginActivity extends BaseActivity {
             showShortToast("验证码不能为空");
             return false;
         }
-//        else if (smsCode == null) {
-//            showShortToast("验证码不正确");
-//            return false;
-//        } else if (smsCode.getText().equals("")
-//                || !phoneCode.getText().toString().trim().equals(smsCode.getText())) {
-//            showShortToast("验证码不正确");
-//            return false;
-//        }
         else if (!cbRule.isChecked()) {
             showShortToast("请阅读并确认《兼果用户协议》");
             return false;
@@ -316,51 +306,12 @@ public class QuickLoginActivity extends BaseActivity {
         }
     }
 
-    public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String sms;
-        SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        PhoneLoginTask(String phoneNum,String sms) {
-            this.tel = phoneNum;
-            this.sms=sms;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                PhoneLogin();
-            } catch (Exception e) {
-                return null;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登录中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
-
-        @Override
-        protected void onCancelled() {
-            pDialog.dismiss();
-        }
-
         /**
          * phoneLogin
+         * @param tel
+         * @param sms
          */
-        public void PhoneLogin() {
+        public void PhoneLogin(String tel, String sms) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -374,7 +325,7 @@ public class QuickLoginActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
                             }.getType());
@@ -382,7 +333,7 @@ public class QuickLoginActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -390,7 +341,7 @@ public class QuickLoginActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean user) {
+                        public void onResponse(BaseBean user,int id) {
                             if (user.getCode().equals("200")) {
                                 SPUtils.setParam(QuickLoginActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -409,44 +360,13 @@ public class QuickLoginActivity extends BaseActivity {
         }
 
 
-    }
-
-    /**
-     * 手机验证码Task
-     */
-    public class GetSMS extends AsyncTask<Void, Void, User> {
-        private final String tel;
-//        SweetAlertDialog pDialog = new SweetAlertDialog(QuickLoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        GetSMS(String phoneNum) {
-            this.tel = phoneNum;
-        }
-
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            CheckPhone();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-//            pDialog.setTitleText("中...");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-//            pDialog.dismiss();
-        }
 
         /**
          * login
          * 检查手机号是否存在
+         * @param tel
          */
-        public void CheckPhone() {
+        public void CheckPhone(String tel) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -460,7 +380,7 @@ public class QuickLoginActivity extends BaseActivity {
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -468,7 +388,7 @@ public class QuickLoginActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message = new Message();
                             message.obj = response;
                             message.what = MSG_PHONE_SUCCESS;
@@ -479,7 +399,5 @@ public class QuickLoginActivity extends BaseActivity {
                     });
         }
 
-
-    }
 }
 

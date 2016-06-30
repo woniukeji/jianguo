@@ -278,8 +278,7 @@ public class JobDetailActivity extends BaseActivity {
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
         sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
-        GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
-        getTask.execute();
+        getJobs(String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
         tvWage.setText(money);
         tvHiringCount.setText(count);
         businessName.setText(mername);
@@ -499,7 +498,7 @@ public class JobDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<JobDetails>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
                             }.getType());
@@ -507,7 +506,7 @@ public class JobDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -515,7 +514,7 @@ public class JobDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -574,7 +573,7 @@ public class JobDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<JobDetails>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
                             }.getType());
@@ -582,7 +581,7 @@ public class JobDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
 //                            Message message = new Message();
 //                            message.obj = e.toString();
 //                            message.what = 3;
@@ -590,7 +589,7 @@ public class JobDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
 //                                Message message = new Message();
@@ -608,37 +607,14 @@ public class JobDetailActivity extends BaseActivity {
                     });
         }
     }
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String login_id;
-        private final String job_id;
-        private final String merchant_id;
 
-        GetTask(String login_id,String job_id,String merchant_id) {
-            this.job_id = job_id;
-            this.merchant_id = merchant_id;
-            this.login_id = login_id;
 
-        }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getJobs();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * postInfo
          */
-        public void getJobs() {
+        public void getJobs(String login_id, String job_id, String merchant_id) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -654,7 +630,7 @@ public class JobDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<JobDetails>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
                             }.getType());
@@ -662,7 +638,7 @@ public class JobDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -670,7 +646,7 @@ public class JobDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                              SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -685,6 +661,5 @@ public class JobDetailActivity extends BaseActivity {
                             }
                         }
                     });
-        }
     }
 }

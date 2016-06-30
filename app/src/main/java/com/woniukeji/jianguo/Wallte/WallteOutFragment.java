@@ -272,7 +272,7 @@ public class WallteOutFragment extends BaseFragment {
                     .writeTimeOut(20000)
                     .execute(new Callback<DrawMoney>() {
                         @Override
-                        public DrawMoney parseNetworkResponse(Response response) throws Exception {
+                        public DrawMoney parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             DrawMoney baseBean = new Gson().fromJson(string, new TypeToken<DrawMoney>() {
                             }.getType());
@@ -280,7 +280,7 @@ public class WallteOutFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -288,7 +288,7 @@ public class WallteOutFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onResponse(DrawMoney baseBean) {
+                        public void onResponse(DrawMoney baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();

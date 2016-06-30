@@ -121,9 +121,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (null == e) {
-//                    finish();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -159,8 +156,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 String phone = phoneNumber.getText().toString().trim();
                 String pass = password.getText().toString().trim();
                 if (CheckStatus()) {
-                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, MD5Util.MD5(pass));
-                    phoneLoginTask.execute();
+                    PhoneLogin(phone, MD5Util.MD5(pass));
                 }
             }
         });
@@ -237,23 +233,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //            userLoginTask.execute();
         }
 
-//    @Override
-//    public void onComplete(Platform platform, int action, HashMap<String, Object> hashMap) {
-//        if (action == Platform.ACTION_USER_INFOR) {
-//            Register( platform.getName(), platform.getDb().getUserId(), hashMap);
-//        }
-//    }
-//
-//    @Override
-//    public void onError(Platform platform, int i, Throwable throwable) {
-//        handler.sendEmptyMessage(MSG_AUTH_COMPLETE);
-//    }
-
-//    @Override
-//    public void onCancel(Platform platform, int i) {
-//        handler.sendEmptyMessage(MSG_AUTH_COMPLETE);
-//    }
-
     @OnClick({R.id.sign_in_button, R.id.register_in_button, R.id.wechat, R.id.qq,R.id.forget_pass, R.id.quick_login})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -291,69 +270,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return true;
     }
 
-
-
-
-
-public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
-
-    private final String tel;
-    private final String passWord;
-    SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-    PhoneLoginTask(String phoneNum, String passWord) {
-        this.tel = phoneNum;
-        this.passWord = passWord;
-    }
-
-    @Override
-    protected User doInBackground(Void... params) {
-        // TODO: attempt authentication against a network service.
-        try {
-            PhoneLogin();
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("登录中...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-    }
-
-    @Override
-    protected void onPostExecute(final User user) {
-        pDialog.dismiss();
-    }
-
-    @Override
-    protected void onCancelled() {
-        pDialog.dismiss();
-    }
-
     /**
      * phoneLogin
+     * @param phone
+     * @param s
      */
-    public void PhoneLogin() {
+    public void PhoneLogin(String phone, String s) {
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         OkHttpUtils
                 .get()
                 .url(Constants.LOGIN)
                 .addParams("only", only)
-                .addParams("tel", tel)
-                .addParams("password", passWord)
+                .addParams("tel", phone)
+                .addParams("password", s)
                 .build()
                 .connTimeOut(60000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new Callback<BaseBean<User>>() {
                     @Override
-                    public BaseBean parseNetworkResponse(Response response) throws Exception {
+                    public BaseBean<User> parseNetworkResponse(Response response, int id) throws Exception {
                         String string = response.body().string();
                         BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
                         }.getType());
@@ -361,7 +297,7 @@ public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
                     }
 
                     @Override
-                    public void onError(Call call, Exception e) {
+                    public void onError(Call call, Exception e, int id) {
                         Message message = new Message();
                         message.obj = e.toString();
                         message.what = MSG_USER_FAIL;
@@ -369,7 +305,7 @@ public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
                     }
 
                     @Override
-                    public void onResponse(BaseBean user) {
+                    public void onResponse(BaseBean<User> user, int id) {
                         if (user.getCode().equals("200")) {
                             SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
@@ -384,9 +320,11 @@ public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
                         }
                     }
 
+
+
+
                 });
     }
-}
 }
 
 

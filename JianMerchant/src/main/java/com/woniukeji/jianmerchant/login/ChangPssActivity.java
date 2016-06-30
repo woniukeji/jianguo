@@ -168,8 +168,7 @@ public class ChangPssActivity extends BaseActivity {
                 String phone=phoneNumber.getText().toString();
                 String pass=passWord2.getText().toString();
                 if (CheckStatus()){
-                    UserRegisterTask userRegisterTask=new UserRegisterTask(phone, MD5Util.MD5(pass));
-                    userRegisterTask.execute();
+                    UserRegisterPhone(phone, MD5Util.MD5(pass));
                 }
                 break;
         }
@@ -265,7 +264,7 @@ public class ChangPssActivity extends BaseActivity {
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message=new Message();
                             message.obj=e.toString();
                             message.what=MSG_USER_FAIL;
@@ -273,13 +272,12 @@ public class ChangPssActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response, int id) {
                             Message message=new Message();
                             message.obj=response;
                             message.what=MSG_PHONE_SUCCESS;
                             mHandler.sendMessage(message);
                         }
-
 
                     });
         }
@@ -287,68 +285,36 @@ public class ChangPssActivity extends BaseActivity {
 
     }
 
-    /**
-     * 手机注册Task
-     */
-    public class UserRegisterTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String passWord;
-        SweetAlertDialog pDialog = new SweetAlertDialog(ChangPssActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        UserRegisterTask(String phoneNum,String passWord) {
-            this.tel = phoneNum;
-            this.passWord = passWord;
-        }
-
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            UserRegisterPhone();
-            return null;
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登陆中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
 
         /**
          * UserRegisterPhone
          * 修改密码
+         * @param phone
+         * @param s
          */
-        public void UserRegisterPhone () {
+        public void UserRegisterPhone(String phone, String s) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.CHANGE_PASSWORD)
                     .addParams("only", only)
-                    .addParams("tel", tel)
-                    .addParams("password", passWord)
+                    .addParams("tel", phone)
+                    .addParams("password", s)
                     .build()
                     .connTimeOut(30000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new BaseCallback() {
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message=new Message();
                             message.obj=e.getMessage();
                             message.what=MSG_USER_FAIL;
                             mHandler.sendMessage(message);
                         }
 
-
-
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response, int id) {
                             if (response.getCode().equals("200")){
                                 Message message=new Message();
                                 message.obj=response;
@@ -360,11 +326,8 @@ public class ChangPssActivity extends BaseActivity {
                                 message.what=MSG_USER_FAIL;
                                 mHandler.sendMessage(message);
                             }
-
                         }
-
 
                     });
         }
-    }
     }

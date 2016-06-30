@@ -50,6 +50,7 @@
                 android:layout_marginTop="20dp"
                 android:textSize="18dp"
                 android:text="7.00元/500g"
+                android:textColor="@color/red_btn_bg_color"
                 />
 
             <ImageView

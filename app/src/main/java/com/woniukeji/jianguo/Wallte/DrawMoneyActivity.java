@@ -418,7 +418,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     .writeTimeOut(20000)
                     .execute(new BaseCallback() {
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.getMessage();
                             message.what = MSG_USER_FAIL;
@@ -427,7 +427,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
 
 
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response,int id) {
                             if (response.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = response.getMessage();
@@ -490,7 +490,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message=new Message();
                             message.obj=e.toString();
                             message.what=MSG_USER_FAIL;
@@ -498,7 +498,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message=new Message();
                             message.obj=response;
                             message.what=MSG_PHONE_SUCCESS;

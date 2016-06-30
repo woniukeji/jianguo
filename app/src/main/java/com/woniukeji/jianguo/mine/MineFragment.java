@@ -427,24 +427,35 @@ public class MineFragment extends BaseFragment {
                     .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
                     {
                         @Override
-                        public void inProgress(float progress) {
-//                            LogUtils.e("e",progress*100+"");
-//                            sweetAlertDialog.getProgressHelper().setProgress(progress);
-//                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
 
                         }
 
-
                         @Override
-                        public void onResponse(File file) {
+                        public void onResponse(File response, int id) {
                             sweetAlertDialog.dismissWithAnimation();
-                            openFile(file);
-
+                            openFile(response);
                         }
+
+//                        @Override
+//                        public void inProgress(float progress) {
+////                            LogUtils.e("e",progress*100+"");
+////                            sweetAlertDialog.getProgressHelper().setProgress(progress);
+////                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
+//                        }
+//
+//                        @Override
+//                        public void onError(Call call, Exception e) {
+//
+//                        }
+//
+//
+//                        @Override
+//                        public void onResponse(File file) {
+//                            sweetAlertDialog.dismissWithAnimation();
+//                            openFile(file);
+//
+//                        }
                     });
         }
     }

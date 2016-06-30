@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.woniukeji.jianmerchant.utils.LogUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onDestroy() {
         LogUtils.i("activity",":onDestroy");
         super.onDestroy();
+        OkHttpUtils.getInstance().cancelTag(this);
     }
 
 

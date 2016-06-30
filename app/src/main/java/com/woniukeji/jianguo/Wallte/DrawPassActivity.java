@@ -267,7 +267,7 @@ public class DrawPassActivity extends BaseActivity  {
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message=new Message();
                             message.obj=e.toString();
                             message.what=MSG_USER_FAIL;
@@ -275,7 +275,7 @@ public class DrawPassActivity extends BaseActivity  {
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message=new Message();
                             message.obj=response;
                             message.what=MSG_PHONE_SUCCESS;
@@ -340,7 +340,7 @@ public class DrawPassActivity extends BaseActivity  {
                     .writeTimeOut(20000)
                     .execute(new BaseCallback() {
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message=new Message();
                             message.obj=e.getMessage();
                             message.what=MSG_USER_FAIL;
@@ -348,7 +348,7 @@ public class DrawPassActivity extends BaseActivity  {
                         }
 
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response,int id) {
                             if (response.getCode().equals("200")){
                                 Message message=new Message();
                                 message.obj=response.getMessage();

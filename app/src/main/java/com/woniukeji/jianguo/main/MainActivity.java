@@ -239,36 +239,28 @@ public class MainActivity extends BaseActivity {
                     .build()
                     .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
                     {
+
                         @Override
-                        public void inProgress( float progress) {
-                            Message message=new Message();
-                            message.what=2;
-                            float tem=progress*100;
-                             b = (int)tem;
-                            message.arg1=b;
-                            int i = (int) Math.round(progress+0.5);
-//                             mHandler.sendMessage(message);
-                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    button.setProgress(b);
-                                }
-                            });
-//                            loadingView.setImageBitmap(
-//                                    BitmapFactory.decodeResource(getResources(), R.drawable.icon_chat_photo));
-//                            sweetAlertDialog.getProgressHelper().setProgress(progress);
-//                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
+                        public void onError(Call call, Exception e, int id) {
                         }
-
+//                        @Override
+//                        public void inProgress( float progress,int id) {
+//                            Message message=new Message();
+//                            message.what=2;
+//                            float tem=progress*100;
+//                            b = (int)tem;
+//                            message.arg1=b;
+//                            int i = (int) Math.round(progress+0.5);
+//                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    button.setProgress(b);
+//                                }
+//                            });
+//                        }
                         @Override
-                        public void onError(Call call, Exception e) {
-
-                        }
-
-
-                        @Override
-                        public void onResponse(File file) {
+                        public void onResponse(File file,int id) {
 
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -276,7 +268,6 @@ public class MainActivity extends BaseActivity {
                                     up_dialog.setVisibility(View.GONE);
                                 }
                             });
-
                             openFile(file);
 
                         }

@@ -212,8 +212,7 @@ public class SplashActivity extends BaseActivity {
         }else {
             String phone= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,"");
             String pass= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,"");
-            PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, pass);
-            phoneLoginTask.execute();
+            PhoneLogin(phone, pass);
         }
     }
 
@@ -255,7 +254,7 @@ public class SplashActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
                             }.getType());
@@ -263,7 +262,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -271,7 +270,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean user) {
+                        public void onResponse(BaseBean user,int id) {
                             if (user.getCode().equals("200")) {
                                 SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "1");
                                 Message message = new Message();
@@ -291,58 +290,27 @@ public class SplashActivity extends BaseActivity {
 
     }
 
-    public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String passWord;
-
-        PhoneLoginTask(String phoneNum, String passWord) {
-            this.tel = phoneNum;
-            this.passWord = passWord;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                PhoneLogin();
-            } catch (Exception e) {
-                return null;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
 
         /**
          * phoneLogin
+         * @param phone
+         * @param pass
          */
-        public void PhoneLogin() {
+        public void PhoneLogin(String phone, String pass) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.LOGIN_PHONE)
                     .addParams("only", only)
-                    .addParams("tel", tel)
-                    .addParams("password", passWord)
+                    .addParams("tel", phone)
+                    .addParams("password", pass)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
                             }.getType());
@@ -350,7 +318,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -358,7 +326,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean user) {
+                        public void onResponse(BaseBean user,int id) {
                             if (user.getCode().equals("200")) {
                                 SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -374,7 +342,6 @@ public class SplashActivity extends BaseActivity {
                         }
 
                     });
-        }
 
 
     }
