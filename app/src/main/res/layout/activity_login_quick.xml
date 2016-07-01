@@ -7,7 +7,7 @@
                 android:background="#F1F1F1"
              >
 
-    <!-- CheckPhone progress -->
+    <!-- CheckPhone progress -->`
     <include
         android:id="@+id/layout_title_bar"
         layout="@layout/app_title_bar" />
@@ -97,7 +97,6 @@
                 <EditText
                     android:id="@+id/phone_code"
                     android:layout_toRightOf="@id/icon_pass"
-                    android:layout_toLeftOf="@id/forget_pass"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="请输入验证码"

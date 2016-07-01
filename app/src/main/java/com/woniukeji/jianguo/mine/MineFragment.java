@@ -29,6 +29,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.HeadImgEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
+import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
@@ -182,7 +183,8 @@ public class MineFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.account1:
-                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+//                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
                 break;
             case R.id.btn_logout:
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
