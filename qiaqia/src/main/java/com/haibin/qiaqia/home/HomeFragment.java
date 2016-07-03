@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseFragment;
 import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.ListChaoCommodity;
+import com.haibin.qiaqia.fruitvegetables.FruitVegetableActivity;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
 import com.haibin.qiaqia.http.SubscriberOnNextListener;
@@ -41,6 +43,7 @@ public class HomeFragment extends BaseFragment {
     XRecyclerView recyclerview;
     @BindView(R.id.market)
     TextView market;
+
     private Context context = getActivity();
 
     //    private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
@@ -64,6 +67,10 @@ public class HomeFragment extends BaseFragment {
     private int position;
     private boolean DataComplete = false;
     SubscriberOnNextListener<Goods> SubListener;
+    private View header;
+    private ImageView img_friut;
+
+
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -115,6 +122,10 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+         header = LayoutInflater.from(getActivity()).inflate(R.layout.header_home, null, false);
+        img_friut = (ImageView) header.findViewById(R.id.img_friut);
+
+
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -122,7 +133,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initView() {
-        adapter = new HomeAdapter( getActivity(),listChaoCommodities);
+          adapter = new HomeAdapter(getActivity(), listChaoCommodities);
         mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerview.setHasFixedSize(true);
         //设置布局管理器
@@ -131,15 +142,24 @@ public class HomeFragment extends BaseFragment {
         recyclerview.setAdapter(adapter);
         //设置Item增加、移除动画
         recyclerview.setItemAnimator(new DefaultItemAnimator());
+        recyclerview.addHeaderView(header);
     }
 
     public void initData() {
         market.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(),MarketActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), MarketActivity.class));
             }
         });
+        img_friut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), FruitVegetableActivity.class));
+            }
+        });
+
+
         SubListener = new SubscriberOnNextListener<Goods>() {
             @Override
             public void onNext(Goods goodsHttpResult) {
