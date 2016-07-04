@@ -28,6 +28,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.HeadImgEvent;
+import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.login.QuickLoginActivity;
@@ -269,6 +270,9 @@ public class MineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.activity_mine, container, false);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         ButterKnife.inject(this, view);
         return view;
 
@@ -282,7 +286,11 @@ public class MineFragment extends BaseFragment {
             EventBus.getDefault().register(this);
         }
     }
-
+    public void onEvent(QuickLoginEvent event) {
+        if (event.isQuickLogin){
+          initData(true);
+        }
+    }
     public void onEvent(HeadImgEvent event) {
         Picasso.with(getActivity()).load(event.ImgUrl)
                 .placeholder(R.mipmap.icon_head_defult)

@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +31,6 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.login.BindPhoneActivity;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
@@ -42,7 +39,6 @@ import com.woniukeji.jianguo.utils.EditCheckUtil;
 import com.woniukeji.jianguo.utils.FileUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
-import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -65,11 +61,9 @@ public class AuthActivity extends BaseActivity {
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.img_front) ImageView imgFront;
-    @InjectView(R.id.tv_front) TextView tvFront;
     @InjectView(R.id.tv_not1) TextView tvNot1;
     @InjectView(R.id.tv_not2) TextView tvNot2;
     @InjectView(R.id.img_opposite) ImageView imgOpposite;
-    @InjectView(R.id.tv_opposite) TextView tvOpposite;
     @InjectView(R.id.ll_top) LinearLayout llTop;
     @InjectView(R.id.img_phone) ImageView imgPhone;
     @InjectView(R.id.img) ImageView img;
@@ -199,14 +193,14 @@ public class AuthActivity extends BaseActivity {
             imgOpposite.setClickable(false);
             String id=realName.getT_user_realname().getId_number();
             etId.setText(id.substring(0,id.length()-6)+"******");
-            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
-            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
+            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
 
         }else if(realName.getT_user_realname().getStatus()==4){//未通过
             checkButton.setText("重新审核");
             etId.setText("");
-//            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
-//            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+//            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
+//            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
             checkButton.setBackgroundResource(R.drawable.button_background_login);
 //            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
 //            postTask.execute();
@@ -268,7 +262,7 @@ public class AuthActivity extends BaseActivity {
         ActivityManager.getActivityManager().addActivity(AuthActivity.this);
     }
 
-    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
+    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.img_opposite,  R.id.rb_man, R.id.rb_woman, R.id.check_button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_phone:
@@ -285,15 +279,11 @@ public class AuthActivity extends BaseActivity {
                 startActivityForResult(intent,2);
 //                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
                 break;
-            case R.id.tv_front:
-                break;
             case R.id.img_opposite:
                 Intent intent1=new Intent(AuthActivity.this,PicTipActivity.class);
                 intent1.putExtra("front",false);
                 startActivityForResult(intent1,3);
 
-                break;
-            case R.id.tv_opposite:
                 break;
             case R.id.rb_man:
                 sex="1";

@@ -808,6 +808,36 @@ public class PublishDetailActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
+        etWorkContent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (view.getId() == R.id.et_work_content) {
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+        etWorkRequire.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (view.getId() == R.id.et_work_require) {
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         int loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         GetTask getTask = new GetTask(String.valueOf(loginId));
         getTask.execute();

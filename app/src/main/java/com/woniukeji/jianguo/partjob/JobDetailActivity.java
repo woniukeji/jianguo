@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -287,7 +288,7 @@ public class JobDetailActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        tvTitle.setText("兼职详情");
+        tvTitle.setText("工作详情");
         img_share.setVisibility(View.VISIBLE);
     }
 
@@ -324,12 +325,17 @@ public class JobDetailActivity extends BaseActivity {
                     tvWorkContent.setMaxLines(2);
                     tvWorkRequire.setMaxLines(2);
                     loadMore=false;
-                    tvMore.setText("查看更多");
+                    tvMore.setText("");
+                    Drawable drawable= getResources().getDrawable(R.mipmap.icon_more);
+                    tvMore.setCompoundDrawablesWithIntrinsicBounds (null,
+                            null, null,drawable );
                 }else {
                     tvWorkContent.setMaxLines(20);
                     tvWorkRequire.setMaxLines(20);
                     loadMore=true;
                     tvMore.setText("收起");
+                    tvMore.setCompoundDrawablesWithIntrinsicBounds (null,
+                            null, null, null);
                 }
 
                 break;

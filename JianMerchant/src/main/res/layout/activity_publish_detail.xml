@@ -1226,7 +1226,7 @@
         android:paddingTop="10dp"
         android:textColorHint="#bfbfbf"
         android:background="#efefef"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="45dp"
         />
 </LinearLayout>
         <RelativeLayout

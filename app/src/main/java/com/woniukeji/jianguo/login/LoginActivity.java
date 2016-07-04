@@ -2,53 +2,44 @@ package com.woniukeji.jianguo.login;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.jayfang.dropdownmenu.DropDownMenu;
+import com.flyco.tablayout.SegmentTabLayout;
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
-import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.CityCategory;
-import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.partjob.PartJobAdapter;
-import com.woniukeji.jianguo.utils.DateUtils;
-import com.woniukeji.jianguo.widget.FixedRecyclerView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * A simple {@link } subclass.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements OnTabSelectListener {
 
+    @InjectView(R.id.tabHost) SegmentTabLayout tabHost;
+    @InjectView(R.id.mainPager) ViewPager mainPager;
     private PartJobAdapter adapter;
     private int lastVisibleItem;
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
+    private final String[] mTitles = new String[]{
+            "手机号快捷登陆", "账号密码登录"
+    };
+    private MyPagerAdapter mAdapter;
     private Handler mHandler = new Myhandler(this);
 
     @Override
@@ -56,13 +47,6 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
-    }
 
 
     private class Myhandler extends Handler {
@@ -94,18 +78,26 @@ public class LoginActivity extends BaseActivity {
 
 
     }
+
     @Override
     public void addActivity() {
 
     }
+
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_login);
-//        ButterKnife.inject(this);
+        ButterKnife.inject(this);
 //        EventBus.getDefault().register(this);
     }
+
     @Override
     public void initViews() {
+        mAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        mFragments.add(new QuickLoginFragment());
+        mFragments.add(new PasswordLoginFragment());
+        mainPager.setAdapter(mAdapter);
+        tabHost.setTabData( mTitles);
     }
 
     @Override
@@ -123,14 +115,40 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.reset(this);
 //        EventBus.getDefault().unregister(this);
     }
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
+        }
 
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+    }
+
+    @Override
+    public void onTabSelect(int position) {
+
+    }
+
+    @Override
+    public void onTabReselect(int position) {
+
+    }
 }
