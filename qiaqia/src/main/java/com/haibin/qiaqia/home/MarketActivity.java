@@ -1,9 +1,9 @@
 package com.haibin.qiaqia.home;
 
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -14,6 +14,7 @@ import com.haibin.qiaqia.entity.Market;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
 import com.haibin.qiaqia.http.SubscriberOnNextListener;
+import com.haibin.qiaqia.listener.MyItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by cai on 2016/6/25.
  */
 
-public class MarketActivity extends BaseActivity {
+public class MarketActivity extends BaseActivity implements MyItemClickListener{
 
     @BindView(R.id.market_rv)
     RecyclerView marketRv;
@@ -44,8 +45,7 @@ public class MarketActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        adapter = new MarketClassAdapter(this,marketList);
-
+        adapter = new MarketClassAdapter(this,marketList,this);
         LinearLayoutManager manage = new LinearLayoutManager(this);
         marketRv.setLayoutManager(manage);
         marketRv.setAdapter(adapter);
@@ -76,4 +76,8 @@ public class MarketActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
 }

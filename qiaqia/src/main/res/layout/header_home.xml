@@ -64,6 +64,7 @@
     android:background="#ffffff"
     >
     <RelativeLayout
+        android:id="@+id/rela_market"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -86,6 +87,7 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rela_fruit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

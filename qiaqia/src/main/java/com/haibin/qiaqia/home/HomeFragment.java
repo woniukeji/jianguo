@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +70,8 @@ public class HomeFragment extends BaseFragment {
     SubscriberOnNextListener<Goods> SubListener;
     private View header;
     private ImageView img_friut;
-
+    private RelativeLayout relaFruit;
+    private RelativeLayout relaMarket;
 
 
     private class Myhandler extends Handler {
@@ -122,10 +124,10 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-         header = LayoutInflater.from(getActivity()).inflate(R.layout.header_home, null, false);
+        header = LayoutInflater.from(getActivity()).inflate(R.layout.header_home, null, false);
         img_friut = (ImageView) header.findViewById(R.id.img_friut);
-
-
+         relaFruit = (RelativeLayout) header.findViewById(R.id.rela_fruit);
+        relaMarket = (RelativeLayout) header.findViewById(R.id.rela_market);
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -133,7 +135,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initView() {
-          adapter = new HomeAdapter(getActivity(), listChaoCommodities);
+        adapter = new HomeAdapter(getActivity(), listChaoCommodities);
         mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerview.setHasFixedSize(true);
         //设置布局管理器
@@ -146,13 +148,13 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initData() {
-        market.setOnClickListener(new View.OnClickListener() {
+        relaMarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), MarketActivity.class));
             }
         });
-        img_friut.setOnClickListener(new View.OnClickListener() {
+        relaFruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), FruitVegetableActivity.class));
