@@ -78,7 +78,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     splashActivity.finish();
                     break;
                 case 1:
-                    splashActivity.startActivity(new Intent(splashActivity, QuickLoginActivity.class));
+                    splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     splashActivity.finish();

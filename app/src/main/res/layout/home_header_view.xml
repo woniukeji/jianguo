@@ -10,7 +10,7 @@
     <cn.lightsky.infiniteindicator.InfiniteIndicator
         android:id="@+id/indicator_default_circle"
         app:indicator_type="indicator_anim_circle"
-        android:layout_height="115dp"
+        android:layout_height="183dp"
         android:layout_width="match_parent"/>
 <LinearLayout
     android:id="@+id/ll_part_top"

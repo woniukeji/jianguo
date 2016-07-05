@@ -98,6 +98,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
         mFragments.add(new PasswordLoginFragment());
         mainPager.setAdapter(mAdapter);
         tabHost.setTabData( mTitles);
+
     }
 
     @Override
@@ -106,7 +107,40 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
 
     @Override
     public void initListeners() {
+        tabHost.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                    mainPager.setCurrentItem(position);
+            }
 
+            @Override
+            public void onTabReselect(int position) {
+//                mainPager.setCurrentItem(position);
+            }
+        });
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            mainPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                }
+            });
+        }else {
+            mainPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    tabHost.setCurrentTab(position);
+                }
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+        }
     }
 
     @Override

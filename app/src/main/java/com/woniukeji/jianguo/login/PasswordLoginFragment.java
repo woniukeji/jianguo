@@ -37,6 +37,7 @@ import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
+import com.woniukeji.jianguo.utils.MD5Util;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -71,6 +72,7 @@ public class PasswordLoginFragment extends BaseFragment {
     @InjectView(R.id.sign_in_button) Button signInButton;
     @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
     @InjectView(R.id.login_form) LinearLayout loginForm;
+    @InjectView(R.id.tv_forget_pass) TextView tvForgetPass;
 
 
     private int MSG_USER_SUCCESS = 0;
@@ -98,18 +100,16 @@ public class PasswordLoginFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            MainActivity quickLoginActivity = (MainActivity) reference.get();
             switch (msg.what) {
                 case 0:
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
-//                    BaseBean<User> user = msg.;
                     saveToSP(user.getData());
                     Toast.makeText(getActivity(), user.getMessage(), Toast.LENGTH_SHORT).show();
                     QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
                     quickLoginEvent.isQuickLogin = true;
                     EventBus.getDefault().post(quickLoginEvent);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                    quickLoginActivity.startActivity(intent);
+                    startActivity(intent);
                     getActivity().finish();
                     break;
                 case 1:
@@ -141,14 +141,8 @@ public class PasswordLoginFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.activity_login_password, container, false);
         ButterKnife.inject(this, view);
         createLink(tvRule);
-        initListeners();
         return view;
 
-    }
-
-
-    public void initListeners() {
-        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
     }
 
 
@@ -169,25 +163,25 @@ public class PasswordLoginFragment extends BaseFragment {
     }
 
     private void saveToSP(User user) {
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_WQTOKEN, user.getT_user_login().getQqwx_token() != null ? user.getT_user_login().getQqwx_token() : "");
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TEL, user.getT_user_login().getTel() != null ? user.getT_user_login().getTel() : "");
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_PASSWORD, user.getT_user_login().getPassword() != null ? user.getT_user_login().getPassword() : "");
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, user.getT_user_login().getId());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_STATUS, user.getT_user_login().getStatus());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, user.getT_user_login().getQiniu());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, user.getApk_url());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_WQTOKEN, user.getT_user_login().getQqwx_token() != null ? user.getT_user_login().getQqwx_token() : "");
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TEL, user.getT_user_login().getTel() != null ? user.getT_user_login().getTel() : "");
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_PASSWORD, user.getT_user_login().getPassword() != null ? user.getT_user_login().getPassword() : "");
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, user.getT_user_login().getId());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_STATUS, user.getT_user_login().getStatus());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_QNTOKEN, user.getT_user_login().getQiniu());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, user.getApk_url());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
 
 
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_SCHOOL, user.getT_user_info().getSchool() != null ? user.getT_user_info().getSchool() : "");
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
-        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
-        SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, user.getT_user_info().getSchool() != null ? user.getT_user_info().getSchool() : "");
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
+        SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
 
 
 // 暂时关闭果聊功能
@@ -222,26 +216,18 @@ public class PasswordLoginFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.sign_in_button, R.id.btn_get_code})
+    @OnClick({R.id.sign_in_button, R.id.tv_forget_pass})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
                 String tel = phoneNumber.getText().toString().trim();
                 String sms = phoneCode.getText().toString().trim();
                 if (CheckStatus()) {
-                    PhoneLogin(tel, sms);
+                    PhoneLogin(tel, MD5Util.MD5(sms));
                 }
                 break;
-            case R.id.btn_get_code:
-                String phone = phoneNumber.getText().toString();
-                boolean isOK = phone.length() == 11;
-                if (isOK) {
-                    time.start();
-                    CheckPhone(phone);
-                } else {
-                    Toast.makeText(getActivity(), "请输入正确的手机号", Toast.LENGTH_SHORT).show();
-                }
-
+            case R.id.tv_forget_pass:
+                startActivity(new Intent(getActivity(),ForgetPassActivity.class));
                 break;
         }
     }
@@ -295,10 +281,10 @@ public class PasswordLoginFragment extends BaseFragment {
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         OkHttpUtils
                 .get()
-                .url(Constants.REGISTER_PHONE)
+                .url(Constants.LOGIN_PHONE)
                 .addParams("only", only)
                 .addParams("tel", tel)
-                .addParams("sms_code", sms)
+                .addParams("password", sms)
                 .build()
                 .connTimeOut(60000)
                 .readTimeOut(20000)

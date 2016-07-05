@@ -115,6 +115,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private int loginId;
     private CircleImageView circleImageView;
     private boolean DataComplete=false;
+    private int totalDy;
+
     @OnClick(R.id.tv_location)
     public void onClick() {
         startActivity(new Intent(getActivity(),CityActivity.class));
@@ -307,10 +309,29 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-            }
+                 totalDy = totalDy+dy;
+                    //define it for scroll height
+                int distance=totalDy;
+                    if( distance <0&&totalDy>255){
+                        top.getBackground().setAlpha(totalDy);
+                        LogUtils.e("alph",distance+"alph");
+                    }else if ( totalDy<255){
+                            top.getBackground().setAlpha(255);
+                        LogUtils.e("alph",distance+"alph");
+                        }else {
+                        top.getBackground().setAlpha(0);
+                        LogUtils.e("alph",0+"alph");
+                    }
+                }
         });
     }
-
+    public int getScollYDistance(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int position = layoutManager.findFirstVisibleItemPosition();
+        View firstVisiableChildView = layoutManager.findViewByPosition(position);
+        int itemHeight = firstVisiableChildView.getHeight();
+        return (position) * itemHeight - firstVisiableChildView.getTop();
+    }
     @Override
     public void onClick(View view) {
         MainActivity mainActivity= (MainActivity) getActivity();
@@ -652,4 +673,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     });
         }
     }
+
+
+
 }

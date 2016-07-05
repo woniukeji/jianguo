@@ -72,8 +72,6 @@ public class QuickLoginActivity extends BaseActivity {
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.phone_code) EditText phoneCode;
     @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
     @InjectView(R.id.icon_pass) ImageView iconPass;
 //    SmsCode smsCode;
@@ -151,7 +149,7 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        title.setText("登录");
+//        title.setText("登录");
         createLink(tvRule);
     }
 
@@ -240,7 +238,7 @@ public class QuickLoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.sign_in_button, R.id.img_back, R.id.btn_get_code})
+    @OnClick({R.id.sign_in_button,  R.id.btn_get_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
@@ -250,9 +248,9 @@ public class QuickLoginActivity extends BaseActivity {
                     PhoneLogin(tel,sms);
                 }
                 break;
-            case R.id.img_back:
-                finish();
-                break;
+//            case R.id.img_back:
+//                finish();
+//                break;
             case R.id.btn_get_code:
                 String phone = phoneNumber.getText().toString();
                 boolean isOK = phone.length()==11;

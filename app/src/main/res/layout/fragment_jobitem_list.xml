@@ -3,10 +3,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:text="当前城市或类别下无数据"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="312dp"
+        />
+    <android.support.v4.widget.SwipeRefreshLayout
+
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.woniukeji.jianguo.widget.FixedRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_header"
+            android:fastScrollEnabled="true"
+            android:listSelector="@color/transparent"
+            android:overScrollMode="never"
+            android:scrollbarStyle="outsideOverlay" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
     <RelativeLayout
         android:id="@+id/top"
         android:background="@color/app_bg"
-                    style="@style/title_bar_style">
+        style="@style/title_bar_style">
         <TextView
             android:id="@+id/tv_location"
             android:layout_width="wrap_content"
@@ -29,59 +57,31 @@
             android:textColor="@color/white"
             android:text="兼果"
             />
-      <RelativeLayout
-          android:id="@+id/rl_message"
-          android:layout_width="21dp"
-          android:layout_height="17dp"
-          android:layout_alignParentRight="true"
-          android:layout_centerVertical="true"
-          android:layout_marginRight="15dp"
+        <RelativeLayout
+            android:id="@+id/rl_message"
+            android:layout_width="21dp"
+            android:layout_height="17dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
 
-          >
-          <ImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:src="@mipmap/icon_message"
-              android:paddingTop="2dp"
-              />
-          <com.woniukeji.jianguo.widget.CircleImageView
-              android:id="@+id/circle_dot"
-              android:layout_width="5dp"
-              android:layout_height="5dp"
-              android:src="@color/red"
-              android:visibility="gone"
-              android:layout_alignParentRight="true"
-              android:layout_alignParentTop="true"
-              />
-      </RelativeLayout>
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_message"
+                android:paddingTop="2dp"
+                />
+            <com.woniukeji.jianguo.widget.CircleImageView
+                android:id="@+id/circle_dot"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:src="@color/red"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                />
+        </RelativeLayout>
     </RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:text="当前城市或类别下无数据"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_marginTop="312dp"
-        />
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_below="@+id/top"
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <com.woniukeji.jianguo.widget.FixedRecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_header"
-            android:fastScrollEnabled="true"
-            android:listSelector="@color/transparent"
-            android:overScrollMode="never"
-            android:scrollbarStyle="outsideOverlay" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
 
 </RelativeLayout>

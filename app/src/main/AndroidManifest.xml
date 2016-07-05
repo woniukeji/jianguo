@@ -408,6 +408,9 @@
         <activity android:name=".login.LoginActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+        <activity android:name=".login.ForgetPassActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
