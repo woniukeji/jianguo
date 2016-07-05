@@ -138,9 +138,9 @@ public class HttpMethods {
     /**
      * 获取超市分类
      */
-    public void getGoods(Subscriber<Goods> subscriber,String type,String categoryId){
+    public void getGoods(Subscriber<Goods> subscriber,String loginId,String categoryId){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        methodInterface.getGoods(only,type,categoryId)
+        methodInterface.getGoods(only,loginId,categoryId)
                 .map(new HttpResultFunc<Goods>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())

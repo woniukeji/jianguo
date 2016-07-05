@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.haibin.qiaqia.R;
-import com.haibin.qiaqia.entity.ListMarket;
+import com.haibin.qiaqia.entity.ListChaoCommodity;
 
 import java.util.List;
 
@@ -22,16 +22,16 @@ public class MarketGoodsAdapter extends RecyclerView.Adapter<MarketGoodsAdapter.
 
 
     private Context context;
-    private List<ListMarket> list;
+    private List<ListChaoCommodity> list;
 
-    public MarketGoodsAdapter(Context context, List<ListMarket> list) {
+    public MarketGoodsAdapter(Context context, List<ListChaoCommodity> list) {
         this.context = context;
         this.list = list;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.item_market_class, null);
+        View view = View.inflate(context, R.layout.item_market_goods, null);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -39,7 +39,7 @@ public class MarketGoodsAdapter extends RecyclerView.Adapter<MarketGoodsAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ListMarket listMarket = list.get(position);
+        ListChaoCommodity listMarket = list.get(position);
         holder.itemMarketName.setText(listMarket.getName());
     }
 
@@ -52,7 +52,7 @@ public class MarketGoodsAdapter extends RecyclerView.Adapter<MarketGoodsAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.item_market_name)
+        @BindView(R.id.tv_goods_name)
         TextView itemMarketName;
 
         public ViewHolder(View itemView) {
