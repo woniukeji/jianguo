@@ -13,7 +13,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
+import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
 
@@ -84,7 +84,7 @@ public class SettingActivity extends BaseActivity {
                 });
                 ActivityManager.getActivityManager().finishAllActivity();
                 SPUtils.deleteParams(SettingActivity.this);
-                startActivity(new Intent(SettingActivity.this, QuickLoginActivity.class));
+                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                 finish();
                 break;
             case R.id.about:

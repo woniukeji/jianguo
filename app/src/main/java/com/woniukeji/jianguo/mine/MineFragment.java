@@ -31,7 +31,6 @@ import com.woniukeji.jianguo.eventbus.HeadImgEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.login.LoginActivity;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -122,14 +121,14 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_guanli:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 startActivity(new Intent(getActivity(), SignActivity.class));
                 break;
             case R.id.credit:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 Intent intentRe = new Intent(getActivity().getApplicationContext(), ResumeActivity.class);
@@ -137,7 +136,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_evaluation:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 Intent intentEvluation = new Intent(getActivity().getApplicationContext(), EvaluationActivity.class);
@@ -145,7 +144,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_collect:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
 //                Intent intentColl = new Intent(getActivity().getApplicationContext(), CollectActivity.class);,暂改收藏简直无商家
@@ -164,7 +163,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_money:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 if (status == 1 || status == 0) {//未认证 不可以查询信息
@@ -177,7 +176,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_real_name:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 Intent intent = new Intent(getActivity().getApplicationContext(), AuthActivity.class);

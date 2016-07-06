@@ -9,16 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -29,9 +24,7 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
-import com.woniukeji.jianguo.talk.ChatActivity;
+import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -43,9 +36,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -359,7 +349,7 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_contact_company:
                 if (loginId==0){
                     showShortToast("请先登录");
-                    startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                    startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
                     return;
                 }
                 final int Id=merchantInfo.getId();
@@ -408,7 +398,7 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_collection:
                 if (loginId==0){
                     showShortToast("请先登录");
-                    startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                    startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
                     return;
                 }
                 PostAttTask postAttTask=new PostAttTask(String.valueOf(loginId),"0",String.valueOf(jobinfo.getJob_id()));
@@ -419,7 +409,7 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_signup:
                     if (loginId==0){
                         showShortToast("报名前请先登录");
-                        startActivity(new Intent(JobDetailActivity.this, QuickLoginActivity.class));
+                        startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
                         return;
                     }
                 resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
