@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.mine;
+package com.woniukeji.jianguo.setting;
 
 import android.content.Intent;
 import android.view.View;

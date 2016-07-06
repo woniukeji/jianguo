@@ -1,8 +1,6 @@
-package com.woniukeji.jianguo.mine;
+package com.woniukeji.jianguo.setting;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,8 +17,6 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.zhy.http.okhttp.OkHttpUtils;

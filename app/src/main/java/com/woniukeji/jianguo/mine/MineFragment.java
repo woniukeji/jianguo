@@ -32,6 +32,9 @@ import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.main.MainActivity;
+import com.woniukeji.jianguo.setting.FeedBackActivity;
+import com.woniukeji.jianguo.setting.PereferenceActivity;
+import com.woniukeji.jianguo.setting.SettingActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
@@ -117,7 +120,8 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.about:
-                startActivity(new Intent(getActivity(), AboutActivity.class));
+                startActivity(new Intent(getActivity(), PereferenceActivity.class));
+//                startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
             case R.id.ll_guanli:
                 if (loginId == 0) {

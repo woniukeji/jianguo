@@ -154,8 +154,7 @@ public class PartJobFragment extends BaseFragment {
     private void initData() {
         cityid = String.valueOf(SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, 1));
         position= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,0);
-        GetJobCityTask getJobCityTask = new GetJobCityTask();
-        getJobCityTask.execute();
+        getCityCategory(cityid);
     }
 
     private void initview() {
@@ -346,26 +345,10 @@ public class PartJobFragment extends BaseFragment {
     public void onClick() {
     }
 
-    public class GetJobCityTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getCityCategory();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
         /**
          * 获取城市列表和兼职种类
          */
-        public void getCityCategory() {
+        public void getCityCategory(String cityid) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -410,7 +393,6 @@ public class PartJobFragment extends BaseFragment {
                         }
 
                     });
-        }
     }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
