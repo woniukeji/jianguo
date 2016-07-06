@@ -7,14 +7,23 @@
 
 
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="100dp"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_centerVertical="true"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
 
         <ImageView
             android:id="@+id/img"
@@ -25,18 +34,22 @@
             android:scaleType="centerCrop"
             android:background="#ffffff"
             />
-<LinearLayout
-    android:layout_width="wrap_content"
+
+        <LinearLayout
+    android:layout_width="145dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginLeft="25dp"
-    >
+   >
 
     <TextView
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="奥利斯酸奶"
+        android:text="奥利斯酸奶奥利斯酸奶哈哈"
+        android:maxEms="9"
+        android:textSize="12dp"
+        android:singleLine="true"
         android:gravity="center"
         android:id="@+id/tv_goods_name"/>
 
@@ -46,25 +59,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="7.00"
+        android:textSize="12dp"
         android:textColor="@color/app_color"
         android:id="@+id/textView2"/>
 </LinearLayout>
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_add"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/jiahao_on"
+            />
     </LinearLayout>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/img_add"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true"
-        android:layout_marginRight="30dp"
-        android:src="@mipmap/jiahao_on"
-        />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="100dp"
-        />
 </RelativeLayout>

@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.entity.ListChaoCommodity;
 
@@ -41,6 +43,11 @@ public class MarketGoodsAdapter extends RecyclerView.Adapter<MarketGoodsAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         ListChaoCommodity listMarket = list.get(position);
         holder.itemMarketName.setText(listMarket.getName());
+        Glide.with(context)
+                .load(listMarket.getImage())
+                .placeholder(R.drawable.ic_loading_rotate)
+                .crossFade()
+                .into(holder.img);
     }
 
     @Override
@@ -54,6 +61,8 @@ public class MarketGoodsAdapter extends RecyclerView.Adapter<MarketGoodsAdapter.
 
         @BindView(R.id.tv_goods_name)
         TextView itemMarketName;
+        @BindView(R.id.img)
+        ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
