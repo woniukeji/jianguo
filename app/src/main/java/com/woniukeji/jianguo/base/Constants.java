@@ -21,14 +21,13 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_TEST2;
+    public static final String JIANGUO_USING=JIANGUO_FACTORY;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
     public static final String CHECK_PHONE = JIANGUO_USING+" ";//检查有没有该手机号
     public static final String GET_SMS= JIANGUO_USING+"T_SMS_Servlet";//获取短信
     public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
 
     public static final String GET_QINIU_TOKEN= JIANGUO_USING+"T_QiNiu_Servlet";//七牛token 接口
-
     public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
     public static final String CITY_LOGIN =JIANGUO_USING+ "T_user_login_Insert_City_Servlet";//附带地址登陆
     public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
@@ -72,7 +71,8 @@ public class Constants {
     public static final String GET_USER_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_User_Servlet";//地区类型信息 兼职种类
     public static final String POST_OPINION= JIANGUO_USING+"T_opinion_Insert_Servlet";//用户反馈接口
     public static final String PUSH_MESSAGE= JIANGUO_USING+"T_push_List_Servlet";//推送消息
-
+    public static final String POST_HOBBY_JOB= JIANGUO_USING+"T_hobby_Insert_Servlet";//偏好设置
+    public static final String GET_HOBBY_JOB= JIANGUO_USING+"T_hobby_Insert_Servlet";//获取偏好设置
 
     public static final String LOGIN_INFO = "loginInfo";
     public static final String LOGIN_CITY="city_name";
