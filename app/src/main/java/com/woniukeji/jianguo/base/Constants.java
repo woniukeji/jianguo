@@ -21,7 +21,7 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_FACTORY;
+    public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
     public static final String CHECK_PHONE = JIANGUO_USING+" ";//检查有没有该手机号
     public static final String GET_SMS= JIANGUO_USING+"T_SMS_Servlet";//获取短信
@@ -30,7 +30,7 @@ public class Constants {
     public static final String GET_QINIU_TOKEN= JIANGUO_USING+"T_QiNiu_Servlet";//七牛token 接口
 
     public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
-    public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
+    public static final String CITY_LOGIN =JIANGUO_USING+ "T_user_login_Insert_City_Servlet";//附带地址登陆
     public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
     public static final String CHECK_PHONE_BLACK= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//快速登录忘记密码
     public static final String POST_BIND_PHONE= JIANGUO_USING+"T_user_login_BindingTel_Servlet";//绑定手机号
@@ -95,6 +95,8 @@ public class Constants {
     public static final String SP_NICK="nickname";
     public static final String SP_NAME="name";
     public static final String USER_SEX="sex";
+    public static final String USER_LOCATION_NAME="location_name";
+    public static final String USER_LOCATION_CODE="location_code";
     public static final String SP_IMG="name_image";
     public static final String SP_SCHOOL="school";
     public static final String SP_INTEGRAL="integral";

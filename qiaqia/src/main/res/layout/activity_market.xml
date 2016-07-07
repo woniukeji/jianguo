@@ -12,11 +12,7 @@
         android:gravity="center"
         android:textSize="20sp"
         />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/app_color"
-        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,13 +29,20 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/app_bg"/>-->
-        <FrameLayout
-            android:id="@+id/market_fl"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_goods"
             android:layout_width="0dp"
             android:layout_weight="0.72"
             android:background="#ffffff"
             android:layout_height="match_parent">
-        </FrameLayout>
+    </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/app_color"
+        />
 
 </LinearLayout>

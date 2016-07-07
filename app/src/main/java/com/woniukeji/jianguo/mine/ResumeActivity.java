@@ -3,8 +3,6 @@ package com.woniukeji.jianguo.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -21,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +52,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -185,10 +181,10 @@ public class ResumeActivity extends BaseActivity {
                                     sDialog.dismissWithAnimation();
                                     String name = etRealName.getText().toString().trim();
                                     if (chaeckContent()) {
-                                        PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
+                                        QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
+                                        postResume(String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
                                                 date, sex, tall, student,birDate,
                                                 shoes, clothse);
-                                        postTask.execute();
                                     }
 
                                 }
@@ -280,10 +276,10 @@ public class ResumeActivity extends BaseActivity {
                     save=false;
                     String name = etRealName.getText().toString().trim();
                     if (chaeckContent()) {
-                        PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
+                        QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
+                        postResume(String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
                                 date, sex, tall, student,birDate,
                                 shoes, clothse);
-                        postTask.execute();
                         tvEdit.setText("编辑");
                         root.setClickable(true);
                         imgBack.setClickable(true);
@@ -548,87 +544,13 @@ public class ResumeActivity extends BaseActivity {
         if (First<2){
             imgLead.setVisibility(View.VISIBLE);
         }
-        PostTask postTask = new PostTask(false, String.valueOf(loginId), null, null, null, null, null, null, null, null, null, null, null);
-        postTask.execute();
+        getResume(String.valueOf(loginId));
     }
 
     @Override
     public void addActivity() {
         ActivityManager.getActivityManager().addActivity(ResumeActivity.this);
     }
-
-
-    public class PostTask extends AsyncTask<Void, Void, Void> {
-        private final boolean isPost;
-        private final String loginId;
-        private final String name;
-        private final String nickName;
-        private final String name_image;
-        private final String school;
-        private final String intoschool_date;
-        private final String sex;
-        private final String height;
-        private final String student;
-        private final String birth_date;
-        private final String shoe_size;
-        private final String clothing_size;
-
-//
-
-        /**
-         * 传参：login_id		登录ID
-         * 传参：name		姓名
-         * 传参：name_image	头像
-         * 传参：school		学校
-         * 传参：intoschool_date	入校时间
-         * 传参：sex		性别（0=女，1=男）
-         * 传参：height		身高（int型）
-         * 传参：student		学生（int型：0=不是学生，1=是学生）
-         * 传参：birth_date	出生日期
-         * 传参：shoe_size		鞋码
-         * 传参：clothing_size	服装尺码
-         */
-        PostTask(boolean isPost, String loginId, String name, String nickName, String name_image,
-                 String school, String intoschool_date, String sex, String height,
-                 String student, String birth_date, String shoe_size, String clothing_size
-        ) {
-            this.isPost = isPost;
-            this.loginId = loginId;
-            this.name = name;
-            this.nickName = nickName;
-            this.name_image = name_image;
-            this.school = school;
-            this.intoschool_date = intoschool_date;
-            this.sex = sex;
-            this.height = height;
-            this.student = student;
-            this.birth_date = birth_date;
-            this.shoe_size = shoe_size;
-            this.clothing_size = clothing_size;
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                if (isPost) {
-                    QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
-                    postResume();
-                } else
-                    getResume();
-
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//
-        }
-
 
         /**
          * postInfo
@@ -644,7 +566,7 @@ public class ResumeActivity extends BaseActivity {
          * 传参：shoe_size		鞋码
          * 传参：clothing_size	服装尺码
          */
-        public void postResume() {
+        public void postResume(String loginId, String name, String nickName, String name_image, String school, String date, String sex, String tall, String student, String birDate, String shoes, String clothse) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -654,21 +576,21 @@ public class ResumeActivity extends BaseActivity {
                     .addParams("name", name)
                     .addParams("nickname", nickName)
                     .addParams("school", school)
-                    .addParams("height", height)
-                    .addParams("student", student)
+                    .addParams("height", tall)
+                    .addParams("student",student)
                     .addParams("name_image", name_image)
-                    .addParams("intoschool_date", intoschool_date)
-                    .addParams("birth_date", birth_date)
-                    .addParams("shoe_size", shoe_size)
-                    .addParams("clothing_size", clothing_size)
-                    .addParams("sex", sex)
+                    .addParams("intoschool_date", date)
+                    .addParams("birth_date", birDate)
+                    .addParams("shoe_size", shoes)
+                    .addParams("clothing_size", clothse)
+                    .addParams("sex",sex)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
@@ -676,7 +598,7 @@ public class ResumeActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -684,7 +606,7 @@ public class ResumeActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -705,7 +627,7 @@ public class ResumeActivity extends BaseActivity {
         /**
          * postInfo
          */
-        public void getResume() {
+        public void getResume(String loginId) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -718,7 +640,7 @@ public class ResumeActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Resume>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Resume>>() {
                             }.getType());
@@ -726,7 +648,7 @@ public class ResumeActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -734,7 +656,7 @@ public class ResumeActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = baseBean;
@@ -751,7 +673,6 @@ public class ResumeActivity extends BaseActivity {
                     });
         }
 
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -799,10 +720,9 @@ public class ResumeActivity extends BaseActivity {
                                 sDialog.dismissWithAnimation();
                                 String name = etRealName.getText().toString().trim();
                                 if (chaeckContent()) {
-                                    PostTask postTask = new PostTask(true, String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
+                                    postResume(String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
                                             date, sex, tall, student,birDate,
                                             shoes, clothse);
-                                    postTask.execute();
                                 }
 
                             }

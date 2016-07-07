@@ -39,6 +39,8 @@ dependencies {
     compile files('libs/httpclient-4.4.1.1.jar')
     compile files('libs/httpmime-4.2.4.jar')
     compile files('libs/android-async-http-1.4.9.jar')
+    compile project(path: ':app')
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.squareup.okio:okio:1.6.0'
@@ -55,12 +57,9 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:converter-scalars:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0'
+    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    compile project(path: ':app')
-    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0'
-
-    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }

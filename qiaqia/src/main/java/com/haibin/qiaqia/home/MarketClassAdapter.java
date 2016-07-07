@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.entity.ListMarket;
+import com.haibin.qiaqia.listener.MyItemClickListener;
 
 import java.util.List;
 
@@ -23,10 +24,11 @@ public class MarketClassAdapter extends RecyclerView.Adapter<MarketClassAdapter.
 
     private Context context;
     private List<ListMarket> list;
-
-    public MarketClassAdapter(Context context, List<ListMarket> list) {
+    private MyItemClickListener myItemClickListener;
+    public MarketClassAdapter(Context context, List<ListMarket> list,MyItemClickListener myItemClickListener) {
         this.context = context;
         this.list = list;
+        this.myItemClickListener=myItemClickListener;
     }
 
     @Override
@@ -38,9 +40,15 @@ public class MarketClassAdapter extends RecyclerView.Adapter<MarketClassAdapter.
 
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         ListMarket listMarket = list.get(position);
         holder.itemMarketName.setText(listMarket.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myItemClickListener.onItemClick(v,position);
+            }
+        });
     }
 
     @Override

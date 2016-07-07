@@ -1,8 +1,6 @@
-package com.woniukeji.jianguo.mine;
+package com.woniukeji.jianguo.setting;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,8 +17,6 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -93,8 +89,7 @@ public class FeedBackActivity extends BaseActivity {
                     showShortToast("请输入联系方式");
                     return;
                 }
-                PostTask postTask=new PostTask(etContact.getText().toString(),etContent.getText().toString());
-                postTask.execute();
+                postOpinion(etContact.getText().toString(),etContent.getText().toString());
                 showShortToast("感谢您的反馈！我们将及时处理");
                 finish();
                 break;
@@ -136,40 +131,12 @@ public class FeedBackActivity extends BaseActivity {
 
 
     }
-    public class PostTask extends AsyncTask<Void, Void, Void> {
-
-        private final String tel;
-        private final String text;
-
-//
-
-        PostTask(String tel, String text) {
-            this.tel = tel;
-            this.text = text;
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                    postOpinion();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//
-        }
 
 
         /**
          * postInfo
          */
-        public void postOpinion() {
+        public void postOpinion(String tel, String text) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -183,7 +150,7 @@ public class FeedBackActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response ,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
@@ -191,7 +158,7 @@ public class FeedBackActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -199,7 +166,7 @@ public class FeedBackActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -216,5 +183,4 @@ public class FeedBackActivity extends BaseActivity {
 
                     });
         }
-    }
 }

@@ -154,8 +154,7 @@ public class PartJobFragment extends BaseFragment {
     private void initData() {
         cityid = String.valueOf(SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, 1));
         position= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,0);
-        GetJobCityTask getJobCityTask = new GetJobCityTask();
-        getJobCityTask.execute();
+        getCityCategory(cityid);
     }
 
     private void initview() {
@@ -346,26 +345,10 @@ public class PartJobFragment extends BaseFragment {
     public void onClick() {
     }
 
-    public class GetJobCityTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getCityCategory();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
         /**
          * 获取城市列表和兼职种类
          */
-        public void getCityCategory() {
+        public void getCityCategory(String cityid) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -379,7 +362,7 @@ public class PartJobFragment extends BaseFragment {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityCategory>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
                             }.getType());
@@ -387,7 +370,7 @@ public class PartJobFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_CITY_FAIL;
@@ -395,7 +378,7 @@ public class PartJobFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = baseBean;
@@ -410,7 +393,6 @@ public class PartJobFragment extends BaseFragment {
                         }
 
                     });
-        }
     }
 
     public class GetTask extends AsyncTask<Void, Void, Void> {
@@ -461,7 +443,7 @@ public class PartJobFragment extends BaseFragment {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -469,7 +451,7 @@ public class PartJobFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -477,7 +459,7 @@ public class PartJobFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
                                 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();

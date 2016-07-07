@@ -75,10 +75,10 @@ public class CartFragment extends BaseFragment {
 //                    BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
 //                    int count = msg.arg1;
 //                    if (count == 0) {
-//                        jobList.clear();
+//                        listChaoCommodities.clear();
 //                    }
 //                    jobs.getData().getList_t_job();
-//                    jobList.addAll(jobs.getData().getList_t_job());
+//                    listChaoCommodities.addAll(jobs.getData().getList_t_job());
 //                    adapter.notifyDataSetChanged();
 //                    DataComplete=true;
                     break;
@@ -111,7 +111,7 @@ public class CartFragment extends BaseFragment {
     }
 
     public void initView() {
-//        adapter = new CartAdapter(jobList, getActivity());
+//        adapter = new CartAdapter(listChaoCommodities, getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity());
         //设置布局管理器
         recyclerview.setLayoutManager(mLayoutManager);

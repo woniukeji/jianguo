@@ -100,7 +100,7 @@ public class SPUtils {
 
     public static void deleteParams(Context context) {
 
-        SharedPreferences sp = context.getSharedPreferences(Constants.LOGIN_INFO, Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(Constants.USER_LOGIN, Context.MODE_PRIVATE);
         sp.edit().clear().commit();
         SharedPreferences sp1 = context.getSharedPreferences(Constants.USER_INFO, Context.MODE_PRIVATE);
         sp1.edit().clear().commit();

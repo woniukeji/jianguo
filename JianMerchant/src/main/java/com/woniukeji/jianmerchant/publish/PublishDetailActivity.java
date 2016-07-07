@@ -608,14 +608,11 @@ public class PublishDetailActivity extends BaseActivity {
                         if (CheckStatus()) {
                             if (limit_sex.equals("3")) {
                         alike = String.valueOf(System.currentTimeMillis());
-                        PostChangeJobTask postPartInfoTask = new PostChangeJobTask(etGirlCount.getText().toString(), "31",String.valueOf(listTJobEntity.getId()));
-                        postPartInfoTask.execute();
-                        PostChangeJobTask postPartInfo = new PostChangeJobTask(etBoyCount.getText().toString(), "30",String.valueOf(listTJobEntity.getNv_job_id()));
-                        postPartInfo.execute();
+                                postChangeInfo(etGirlCount.getText().toString(), "31",String.valueOf(listTJobEntity.getId()));
+                                postChangeInfo(etBoyCount.getText().toString(), "30",String.valueOf(listTJobEntity.getNv_job_id()));
                     } else {
                         alike = "0";
-                        PostChangeJobTask postPartInfo = new PostChangeJobTask(etCount.getText().toString(), limit_sex,String.valueOf(listTJobEntity.getId()));
-                        postPartInfo.execute();
+                         postChangeInfo(etCount.getText().toString(), limit_sex,String.valueOf(listTJobEntity.getId()));
                     }
                 }
                 break;
@@ -811,6 +808,36 @@ public class PublishDetailActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
+        etWorkContent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (view.getId() == R.id.et_work_content) {
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+        etWorkRequire.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                // TODO Auto-generated method stub
+                if (view.getId() == R.id.et_work_require) {
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction()&MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_UP:
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         int loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         GetTask getTask = new GetTask(String.valueOf(loginId));
         getTask.execute();
@@ -922,7 +949,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Model>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
                             }.getType());
@@ -930,7 +957,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -938,7 +965,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean, int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = baseBean;
@@ -994,7 +1021,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityCategory>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
                             }.getType());
@@ -1002,7 +1029,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -1010,7 +1037,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean, int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = baseBean;
@@ -1106,7 +1133,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -1114,7 +1141,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -1122,7 +1149,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean, int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = baseBean.getMessage();
@@ -1140,43 +1167,10 @@ public class PublishDetailActivity extends BaseActivity {
         }
     }
 
-    public class PostChangeJobTask extends AsyncTask<Void, Void, Void> {
-        private String mSum;
-        private String mSex_limit;
-        private String job_id = "0";
-
-
-        PostChangeJobTask(String sum, String Sex_limit, String job_id) {
-            this.mSum = sum;
-            this.mSex_limit = Sex_limit;
-            this.job_id = job_id;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                postChangeInfo();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (!sweetAlertDialog.isShowing()) {
-                sweetAlertDialog.setTitleText("修改中");
-                sweetAlertDialog.getProgressHelper().setBarColor(R.color.app_bg);
-                sweetAlertDialog.show();
-            }
-
-            super.onPreExecute();
-        }
-
         /**
          * 修改兼职信息
          */
-        public void postChangeInfo() {
+        public void postChangeInfo(String count, String mSex_limit, String job_id) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -1195,7 +1189,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("money", money)
                     .addParams("term", term)
                     .addParams("limit_sex", mSex_limit)
-                    .addParams("sum", mSum)
+                    .addParams("sum", count)
                     .addParams("max", hot)
                     .addParams("alike", alike)
                     .addParams("lon", "0")
@@ -1214,7 +1208,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
@@ -1222,7 +1216,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -1230,7 +1224,7 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean, int id) {
                             if (baseBean.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = baseBean.getMessage();
@@ -1245,7 +1239,6 @@ public class PublishDetailActivity extends BaseActivity {
                         }
 
                     });
-        }
     }
 //自动收起键盘的操作 通过判断当前的view实例是不是edittext来决定
     @Override

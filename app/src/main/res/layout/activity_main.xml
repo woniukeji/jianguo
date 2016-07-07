@@ -21,12 +21,18 @@
         app:tl_textsize="10sp"
         app:tl_underline_color="#DDDDDD"
         app:tl_underline_height="1dp" />
-
+    <ImageView
+        android:id="@id/img_split"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/split"
+        android:layout_above="@+id/tabHost"
+        />
     <android.support.v4.view.ViewPager
         android:id="@+id/mainPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tabHost" />
+        android:layout_above="@+id/img_split" />
 
     <ImageView
         android:id="@+id/img_main_lead"
@@ -44,7 +50,7 @@
         android:visibility="gone"
         >
         <com.fenjuly.library.ArrowDownloadButton
-            android:id="@+id/arrow_download_button"
+            android:id="@+id/download_button"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_width="130dp"

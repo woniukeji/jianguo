@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,15 +27,10 @@ import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
-import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
-import com.woniukeji.jianguo.eventbus.JobTypeEvent;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
-import com.woniukeji.jianguo.mine.MyPartJboActivity;
-import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.partjob.PartJobActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LocationUtil;
@@ -77,7 +71,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     @InjectView(R.id.tv_location) TextView tvLocation;
     @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.top) RelativeLayout top;
+    @InjectView(R.id.rl_top) RelativeLayout rl_top;
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -115,6 +109,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private int loginId;
     private CircleImageView circleImageView;
     private boolean DataComplete=false;
+    private int totalDy;
+
     @OnClick(R.id.tv_location)
     public void onClick() {
         startActivity(new Intent(getActivity(),CityActivity.class));
@@ -307,10 +303,30 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-            }
+                 totalDy = totalDy+dy;
+                    //define it for scroll height
+                int distance=totalDy;
+                LogUtils.e("alph",distance+"totalDy");
+                    if( distance >0&&distance<500){
+                        rl_top.getBackground().mutate().setAlpha(distance/2);
+                        LogUtils.e("alph",distance+"alph");
+                    }else if ( distance>500){
+                        rl_top.getBackground().mutate().setAlpha(255);
+                        LogUtils.e("alph",distance+"alph");
+                        }else {
+                        rl_top.getBackground().mutate().setAlpha(0);
+                        LogUtils.e("alph",0+"alph");
+                    }
+                }
         });
     }
-
+    public int getScollYDistance(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int position = layoutManager.findFirstVisibleItemPosition();
+        View firstVisiableChildView = layoutManager.findViewByPosition(position);
+        int itemHeight = firstVisiableChildView.getHeight();
+        return (position) * itemHeight - firstVisiableChildView.getTop();
+    }
     @Override
     public void onClick(View view) {
         MainActivity mainActivity= (MainActivity) getActivity();
@@ -548,7 +564,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -556,7 +572,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -564,7 +580,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -618,7 +634,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityBannerEntity>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityBannerEntity>>() {
                             }.getType());
@@ -626,7 +642,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_CITY_FAIL;
@@ -634,7 +650,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -652,4 +668,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     });
         }
     }
+
+
+
 }

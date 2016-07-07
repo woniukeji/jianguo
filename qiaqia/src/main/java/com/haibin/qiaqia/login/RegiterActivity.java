@@ -1,7 +1,6 @@
 package com.haibin.qiaqia.login;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
@@ -18,7 +17,6 @@ import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseActivity;
 import com.haibin.qiaqia.base.Constants;
 import com.haibin.qiaqia.entity.BaseBean;
-import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.User;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
@@ -26,16 +24,15 @@ import com.haibin.qiaqia.http.SubscriberOnNextListener;
 import com.haibin.qiaqia.main.MainActivity;
 import com.haibin.qiaqia.utils.DateUtils;
 import com.haibin.qiaqia.utils.MD5Util;
+import com.haibin.qiaqia.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.Response;
-import retrofit2.http.GET;
 
 public class RegiterActivity extends BaseActivity {
 
@@ -60,8 +57,15 @@ public class RegiterActivity extends BaseActivity {
 
             @Override
             public void onNext(User user) {
-                if (user.getCode()==200){
+                if (user.getCode().equals("200")){
                     Toast.makeText(RegiterActivity.this,"注册成功",Toast.LENGTH_LONG).show();
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_LOGIN,Constants.LOGIN_PHONE,user.getData().getIUserLogin().getPhone());
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_LOGIN,Constants.LOGIN_PASSWORD,user.getData().getIUserLogin().getPassword());
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_LOGIN,Constants.LOGIN_STATUS,user.getData().getIUserLogin().getStatus());
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_LOGIN,Constants.LOGIN_TYPE,1);
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_INFO,Constants.INFO_IMG,user.getData().getIUserInfo().getNameImage());
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_INFO,Constants.INFO_ID,user.getData().getIUserInfo().getLoginId());
+                    SPUtils.setParam(RegiterActivity.this, Constants.USER_INFO,Constants.INFO_NAME,user.getData().getIUserInfo().getName());
                     startActivity(new Intent(RegiterActivity.this, MainActivity.class));
                     finish();
                 }else

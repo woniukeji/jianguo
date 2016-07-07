@@ -12,14 +12,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseFragment;
-import com.haibin.qiaqia.cart.CartAdapter;
 import com.haibin.qiaqia.entity.Goods;
-import com.haibin.qiaqia.entity.User;
+import com.haibin.qiaqia.entity.ListChaoCommodity;
+import com.haibin.qiaqia.fruitvegetables.FruitVegetableActivity;
 import com.haibin.qiaqia.http.HttpMethods;
 import com.haibin.qiaqia.http.ProgressSubscriber;
 import com.haibin.qiaqia.http.SubscriberOnNextListener;
@@ -42,15 +44,16 @@ public class HomeFragment extends BaseFragment {
     XRecyclerView recyclerview;
     @BindView(R.id.market)
     TextView market;
+
     private Context context = getActivity();
 
     //    private String sort[] = {"不限", "默认", "智能", "价格", "发布时间"};
     //    private String citys[] = {"不限", "武汉", "北京", "上海", "成都", "广州", "深圳", "重庆", "天津", "西安", "南京", "杭州"};
     private List<View> popupViews = new ArrayList<>();
-    private CartAdapter adapter;
+    private HomeAdapter adapter;
     private int lastVisibleItem;
     private LinearLayoutManager mLayoutManager;
-    public List<User> jobList = new ArrayList<User>();
+    public List<ListChaoCommodity> listChaoCommodities = new ArrayList<ListChaoCommodity>();
     private String cityid = "1";
     String typeid = "0";
     String areid = "0";
@@ -65,6 +68,11 @@ public class HomeFragment extends BaseFragment {
     private int position;
     private boolean DataComplete = false;
     SubscriberOnNextListener<Goods> SubListener;
+    private View header;
+    private ImageView img_friut;
+    private RelativeLayout relaFruit;
+    private RelativeLayout relaMarket;
+
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -85,10 +93,10 @@ public class HomeFragment extends BaseFragment {
 //                    BaseBean<Jobs> jobs = (BaseBean<Jobs>) msg.obj;
 //                    int count = msg.arg1;
 //                    if (count == 0) {
-//                        jobList.clear();
+//                        listChaoCommodities.clear();
 //                    }
 //                    jobs.getData().getList_t_job();
-//                    jobList.addAll(jobs.getData().getList_t_job());
+//                    listChaoCommodities.addAll(jobs.getData().getList_t_job());
 //                    adapter.notifyDataSetChanged();
 //                    DataComplete=true;
                     break;
@@ -116,6 +124,10 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        header = LayoutInflater.from(getActivity()).inflate(R.layout.header_home, null, false);
+        img_friut = (ImageView) header.findViewById(R.id.img_friut);
+         relaFruit = (RelativeLayout) header.findViewById(R.id.rela_fruit);
+        relaMarket = (RelativeLayout) header.findViewById(R.id.rela_market);
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -123,26 +135,38 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initView() {
-        adapter = new CartAdapter(jobList, getActivity());
+        adapter = new HomeAdapter(getActivity(), listChaoCommodities);
         mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerview.setHasFixedSize(true);
         //设置布局管理器
         recyclerview.setLayoutManager(mLayoutManager);
         //设置adapter
         recyclerview.setAdapter(adapter);
         //设置Item增加、移除动画
         recyclerview.setItemAnimator(new DefaultItemAnimator());
+        recyclerview.addHeaderView(header);
     }
 
     public void initData() {
-        market.setOnClickListener(new View.OnClickListener() {
+        relaMarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(),MarketActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), MarketActivity.class));
             }
         });
+        relaFruit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), FruitVegetableActivity.class));
+            }
+        });
+
+
         SubListener = new SubscriberOnNextListener<Goods>() {
             @Override
             public void onNext(Goods goodsHttpResult) {
+                listChaoCommodities.addAll(goodsHttpResult.getListChaoCommodity());
+                adapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(), "获取成功", Toast.LENGTH_LONG).show();
             }
 

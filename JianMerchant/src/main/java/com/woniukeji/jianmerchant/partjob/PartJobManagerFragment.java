@@ -167,8 +167,9 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
-                getTask.execute();
+//                GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
+//                getTask.execute();
+                getJobs(String.valueOf(merchant_id),String.valueOf(type),"0");
             }
         });
         merchant_id= (int) SPUtils.getParam(getActivity(),Constants.USER_INFO,Constants.USER_MERCHANT_ID,0);
@@ -180,8 +181,7 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (modleList.size() > 5 && lastVisibleItem == modleList.size()) {
-                    GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),String.valueOf(lastVisibleItem));
-                    getTask.execute();
+                    getJobs(String.valueOf(merchant_id),String.valueOf(type),String.valueOf(lastVisibleItem));
                 }
             }
 
@@ -197,8 +197,9 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
     @Override
     public void onResume() {
         super.onResume();
-        GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
-        getTask.execute();
+        getJobs(String.valueOf(merchant_id),String.valueOf(type),"0");
+//        GetTask getTask=new GetTask(String.valueOf(merchant_id),String.valueOf(type),"0");
+//        getTask.execute();
     }
 
     @Override
@@ -213,85 +214,59 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
     }
 
 
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String merchantId;
-        private final String status;
-        private final String count;
 
-        GetTask(String merId,String status,String count) {
-            this.merchantId = merId;
-            this.status = status;
-            this.count = count;
-        }
+    /**
+     * postInfo
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getJobs();
-            } catch (Exception e) {
-            }
-            return null;
-        }
+     */
+    public void getJobs(String merchantId, String status, final String count) {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_PART_JOB_PUBLISH)
+                .addParams("only", only)
+                .addParams("merchant_id", merchantId)
+                .addParams("count", count)
+                .addParams("status", status)
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean<Model>>() {
+                    @Override
+                    public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
+                        }.getType());
+                        return baseBean;
+                    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_GET_FAIL;
+                        mHandler.sendMessage(message);
+                    }
 
-        /**
-         * postInfo
-         */
-        public void getJobs() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.GET_PART_JOB_PUBLISH)
-                    .addParams("only", only)
-                    .addParams("merchant_id", merchantId)
-                    .addParams("count", count)
-                    .addParams("status", status)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Model>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
+                    @Override
+                    public void onResponse(BaseBean baseBean, int id) {
+                        if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
-                            message.obj = e.toString();
+                            message.obj = baseBean;
+                            message.arg1= Integer.parseInt(count);
+                            message.what = MSG_GET_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = baseBean.getMessage();
                             message.what = MSG_GET_FAIL;
                             mHandler.sendMessage(message);
                         }
+                    }
 
-                        @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.arg1= Integer.parseInt(count);
-                                message.what = MSG_GET_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_GET_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
+                });
     }
-
 
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_fruit_vegetable"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    tools:context="com.haibin.qiaqia.fruitvegetables.FruitVegetableActivity"
+    >
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/sliding_tab"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/app_color"
+        tl:tl_tab_padding="7dp"
+        tl:tl_tab_space_equal="true"
+        tl:tl_indicator_color="#eeeeee"
+        app:tl_textSelectColor="#000000"
+        app:tl_textUnselectColor="#000000"
+        tl:tl_indicator_style="TRIANGLE">
+    </com.flyco.tablayout.SlidingTabLayout>
+
+
+
+    <android.support.v4.view.ViewPager
+        android:layout_below="@+id/sliding_tab"
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </android.support.v4.view.ViewPager>
+    <RelativeLayout
+        android:id="@+id/rl_click"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/back_arrow"/>
+    </RelativeLayout>
+</RelativeLayout>

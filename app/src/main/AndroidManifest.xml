@@ -40,14 +40,23 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!-- 腾讯地图定位权限 开始 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 用于访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <!-- 腾讯地图定位权限 结束 -->
     <!-- 极光推送权限 开始 -->
 
@@ -90,11 +99,6 @@
             android:name=".main.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name=".login.QuickLoginActivity"
-            android:label="@string/title_activity_regist"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -156,6 +160,11 @@
         <meta-data
             android:name="TencentMapSDK"
             android:value="CIWBZ-PFOHV-6R6P3-U62N6-RCZ4E-WDFIH"/>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="271aae9c316665f0d9707d1a905ae915">
+            //开发者申请的key
+        </meta-data>
         <!-- 腾讯地图配置 结束 -->
         <!-- 自动升级 结束 -->
 
@@ -302,11 +311,11 @@
             android:name=".talk.ChatActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".mine.SettingActivity"
+            android:name=".setting.SettingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.FeedBackActivity"
+            android:name=".setting.FeedBackActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
@@ -389,8 +398,20 @@
             android:name=".main.PushMessageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".mine.PicTipActivity"
-                  android:theme="@style/Theme.AppCompat.Dialog"
+        <activity
+            android:name=".mine.PicTipActivity"
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".login.ForgetPassActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".setting.PereferenceActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
     </application>

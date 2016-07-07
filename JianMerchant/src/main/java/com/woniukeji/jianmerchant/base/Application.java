@@ -11,8 +11,12 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.woniukeji.jianmerchant.talk.leanmessage.LeanchatClientEventHandler;
 import com.woniukeji.jianmerchant.talk.leanmessage.MessageHandler;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by invinjun on 2016/3/2.
@@ -30,10 +34,19 @@ public class Application extends android.app.Application {
         AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
         AVIMClient.setClientEventHandler(LeanchatClientEventHandler.getInstance());
         AVOSCloud.setDebugLogEnabled(true);
+
 //        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
     }
     private void init(){
         JPushInterface.init(getApplicationContext());
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .addInterceptor(new LoggerInterceptor("TAG"))
+                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                //其他配置
+                .build();
+
+        OkHttpUtils.initClient(okHttpClient);
     }
     public void UmengConfig(){
 

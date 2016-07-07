@@ -165,8 +165,7 @@ public class BindPhoneActivity extends BaseActivity {
                  phone = phoneNumber.getText().toString().trim();
                 String code = phoneCode.getText().toString().trim();
                 if (CheckStatus()) {
-                    PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone);
-                    phoneLoginTask.execute();
+                    BindPhone(phone);
                 }
                 break;
             case R.id.img_back:
@@ -176,8 +175,7 @@ public class BindPhoneActivity extends BaseActivity {
                 String tel=phoneNumber.getText().toString();
                 boolean isOK=CommonUtils.isMobileNO(tel);
                 if (isOK){
-                    GetSMS getSMS =new GetSMS(tel);
-                    getSMS.execute();
+                    CheckPhone(tel);
                 }else{
                     showLongToast("请输入正确的手机号");
                 }
@@ -208,73 +206,31 @@ public class BindPhoneActivity extends BaseActivity {
         return true;
     }
 
-
-
-
-
-    public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        SweetAlertDialog pDialog = new SweetAlertDialog(BindPhoneActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        PhoneLoginTask(String phoneNum  ) {
-            this.tel = phoneNum;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                BindPhone();
-            } catch (Exception e) {
-                return null;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
-
-        @Override
-        protected void onCancelled() {
-            pDialog.dismiss();
-        }
-
         /**
          * phoneLogin
+         * @param phone
          */
-        public void BindPhone() {
+        public void BindPhone(String phone) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.POST_BIND_PHONE)
                     .addParams("only", only)
                     .addParams("login_id", String.valueOf(loginId))
-                    .addParams("tel", tel)
+                    .addParams("tel", phone)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean>(){}.getType());
                             return user;
                         }
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -282,7 +238,7 @@ public class BindPhoneActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean user) {
+                        public void onResponse(BaseBean user,int id) {
                             if (user.getCode().equals("200")){
                                 SPUtils.setParam(BindPhoneActivity.this,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
                                 Message message = new Message();
@@ -301,42 +257,14 @@ public class BindPhoneActivity extends BaseActivity {
         }
 
 
-    }
 
-    /**
-     * 手机验证码Task
-     */
-    public class GetSMS extends AsyncTask<Void, Void, User> {
-        private final String tel;
-        SweetAlertDialog pDialog = new SweetAlertDialog(BindPhoneActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        GetSMS(String phoneNum) {
-            this.tel = phoneNum;
-        }
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            CheckPhone();
-            return null;
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
 
         /**
          * login
          * 检查手机号是否存在
+         * @param tel
          */
-        public void CheckPhone() {
+        public void CheckPhone(String tel) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -350,7 +278,7 @@ public class BindPhoneActivity extends BaseActivity {
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message=new Message();
                             message.obj=e.toString();
                             message.what=MSG_USER_FAIL;
@@ -358,7 +286,7 @@ public class BindPhoneActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message=new Message();
                             message.obj=response;
                             message.what=MSG_PHONE_SUCCESS;
@@ -370,6 +298,5 @@ public class BindPhoneActivity extends BaseActivity {
         }
 
 
-    }
 }
 

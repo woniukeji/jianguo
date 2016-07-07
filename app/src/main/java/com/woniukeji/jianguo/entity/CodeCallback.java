@@ -13,7 +13,7 @@ import okhttp3.Response;
 public abstract class CodeCallback extends Callback<SmsCode>
 {
     @Override
-    public SmsCode parseNetworkResponse(Response response) throws IOException
+    public SmsCode parseNetworkResponse(Response response,int id) throws IOException
     {
         String string = response.body().string();
         SmsCode smsCode = new Gson().fromJson(string, SmsCode.class);

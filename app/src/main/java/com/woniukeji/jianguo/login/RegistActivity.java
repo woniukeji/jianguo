@@ -212,8 +212,7 @@ public class RegistActivity extends BaseActivity {
                 String phone = phoneNumber.getText().toString();
                 String pass = passWord2.getText().toString();
                 if (CheckStatus()) {
-                    UserRegisterTask userRegisterTask = new UserRegisterTask(phone, MD5Util.MD5(pass));
-                    userRegisterTask.execute();
+                    UserRegisterPhone(phone, MD5Util.MD5(pass));
                 }
                 break;
         }
@@ -303,7 +302,7 @@ public class RegistActivity extends BaseActivity {
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -311,7 +310,7 @@ public class RegistActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message = new Message();
                             message.obj = response;
                             message.what = MSG_PHONE_SUCCESS;
@@ -325,65 +324,33 @@ public class RegistActivity extends BaseActivity {
 
     }
 
-    /**
-     * 手机注册Task
-     */
-    public class UserRegisterTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String passWord;
-        SweetAlertDialog pDialog = new SweetAlertDialog(RegistActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        UserRegisterTask(String phoneNum, String passWord) {
-            this.tel = phoneNum;
-            this.passWord = passWord;
-        }
-
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            UserRegisterPhone();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登陆中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
-
         /**
          * UserRegisterPhone
          * 通过手机号码注册
+         * @param phone
+         * @param
          */
-        public void UserRegisterPhone() {
+        public void UserRegisterPhone(String phone, String pass) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.REGISTER_PHONE)
                     .addParams("only", only)
-                    .addParams("tel", tel)
-                    .addParams("password", passWord)
+                    .addParams("tel", phone)
+                    .addParams("password", pass)
                     .build()
                     .connTimeOut(30000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
                             return user;
                         }
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.getMessage();
                             message.what = MSG_USER_FAIL;
@@ -391,7 +358,7 @@ public class RegistActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response,int id) {
                             if (response.getCode().equals("200")){
                                 SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
                                 Message message = new Message();
@@ -404,12 +371,9 @@ public class RegistActivity extends BaseActivity {
                                 message.what = MSG_USER_FAIL;
                                 mHandler.sendMessage(message);
                             }
-
                         }
-
                     });
         }
     }
 
-}
 

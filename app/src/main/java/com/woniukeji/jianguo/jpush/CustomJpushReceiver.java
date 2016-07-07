@@ -3,11 +3,20 @@ package com.woniukeji.jianguo.jpush;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.woniukeji.jianguo.entity.PushType;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.main.PushMessageActivity;
+import com.woniukeji.jianguo.mine.AuthActivity;
 import com.woniukeji.jianguo.mine.SignActivity;
+import com.woniukeji.jianguo.wallte.WalletActivity;
+
+import java.util.HashMap;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
@@ -18,7 +27,7 @@ import de.greenrobot.event.EventBus;
     public class CustomJpushReceiver extends BroadcastReceiver {
     public static final String KEY_TITLE = "title";
     public static final String KEY_MESSAGE = "message";
-    public static final String KEY_EXTRAS = "extras";
+    public static final String KEY_EXTRAS = "mExtras";
         @Override
         public void onReceive(Context context, Intent intent) {
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
@@ -34,11 +43,19 @@ import de.greenrobot.event.EventBus;
                 // 在这里可以做些统计，或者做些其他工作
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 System.out.println("用户点击打开了通知");
-                String messge = intent.getStringExtra(KEY_MESSAGE);
-                String extras = intent.getStringExtra(KEY_EXTRAS);
-                StringBuilder showMsg = new StringBuilder();
-                showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-                context.startActivity(new Intent(context, PushMessageActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                Bundle extras = intent.getExtras();
+                String type = extras.getString(JPushInterface.EXTRA_EXTRA);//类型 0=报名，1=钱包，2=实名
+                Gson gson=new Gson();
+                PushType pushType = gson.fromJson(type, PushType.class);
+
+                if (pushType.getType().equals("0")) {
+                    context.startActivity(new Intent(context, SignActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                } else if (pushType.getType().equals("1")) {
+                    context.startActivity(new Intent(context, WalletActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                } else if (pushType.getType().equals("2")) {
+                    context.startActivity(new Intent(context, AuthActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                } else
+                    context.startActivity(new Intent(context, PushMessageActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
 
         }

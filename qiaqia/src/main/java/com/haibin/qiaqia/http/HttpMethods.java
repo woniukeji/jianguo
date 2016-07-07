@@ -135,4 +135,16 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+     * 获取超市分类
+     */
+    public void getGoods(Subscriber<Goods> subscriber,String loginId,String categoryId){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getGoods(only,loginId,categoryId)
+                .map(new HttpResultFunc<Goods>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

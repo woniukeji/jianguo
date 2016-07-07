@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,13 +13,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,26 +25,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.fenjuly.library.ArrowDownloadButton;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
-import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
@@ -56,28 +42,20 @@ import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
 import com.woniukeji.jianguo.partjob.PartJobFragment;
-import com.woniukeji.jianguo.talk.TalkFragment;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.DateUtils;
-import com.woniukeji.jianguo.utils.LocationUtil;
-import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.FileCallBack;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  *
@@ -156,7 +134,7 @@ public class MainActivity extends BaseActivity {
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
         ButterKnife.inject(this);
         initSystemBar(this);
-        button = (ArrowDownloadButton)findViewById(R.id.arrow_download_button);
+        button = (ArrowDownloadButton)findViewById(R.id.download_button);
         up_dialog= (RelativeLayout) findViewById(R.id.up_dialog);
         int version = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
         apkurl = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
@@ -174,12 +152,13 @@ public class MainActivity extends BaseActivity {
 //                            downLoadDialog.show();
                             up_dialog.setVisibility(View.VISIBLE);
                             button.startAnimating();
-                            downLoadTask downLoadTask = new downLoadTask();
-                            downLoadTask.execute();
+                            downAPK();
                         }
                     }).show();
         }
     }
+
+
 
     public static void initSystemBar(Activity activity) {
 
@@ -199,35 +178,11 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    public class downLoadTask extends AsyncTask<Void, Void, Void> {
-        private SweetAlertDialog sweetAlertDialog;
-
-        downLoadTask(SweetAlertDialog sweetAlertDialog) {
-            this.sweetAlertDialog = sweetAlertDialog;
-        }
-        downLoadTask() {
-
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getCitys();
-            } catch (Exception e) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * postInfo
          */
-        public void getCitys() {
+        public void downAPK() {
 
             OkHttpUtils
                     .get()
@@ -235,36 +190,28 @@ public class MainActivity extends BaseActivity {
                     .build()
                     .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
                     {
+
                         @Override
-                        public void inProgress( float progress) {
-                            Message message=new Message();
-                            message.what=2;
-                            float tem=progress*100;
-                             b = (int)tem;
-                            message.arg1=b;
-                            int i = (int) Math.round(progress+0.5);
-//                             mHandler.sendMessage(message);
-                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    button.setProgress(b);
-                                }
-                            });
-//                            loadingView.setImageBitmap(
-//                                    BitmapFactory.decodeResource(getResources(), R.drawable.icon_chat_photo));
-//                            sweetAlertDialog.getProgressHelper().setProgress(progress);
-//                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
+                        public void onError(Call call, Exception e, int id) {
                         }
-
+//                        @Override
+//                        public void inProgress( float progress,int id) {
+//                            Message message=new Message();
+//                            message.what=2;
+//                            float tem=progress*100;
+//                            b = (int)tem;
+//                            message.arg1=b;
+//                            int i = (int) Math.round(progress+0.5);
+//                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    button.setProgress(b);
+//                                }
+//                            });
+//                        }
                         @Override
-                        public void onError(Call call, Exception e) {
-
-                        }
-
-
-                        @Override
-                        public void onResponse(File file) {
+                        public void onResponse(File file,int id) {
 
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -272,13 +219,11 @@ public class MainActivity extends BaseActivity {
                                     up_dialog.setVisibility(View.GONE);
                                 }
                             });
-
                             openFile(file);
 
                         }
                     });
         }
-    }
     private void openFile(File file) {
         // TODO Auto-generated method stub
         Intent intent = new Intent();
@@ -353,6 +298,7 @@ public class MainActivity extends BaseActivity {
         imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
+        mainPager .setOffscreenPageLimit(1);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }

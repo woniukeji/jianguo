@@ -21,10 +21,10 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_FACTORY;
+    public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN= JIANGUO_USING+"T_user_login_Login_Merchant_Servlet";//
     public static final String REC_SMS= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//忘记密码 快速登录
-    public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼职种类
+    public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼 职种类
     public static final String POST_PART_INFO= JIANGUO_USING+"T_Job_Insert_Servlet";//提交兼职信息
     public static final String GET_PART_HISTORY= JIANGUO_USING+"T_job_Model_List_Servlet";//获取兼职历史记录
     public static final String DELETE_JOB_MODEL= JIANGUO_USING+"T_job_Model_Delete_Servlet";//删除兼职模板
@@ -37,11 +37,8 @@ public class Constants {
 
 
     public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
-
     public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
-
     public static final String GET_QINIU_TOKEN= JIANGUO_USING+"T_QiNiu_Servlet";//七牛token 接口
-
     public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
     public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
     public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
@@ -49,13 +46,10 @@ public class Constants {
     public static final String POST_BIND_PHONE= JIANGUO_USING+"T_user_login_BindingTel_Servlet";//绑定手机号
     public static final String ONLY_PART1 = "xse2iowiowdg3542d49z";
     public static final String ONLY_PART2 = "jfiejdw4gdeqefw33ff23fi999";
-
     public static final String GET_SCHOOL= JIANGUO_USING+"T_school_LikeName_Servlet";//学校模糊查询 接口
-
     public static final String POST_REAL_NAME= JIANGUO_USING+"T_user_realname_Insert_Servlet";//实名认证
     public static final String GET_REAL_NAME= JIANGUO_USING+"T_user_realname_SelectId_Servlet";//查看实名
     public static final String CHANGE_REAL_NAME= JIANGUO_USING+"T_user_realname_Update_Servlet";//修改认证信息
-
 //    public static final String POST_RESUME= JIANGUO_USING+"T_user_resume_Insert_Servlet";//录入简历
     public static final String GET_RESUME= JIANGUO_USING+"T_user_resume_SelectId_Servlet";//查看简历
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
@@ -69,13 +63,7 @@ public class Constants {
     public static final String GET_PAY_LIST= JIANGUO_USING+"T_enroll_Job_User_Servlet";//获取发放工资用用户列表
     public static final String POST_WAGES= JIANGUO_USING+"T_wages_Insert_Servlet";//工资结算接口
     public static final String POST_PAY_PASSWORD= JIANGUO_USING+"T_mechant_pay_Update_Servlet";//结算密码
-
     public static final String GET_CITY= JIANGUO_USING+"T_city_Select_Servlet";//城市和轮播图
-
-
-
-
-
     public static final String LOGIN_INFO = "loginInfo";
     public static final String SP_TYPE="type";//0代表手机登录 1微信 2未登录
     public static final String SP_TEL="tel";

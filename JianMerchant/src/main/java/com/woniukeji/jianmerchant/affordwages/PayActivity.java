@@ -240,7 +240,7 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Model>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean<Model> parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
                             }.getType());
@@ -248,7 +248,7 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -256,22 +256,25 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
+                        public void onResponse(BaseBean<Model> response, int id) {
+                            if (response.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
-                                message.obj = baseBean;
+                                message.obj = response;
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
+                        }
 
-                    });
+
+
+                     );
         }
     }
 
@@ -316,7 +319,7 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
@@ -324,7 +327,7 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_DELETE_FAIL;
@@ -332,19 +335,22 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
+                        public void onResponse(BaseBean response, int id) {
+                            if (response.getCode().equals("200")) {
                                 Message message = new Message();
-                                message.obj = baseBean;
+                                message.obj = response;
                                 message.what = MSG_DELETE_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
+
+
+
 
                     });
         }

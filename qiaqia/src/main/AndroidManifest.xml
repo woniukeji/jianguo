@@ -17,37 +17,45 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:label, android:theme">
 
-         <!--<activity-->
-         <!--android:name=".login.Splash"-->
-         <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
-         <!--android:label="@string/app_name"-->
-         <!--android:theme="@style/AppTheme">-->
-         <!--<intent-filter>-->
-         <!--<action android:name="android.intent.action.MAIN"/>-->
-         <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-         <!--</intent-filter>-->
-         <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".login.Splash" -->
+        <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:theme="@style/AppTheme"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN"/> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
-            android:name=".login.LoginPassWordActivity"
+            android:name=".login.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".login.RegiterActivity"
+        <activity
+            android:name=".login.RegiterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".login.LoginPassWordActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".main.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".home.MarketActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".fruitvegetables.FruitVegetableActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
-        <activity android:name=".main.MainActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-        </activity>
-        <activity android:name=".home.CategrayGoodsActivity" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

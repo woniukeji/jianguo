@@ -98,7 +98,7 @@ public class PartJobActivity extends BaseActivity {
             PartJobActivity mainActivity = (PartJobActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    if (refreshLayout.isRefreshing()) {
+                    if (refreshLayout!=null&&refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
                     int count=msg.arg1;
@@ -117,6 +117,7 @@ public class PartJobActivity extends BaseActivity {
 //                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
+                    rlNull.setVisibility(View.VISIBLE);
                     cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
                     break;
                 case 3:
@@ -278,7 +279,7 @@ public class PartJobActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -286,15 +287,15 @@ public class PartJobActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
-                            Message message = new Message();
+                        public void onError(Call call, Exception e,int id) {
+                                                                     Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
                             mHandler.sendMessage(message);
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -330,7 +331,7 @@ public class PartJobActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -338,7 +339,7 @@ public class PartJobActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -346,7 +347,7 @@ public class PartJobActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -383,7 +384,7 @@ public class PartJobActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
                             }.getType());
@@ -391,7 +392,7 @@ public class PartJobActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -399,7 +400,7 @@ public class PartJobActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
