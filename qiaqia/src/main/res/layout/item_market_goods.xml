@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:text="7.00"
         android:textSize="12dp"
-        android:textColor="@color/app_color"
+        android:textColor="@color/red_btn_bg_pressed_color"
         android:id="@+id/textView2"/>
 </LinearLayout>
         <ImageView
