@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#3498db</item>
+        <item name="android:listDivider">@drawable/divider_bg</item>
     </style>
     <style name="title_bar_style">
     <item name="android:background">@color/app_bg</item>
@@ -37,4 +38,5 @@
         <item name="android:textSize">14sp</item>
 
     </style>
+
 </resources>

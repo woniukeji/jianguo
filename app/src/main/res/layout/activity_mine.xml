@@ -186,7 +186,54 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/hobby"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:layout_marginTop="9dp"
+        android:paddingLeft="15dp"
+        >
+        <ImageView
+            android:id="@+id/img_hobby"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/hobby"
+            android:gravity="center"
+            />
 
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/go"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="求职意向"
+            android:textSize="16dp"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/img_hobby"
+            android:layout_toEndOf="@+id/img_hobby"
+            android:id="@+id/textView3"/>
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/credit"
         android:layout_width="match_parent"
@@ -194,7 +241,6 @@
         android:gravity="center_vertical"
         android:layout_gravity="center"
         android:background="@color/white"
-        android:layout_marginTop="9dp"
         android:paddingLeft="15dp"
         >
         <ImageView
@@ -232,6 +278,7 @@
             android:background="@color/gray_btn_bg_color"
             />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/ll_guanli"
         android:layout_width="match_parent"

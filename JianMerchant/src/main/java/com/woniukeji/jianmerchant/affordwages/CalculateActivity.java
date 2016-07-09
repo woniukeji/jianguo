@@ -81,7 +81,6 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
     private Context mContext = CalculateActivity.this;
     private CalculateAdapter adapter;
     private int merchantid;
-    private Map<Integer,Boolean> booleanMap=new HashMap<>();
     private List<Boolean> isSelected=new ArrayList<>();
     private List<AffordUser.ListTUserInfoEntity> userList = new ArrayList<>();
 //  private List<HashMap<AffordUser.ListTUserInfoEntity,Boolean>> userList = new ArrayList<>();

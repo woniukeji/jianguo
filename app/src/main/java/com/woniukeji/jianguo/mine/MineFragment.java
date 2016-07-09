@@ -61,6 +61,7 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.phone) TextView phone;
     @InjectView(R.id.lin_info) LinearLayout linInfo;
     @InjectView(R.id.account1) RelativeLayout account1;
+    @InjectView(R.id.hobby) RelativeLayout hobby;
     @InjectView(R.id.or_img) ImageView orImg;
     @InjectView(R.id.point_img) ImageView pointImg;
     @InjectView(R.id.ll_money) LinearLayout llMoney;
@@ -84,7 +85,7 @@ public class MineFragment extends BaseFragment {
     private String apkurl;
 
 
-    @OnClick({R.id.about,R.id.ll_guanli, R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.hobby,R.id.ll_guanli, R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.refresh:
@@ -119,9 +120,12 @@ public class MineFragment extends BaseFragment {
                 }
 
                 break;
-            case R.id.about:
+            case R.id.hobby:
                 startActivity(new Intent(getActivity(), PereferenceActivity.class));
-//                startActivity(new Intent(getActivity(), AboutActivity.class));
+                break;
+            case R.id.about:
+//                startActivity(new Intent(getActivity(), PereferenceActivity.class));
+                startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
             case R.id.ll_guanli:
                 if (loginId == 0) {
