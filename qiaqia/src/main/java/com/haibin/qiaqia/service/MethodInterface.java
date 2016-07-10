@@ -1,5 +1,6 @@
 package com.haibin.qiaqia.service;
 
+import com.haibin.qiaqia.entity.CategoryGoods;
 import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.HttpResult;
 import com.haibin.qiaqia.entity.Market;
@@ -55,6 +56,7 @@ public interface MethodInterface {
         @GET("I_chao_commodity_List_Hot_Servlet")
         Observable<HttpResult<Goods>> getHomeInfo(@Query("only") String only);
 /**
+<<<<<<< Updated upstream
  * 加减删除购物车商品
  */
         @POST("I_chao_cart_Insert_JJ_Servlet")
@@ -65,4 +67,19 @@ public interface MethodInterface {
  */
         @GET("I_chao_class_List_Id_Servlet")
         Observable<HttpResult<Market>> getMarketClass(@Query("only") String only,@Query("type") String type);
+/**
+ * 超市修改分类
+ */
+        @POST(" I_chao_class_Update_Servlet")
+        Observable<HttpResult<Goods>> updateCategory(@Query("only") String only , @Query("id") String id , @Query("name") String name);
+/**
+ * 超市分类商品
+ */
+        @GET("I_chao_commodity_List_Id_Servlet")
+        Observable<HttpResult<CategoryGoods>> getCategoryGoods(@Query("only") String only , @Query("login_id") String login_id , @Query("chao_class_id") String chao_class_id);
+
+
+
+
+
 }

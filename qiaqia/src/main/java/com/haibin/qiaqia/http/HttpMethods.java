@@ -51,7 +51,7 @@ public class HttpMethods {
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{
         private static final HttpMethods INSTANCE = new HttpMethods();
-        }
+    }
 
     //获取单例
     public static HttpMethods getInstance(){
@@ -105,15 +105,15 @@ public class HttpMethods {
      * @param
      * @param subscriber
      */
-        public void getHomeData(Subscriber <Goods> subscriber ){
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            methodInterface.getHomeInfo(only)
-                    .map(new HttpResultFunc<Goods>())
-                    .subscribeOn(Schedulers.io())
-                    .unsubscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(subscriber);
-        }
+    public void getHomeData(Subscriber <Goods> subscriber ){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getHomeInfo(only)
+                .map(new HttpResultFunc<Goods>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
     public void Login(Subscriber<User> subscriber ,String phone,String password){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.toLogin(only,phone,password)

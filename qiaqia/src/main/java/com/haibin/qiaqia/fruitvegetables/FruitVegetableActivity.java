@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public class FruitVegetableActivity extends BaseActivity {
     @BindView(R.id.vp) ViewPager vp;
-    private ArrayList<Fragment> mFragments = new ArrayList<>();
+
     private final String[] mTitles = new String[]{
             "水果", "蔬菜"
     };
@@ -35,20 +35,14 @@ public class FruitVegetableActivity extends BaseActivity {
 
         rl_click = (RelativeLayout) findViewById(R.id.rl_click);
 
-        for (String title : mTitles) {
-            if (mTitles[0].equals("水果")) {
-                mFragments.add(SimpleCardFragment.getInstance(title));
-            } else {
-                mFragments.add(SimpleCardFragment.getInstance(title));
-            }
-        }
+
     }
 
     @Override
     public void initViews() {
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(mAdapter);
-        slidingTab.setViewPager(vp, mTitles, this, mFragments);
+        slidingTab.setViewPager(vp, mTitles);
 
 
 
@@ -83,7 +77,7 @@ public class FruitVegetableActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return mFragments.size();
+            return 2;
         }
 
         @Override
@@ -93,7 +87,11 @@ public class FruitVegetableActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return mFragments.get(position);
+            if (position==0){
+                return FruitFragment.getInstance("1");
+            }else{
+                return  FruitFragment.getInstance("2");
+            }
         }
         }
     }

@@ -53,7 +53,6 @@ public class MarketActivity extends BaseActivity implements MyItemClickListener{
     public void initViews() {
         adapter = new MarketClassAdapter(this,marketList,this);
         goodsAdapter=new MarketGoodsAdapter(this,list_goods_class);
-
         LinearLayoutManager manage = new LinearLayoutManager(this);
         marketRv.setLayoutManager(manage);
         marketRv.setAdapter(adapter);
@@ -105,4 +104,6 @@ public class MarketActivity extends BaseActivity implements MyItemClickListener{
     public void onItemClick(View view, int position) {
 
     }
+
+
 }
