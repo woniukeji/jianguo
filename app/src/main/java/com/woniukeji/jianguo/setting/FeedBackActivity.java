@@ -19,6 +19,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -41,6 +42,8 @@ public class FeedBackActivity extends BaseActivity {
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
     private Handler mHandler = new Myhandler(this);
+    private int loginId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +68,7 @@ public class FeedBackActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        loginId = (int) SPUtils.getParam(FeedBackActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
     }
 
     @Override
