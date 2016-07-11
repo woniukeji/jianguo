@@ -376,7 +376,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     LongIntent.putExtra("cityid",cityId);
                     startActivity(LongIntent);
                     break;
-
             }
     }
 
