@@ -121,6 +121,10 @@ public class MineFragment extends BaseFragment {
 
                 break;
             case R.id.hobby:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 startActivity(new Intent(getActivity(), PereferenceActivity.class));
                 break;
             case R.id.about:
@@ -162,6 +166,10 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_point:
                 break;
             case R.id.rl_feedback:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 Intent intentFeed = new Intent(getActivity().getApplicationContext(), FeedBackActivity.class);
                 startActivity(intentFeed);
                 break;

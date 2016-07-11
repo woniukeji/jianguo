@@ -32,6 +32,7 @@ import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.partjob.PartJobActivity;
+import com.woniukeji.jianguo.utils.ACache;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LocationUtil;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -104,7 +105,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     BaseBean<CityBannerEntity> cityBannerEntityBaseBean;
     private List<CityBannerEntity.ListTBannerEntity> banners;
     private String cityName;
-    private int cityId;
+    private String cityId;
     private boolean NoGPS=true;
     private int loginId;
     private CircleImageView circleImageView;
@@ -156,11 +157,16 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                 case 4:
                     cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
                     banners = cityBannerEntityBaseBean.getData().getList_t_banner();
-                    defultCity=cityBannerEntityBaseBean.getData().getList_t_city().get(0);
-                    if (!Application.getInstance().isGPS()){
-                         LocationUtil.start(getActivity());
-                        Application.getInstance().setGPS(true);
-                    }
+//                    defultCity=cityBannerEntityBaseBean.getData().getList_t_city().get(0);
+                    String cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
+                    String cityName= (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME,"三亚");
+//                    if (!Application.getInstance().isGPS()){
+//                         LocationUtil.start(getActivity());
+//                        Application.getInstance().setGPS(true);
+//                    }
+                    defultCity=new CityBannerEntity.ListTCityEntity();
+                    defultCity.setCode(cityCode);
+                    defultCity.setCity(cityName.substring(0,cityName.length()));
                     //按照默认city初始化兼职数据
                     initJobDataWithCity(defultCity);
                     initBannerData(banners);
@@ -181,7 +187,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             return;
         }
         tvLocation.setText(defultCity.getCity());
-        GetTask getTask = new GetTask(String.valueOf(defultCity.getId()),"0");
+        GetTask getTask = new GetTask(String.valueOf(defultCity.getCode()),"0");
         getTask.execute();
     }
 
@@ -377,7 +383,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private void initData() {
         loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         cityName= (String) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,"");
-        cityId= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,1);
+        cityId= (String) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,"");
         GetCityTask getCityTask = new GetCityTask();
         getCityTask.execute();
 
@@ -402,13 +408,13 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         circleImageView.setVisibility(View.VISIBLE);
     }
     public void onEvent(final CityEvent event) {
-        int tempCityId=0;
+        String tempCityId="0";
         int mPosition=0;
         //手动切换和自动定位点击确定切换两种方式，每种方式执行后需要通知兼职界面更新地址筛选条件
         for (int i=0;i<cityBannerEntityBaseBean.getData().getList_t_city().size();i++){
             if (cityBannerEntityBaseBean.getData().getList_t_city().get(i).getCity().contains(event.city.getCity())){
                 mPosition=i;
-                tempCityId=cityBannerEntityBaseBean.getData().getList_t_city().get(i).getId();
+                tempCityId=cityBannerEntityBaseBean.getData().getList_t_city().get(i).getCode();
                 break;
             }
         }
@@ -419,13 +425,14 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY,event.city.getCity());
             SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_ID,tempCityId);
             SPUtils.setParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,mPosition);
+
             JobFilterEvent jobFilterEvent=new JobFilterEvent();
             cityId=tempCityId;
             jobFilterEvent.cityId=tempCityId;
             jobFilterEvent.position=mPosition;
             EventBus.getDefault().post(jobFilterEvent);
         }else if (tempCityId!=cityId){
-           final int finalTempCityId = tempCityId;
+           final String finalTempCityId = tempCityId;
             final int finalMPosition = mPosition;
             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                    .setTitleText("切换城市到"+event.city.getCity()+"?")

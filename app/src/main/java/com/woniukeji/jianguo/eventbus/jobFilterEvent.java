@@ -8,5 +8,5 @@ import com.woniukeji.jianguo.entity.CityBannerEntity;
  */
 public class JobFilterEvent {
     public int position;
-    public int cityId;
+    public String cityId;
 }

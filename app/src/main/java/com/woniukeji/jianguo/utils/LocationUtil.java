@@ -46,14 +46,14 @@ public class LocationUtil  {
                     // 定位成功
                     String cityCode = tencentLocation.getCityCode();
                     if(!StringUtils.isBlank(cityCode)){
-                        city.city.setId(Integer.parseInt(cityCode));
+                        city.city.setCode(cityCode);
                     }
                     String cityName=tencentLocation.getCity().substring(0,tencentLocation.getCity().length()-1);
                     city.city.setCity(cityName);
-                    LogUtils.i("TencentLocation","定位成功，城市码："+city.city.getId()+"；城市名："+city.city.getCity());
+                    LogUtils.i("TencentLocation","定位成功，城市码："+city.city.getCode()+"；城市名："+city.city.getCity());
                 } else {
                     // 定位失败
-                    city.city.setId(0);
+                    city.city.setCode("0");
                     LogUtils.w("TencentLocation","定位失败，错误码："+error+"；原因："+reason);
                 }
                 city.isGPS=true;

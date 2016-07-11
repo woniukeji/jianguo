@@ -72,7 +72,7 @@ public class Constants {
     public static final String POST_OPINION= JIANGUO_USING+"T_opinion_Insert_Servlet";//用户反馈接口
     public static final String PUSH_MESSAGE= JIANGUO_USING+"T_push_List_Servlet";//推送消息
     public static final String POST_HOBBY_JOB= JIANGUO_USING+"T_hobby_Insert_Servlet";//偏好设置
-    public static final String GET_HOBBY_JOB= JIANGUO_USING+"T_hobby_Insert_Servlet";//获取偏好设置
+    public static final String GET_HOBBY_JOB= JIANGUO_USING+"T_hobby_Select_Servlet";//获取偏好设置
 
     public static final String LOGIN_INFO = "loginInfo";
     public static final String LOGIN_CITY="city_name";
@@ -105,22 +105,17 @@ public class Constants {
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguo"+ File.separator;
     public static final String UPDATED_AT = "updatedAt";
-
     /*
-
         leancloud消息协议
         creatimg    string   创建者头像
         otherimg    string   被邀请者头像
         creatname   string   创建者名字
         othername   string   被邀请者名字
         ctype        int     对话类型：私人对话0，提醒1，通知2，群聊3
-
      */
     public static final String CREAT_IMG = "creatimg";
     public static final String CREAT_NAME = "creatname";
     public static final String OTHER_IMG = "otherimg";
     public static final String OTHER_NAME = "othername";
     public static final String C_TYPE = "ctype";
-
-
 }

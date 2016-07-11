@@ -141,8 +141,7 @@ public class PassWordActivity extends BaseActivity {
                 }
                 if (etPassOne.getText().toString().equals(etPassTwo.getText().toString())&&etPassOne.getText().toString()!=null&&!etPassOne.getText().toString().equals("")) {
                     newPassWord=etPassOne.getText().toString();
-                    postTask postTask = new postTask(String.valueOf(merchartid), newPassWord);
-                    postTask.execute();
+                    UserRegisterPhone(String.valueOf(merchartid), newPassWord);
 
                 } else
                     showShortToast("两次设置的密码不相同或新密码为空");
@@ -150,45 +149,11 @@ public class PassWordActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 手机注册Task
-     */
-    public class postTask extends AsyncTask<Void, Void, User> {
-
-        private final String id;
-        private final String passWord;
-        SweetAlertDialog pDialog = new SweetAlertDialog(PassWordActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        postTask(String id, String passWord) {
-            this.id = id;
-            this.passWord = passWord;
-        }
-
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            UserRegisterPhone();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("修改中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
-
         /**
          * UserRegisterPhone
          * 修改密码
          */
-        public void UserRegisterPhone() {
+        public void UserRegisterPhone(String id, String passWord) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -225,5 +190,4 @@ public class PassWordActivity extends BaseActivity {
                         }
                     });
         }
-    }
 }

@@ -25,7 +25,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 17
-        versionName "3.0.6"
+        versionName "1.0.6"
         generatedDensities = []
         multiDexEnabled true
         ndk {
