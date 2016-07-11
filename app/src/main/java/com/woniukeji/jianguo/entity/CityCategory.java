@@ -38,7 +38,7 @@ public class CityCategory {
         }
 
         public static class ListTCity2Entity {
-            private int id;
+            private String code;
             private String city;
             /**
              * id : 1
@@ -48,12 +48,12 @@ public class CityCategory {
 
             private List<ListTAreaEntity> list_t_area;
 
-            public int getId() {
-                return id;
+            public String getCode() {
+                return code;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setCode(String code) {
+                this.code = code;
             }
 
             public String getCity() {

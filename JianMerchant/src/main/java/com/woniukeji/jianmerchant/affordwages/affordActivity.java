@@ -199,8 +199,7 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
     @Override
     public void deleOnClick(int job_id, int merchant_id,int position) {
         mPosition=position;
-        DeleteTask deleteTask=new DeleteTask(String.valueOf(job_id),String.valueOf(merchant_id));
-        deleteTask.execute();
+        deleteJobModel(String.valueOf(job_id),String.valueOf(merchant_id));
     }
     @Override
     protected void onDestroy() {
@@ -297,34 +296,12 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
         }
     }
 
-    public class DeleteTask extends AsyncTask<Void, Void, Void> {
-        private final String jobid;
-        private final String merchantid;
 
-        DeleteTask(String jobid,String merchantid) {
-            this.jobid = jobid;
-            this.merchantid = merchantid;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                deleteJobModel();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          *刪除兼職模板
          */
-        public void deleteJobModel() {
+        public void deleteJobModel(String jobid, String merchantid) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -371,6 +348,5 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
 
 
                     });
-        }
     }
 }

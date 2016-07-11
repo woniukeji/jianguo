@@ -6,5 +6,5 @@ package com.woniukeji.jianguo.eventbus;
  */
 public class JobFilterEvent {
     public int position;
-    public int cityId;
+    public String cityId;
 }
