@@ -158,6 +158,12 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             }else{
                 holder.imgType.setVisibility(View.GONE);
             }
+
+            if (job.getStatus()!=0){
+                holder.imgPast.setVisibility(View.VISIBLE);
+            }else {
+                holder.imgPast.setVisibility(View.GONE);
+            }
             //性别限制（0=只招女，1=只招男，2=不限男女）
             if (job.getLimit_sex()==0||job.getLimit_sex()==30){
                 holder.imgSex.setImageResource(R.mipmap.icon_woman);
@@ -239,6 +245,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
         @InjectView(R.id.img_type) ImageView imgType;
+        @InjectView(R.id.img_pass) ImageView imgPast;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;

@@ -153,7 +153,11 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             }else
                 holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
 
-
+            if (job.getStatus()!=0){
+                holder.imgPast.setVisibility(View.VISIBLE);
+            }else {
+                holder.imgPast.setVisibility(View.GONE);
+            }
 
             Picasso.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
@@ -227,6 +231,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
         @InjectView(R.id.img_type) ImageView imgType;
+        @InjectView(R.id.img_pass) ImageView imgPast;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;
