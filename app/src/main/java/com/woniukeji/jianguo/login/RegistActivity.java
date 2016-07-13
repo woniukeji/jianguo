@@ -163,7 +163,6 @@ public class RegistActivity extends BaseActivity {
      * 创建一个超链接
      */
     private void createLink(TextView tv) {
-        // 创建一个 SpannableString对象
         SpannableString sp = new SpannableString("我已阅读并同意《兼果用户协议》");
         // 设置超链接
         sp.setSpan(new URLSpan("http://inke.tv/privacy/privacy.html"), 7, 15,
