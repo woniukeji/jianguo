@@ -2,6 +2,8 @@ package com.woniukeji.jianguo.login;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,14 +12,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SegmentTabLayout;
-import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
-import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.partjob.PartJobAdapter;
 
 import java.lang.ref.WeakReference;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * A simple {@link } subclass.
@@ -33,6 +37,10 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
 
     @InjectView(R.id.tabHost) SegmentTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
+    @InjectView(R.id.img_back) ImageView imgBack;
+    @InjectView(R.id.tv_title) TextView tvTitle;
+    @InjectView(R.id.tv_register) TextView tvRegister;
+    @InjectView(R.id.top) RelativeLayout top;
     private PartJobAdapter adapter;
     private int lastVisibleItem;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -42,11 +50,25 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
     private MyPagerAdapter mAdapter;
     private Handler mHandler = new Myhandler(this);
 
-    @Override
-    public void onClick(View v) {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
     }
 
+    @OnClick({R.id.img_back, R.id.tv_register})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                finish();
+                break;
+            case R.id.tv_register:
+                startActivity(new Intent(LoginActivity.this,RegistActivity.class));
+                break;
+        }
+    }
 
 
     private class Myhandler extends Handler {
@@ -97,7 +119,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
         mFragments.add(new QuickLoginFragment());
         mFragments.add(new PasswordLoginFragment());
         mainPager.setAdapter(mAdapter);
-        tabHost.setTabData( mTitles);
+        tabHost.setTabData(mTitles);
 
     }
 
@@ -110,7 +132,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
         tabHost.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                    mainPager.setCurrentItem(position);
+                mainPager.setCurrentItem(position);
             }
 
             @Override
@@ -118,14 +140,14 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
 //                mainPager.setCurrentItem(position);
             }
         });
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mainPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
                 }
             });
-        }else {
+        } else {
             mainPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -136,6 +158,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
                 public void onPageSelected(int position) {
                     tabHost.setCurrentTab(position);
                 }
+
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
@@ -155,6 +178,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
         ButterKnife.reset(this);
 //        EventBus.getDefault().unregister(this);
     }
+
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);

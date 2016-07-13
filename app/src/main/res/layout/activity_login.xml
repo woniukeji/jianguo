@@ -37,7 +37,7 @@
             />
 
         <TextView
-            android:id="@+id/img_share"
+            android:id="@+id/tv_register"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="注册"

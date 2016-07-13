@@ -34,28 +34,5 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/img_split" />
 
-    <ImageView
-        android:id="@+id/img_main_lead"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@mipmap/img_one"
-        android:visibility="gone"
-        />
-    <RelativeLayout
-        android:id="@+id/up_dialog"
-        android:layout_width="260dp"
-        android:layout_height="140dp"
-        android:layout_centerInParent="true"
-        android:background="@color/app_bg"
-        android:visibility="gone"
-        >
-        <com.fenjuly.library.ArrowDownloadButton
-            android:id="@+id/download_button"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_width="130dp"
-            android:layout_height="130dp" />
-
-    </RelativeLayout>
 
 </RelativeLayout>

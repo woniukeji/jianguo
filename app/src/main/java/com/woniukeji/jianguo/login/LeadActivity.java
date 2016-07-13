@@ -99,7 +99,7 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (position==2||position==5||position==8||position==11||position==14){
+        if (position>1){
             btnEnter.setVisibility(View.VISIBLE);
             mAnimCircleIndicator.stop();
         } else{
@@ -109,7 +109,7 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
 
     @Override
     public void onPageSelected(int position) {
-        if (position==2||position==5||position==8||position==11||position==14){
+        if (position>1){
             btnEnter.setVisibility(View.VISIBLE);
             mAnimCircleIndicator.stop();
         } else{

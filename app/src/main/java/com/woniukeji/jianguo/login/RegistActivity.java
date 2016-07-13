@@ -55,7 +55,6 @@ import okhttp3.Response;
  */
 public class RegistActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
@@ -97,10 +96,8 @@ public class RegistActivity extends BaseActivity {
             RegistActivity registActivity = (RegistActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    Intent intent = new Intent(registActivity, MainActivity.class);
-//                    intent.putExtra("user", user);
-                    registActivity.startActivity(intent);
+//                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+                    Toast.makeText(registActivity, "注册成功，请登陆", Toast.LENGTH_SHORT).show();
                     registActivity.finish();
                     break;
                 case 1:
@@ -241,13 +238,6 @@ public class RegistActivity extends BaseActivity {
         } else if (phoneCode.getText().toString().equals("")) {
             showShortToast("验证码不能为空");
             return false;
-        } else if (smsCode == null) {
-            showShortToast("验证码不正确");
-            return false;
-        } else if (smsCode.getCode().equals("")
-                || !phoneCode.getText().toString().trim().equals(smsCode.getText())) {
-            showShortToast("验证码不正确");
-            return false;
         }
         return true;
     }
@@ -338,6 +328,7 @@ public class RegistActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("tel", phone)
                     .addParams("password", pass)
+                    .addParams("sms_code", phoneCode.getText().toString())
                     .build()
                     .connTimeOut(30000)
                     .readTimeOut(20000)

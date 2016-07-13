@@ -38,6 +38,7 @@ import com.woniukeji.jianguo.setting.SettingActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.utils.UpDialog;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
@@ -98,11 +99,11 @@ public class MineFragment extends BaseFragment {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
-                                    SweetAlertDialog downLoadDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-                                    downLoadDialog.setTitleText("正在下载新版本");
-                                    downLoadDialog.show();
-                                    downLoadTask downLoadTask = new downLoadTask(downLoadDialog);
-                                    downLoadTask.execute();
+                                    UpDialog upDataDialog = new UpDialog(getActivity(),apkurl);
+                                    upDataDialog.setCanceledOnTouchOutside(false);
+                                    upDataDialog.setCanceledOnTouchOutside(false);
+                                    upDataDialog.show();
+
                                 }
                             }).show();
 

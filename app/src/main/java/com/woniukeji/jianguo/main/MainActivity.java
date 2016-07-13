@@ -42,6 +42,7 @@ import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
 import com.woniukeji.jianguo.partjob.PartJobFragment;
+import com.woniukeji.jianguo.setting.PereferenceActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -85,10 +86,8 @@ public class MainActivity extends BaseActivity {
     private Context context = MainActivity.this;
     private ImageView imgeMainLead;
     private int clickTime=0;
-    private String apkurl;
 
     int b = 0;
-    private RelativeLayout up_dialog;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -134,28 +133,8 @@ public class MainActivity extends BaseActivity {
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
         ButterKnife.inject(this);
         initSystemBar(this);
-        button = (ArrowDownloadButton)findViewById(R.id.download_button);
-        up_dialog= (RelativeLayout) findViewById(R.id.up_dialog);
-        int version = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
-        apkurl = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
-        if (version > getVersion()) {//大于当前版本升级
-            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("检测到新版本，是否更新？")
-                    .setConfirmText("确定")
-                    .setCancelText("取消")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-//                            SweetAlertDialog downLoadDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-//                            downLoadDialog.setTitleText("正在下载新版本");
-//                            downLoadDialog.show();
-                            up_dialog.setVisibility(View.VISIBLE);
-                            button.startAnimating();
-                            downAPK();
-                        }
-                    }).show();
-        }
+
+
     }
 
 
@@ -179,78 +158,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-        /**
-         * postInfo
-         */
-        public void downAPK() {
 
-            OkHttpUtils
-                    .get()
-                    .url(apkurl)
-                    .build()
-                    .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
-                    {
-
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                        }
-//                        @Override
-//                        public void inProgress( float progress,int id) {
-//                            Message message=new Message();
-//                            message.what=2;
-//                            float tem=progress*100;
-//                            b = (int)tem;
-//                            message.arg1=b;
-//                            int i = (int) Math.round(progress+0.5);
-//                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    button.setProgress(b);
-//                                }
-//                            });
-//                        }
-                        @Override
-                        public void onResponse(File file,int id) {
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    up_dialog.setVisibility(View.GONE);
-                                }
-                            });
-                            openFile(file);
-
-                        }
-                    });
-        }
-    private void openFile(File file) {
-        // TODO Auto-generated method stub
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),
-                "application/vnd.android.package-archive");
-        startActivity(intent);
-    }
-
-
-    /**
-     * 获取版本号
-     *
-     * @return 当前应用的版本号
-     */
-    public int getVersion() {
-        try {
-            PackageManager manager = MainActivity.this.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(MainActivity.this.getPackageName(), 0);
-            int version = info.versionCode;
-            return version;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
 
 
     @TargetApi(19)
@@ -295,7 +203,7 @@ public class MainActivity extends BaseActivity {
         FragmentManager mFragmentManager = getSupportFragmentManager();
         tabHost = (CommonTabLayout) findViewById(R.id.tabHost);
         mainPager = (ViewPager) findViewById(R.id.mainPager);
-        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
+//        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
         mainPager .setOffscreenPageLimit(1);
@@ -359,25 +267,29 @@ public class MainActivity extends BaseActivity {
     public void initData() {
 
         int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-            int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
-        if (First==0){
-            imgeMainLead.setVisibility(View.VISIBLE);
-            imgeMainLead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   if(clickTime==0){
-                        imgeMainLead.setBackgroundResource(R.mipmap.img_three);
-                    }else if(clickTime==1){
-                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
-                    }else if(clickTime==2){
-                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
-                        imgeMainLead.setVisibility(View.GONE);
-                        SPUtils.setParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 1);
-                    }
-                    clickTime++;
-                }
-            });
+        int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
+        String hobby = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, "1");
+        if (hobby.equals("0")){
+            startActivity(new Intent(MainActivity.this, PereferenceActivity.class));
         }
+//        if (First==0){
+//            imgeMainLead.setVisibility(View.VISIBLE);
+//            imgeMainLead.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                   if(clickTime==0){
+//                        imgeMainLead.setBackgroundResource(R.mipmap.img_three);
+//                    }else if(clickTime==1){
+//                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
+//                    }else if(clickTime==2){
+//                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
+//                        imgeMainLead.setVisibility(View.GONE);
+//                        SPUtils.setParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 1);
+//                    }
+//                    clickTime++;
+//                }
+//            });
+//        }
 
     }
 

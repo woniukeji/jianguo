@@ -64,8 +64,7 @@ public class PereferenceActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvSave = (TextView) findViewById(R.id.tv_save);
-
-
+        ImageView ivBack = (ImageView) findViewById(R.id.iv_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_time);
         mJobRecyclerView = (RecyclerView) findViewById(R.id.recycler_job);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,8);
@@ -79,6 +78,14 @@ public class PereferenceActivity extends BaseActivity {
 //        mJobRecyclerView.addItemDecoration(new DividerGridItemDecoration(this) {});
 //添加分割线
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this) {
+        });
+
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
 

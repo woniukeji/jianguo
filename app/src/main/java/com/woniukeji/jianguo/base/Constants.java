@@ -17,13 +17,14 @@ import android.os.Environment;
 
 import java.io.File;
 
+
 public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_FACTORY;
+    public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN_WQ = JIANGUO_USING+"T_user_login_Insert_QQWX_Servlet";//QQ微信登录
-    public static final String CHECK_PHONE = JIANGUO_USING+" ";//检查有没有该手机号
+    public static final String CHECK_PHONE = JIANGUO_USING+"T_user_login_Check_Tel_Servlet";//检查有没有该手机号
     public static final String GET_SMS= JIANGUO_USING+"T_SMS_Servlet";//获取短信
     public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
 
@@ -79,6 +80,7 @@ public class Constants {
     public static final String LOGIN_CITY_ID="city_id";
     public static final String LOGIN_VERSION="version";
     public static final String LOGIN_CONTENT="upLog";
+    public static final String LOGIN_HOBBY="HOBBY";
     public static final String LOGIN_APK_URL="apkurl";
     public static final String LOGIN_CITY_POSITION="city_POSITION";
     public static final String SP_TYPE="type";//0登录
