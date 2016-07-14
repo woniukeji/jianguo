@@ -216,8 +216,10 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     mCityName =aMapLocation.getProvince();//省信息
                 }
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
-                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity());
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()));
             } else {
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError","location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"

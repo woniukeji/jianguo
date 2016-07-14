@@ -109,6 +109,7 @@ public class PasswordLoginFragment extends BaseFragment {
                     quickLoginEvent.isQuickLogin = true;
                     EventBus.getDefault().post(quickLoginEvent);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("login",true);
                     startActivity(intent);
                     getActivity().finish();
                     break;
@@ -275,16 +276,16 @@ public class PasswordLoginFragment extends BaseFragment {
      * phoneLogin
      *
      * @param tel
-     * @param sms
+     * @param pass
      */
-    public void PhoneLogin(String tel, String sms) {
+    public void PhoneLogin(String tel, String pass) {
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         OkHttpUtils
                 .get()
                 .url(Constants.LOGIN_PHONE)
                 .addParams("only", only)
                 .addParams("tel", tel)
-                .addParams("password", sms)
+                .addParams("password", pass)
                 .build()
                 .connTimeOut(60000)
                 .readTimeOut(20000)

@@ -76,8 +76,6 @@ public class Constants {
     public static final String GET_HOBBY_JOB= JIANGUO_USING+"T_hobby_Select_Servlet";//获取偏好设置
 
     public static final String LOGIN_INFO = "loginInfo";
-    public static final String LOGIN_CITY="city_name";
-    public static final String LOGIN_CITY_ID="city_id";
     public static final String LOGIN_VERSION="version";
     public static final String LOGIN_CONTENT="upLog";
     public static final String LOGIN_HOBBY="HOBBY";

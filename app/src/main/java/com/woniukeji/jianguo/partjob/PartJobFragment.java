@@ -89,7 +89,6 @@ public class PartJobFragment extends BaseFragment {
     private Handler mHandler = new Myhandler(this.getActivity());
     private DropDownMenu mMenu;
     private int mtype = 0;
-    private int position;
     private boolean DataComplete=false;
     private String cityCode;
 
@@ -152,9 +151,7 @@ public class PartJobFragment extends BaseFragment {
     }
 
     private void initData() {
-        position= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,0);
-        cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
-        String cityName= (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME,"三亚");
+        cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
         getCityCategory(cityCode);
     }
 
@@ -232,12 +229,21 @@ public class PartJobFragment extends BaseFragment {
 
     public void initDrawData(BaseBean<CityCategory> cityCategoryBaseBean) {
         List<List<BaseEntity>> items = new ArrayList<>();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().size(); i++) {
+        CityCategory.ListTCity2Entity listTCity2Entity = null;
+        citys.clear();
+        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
+            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+                break;
+            }
+        }
+        for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getArea_name());
-            baseEntity.setId(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getId());
+            baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
+            baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
+
         for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
             baseEntity.setName(cityCategoryBaseBean.getData().getList_t_type().get(i).getType_name());

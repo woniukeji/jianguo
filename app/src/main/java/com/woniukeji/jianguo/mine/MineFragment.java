@@ -28,6 +28,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.HeadImgEvent;
+import com.woniukeji.jianguo.eventbus.LoginEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
 import com.woniukeji.jianguo.login.LoginActivity;
@@ -307,6 +308,7 @@ public class MineFragment extends BaseFragment {
           initData(true);
         }
     }
+
     public void onEvent(HeadImgEvent event) {
         Picasso.with(getActivity()).load(event.ImgUrl)
                 .placeholder(R.mipmap.icon_head_defult)
@@ -347,7 +349,11 @@ public class MineFragment extends BaseFragment {
             if (loginId == 0) {
                 btnLogout.setVisibility(View.GONE);
                 account1.setVisibility(View.VISIBLE);
+            }else{
+                btnLogout.setVisibility(View.VISIBLE);
+                account1.setVisibility(View.GONE);
             }
+
             if (schoolStr.equals("")) {
                 school.setText("未填写");
             } else {

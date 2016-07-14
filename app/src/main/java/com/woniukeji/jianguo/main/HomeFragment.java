@@ -35,6 +35,7 @@ import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
+import com.woniukeji.jianguo.eventbus.LoginEvent;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.partjob.PartJobActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -115,7 +116,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private String cityId;
     private boolean NoGPS = true;
     private int loginId;
-    private CircleImageView circleImageView;
     private boolean DataComplete = false;
     private int totalDy;
     private String apkurl;
@@ -168,10 +168,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 //                    defultCity=cityBannerEntityBaseBean.getData().getList_t_city().get(0);
                     String cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
                     String cityName = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME, "三亚");
-//                    if (!Application.getInstance().isGPS()){
-//                         LocationUtil.start(getActivity());
-//                        Application.getInstance().setGPS(true);
-//                    }
                     defultCity = new CityBannerEntity.ListTCityEntity();
                     defultCity.setCode(cityCode);
                     defultCity.setCity(cityName.substring(0, cityName.length()));
@@ -190,11 +186,14 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private void initJobDataWithCity(CityBannerEntity.ListTCityEntity defultCity) {
         if (cityName != null && !cityName.equals("")) {
             tvLocation.setText(cityName);
+            tvLocation.setText(defultCity.getCity());
             getJobs(String.valueOf(defultCity.getCode()), "0");
             return;
+        }else {
+            getJobs("010", "0");
+            tvLocation.setText("北京");
         }
-        tvLocation.setText(defultCity.getCity());
-        getJobs(String.valueOf(defultCity.getCode()), "0");
+
     }
 
     private void initBannerData(List<CityBannerEntity.ListTBannerEntity> banners) {
@@ -259,8 +258,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         rlMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                circleDot.setVisibility(View.GONE);
                 startActivity(new Intent(getContext(), PushMessageActivity.class));
-                circleImageView.setVisibility(View.GONE);
             }
         });
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
@@ -349,13 +348,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         });
     }
 
-    public int getScollYDistance(RecyclerView recyclerView) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        int position = layoutManager.findFirstVisibleItemPosition();
-        View firstVisiableChildView = layoutManager.findViewByPosition(position);
-        int itemHeight = firstVisiableChildView.getHeight();
-        return (position) * itemHeight - firstVisiableChildView.getTop();
-    }
 
     @Override
     public void onClick(View view) {
@@ -400,14 +392,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     private void initData() {
         loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        cityName = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY, "");
-        cityId = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.USER_LOCATION_CODE, "");
+        cityName = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.USER_LOCATION_NAME, "北京");
+        cityId = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.USER_LOCATION_CODE, "010");
         getCitys();
-//        pageViews = new ArrayList<>();
-//        pageViews.add(new Page("A ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/a.jpg",this));
-//        pageViews.add(new Page("B ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/b.jpg",this));
-//        pageViews.add(new Page("C ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/c.jpg",this));
-//        pageViews.add(new Page("D ", "https://raw.githubusercontent.com/lightSky/InfiniteIndicator/master/res/d.jpg",this));
     }
 
     @Override
@@ -421,9 +408,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
      * 首页信封險是紅點
      */
     public void onEvent(MessageEvent event) {
-        circleImageView.setVisibility(View.VISIBLE);
+        circleDot.setVisibility(View.VISIBLE);
     }
-
+    public void onEvent(LoginEvent event) {
+        initData();
+    }
     public void onEvent(final CityEvent event) {
         String tempCityId = "0";
         int mPosition = 0;
@@ -438,9 +427,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         if (!event.isGPS) {
             tvLocation.setText(event.city.getCity());
             getJobs(String.valueOf(tempCityId), "0");
-            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY, event.city.getCity());
-            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, tempCityId);
-            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, mPosition);
+//            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY, event.city.getCity());
+//            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, tempCityId);
+//            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, mPosition);
 
             JobFilterEvent jobFilterEvent = new JobFilterEvent();
             cityId = tempCityId;
@@ -461,9 +450,9 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                             }
                             cityId = finalTempCityId;
                             getJobs(String.valueOf(finalTempCityId), "0");
-                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY, event.city.getCity());
-                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, finalTempCityId);
-                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, finalMPosition);
+//                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY, event.city.getCity());
+//                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, finalTempCityId);
+//                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, finalMPosition);
                             JobFilterEvent jobFilterEvent = new JobFilterEvent();
                             jobFilterEvent.cityId = finalTempCityId;
                             jobFilterEvent.position = finalMPosition;

@@ -34,6 +34,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
+import com.woniukeji.jianguo.eventbus.LoginEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
@@ -133,8 +134,13 @@ public class MainActivity extends BaseActivity {
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
         ButterKnife.inject(this);
         initSystemBar(this);
-
-
+        Intent intent=this.getIntent();
+        boolean login=intent.getBooleanExtra("login",false);
+        if (login){
+            LoginEvent loginEvent=new LoginEvent();
+            loginEvent.login=true;
+           EventBus.getDefault().post(loginEvent);
+        }
     }
 
 
@@ -206,7 +212,7 @@ public class MainActivity extends BaseActivity {
 //        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
-        mainPager .setOffscreenPageLimit(1);
+        mainPager .setOffscreenPageLimit(2);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }

@@ -102,8 +102,8 @@ public class PereferenceActivity extends BaseActivity {
     @Override
     public void initData() {
         initTimeData();
-        String cityid = String.valueOf(SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, ""));
-        int position = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, 0);
+//        String cityid = String.valueOf(SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, ""));
+//        int position = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, 0);
         loginId = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         getHobby();
     }

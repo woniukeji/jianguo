@@ -109,6 +109,7 @@ public class QuickLoginFragment extends BaseFragment {
                     quickLoginEvent.isQuickLogin = true;
                     EventBus.getDefault().post(quickLoginEvent);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("login",true);
                     startActivity(intent);
                     getActivity().finish();
                     break;

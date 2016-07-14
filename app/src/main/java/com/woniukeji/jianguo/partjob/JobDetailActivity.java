@@ -166,10 +166,13 @@ public class JobDetailActivity extends BaseActivity {
     private void fillData() {
         tvWorkLocation.setText(jobinfo.getAddress());
         if (jobinfo!=null){
-        String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
-        String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
+            if (jobinfo.getStart_date()!=null&&jobinfo.getStop_date()!=null){
+                String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
+                tvWorkDate.setText(date);
+            }
+          String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
         String setTime =jobinfo.getSet_time();
-        tvWorkDate.setText(date);
+
         tvWorkTime.setText(time);
         tvCollectionSites.setText(jobinfo.getSet_place());
         tvCollectionTime.setText(setTime);

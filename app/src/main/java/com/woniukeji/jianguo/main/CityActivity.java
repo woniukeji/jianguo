@@ -79,7 +79,6 @@ public class CityActivity extends BaseActivity {
                     BaseBean<CityBannerEntity> schoolBaseBean = (BaseBean) msg.obj;
                     schoolActivity.listTCityEntities.clear();
                     schoolActivity.listTCityEntities.addAll(schoolBaseBean.getData().getList_t_city());
-                    schoolActivity.showShortToast("查询成功");
                     schoolActivity.adapter.notifyDataSetChanged();
                     break;
                 case 1:
