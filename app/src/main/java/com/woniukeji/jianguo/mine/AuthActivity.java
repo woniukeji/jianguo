@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +31,6 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.login.BindPhoneActivity;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.utils.CommonUtils;
@@ -42,7 +39,6 @@ import com.woniukeji.jianguo.utils.EditCheckUtil;
 import com.woniukeji.jianguo.utils.FileUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
-import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -65,11 +61,9 @@ public class AuthActivity extends BaseActivity {
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.img_front) ImageView imgFront;
-    @InjectView(R.id.tv_front) TextView tvFront;
     @InjectView(R.id.tv_not1) TextView tvNot1;
     @InjectView(R.id.tv_not2) TextView tvNot2;
     @InjectView(R.id.img_opposite) ImageView imgOpposite;
-    @InjectView(R.id.tv_opposite) TextView tvOpposite;
     @InjectView(R.id.ll_top) LinearLayout llTop;
     @InjectView(R.id.img_phone) ImageView imgPhone;
     @InjectView(R.id.img) ImageView img;
@@ -199,14 +193,14 @@ public class AuthActivity extends BaseActivity {
             imgOpposite.setClickable(false);
             String id=realName.getT_user_realname().getId_number();
             etId.setText(id.substring(0,id.length()-6)+"******");
-            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
-            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
+            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
 
         }else if(realName.getT_user_realname().getStatus()==4){//未通过
             checkButton.setText("重新审核");
             etId.setText("");
-//            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.img_zhengmian).error(R.mipmap.img_zhengmian).into(imgFront);
-//            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.img_fanmian).error(R.mipmap.img_fanmian).into(imgOpposite);
+//            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
+//            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
             checkButton.setBackgroundResource(R.drawable.button_background_login);
 //            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
 //            postTask.execute();
@@ -253,8 +247,7 @@ public class AuthActivity extends BaseActivity {
             etPhoneAuth.setClickable(false);
             rlPhone.setClickable(false);
         }
-        PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
-        postTask.execute();
+        getRealName(String.valueOf(loginId));
 
     }
 
@@ -269,7 +262,7 @@ public class AuthActivity extends BaseActivity {
         ActivityManager.getActivityManager().addActivity(AuthActivity.this);
     }
 
-    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.tv_front, R.id.img_opposite, R.id.tv_opposite, R.id.rb_man, R.id.rb_woman, R.id.check_button})
+    @OnClick({R.id.rl_phone,R.id.img_back, R.id.img_front, R.id.img_opposite,  R.id.rb_man, R.id.rb_woman, R.id.check_button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_phone:
@@ -286,15 +279,11 @@ public class AuthActivity extends BaseActivity {
                 startActivityForResult(intent,2);
 //                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
                 break;
-            case R.id.tv_front:
-                break;
             case R.id.img_opposite:
                 Intent intent1=new Intent(AuthActivity.this,PicTipActivity.class);
                 intent1.putExtra("front",false);
                 startActivityForResult(intent1,3);
 
-                break;
-            case R.id.tv_opposite:
                 break;
             case R.id.rb_man:
                 sex="1";
@@ -331,7 +320,6 @@ public class AuthActivity extends BaseActivity {
                 pDialog.setCancelable(false);
                 pDialog.show();
                upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile,1,name,id);
-               upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2,2,name,id);
                 break;
         }
     }
@@ -357,7 +345,7 @@ public class AuthActivity extends BaseActivity {
 
     }
 
-    public  void upLoadQiNiu(Context context, String key, File imgFile, final int position, final String name, final String id) {
+    public  void upLoadQiNiu(final Context context, String key, File imgFile, final int position, final String name, final String id) {
         String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
         // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
         UploadManager uploadManager = new UploadManager();
@@ -367,11 +355,21 @@ public class AuthActivity extends BaseActivity {
                     public void complete(String key, ResponseInfo info, JSONObject res) {
                         //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
                         LogUtils.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                        if (position==1){
+                            upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2,2,name,id);
+                        }
                         if (position==2){
-                            String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-                            String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
-                            PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
-                            postTask.execute();
+                            if (res!=null){
+                                String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
+                                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
+//                                PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
+//                                postTask.execute(String.valueOf(loginId),url1,url2,name,id,sex);
+                                postRealName(String.valueOf(loginId),url1,url2,name,id,sex);
+                            }else {
+                                pDialog.dismiss();
+                                showShortToast("上传失败，请重试！");
+                            }
+
                         }
                     }
                 }, null);
@@ -390,9 +388,9 @@ public class AuthActivity extends BaseActivity {
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
                 fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile);
-                imgFront.setImageURI(imgSource);
-//                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+//                imgFront.setImageURI(imgSource);
+                Bitmap bitmap=BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+                imgFront.setImageBitmap(bitmap);
             }
         }
         if (requestCode == 1) {
@@ -404,9 +402,12 @@ public class AuthActivity extends BaseActivity {
                 String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
                 fileName2 = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
                 Uri imgSource = Uri.fromFile(imgFile2);
-                imgOpposite.setImageURI(imgSource);
+//                imgOpposite.setImageURI(imgSource);
+                Bitmap bitmap=BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),1080, 720);
+                imgOpposite.setImageBitmap(bitmap);
+//                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
 //                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+
 //                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),true, 1080, 720);
 //                Bitmap bitmap = BitmapUtils.compressImage(imgFile2.getAbsolutePath(),null, false,1000,);
 //                BitmapUtils.saveBitmap(bitmap, imgFile2);
@@ -423,56 +424,12 @@ public class AuthActivity extends BaseActivity {
             }
         }
     }
-
-
-
-    public class PostTask extends AsyncTask<Void, Void, Void> {
-
-        private final String loginId;
-        private final String frontImage;
-        private final String behindImage;
-        private final String realname;
-        private final String idNumber;
-        private final String sex;
-        private final boolean isPost;
-//
-
-        PostTask(boolean isPost,String loginId, String frontImage, String behindImage, String realname, String idNumber, String sex) {
-            this.loginId = loginId;
-            this.frontImage = frontImage;
-            this.behindImage = behindImage;
-            this.realname = realname;
-            this.idNumber = idNumber;
-            this.sex = sex;
-            this.isPost = isPost;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                if (isPost){
-
-                    postRealName();
-                }else
-                    getRealName();
-
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//
-        }
-
-
         /**
          * postInfo
+         * @param id
+         * @param sex
          */
-        public void postRealName() {
+        public void postRealName(String loginId, String frontImage, String behindImage, String realname, String id, String sex) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -482,15 +439,15 @@ public class AuthActivity extends BaseActivity {
                     .addParams("front_image", frontImage)
                     .addParams("behind_image", behindImage)
                     .addParams("realname", realname)
-                    .addParams("id_number", idNumber)
+                    .addParams("id_number", id)
                     .addParams("sex", sex)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(100000)
+                    .readTimeOut(100000)
+                    .writeTimeOut(100000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
@@ -498,7 +455,7 @@ public class AuthActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -506,7 +463,7 @@ public class AuthActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -526,7 +483,7 @@ public class AuthActivity extends BaseActivity {
         /**
          * postInfo
          */
-        public void getRealName() {
+        public void getRealName(String loginId) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -539,7 +496,7 @@ public class AuthActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<RealName>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<RealName>>() {
                             }.getType());
@@ -547,7 +504,7 @@ public class AuthActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -555,7 +512,7 @@ public class AuthActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -573,5 +530,4 @@ public class AuthActivity extends BaseActivity {
                     });
         }
 
-    }
 }

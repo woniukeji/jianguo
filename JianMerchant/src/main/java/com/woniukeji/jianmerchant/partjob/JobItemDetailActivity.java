@@ -82,6 +82,7 @@ public class JobItemDetailActivity extends BaseActivity {
     @InjectView(R.id.btn_change) Button btnChange;
     @InjectView(R.id.btn_finish) Button btnFinish;
     @InjectView(R.id.btn_down) Button btnDown;
+    @InjectView(R.id.btn_clearing) Button btnClearing;
     @InjectView(R.id.btn_no_limit) Button btnNoLimit;
     @InjectView(R.id.btn_boy) Button btnBoy;
     @InjectView(R.id.btn_girl) Button btnGirl;
@@ -108,12 +109,17 @@ public class JobItemDetailActivity extends BaseActivity {
         ButterKnife.inject(this);
     }
 
-    @OnClick({R.id.img_back, R.id.btn_boy, R.id.btn_girl, R.id.btn_no_limit, R.id.btn_change, R.id.btn_finish, R.id.btn_down})
+    @OnClick({R.id.img_back, R.id.btn_boy, R.id.btn_girl, R.id.btn_no_limit, R.id.btn_change, R.id.btn_finish, R.id.btn_down,R.id.btn_clearing})
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.btn_out_info:
-//
-//                break;
+            case R.id.btn_clearing:
+                Intent intent1 = new Intent(mContext, CalculateActivity.class);
+                intent1.putExtra("money", tvWages.getText().toString());
+                intent1.putExtra("name", tvMerchantName.getText().toString());
+                intent1.putExtra("jobid", String.valueOf(jobinfo.getJob_id()));
+                intent1.putExtra("jobNid", String.valueOf(jobinfo.getNv_job_id()));
+                startActivity(intent1);
+                break;
             case R.id.img_back:
                 finish();
                 break;
@@ -155,41 +161,19 @@ public class JobItemDetailActivity extends BaseActivity {
                 break;
             case R.id.btn_finish:
                 new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("您确认结束当前兼职进入结算阶段吗？")
+                        .setTitleText("您确认结束该兼职？")
                         .setConfirmText("确定")
                         .setCancelText("取消")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
-                                PostActionTask postFinishTask = new PostActionTask(String.valueOf(loginId), String.valueOf(jobid), "9");
-                                postFinishTask.execute();
+                                postAction(String.valueOf(loginId), String.valueOf(jobid), "9");
                             }
                         }).show();
 
                 break;
             case R.id.btn_down:
-                if (modleJob.getStatus() == 3) {
-
-//                    new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
-//                            .setTitleText("您确认将当前兼职下架吗？")
-//                            .setConfirmText("确定")
-//                            .setCancelText("取消")
-//                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                @Override
-//                                public void onClick(SweetAlertDialog sDialog) {
-//                                    sDialog.dismissWithAnimation();
-                                    Intent intent = new Intent(mContext, CalculateActivity.class);
-                                    intent.putExtra("money", tvWages.getText().toString());
-                                    intent.putExtra("name", tvMerchantName.getText().toString());
-                                    intent.putExtra("jobid", String.valueOf(jobinfo.getJob_id()));
-                                    intent.putExtra("jobNid", String.valueOf(jobinfo.getNv_job_id()));
-//                    intent.putExtra("")
-                                    startActivity(intent);
-//                                }
-//                            }).show();
-
-                } else {
                     new SweetAlertDialog(JobItemDetailActivity.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("您确认将当前兼职下架吗？")
                             .setConfirmText("确定")
@@ -198,12 +182,10 @@ public class JobItemDetailActivity extends BaseActivity {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
-                                    PostActionTask postDownTask = new PostActionTask(String.valueOf(loginId), String.valueOf(jobid), "13");
-                                    postDownTask.execute();
+                                    postDown(String.valueOf(loginId), String.valueOf(jobid), "13");
                                 }
                             }).show();
 
-                }
 
                 break;
         }
@@ -259,20 +241,12 @@ public class JobItemDetailActivity extends BaseActivity {
                     String Message = (String) msg.obj;
                     Toast.makeText(jobDetailActivity, Message, Toast.LENGTH_SHORT).show();
                     int offer = msg.arg1;
-                    if (offer == 9) {
-                        jobDetailActivity.btnFinish.setVisibility(View.GONE);
-                        jobDetailActivity.btnChange.setVisibility(View.GONE);
-                        jobDetailActivity.btnDown.setText("去结算");
-                        jobDetailActivity.modleJob.setStatus(3);
-                    } else if (offer == 13) {
+                    if (offer == 13) {
                         jobDetailActivity.btnFinish.setVisibility(View.GONE);
                         jobDetailActivity.btnChange.setVisibility(View.GONE);
                         jobDetailActivity.btnDown.setText("已下架");
                         jobDetailActivity.btnDown.setClickable(false);
                     }
-//                    jobDetailActivity.btnDown.setVisibility(View.GONE);
-//                    jobDetailActivity.btnChange.setVisibility(View.GONE);
-//                    jobDetailActivity.btnFinish.setVisibility();
                     break;
                 case 6:
                     String msg2 = (String) msg.obj;
@@ -302,14 +276,14 @@ public class JobItemDetailActivity extends BaseActivity {
         } else if (modleJob.getStatus() == 3) {
             btnFinish.setVisibility(View.GONE);
             btnChange.setVisibility(View.GONE);
-            btnDown.setText("去结算");
+            btnDown.setVisibility(View.GONE);
         }
 
         tvTitle.setText("兼职详情");
         tvMerchantName.setText(modleJob.getName());
         tvWorkLocation.setText(jobinfo.getAddress());
         tvManagerName.setText(modleJob.getMerchant_id_name());
-
+        tvChakanBrowse.setText(modleJob.getLook());
 
         String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()), Long.valueOf(jobinfo.getStop_date()));
         tvWorkDate.setText(date);
@@ -406,8 +380,7 @@ public class JobItemDetailActivity extends BaseActivity {
         jobid = modleJob.getId();
         int merchantid = intent.getIntExtra("merchantid", 0);
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        GetTask getTask = new GetTask(String.valueOf(loginId), String.valueOf(jobid), String.valueOf(merchantid), alike);
-        getTask.execute();
+        getJobs(String.valueOf(loginId), String.valueOf(jobid), String.valueOf(merchantid), alike);
 
     }
 
@@ -417,166 +390,164 @@ public class JobItemDetailActivity extends BaseActivity {
     }
 
 
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String login_id;
-        private final String job_id;
-        private final String merchant_id;
-        private final String alike;
 
-        GetTask(String login_id, String job_id, String merchant_id, String alike) {
-            this.job_id = job_id;
-            this.merchant_id = merchant_id;
-            this.login_id = login_id;
-            this.alike = alike;
+    /**
+     * postInfo
+     * @param alike
+     */
+    public void getJobs(String login_id, String job_id, String merchant_id, String alike) {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_JOB_DETAIL)
+                .addParams("only", only)
+                .addParams("login_id", login_id)
+                .addParams("job_id", job_id)
+                .addParams("merchant_id", merchant_id)
+                .addParams("alike", alike)
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean<JobDetails>>() {
+                    @Override
+                    public BaseBean<JobDetails> parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
+                        }.getType());
+                        return baseBean;
+                    }
 
-        }
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_GET_FAIL;
+                        mHandler.sendMessage(message);
+                    }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getJobs();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void getJobs() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.GET_JOB_DETAIL)
-                    .addParams("only", only)
-                    .addParams("login_id", login_id)
-                    .addParams("job_id", job_id)
-                    .addParams("merchant_id", merchant_id)
-                    .addParams("alike", alike)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<JobDetails>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<JobDetails>>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
+                    @Override
+                    public void onResponse(BaseBean<JobDetails> response, int id) {
+                        if (response.getCode().equals("200")) {
+//                              SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
-                            message.obj = e.toString();
+                            message.obj = response;
+                            message.what = MSG_GET_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = response.getMessage();
                             message.what = MSG_GET_FAIL;
                             mHandler.sendMessage(message);
                         }
+                    }
 
-                        @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
-//                              SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.what = MSG_GET_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_GET_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-                    });
-        }
+                });
     }
+    /**
+     * postInfo
+     * @param s
+     */
+    public void postAction(String s, String jobid, final String offer) {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.POST_DOWN)
+                .addParams("only", only)
+                .addParams("job_id", jobid)
+                .addParams("offer", offer)
+                .addParams("alike", modleJob.getAlike())
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean>() {
+                    @Override
+                    public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
+                        }.getType());
+                        return baseBean;
+                    }
 
-    public class PostActionTask extends AsyncTask<Void, Void, Void> {
-        private final String loginid;
-        private final String jobid;
-        private final String offer;
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_POST_FAIL;
+                        mHandler.sendMessage(message);
+                    }
 
-        PostActionTask(String loginid, String jobid, String offer) {
-            this.loginid = loginid;
-            this.jobid = jobid;
-            this.offer = offer;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                postAction();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void postAction() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.POST_DOWN)
-                    .addParams("only", only)
-                    .addParams("job_id", jobid)
-                    .addParams("offer", offer)
-                    .addParams("alike", modleJob.getAlike())
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
+                    @Override
+                    public void onResponse(BaseBean response, int id) {
+                        if (response.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
-                            message.obj = e.toString();
+                            message.obj = response.getMessage();
+                            message.arg1 = Integer.parseInt(offer);
+                            message.what = MSG_POST_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = response.getMessage();
                             message.what = MSG_POST_FAIL;
                             mHandler.sendMessage(message);
                         }
+                    }
 
-                        @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.arg1 = Integer.parseInt(offer);
-                                message.what = MSG_POST_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
 
-                    });
-        }
+                });
     }
+    /**
+     * postInfo
+     */
+    public void postDown(String loginid, String jobid, final String offer) {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.POST_PART_JOB_DOWN)
+                .addParams("only", only)
+                .addParams("job_id", jobid)
+                .addParams("offer", offer)
+                .addParams("alike", modleJob.getAlike())
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean>() {
+                    @Override
+                    public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
+                        }.getType());
+                        return baseBean;
+                    }
 
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_POST_FAIL;
+                        mHandler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onResponse(BaseBean baseBean, int id) {
+                        if (baseBean.getCode().equals("200")) {
+//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                            Message message = new Message();
+                            message.obj = baseBean.getMessage();
+                            message.arg1 = Integer.parseInt(offer);
+                            message.what = MSG_POST_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = baseBean.getMessage();
+                            message.what = MSG_POST_FAIL;
+                            mHandler.sendMessage(message);
+                        }
+                    }
+
+                });
+    }
 }

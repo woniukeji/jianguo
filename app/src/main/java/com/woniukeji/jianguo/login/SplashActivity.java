@@ -2,28 +2,26 @@ package com.woniukeji.jianguo.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -33,6 +31,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -43,7 +43,7 @@ import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements AMapLocationListener {
 
     @InjectView(R.id.img_splash) ImageView imgSplash;
     private int MSG_USER_SUCCESS = 0;
@@ -52,7 +52,10 @@ public class SplashActivity extends BaseActivity {
     private int MSG_REGISTER_SUCCESS = 3;
     private Handler mHandler = new Myhandler(this);
     private Context context = SplashActivity.this;
-
+    private AMapLocationClient locationClient = null;
+    private AMapLocationClientOption locationOption = null;
+    private String mCityId ="0";
+    private String mCityName ="";
 
 
     private static class Myhandler extends Handler {
@@ -75,13 +78,12 @@ public class SplashActivity extends BaseActivity {
                     splashActivity.finish();
                     break;
                 case 1:
-                    splashActivity.startActivity(new Intent(splashActivity, QuickLoginActivity.class));
+                    splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     splashActivity.finish();
                     break;
                 case 2:
-
                     break;
                 case 3:
                     String sms = (String) msg.obj;
@@ -104,12 +106,79 @@ public class SplashActivity extends BaseActivity {
     public void initViews() {
         //初始化SDK
         ShareSDK.initSDK(this);
+
 //        Picasso.with(context).load(R.mipmap.splash).into(imgSplash);
     }
 
     @Override
     public void initListeners() {
+        locationClient = new AMapLocationClient(this.getApplicationContext());
+        locationOption = new AMapLocationClientOption();
+        locationClient.setLocationListener(this);
+        //初始化定位参数
+//设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+//设置是否返回地址信息（默认返回地址信息）
+        locationOption.setNeedAddress(true);
+//设置是否只定位一次,默认为false
+        locationOption.setOnceLocation(true);
 
+        if(locationOption.isOnceLocationLatest()){
+            locationOption.setOnceLocationLatest(true);
+//设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。
+//如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会。
+        }
+
+//设置是否强制刷新WIFI，默认为强制刷新
+        locationOption.setWifiActiveScan(true);
+//设置是否允许模拟位置,默认为false，不允许模拟位置
+        locationOption.setMockEnable(false);
+//设置定位间隔,单位毫秒,默认为2000ms
+        locationOption.setInterval(2000);
+//给定位客户端对象设置定位参数
+        locationClient.setLocationOption(locationOption);
+//启动定位
+        locationClient.startLocation();
+//        AMapLocationListener mAMapLocationListener = new AMapLocationListener(){
+//            @Override
+//            public void onLocationChanged(AMapLocation amapLocation) {
+//                if (amapLocation != null) {
+//                    if (amapLocation.getErrorCode() == 0) {
+//                        //定位成功回调信息，设置相关消息
+//                        amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+//                        amapLocation.getLatitude();//获取纬度
+//                        amapLocation.getLongitude();//获取经度
+//                        amapLocation.getAccuracy();//获取精度信息
+//                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                        Date date = new Date(amapLocation.getTime());
+//                        df.format(date);//定位时间
+//                        amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+//                        amapLocation.getCountry();//国家信息
+//                        amapLocation.getProvince();//省信息
+//                        amapLocation.getCity();//城市信息
+//                        amapLocation.getDistrict();//城区信息
+//                        amapLocation.getStreet();//街道信息
+//                        amapLocation.getStreetNum();//街道门牌号信息
+//                        amapLocation.getCityCode();//城市编码
+//                        amapLocation.getAdCode();//地区编码
+//                        amapLocation.getAoiName();//获取当前定位点的AOI信息
+//                        } else {
+//                        //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+//                        Log.e("AmapError","location Error, ErrCode:"
+//                                + amapLocation.getErrorCode() + ", errInfo:"
+//                        + amapLocation.getErrorInfo());
+//                        }
+//                    }
+//                }
+//        };
+        // 设置定位模式为高精度模式
+//        locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//        // 设置定位监听
+//        locationClient.setLocationListener(this);
+//        // 设置定位参数
+//        locationClient.setLocationOption(locationOption);
+//        // 启动定位
+//        locationClient.startLocation();
     }
 
     @Override
@@ -122,6 +191,42 @@ public class SplashActivity extends BaseActivity {
         ActivityManager.getActivityManager().addActivity(SplashActivity.this);
     }
 
+    /**
+    *获取到位置信息
+    *@author invinjun
+    *created at 2016/7/1 15:31
+    */
+    //以下为后者的举例：
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                aMapLocation.getLatitude();//获取纬度
+                aMapLocation.getLongitude();//获取经度
+                aMapLocation.getAccuracy();//获取精度信息
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date(aMapLocation.getTime());
+                df.format(date);//定位时间
+                aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                aMapLocation.getCountry();//国家信息
+                if (mCityName ==null|| mCityName.equals("")){
+                    mCityName =aMapLocation.getProvince();//省信息
+                }
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()));
+            } else {
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError","location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
+        }
+    }
     private void saveToSP(User user) {
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_WQTOKEN, user.getT_user_login().getQqwx_token() != null ? user.getT_user_login().getQqwx_token() : "");
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TEL, user.getT_user_login().getTel() != null ? user.getT_user_login().getTel() : "");
@@ -133,7 +238,7 @@ public class SplashActivity extends BaseActivity {
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, user.getApk_url());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
-        
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, user.getT_user_login().getHobby());
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
@@ -188,12 +293,26 @@ public class SplashActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                chooseActivity();
+             chooseActivity();
             }
 
             ;
         }.start();
         super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != locationClient) {
+            /**
+             * 如果AMapLocationClient是在当前Activity实例化的，
+             * 在Activity的onDestroy中一定要执行AMapLocationClient的onDestroy
+             */
+            locationClient.onDestroy();
+            locationClient = null;
+            locationOption = null;
+        }
     }
 
     /**
@@ -202,6 +321,11 @@ public class SplashActivity extends BaseActivity {
      */
     private void chooseActivity() {
         String loginType = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "2");
+        if (mCityId.equals("0")||mCityName.equals("")){
+            //如果定位失败，则获取上次登陆保存在sp的地理位置信息
+            mCityId = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
+            mCityName = (String) SPUtils.getParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, "");
+        }
 
         if (loginType.equals("2")){
             startActivity(new Intent(context, LeadActivity.class));
@@ -213,8 +337,7 @@ public class SplashActivity extends BaseActivity {
         }else {
             String phone= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,"");
             String pass= (String) SPUtils.getParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,"");
-            PhoneLoginTask phoneLoginTask = new PhoneLoginTask(phone, pass);
-            phoneLoginTask.execute();
+            PhoneLogin(phone, pass,mCityId,mCityName);
         }
     }
 
@@ -223,27 +346,12 @@ public class SplashActivity extends BaseActivity {
 
     }
 
-    public class QWLoginTask extends AsyncTask<Void, Void, Void> {
-
-        private final String token;
-
-
-        QWLoginTask(String token) {
-            this.token = token;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            QWLogin();
-            return null;
-        }
 
         /**
          * login
          * 授权过的weixin qq 用户直接通过token登陆
          */
-        public void QWLogin() {
+        public void QWLogin(String token) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -256,7 +364,7 @@ public class SplashActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
                             }.getType());
@@ -264,7 +372,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -272,7 +380,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean user) {
+                        public void onResponse(BaseBean user,int id) {
                             if (user.getCode().equals("200")) {
                                 SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "1");
                                 Message message = new Message();
@@ -290,60 +398,30 @@ public class SplashActivity extends BaseActivity {
                     });
         }
 
-    }
 
-    public class PhoneLoginTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String passWord;
-
-        PhoneLoginTask(String phoneNum, String passWord) {
-            this.tel = phoneNum;
-            this.passWord = passWord;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                PhoneLogin();
-            } catch (Exception e) {
-                return null;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
 
         /**
          * phoneLogin
+         * @param phone
+         * @param pass
          */
-        public void PhoneLogin() {
+        public void PhoneLogin( String phone, String pass, String cityid,String cityName) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.LOGIN_PHONE)
                     .addParams("only", only)
-                    .addParams("tel", tel)
-                    .addParams("password", passWord)
+                    .addParams("tel", phone)
+                    .addParams("password", pass)
+                    .addParams("city_id", cityid)
+                    .addParams("city_name", cityName)
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson(string, new TypeToken<BaseBean<User>>() {
                             }.getType());
@@ -351,7 +429,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -359,7 +437,7 @@ public class SplashActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean user) {
+                        public void onResponse(BaseBean user,int id) {
                             if (user.getCode().equals("200")) {
                                 SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
@@ -375,7 +453,6 @@ public class SplashActivity extends BaseActivity {
                         }
 
                     });
-        }
 
 
     }

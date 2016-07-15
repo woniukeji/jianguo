@@ -28,12 +28,18 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.HeadImgEvent;
+import com.woniukeji.jianguo.eventbus.LoginEvent;
+import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
-import com.woniukeji.jianguo.login.QuickLoginActivity;
+import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.main.MainActivity;
+import com.woniukeji.jianguo.setting.FeedBackActivity;
+import com.woniukeji.jianguo.setting.PereferenceActivity;
+import com.woniukeji.jianguo.setting.SettingActivity;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.utils.UpDialog;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
@@ -57,6 +63,7 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.phone) TextView phone;
     @InjectView(R.id.lin_info) LinearLayout linInfo;
     @InjectView(R.id.account1) RelativeLayout account1;
+    @InjectView(R.id.hobby) RelativeLayout hobby;
     @InjectView(R.id.or_img) ImageView orImg;
     @InjectView(R.id.point_img) ImageView pointImg;
     @InjectView(R.id.ll_money) LinearLayout llMoney;
@@ -80,7 +87,7 @@ public class MineFragment extends BaseFragment {
     private String apkurl;
 
 
-    @OnClick({R.id.about,R.id.ll_guanli, R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.hobby,R.id.ll_guanli, R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.refresh:
@@ -93,11 +100,11 @@ public class MineFragment extends BaseFragment {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
-                                    SweetAlertDialog downLoadDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
-                                    downLoadDialog.setTitleText("正在下载新版本");
-                                    downLoadDialog.show();
-                                    downLoadTask downLoadTask = new downLoadTask(downLoadDialog);
-                                    downLoadTask.execute();
+                                    UpDialog upDataDialog = new UpDialog(getActivity(),apkurl);
+                                    upDataDialog.setCanceledOnTouchOutside(false);
+                                    upDataDialog.setCanceledOnTouchOutside(false);
+                                    upDataDialog.show();
+
                                 }
                             }).show();
 
@@ -115,19 +122,27 @@ public class MineFragment extends BaseFragment {
                 }
 
                 break;
+            case R.id.hobby:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                startActivity(new Intent(getActivity(), PereferenceActivity.class));
+                break;
             case R.id.about:
+//                startActivity(new Intent(getActivity(), PereferenceActivity.class));
                 startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
             case R.id.ll_guanli:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 startActivity(new Intent(getActivity(), SignActivity.class));
                 break;
             case R.id.credit:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 Intent intentRe = new Intent(getActivity().getApplicationContext(), ResumeActivity.class);
@@ -135,7 +150,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.rl_evaluation:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 Intent intentEvluation = new Intent(getActivity().getApplicationContext(), EvaluationActivity.class);
@@ -143,7 +158,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_collect:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
 //                Intent intentColl = new Intent(getActivity().getApplicationContext(), CollectActivity.class);,暂改收藏简直无商家
@@ -153,6 +168,10 @@ public class MineFragment extends BaseFragment {
             case R.id.rl_point:
                 break;
             case R.id.rl_feedback:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 Intent intentFeed = new Intent(getActivity().getApplicationContext(), FeedBackActivity.class);
                 startActivity(intentFeed);
                 break;
@@ -162,7 +181,7 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_money:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 if (status == 1 || status == 0) {//未认证 不可以查询信息
@@ -175,14 +194,15 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.ll_real_name:
                 if (loginId == 0) {
-                    startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 Intent intent = new Intent(getActivity().getApplicationContext(), AuthActivity.class);
                 startActivity(intent);
                 break;
             case R.id.account1:
-                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+//                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
                 break;
             case R.id.btn_logout:
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
@@ -267,6 +287,9 @@ public class MineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.activity_mine, container, false);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         ButterKnife.inject(this, view);
         return view;
 
@@ -278,6 +301,11 @@ public class MineFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+    }
+    public void onEvent(QuickLoginEvent event) {
+        if (event.isQuickLogin){
+          initData(true);
         }
     }
 
@@ -321,7 +349,11 @@ public class MineFragment extends BaseFragment {
             if (loginId == 0) {
                 btnLogout.setVisibility(View.GONE);
                 account1.setVisibility(View.VISIBLE);
+            }else{
+                btnLogout.setVisibility(View.VISIBLE);
+                account1.setVisibility(View.GONE);
             }
+
             if (schoolStr.equals("")) {
                 school.setText("未填写");
             } else {
@@ -427,24 +459,35 @@ public class MineFragment extends BaseFragment {
                     .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
                     {
                         @Override
-                        public void inProgress(float progress) {
-//                            LogUtils.e("e",progress*100+"");
-//                            sweetAlertDialog.getProgressHelper().setProgress(progress);
-//                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
 
                         }
 
-
                         @Override
-                        public void onResponse(File file) {
+                        public void onResponse(File response, int id) {
                             sweetAlertDialog.dismissWithAnimation();
-                            openFile(file);
-
+                            openFile(response);
                         }
+
+//                        @Override
+//                        public void inProgress(float progress) {
+////                            LogUtils.e("e",progress*100+"");
+////                            sweetAlertDialog.getProgressHelper().setProgress(progress);
+////                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
+//                        }
+//
+//                        @Override
+//                        public void onError(Call call, Exception e) {
+//
+//                        }
+//
+//
+//                        @Override
+//                        public void onResponse(File file) {
+//                            sweetAlertDialog.dismissWithAnimation();
+//                            openFile(file);
+//
+//                        }
                     });
         }
     }

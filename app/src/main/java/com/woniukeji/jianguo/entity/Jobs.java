@@ -73,6 +73,15 @@ public class Jobs {
             private String user_status;
             private long info_start_time;
             private long info_stop_time;
+            private int max;//用于区分长期短期 实习生旅行的字段
+
+            public int getMax() {
+                return max;
+            }
+
+            public void setMax(int max) {
+                this.max = max;
+            }
 
             public long getInfo_start_time() {
                 return info_start_time;

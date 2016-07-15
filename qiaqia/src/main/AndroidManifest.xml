@@ -11,38 +11,48 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_login"
         android:label="@string/app_name_qia"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:label, android:theme">
 
         <!-- <activity -->
-        <!-- android:name=".Splash" -->
+        <!-- android:name=".login.Splash" -->
         <!-- android:configChanges="orientation|keyboardHidden|screenSize" -->
         <!-- android:label="@string/app_name" -->
-        <!-- android:theme="@style/FullscreenTheme"> -->
+        <!-- android:theme="@style/AppTheme"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="android.intent.action.MAIN"/> -->
-
-
         <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name=".login.LoginPassWordActivity"
+            android:name=".login.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.ategory.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".login.RegiterActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
+        <activity
+            android:name=".login.RegiterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".main.MainActivity"
+        <activity
+            android:name=".login.LoginPassWordActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".main.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".home.MarketActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity android:name=".fruitvegetables.FruitVegetableActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>

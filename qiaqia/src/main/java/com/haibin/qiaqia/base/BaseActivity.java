@@ -26,9 +26,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //        }
         setContentView();
+
         initViews();
         initListeners();
         initData();
+
         addActivity();
     }
     @Override

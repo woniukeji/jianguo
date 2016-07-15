@@ -8,5 +8,8 @@
         <attr name="metaButtonBarStyle" format="reference"/>
         <attr name="metaButtonBarButtonStyle" format="reference"/>
     </declare-styleable>
-
+    <declare-styleable name="RoundImageView">
+        <attr name="roundImageView_hasRound" format="boolean" />
+        <attr name="roundImageView_roundColor" format="color" />
+    </declare-styleable>
 </resources>

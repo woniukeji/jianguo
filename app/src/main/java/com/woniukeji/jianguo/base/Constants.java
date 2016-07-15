@@ -17,8 +17,9 @@ import android.os.Environment;
 
 import java.io.File;
 
+
 public class Constants {
-    public static final String JIANGUO_FACTORY="http://192.168.1.233/JianGuo_Server/";
+    public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
     public static final String JIANGUO_USING=JIANGUO_TEST2;
@@ -28,9 +29,8 @@ public class Constants {
     public static final String REGISTER_PHONE =JIANGUO_USING+ "T_user_login_Insert_Servlet";// 手机号注册
 
     public static final String GET_QINIU_TOKEN= JIANGUO_USING+"T_QiNiu_Servlet";//七牛token 接口
-
     public static final String LOGIN_PHONE =JIANGUO_USING+ "T_user_login_Login_Tel_Servlet";//手机号密码登录
-    public static final String LOGIN_QUICK =JIANGUO_USING+ "T_user_login_FastLogin_Servlet";//手机号快速登录
+    public static final String CITY_LOGIN =JIANGUO_USING+ "T_user_login_Insert_City_Servlet";//附带地址登陆
     public static final String CHANGE_PASSWORD =JIANGUO_USING+ "T_user_login_Update_Psd_Servlet";//修改密码
     public static final String CHECK_PHONE_BLACK= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//快速登录忘记密码
     public static final String POST_BIND_PHONE= JIANGUO_USING+"T_user_login_BindingTel_Servlet";//绑定手机号
@@ -48,6 +48,7 @@ public class Constants {
     public static final String CHANGE_RESUME= JIANGUO_USING+"T_user_resume_Update_Servlet";//修改简历
     public static final String GET_JOB= JIANGUO_USING+"T_job_List_Servlet";//兼职列表获取
     public static final String GET_JOB_DAY= JIANGUO_USING+"T_job_List_Day_Servlet";//日周月兼职列表获取
+    public static final String GET_JOB_LONG= JIANGUO_USING+"T_job_List_Max_Servlet";//长期兼职
     public static final String GET_JOB_CATEGORY= JIANGUO_USING+"T_job_List_Filter_Servlet";//日周月兼职列表获取
 
     public static final String POST_ATTENT= JIANGUO_USING+"T_attent_Insert_Servlet";//关注收藏接口
@@ -71,13 +72,13 @@ public class Constants {
     public static final String GET_USER_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_User_Servlet";//地区类型信息 兼职种类
     public static final String POST_OPINION= JIANGUO_USING+"T_opinion_Insert_Servlet";//用户反馈接口
     public static final String PUSH_MESSAGE= JIANGUO_USING+"T_push_List_Servlet";//推送消息
-
+    public static final String POST_HOBBY_JOB= JIANGUO_USING+"T_hobby_Insert_Servlet";//偏好设置
+    public static final String GET_HOBBY_JOB= JIANGUO_USING+"T_hobby_Select_Servlet";//获取偏好设置
 
     public static final String LOGIN_INFO = "loginInfo";
-    public static final String LOGIN_CITY="city_name";
-    public static final String LOGIN_CITY_ID="city_id";
     public static final String LOGIN_VERSION="version";
     public static final String LOGIN_CONTENT="upLog";
+    public static final String LOGIN_HOBBY="HOBBY";
     public static final String LOGIN_APK_URL="apkurl";
     public static final String LOGIN_CITY_POSITION="city_POSITION";
     public static final String SP_TYPE="type";//0登录
@@ -94,6 +95,8 @@ public class Constants {
     public static final String SP_NICK="nickname";
     public static final String SP_NAME="name";
     public static final String USER_SEX="sex";
+    public static final String USER_LOCATION_NAME="location_name";
+    public static final String USER_LOCATION_CODE="location_code";
     public static final String SP_IMG="name_image";
     public static final String SP_SCHOOL="school";
     public static final String SP_INTEGRAL="integral";
@@ -102,22 +105,17 @@ public class Constants {
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.leancloud.im.guide";
     public static final String IMG_PATH = Environment.getExternalStorageDirectory() + File.separator + "jianguo"+ File.separator;
     public static final String UPDATED_AT = "updatedAt";
-
     /*
-
         leancloud消息协议
         creatimg    string   创建者头像
         otherimg    string   被邀请者头像
         creatname   string   创建者名字
         othername   string   被邀请者名字
         ctype        int     对话类型：私人对话0，提醒1，通知2，群聊3
-
      */
     public static final String CREAT_IMG = "creatimg";
     public static final String CREAT_NAME = "creatname";
     public static final String OTHER_IMG = "otherimg";
     public static final String OTHER_NAME = "othername";
     public static final String C_TYPE = "ctype";
-
-
 }

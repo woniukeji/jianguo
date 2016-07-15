@@ -48,16 +48,20 @@
             android:overScrollMode="never"
             android:scrollbarStyle="outsideOverlay" />
     </android.support.v4.widget.SwipeRefreshLayout>
-    <com.woniukeji.jianmerchant.widget.CircleImageView
+
+    <TextView
         android:id="@+id/btn_out_info"
-        android:layout_width="60dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:src="@mipmap/forward1"
-        android:layout_marginRight="20dp"
-        android:text="呵呵哒"
-        />
+        android:layout_marginRight="19dp"
+        android:text="导出"
+        android:textSize="14dp"
+        android:visibility="gone"
+        android:drawableTop="@mipmap/forword"
+        android:layout_marginEnd="19dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

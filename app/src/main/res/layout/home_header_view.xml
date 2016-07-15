@@ -10,7 +10,7 @@
     <cn.lightsky.infiniteindicator.InfiniteIndicator
         android:id="@+id/indicator_default_circle"
         app:indicator_type="indicator_anim_circle"
-        android:layout_height="115dp"
+        android:layout_height="183dp"
         android:layout_width="match_parent"/>
 <LinearLayout
     android:id="@+id/ll_part_top"
@@ -31,7 +31,7 @@
               android:id="@+id/first_jp"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:src="@mipmap/first_jp"
+        android:src="@mipmap/jp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="18dp"
         />
@@ -39,16 +39,16 @@
             android:layout_below="@+id/first_jp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
             android:layout_marginTop="5dp"
             android:textSize="10dp"
             android:textColor="#b3b3b3"
             android:text="优质商家特供"
+            android:layout_alignLeft="@+id/first_jp"
             />
         <ImageView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/img_zs"
+            android:src="@mipmap/pic1"
             android:layout_alignParentRight="true"
             android:layout_marginRight="9dp"
             android:padding="5dp"
@@ -66,35 +66,38 @@
             android:id="@+id/first_rj"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:src="@mipmap/first_rj"
+            android:src="@mipmap/rj"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="18dp"
             />
-        <TextView
-            android:layout_below="@+id/first_rj"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="5dp"
-            android:textSize="10dp"
-            android:textColor="#b3b3b3"
-            android:text="百元工资当日领取"
-            />
+
         <ImageView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/img_r"
+            android:src="@mipmap/pic3"
             android:layout_alignParentRight="true"
             android:layout_marginRight="9dp"
             android:padding="5dp"
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#b3b3b3"
+            android:text="百元工资当日领取"
+            android:layout_below="@+id/first_rj"
+            android:layout_alignLeft="@+id/first_rj"
+            android:layout_alignStart="@+id/first_rj"
+            android:id="@+id/textView2"/>
     </RelativeLayout>
     <ImageView
 
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@mipmap/img_rijie"
+        android:src="@mipmap/pic3"
         android:background="@drawable/dialog_background"
         android:layout_marginLeft="2.5dp"
         android:visibility="gone"
@@ -120,7 +123,7 @@
                 android:id="@+id/first_jz"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:src="@mipmap/first_jz"
+                android:src="@mipmap/jz"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="17dp"
                 />
@@ -128,16 +131,16 @@
                 android:layout_below="@+id/first_jz"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
                 android:textSize="10dp"
                 android:textColor="#b3b3b3"
                 android:text="穷游世界马上走"
+                android:layout_alignLeft="@+id/first_jz"
                 />
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/img_bao"
+                android:src="@mipmap/pic2"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="9dp"
                 android:padding="5dp"
@@ -161,43 +164,35 @@
             android:layout_marginLeft="2.5dp"
             android:background="@drawable/dialog_background"
             >
-            <ImageView
-                android:id="@+id/first_wd"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:src="@mipmap/first_wd"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="18dp"
-                />
-            <TextView
-                android:layout_below="@+id/first_wd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="5dp"
-                android:textSize="10dp"
-                android:textColor="#b3b3b3"
-                android:text="管理你的兼职"
-                />
+
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/img_w"
+                android:src="@mipmap/pic4"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="9dp"
                 android:padding="5dp"
                 />
-        </RelativeLayout>
-        <ImageView
 
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/img_my"
-            android:background="@drawable/dialog_background"
-            android:layout_marginLeft="2.5dp"
-            android:visibility="gone"
-            />
+            <TextView
+                android:text="管理你的兼职"
+                android:layout_below="@+id/first_wd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="5dp"
+                android:textSize="10dp"
+                android:textColor="#b3b3b3"
+                android:id="@+id/textView"/>
+
+            <ImageView
+                android:id="@+id/first_wd"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:src="@mipmap/b"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="18dp"/>
+        </RelativeLayout>
 
     </LinearLayout>
     <TextView

@@ -103,20 +103,20 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
              String type = "";
             if (job.getTerm()==0){
-                holder.tvWages.setText(money+"/月");
-                type="/月";
+                holder.tvWages.setText(money+"元/月");
+                type="元/月";
             }else if(job.getTerm()==1){
-                holder.tvWages.setText(money+"/周");
-                type="/周";
+                holder.tvWages.setText(money+"元/周");
+                type="元/周";
             }else if(job.getTerm()==2){
-                holder.tvWages.setText(money+"/日");
-                type="/日";
+                holder.tvWages.setText(money+"元/日");
+                type="元/日";
             }else if(job.getTerm()==3){
-                holder.tvWages.setText(money+"/时");
-                type="/时";
+                holder.tvWages.setText(money+"元/时");
+                type="元/时";
             }else if(job.getTerm()==4){
-                holder.tvWages.setText(money+"/次");
-                type="/次";
+                holder.tvWages.setText(money+"元/次");
+                type="元/次";
             }else if(job.getTerm()==5){
                 holder.tvWages.setText("义工");
                 type="义工";
@@ -134,7 +134,12 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             }else {
                 holder.tvPayMethod.setText("旅行");
             }
-
+            if (job.getMax()==1){
+                holder.imgType.setVisibility(View.VISIBLE);
+                holder.imgType.setImageResource(R.mipmap.cq);
+            }else{
+                holder.imgType.setVisibility(View.GONE);
+            }
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
@@ -148,7 +153,11 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             }else
                 holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
 
-
+            if (job.getStatus()!=0){
+                holder.imgPast.setVisibility(View.VISIBLE);
+            }else {
+                holder.imgPast.setVisibility(View.GONE);
+            }
 
             Picasso.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
@@ -221,6 +230,8 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
         @InjectView(R.id.img_date) ImageView imgDate;
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
+        @InjectView(R.id.img_type) ImageView imgType;
+        @InjectView(R.id.img_pass) ImageView imgPast;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;

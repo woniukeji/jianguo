@@ -265,7 +265,7 @@ public class WalletActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<Balance>() {
                         @Override
-                        public Balance parseNetworkResponse(Response response) throws Exception {
+                        public Balance parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             Balance baseBean = new Gson().fromJson(string, new TypeToken<Balance>() {
                             }.getType());
@@ -273,7 +273,7 @@ public class WalletActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -281,7 +281,7 @@ public class WalletActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(Balance baseBean) {
+                        public void onResponse(Balance baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();

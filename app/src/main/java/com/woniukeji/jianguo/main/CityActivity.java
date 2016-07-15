@@ -79,7 +79,6 @@ public class CityActivity extends BaseActivity {
                     BaseBean<CityBannerEntity> schoolBaseBean = (BaseBean) msg.obj;
                     schoolActivity.listTCityEntities.clear();
                     schoolActivity.listTCityEntities.addAll(schoolBaseBean.getData().getList_t_city());
-                    schoolActivity.showShortToast("查询成功");
                     schoolActivity.adapter.notifyDataSetChanged();
                     break;
                 case 1:
@@ -247,7 +246,7 @@ public class CityActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityBannerEntity>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityBannerEntity>>() {
                             }.getType());
@@ -255,7 +254,7 @@ public class CityActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -263,7 +262,7 @@ public class CityActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
+                        public void onResponse(BaseBean baseBean,int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();

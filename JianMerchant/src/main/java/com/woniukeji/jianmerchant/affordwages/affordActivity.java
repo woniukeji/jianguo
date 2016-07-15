@@ -199,8 +199,7 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
     @Override
     public void deleOnClick(int job_id, int merchant_id,int position) {
         mPosition=position;
-        DeleteTask deleteTask=new DeleteTask(String.valueOf(job_id),String.valueOf(merchant_id));
-        deleteTask.execute();
+        deleteJobModel(String.valueOf(job_id),String.valueOf(merchant_id));
     }
     @Override
     protected void onDestroy() {
@@ -260,7 +259,7 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Model>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean<Model> parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Model>>() {
                             }.getType());
@@ -268,7 +267,7 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -276,53 +275,33 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
+                        public void onResponse(BaseBean<Model> response, int id) {
+                            if (response.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
-                                message.obj = baseBean;
+                                message.obj = response;
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
 
+
+
                     });
         }
     }
 
-    public class DeleteTask extends AsyncTask<Void, Void, Void> {
-        private final String jobid;
-        private final String merchantid;
 
-        DeleteTask(String jobid,String merchantid) {
-            this.jobid = jobid;
-            this.merchantid = merchantid;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                deleteJobModel();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          *刪除兼職模板
          */
-        public void deleteJobModel() {
+        public void deleteJobModel(String jobid, String merchantid) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -336,7 +315,7 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
                             }.getType());
@@ -344,7 +323,7 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_DELETE_FAIL;
@@ -352,21 +331,22 @@ public class affordActivity extends BaseActivity implements HistoryJobAdapter.de
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
+                        public void onResponse(BaseBean response, int id) {
+                            if (response.getCode().equals("200")) {
                                 Message message = new Message();
-                                message.obj = baseBean;
+                                message.obj = response;
                                 message.what = MSG_DELETE_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
 
+
+
                     });
-        }
     }
 }

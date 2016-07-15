@@ -24,6 +24,7 @@
     <color name="material_deep_teal_50">#ff009688</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="black_text">#666666</color>
     <color name="app_bg">#3B9BFF</color>
     <color name="transparent">#00000000</color>
 
@@ -35,6 +36,7 @@
     <color name="black2">#FF000000</color>
     <color name="black_thin">#0D0D0E</color>
     <color name="gray">#808080</color>
+    <color name="gray_e7">#e7e7e7</color>
     <color name="red">#FF0000</color>
     <color name="gold">#FFD700</color>
     <color name="yellow">#FFFF00</color>

@@ -3,6 +3,7 @@ package com.woniukeji.jianguo.wallte;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -289,7 +290,13 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
         @Override
         public void onFinish() {
             btnSms.setText("验证码");
-            btnSms.setBackgroundDrawable(getDrawable(R.drawable.button_background_login));
+            Drawable rBlack;
+            if(android.os.Build.VERSION.SDK_INT >= 21){
+                rBlack = getResources().getDrawable(R.drawable.button_background_login, getTheme());
+            } else {
+                rBlack = getResources().getDrawable(R.drawable.button_background_login);
+            }
+            btnSms.setBackgroundDrawable(rBlack);
             btnSms.setClickable(true);
         }
     }
@@ -300,19 +307,19 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 finish();
                 break;
             case R.id.btn_sms:
-                if (type.equals("")) {
-                    showShortToast("请先绑定支付宝或银联卡！");
-                    return;
-                } else if (etMoneySum.getText().toString() == null || etMoneySum.getText().toString().equals("")) {
-                    showShortToast("请输入取现金额");
-                    return;
-                } else if (50 >Double.valueOf(etMoneySum.getText().toString())) {
-                    showShortToast("提现金额不能小于50元");
-                    return;
-                }else if (blanceMoney < Double.valueOf(etMoneySum.getText().toString())) {
-                    showShortToast("提现金额不能大于当前余额");
-                    return;
-                }
+//                if (type.equals("")) {
+//                    showShortToast("请先绑定支付宝或银联卡！");
+//                    return;
+//                } else if (etMoneySum.getText().toString() == null || etMoneySum.getText().toString().equals("")) {
+//                    showShortToast("请输入取现金额");
+//                    return;
+//                } else if (50 >Double.valueOf(etMoneySum.getText().toString())) {
+//                    showShortToast("提现金额不能小于50元");
+//                    return;
+//                }else if (blanceMoney < Double.valueOf(etMoneySum.getText().toString())) {
+//                    showShortToast("提现金额不能大于当前余额");
+//                    return;
+//                }
                 time.start();
                 String tel= (String) SPUtils.getParam(DrawMoneyActivity.this,Constants.LOGIN_INFO,Constants.SP_TEL,"");
                 GetSMS getSMS=new GetSMS(tel);
@@ -342,6 +349,9 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     return;
                 }else if (!etSms.getText().toString().equals(sms)) {
                     showShortToast("验证码不正确");
+                    return;
+                }else if (Double.valueOf(etMoneySum.getText().toString())<50) {
+                    showShortToast("提现金额必须大于50");
                     return;
                 }
                 PostTask postTask = new PostTask(String.valueOf(loginid), type, etMoneySum.getText().toString());
@@ -408,7 +418,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     .writeTimeOut(20000)
                     .execute(new BaseCallback() {
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.getMessage();
                             message.what = MSG_USER_FAIL;
@@ -417,7 +427,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
 
 
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response,int id) {
                             if (response.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = response.getMessage();
@@ -480,7 +490,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message=new Message();
                             message.obj=e.toString();
                             message.what=MSG_USER_FAIL;
@@ -488,7 +498,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message=new Message();
                             message.obj=response;
                             message.what=MSG_PHONE_SUCCESS;

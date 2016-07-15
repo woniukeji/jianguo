@@ -96,24 +96,29 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             }
         } else {
             final Jobs.ListTJobEntity job = mValues.get(position);
-
+            String money = job.getMoney();
+            if(money.indexOf(".") > 0){
+                //正则表达
+                money = money.replaceAll("0+?$", "");//去掉后面无用的零
+                money = money.replaceAll("[.]$", "");//如小数点后面全是零则去掉小数点
+            }
 
             // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
             String type="";
             if (job.getTerm()==0){
-                holder.tvWages.setText(job.getMoney()+"/月");
+                holder.tvWages.setText(money+"/月");
                 type="/月";
             }else if(job.getTerm()==1){
-                holder.tvWages.setText(job.getMoney()+"/周");
+                holder.tvWages.setText(money+"/周");
                 type="/周";
             }else if(job.getTerm()==2){
-                holder.tvWages.setText(job.getMoney()+"/日");
+                holder.tvWages.setText(money+"/日");
                 type="/日";
             }else if(job.getTerm()==3){
-                holder.tvWages.setText(job.getMoney()+"/时");
+                holder.tvWages.setText(money+"/时");
                 type="/时";
             }else if(job.getTerm()==4){
-                holder.tvWages.setText(job.getMoney()+"/次");
+                holder.tvWages.setText(money+"/次");
                 type="/次";
             }else if(job.getTerm()==5){
                 holder.tvWages.setText("义工");
@@ -134,19 +139,25 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             }else {
                 holder.tvPayMethod.setText("旅行");
             }
-
+            if (job.getMax()==1){
+                holder.imgType.setVisibility(View.VISIBLE);
+                holder.imgType.setImageResource(R.mipmap.cq);
+            }else{
+                holder.imgType.setVisibility(View.GONE);
+            }
 
             holder.businessName.setText(job.getName());
             holder.tvLocation.setText(job.getAddress());
             String date=DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
             //性别限制（0=只招女，1=只招男，2=不限男女）
-            if (job.getLimit_sex()==0){
+            //性别限制（0=只招女，1=只招男，2=不限男女）
+            if (job.getLimit_sex()==0||job.getLimit_sex()==30){
+                holder.imgSex.setImageResource(R.mipmap.icon_woman);
+            }else if(job.getLimit_sex()==1||job.getLimit_sex()==31){
                 holder.imgSex.setImageResource(R.mipmap.icon_man);
-            }else if(job.getLimit_sex()==1){
-                holder.imgSex.setImageResource(R.mipmap.icon_man);
-            }
-            holder.imgSex.setVisibility(View.GONE);
+            }else
+                holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
 
 
             Picasso.with(mContext).load(job.getName_image())
@@ -171,7 +182,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             if (type.equals("面议")||type.equals("义工")){
 
             }else {
-                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
+
+//                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
             }
             final String finalType = type;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +251,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         @InjectView(R.id.img_date) ImageView imgDate;
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
+        @InjectView(R.id.img_type) ImageView imgType;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;

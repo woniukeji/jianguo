@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    tools:context="com.woniukeji.jianguo.main.PushMessageActivity">
+
+<include
+    layout="@layout/app_title_bar"
+    android:id="@+id/top"
+    />
+    <TextView
+        android:layout_below="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="暂无消息"
+        android:layout_marginTop="20dp"
+        android:layout_centerVertical="true"
+        >
+
+    </TextView>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@+id/top"
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <com.woniukeji.jianguo.widget.FixedRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_header"
+            android:fastScrollEnabled="true"
+            android:listSelector="@color/transparent"
+            android:overScrollMode="never"
+            android:scrollbarStyle="outsideOverlay" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

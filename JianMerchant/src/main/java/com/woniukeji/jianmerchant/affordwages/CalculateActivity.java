@@ -81,7 +81,6 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
     private Context mContext = CalculateActivity.this;
     private CalculateAdapter adapter;
     private int merchantid;
-    private Map<Integer,Boolean> booleanMap=new HashMap<>();
     private List<Boolean> isSelected=new ArrayList<>();
     private List<AffordUser.ListTUserInfoEntity> userList = new ArrayList<>();
 //  private List<HashMap<AffordUser.ListTUserInfoEntity,Boolean>> userList = new ArrayList<>();
@@ -421,7 +420,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<AffordUser>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean<AffordUser> parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             LogUtils.e("calculate",count);
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<AffordUser>>() {
@@ -430,7 +429,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -438,21 +437,23 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
+                        public void onResponse(BaseBean<AffordUser> response, int id) {
+                            if (response.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
-                                message.obj = baseBean;
+                                message.obj = response;
                                 message.arg1= Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
+
+
 
                     });
         }
@@ -508,7 +509,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
              OkHttpUtils
                         .post()
-                        .url(Constants.POST_WAGES)
+                        .url(Constants.POST_PART_JOB_WAGES)
 //                        .content(json)
                         .addParams("only", only)
 //                        .addParams("hould_money", houle)
@@ -522,7 +523,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                         .writeTimeOut(300000)
                      .execute(new Callback<BaseBean<AffordUser>>() {
                          @Override
-                         public BaseBean parseNetworkResponse(Response response) throws Exception {
+                         public BaseBean<AffordUser> parseNetworkResponse(Response response, int id) throws Exception {
                              String string = response.body().string();
 //                             LogUtils.e("calculate",count);
                              BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<AffordUser>>() {
@@ -531,7 +532,7 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                          }
 
                          @Override
-                         public void onError(Call call, Exception e) {
+                         public void onError(Call call, Exception e, int id) {
                              Message message = new Message();
                              message.obj = e.toString();
                              message.what = MSG_GET_FAIL;
@@ -539,20 +540,21 @@ public class CalculateActivity extends BaseActivity implements CalculateAdapter.
                          }
 
                          @Override
-                         public void onResponse(BaseBean baseBean) {
-                             if (baseBean.getCode().equals("200")) {
+                         public void onResponse(BaseBean<AffordUser> response, int id) {
+                             if (response.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                  Message message = new Message();
-                                 message.obj = baseBean;
+                                 message.obj = response;
 //                                 message.arg1= Integer.parseInt(count);
                                  message.what = MSG_POST_SUCCESS;
                                  mHandler.sendMessage(message);
                              } else {
                                  Message message = new Message();
-                                 message.obj = baseBean.getMessage();
+                                 message.obj = response.getMessage();
                                  message.what = MSG_GET_FAIL;
                                  mHandler.sendMessage(message);
                              }
+
                          }
 
                      });

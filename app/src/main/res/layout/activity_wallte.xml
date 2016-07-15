@@ -60,7 +60,7 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginTop="15dp"
-       android:text="300"
+       android:text="0.0"
        android:layout_centerInParent="true"
        android:gravity="center"
        android:textColor="@color/white"

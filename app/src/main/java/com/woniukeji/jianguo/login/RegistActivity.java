@@ -12,6 +12,7 @@ import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.Button;
@@ -55,7 +56,6 @@ import okhttp3.Response;
  */
 public class RegistActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView title;
     @InjectView(R.id.phoneNumber) EditText phoneNumber;
     @InjectView(R.id.btn_get_code) Button btnGetCode;
@@ -97,10 +97,8 @@ public class RegistActivity extends BaseActivity {
             RegistActivity registActivity = (RegistActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    Intent intent = new Intent(registActivity, MainActivity.class);
-//                    intent.putExtra("user", user);
-                    registActivity.startActivity(intent);
+//                    BaseBean<User> user = (BaseBean<User>) msg.obj;
+                    Toast.makeText(registActivity, "注册成功，请登陆", Toast.LENGTH_SHORT).show();
                     registActivity.finish();
                     break;
                 case 1:
@@ -160,30 +158,17 @@ public class RegistActivity extends BaseActivity {
         ActivityManager.getActivityManager().addActivity(RegistActivity.this);
     }
 
-    private void saveToSP(User user) {
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_WQTOKEN,user.getT_user_login().getQqwx_token()!=null?user.getT_user_login().getQqwx_token():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TEL,user.getT_user_login().getTel()!=null?user.getT_user_login().getTel():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_PASSWORD,user.getT_user_login().getPassword()!=null?user.getT_user_login().getPassword():"");
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_USERID,user.getT_user_login().getId());
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,user.getT_user_login().getStatus());
-        SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_QNTOKEN,user.getT_user_login().getQiniu());
 
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NICK,user.getT_user_info().getNickname()!=null?user.getT_user_info().getNickname():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_NAME,user.getT_user_info().getName()!=null?user.getT_user_info().getName():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_IMG,user.getT_user_info().getName_image()!=null?user.getT_user_info().getName_image():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_SCHOOL,user.getT_user_info().getSchool()!=null?user.getT_user_info().getSchool():"");
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_CREDIT,user.getT_user_info().getCredit());
-        SPUtils.setParam(context,Constants.USER_INFO,Constants.SP_INTEGRAL,user.getT_user_info().getIntegral());
-    }
     /**
      * 创建一个超链接
      */
     private void createLink(TextView tv) {
-        // 创建一个 SpannableString对象
         SpannableString sp = new SpannableString("我已阅读并同意《兼果用户协议》");
         // 设置超链接
         sp.setSpan(new URLSpan("http://inke.tv/privacy/privacy.html"), 7, 15,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_bg)), 7, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setTextSize(12);
         tv.setText(sp);
         //设置TextView可点击
         tv.setMovementMethod(LinkMovementMethod.getInstance());
@@ -212,8 +197,7 @@ public class RegistActivity extends BaseActivity {
                 String phone = phoneNumber.getText().toString();
                 String pass = passWord2.getText().toString();
                 if (CheckStatus()) {
-                    UserRegisterTask userRegisterTask = new UserRegisterTask(phone, MD5Util.MD5(pass));
-                    userRegisterTask.execute();
+                    UserRegisterPhone(phone, MD5Util.MD5(pass));
                 }
                 break;
         }
@@ -241,13 +225,6 @@ public class RegistActivity extends BaseActivity {
             return false;
         } else if (phoneCode.getText().toString().equals("")) {
             showShortToast("验证码不能为空");
-            return false;
-        } else if (smsCode == null) {
-            showShortToast("验证码不正确");
-            return false;
-        } else if (smsCode.getCode().equals("")
-                || !phoneCode.getText().toString().trim().equals(smsCode.getText())) {
-            showShortToast("验证码不正确");
             return false;
         }
         return true;
@@ -303,7 +280,7 @@ public class RegistActivity extends BaseActivity {
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_USER_FAIL;
@@ -311,7 +288,7 @@ public class RegistActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(SmsCode response) {
+                        public void onResponse(SmsCode response,int id) {
                             Message message = new Message();
                             message.obj = response;
                             message.what = MSG_PHONE_SUCCESS;
@@ -325,65 +302,34 @@ public class RegistActivity extends BaseActivity {
 
     }
 
-    /**
-     * 手机注册Task
-     */
-    public class UserRegisterTask extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-        private final String passWord;
-        SweetAlertDialog pDialog = new SweetAlertDialog(RegistActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-
-        UserRegisterTask(String phoneNum, String passWord) {
-            this.tel = phoneNum;
-            this.passWord = passWord;
-        }
-
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            UserRegisterPhone();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("登陆中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-            pDialog.dismiss();
-        }
-
         /**
          * UserRegisterPhone
          * 通过手机号码注册
+         * @param phone
+         * @param
          */
-        public void UserRegisterPhone() {
+        public void UserRegisterPhone(String phone, String pass) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.REGISTER_PHONE)
                     .addParams("only", only)
-                    .addParams("tel", tel)
-                    .addParams("password", passWord)
+                    .addParams("tel", phone)
+                    .addParams("password", pass)
+                    .addParams("sms_code", phoneCode.getText().toString())
                     .build()
                     .connTimeOut(30000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
                             String string = response.body().string();
                             BaseBean user = new Gson().fromJson( string, new TypeToken<BaseBean<User>>(){}.getType());
                             return user;
                         }
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e,int id) {
                             Message message = new Message();
                             message.obj = e.getMessage();
                             message.what = MSG_USER_FAIL;
@@ -391,7 +337,7 @@ public class RegistActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean response) {
+                        public void onResponse(BaseBean response,int id) {
                             if (response.getCode().equals("200")){
                                 SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_TYPE,"0");
                                 Message message = new Message();
@@ -404,12 +350,9 @@ public class RegistActivity extends BaseActivity {
                                 message.what = MSG_USER_FAIL;
                                 mHandler.sendMessage(message);
                             }
-
                         }
-
                     });
         }
     }
 
-}
 

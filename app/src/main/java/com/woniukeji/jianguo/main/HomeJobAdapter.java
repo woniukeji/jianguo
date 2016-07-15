@@ -115,19 +115,19 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             String type="";
             if (job.getTerm()==0){
                 holder.tvWages.setText(money+"/月");
-                type="/月";
+                type="元/月";
             }else if(job.getTerm()==1){
-                holder.tvWages.setText(money+"/周");
-                type="/周";
+                holder.tvWages.setText(money+"元/周");
+                type="元/周";
             }else if(job.getTerm()==2){
-                holder.tvWages.setText(money+"/日");
-                type="/日";
+                holder.tvWages.setText(money+"元/日");
+                type="元/日";
             }else if(job.getTerm()==3){
-                holder.tvWages.setText(money+"/时");
+                holder.tvWages.setText(money+"元/时");
                 type="/时";
             }else if(job.getTerm()==4){
-                holder.tvWages.setText(money+"/次");
-                type="/次";
+                holder.tvWages.setText(money+"元/次");
+                type="元/次";
             }else if(job.getTerm()==5){
                 holder.tvWages.setText("义工");
                 type="义工";
@@ -151,6 +151,19 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             holder.tvLocation.setText(job.getAddress());
             String date= DateUtils.getTime(Long.valueOf(job.getStart_date()),Long.valueOf(job.getStop_date()));
             holder.tvDate.setText(date);
+
+            if (job.getMax()==1){
+                holder.imgType.setVisibility(View.VISIBLE);
+                holder.imgType.setImageResource(R.mipmap.cq);
+            }else{
+                holder.imgType.setVisibility(View.GONE);
+            }
+
+            if (job.getStatus()!=0){
+                holder.imgPast.setVisibility(View.VISIBLE);
+            }else {
+                holder.imgPast.setVisibility(View.GONE);
+            }
             //性别限制（0=只招女，1=只招男，2=不限男女）
             if (job.getLimit_sex()==0||job.getLimit_sex()==30){
                 holder.imgSex.setImageResource(R.mipmap.icon_woman);
@@ -198,7 +211,6 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
                     intent.putExtra("money", finalType);
                     intent.putExtra("count", job.getCount()+"/"+job.getSum());
                     intent.putExtra("mername", job.getName());
-
                     mContext.startActivity(intent);
                 }
             });
@@ -232,6 +244,8 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
         @InjectView(R.id.img_date) ImageView imgDate;
         @InjectView(R.id.img_local) ImageView imgLocal;
         @InjectView(R.id.img_sex) ImageView imgSex;
+        @InjectView(R.id.img_type) ImageView imgType;
+        @InjectView(R.id.img_pass) ImageView imgPast;
         @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
         @InjectView(R.id.demo_tv) AnimTextView demoTv;
         @InjectView(R.id.rl_progess) RelativeLayout rlProgess;

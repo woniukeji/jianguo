@@ -13,9 +13,9 @@
     android:background="@color/gray_btn_bg_color"
     tools:context="com.woniukeji.jianguo.mine.AuthActivity">
     <include
-    android:id="@+id/in_title"
-    layout="@layout/app_title_bar"
-    />
+        android:id="@+id/in_title"
+        layout="@layout/app_title_bar"
+        />
 <RelativeLayout
     android:layout_width="match_parent"
     android:background="@mipmap/auth_bg"
@@ -38,25 +38,17 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="5dp"
             >
+
+
+
             <ImageView
                 android:id="@+id/img_front"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:src="@mipmap/img_fanmian"
-                />
-            <TextView
-                android:id="@+id/tv_front"
-                android:layout_marginTop="12dp"
-                android:layout_below="@+id/img_front"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="12dp"
-                android:singleLine="true"
-                android:textColor="#3B9BFF"
-                android:visibility="gone"
-                android:text="上传身份证正面"
-                />
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/icon_zhengmian"
+                android:scaleType="centerCrop"
+                android:layout_alignParentTop="true"
+               />
         </RelativeLayout>
         <RelativeLayout
             android:layout_weight="1"
@@ -67,24 +59,17 @@
             android:layout_marginRight="30dp"
             android:layout_marginLeft="5dp"
             >
+
+
+
             <ImageView
                 android:id="@+id/img_opposite"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:src="@mipmap/img_zhengmian"
-                />
-            <TextView
-                android:id="@+id/tv_opposite"
-                android:layout_below="@+id/img_opposite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="12dp"
-                android:textSize="12dp"
-                android:textColor="#3B9BFF"
-                android:visibility="gone"
-                android:text="上传身份证反面"
-                />
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/icon_fanmian"
+                android:scaleType="centerCrop"
+                android:layout_centerVertical="true"
+               />
         </RelativeLayout>
     </LinearLayout>
 <TextView
@@ -367,7 +352,7 @@
             android:id="@+id/or_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_xingbie"
+            android:src="@mipmap/icon_sex"
             android:gravity="center"
             />
         <TextView

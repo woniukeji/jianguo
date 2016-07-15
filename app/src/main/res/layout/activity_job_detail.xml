@@ -52,7 +52,6 @@
             android:maxEms="10"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="凯宾斯基酒店二楼大唐宴会哈哈哈"
             android:layout_marginTop="4dp"
             />
         <RelativeLayout
@@ -178,7 +177,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:text="凯宾斯基酒店宴会服务员水电费水电费是地方水电费打发斯蒂芬,是干什么的啊"
         android:textColor="#666666"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
@@ -430,7 +428,6 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:ellipsize="end"
-        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
         android:paddingRight="8dp"
         />
 </RelativeLayout>
@@ -461,7 +458,6 @@
                 android:maxLines="2"
                 android:textColor="#666666"
                 android:ellipsize="end"
-                android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
                 />
         </RelativeLayout>
         <ImageView
@@ -478,11 +474,11 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="查看更多"
+            android:gravity="center"
+            android:drawableBottom="@mipmap/icon_more"
             android:textSize="12dp"
             android:padding="10dp"
             android:textColor="@color/app_bg"
-
             />
     </RelativeLayout>
 

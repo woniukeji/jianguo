@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import com.woniukeji.jianmerchant.eventbus.FilterEvent;
 import com.woniukeji.jianmerchant.utils.DateUtils;
 import com.woniukeji.jianmerchant.utils.ExcelUtil;
 import com.woniukeji.jianmerchant.utils.LogUtils;
+import com.woniukeji.jianmerchant.widget.CircleImageView;
 import com.woniukeji.jianmerchant.widget.FixedRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -59,7 +61,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     @InjectView(R.id.list) FixedRecyclerView list;
     @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.btn_out_info) Button btnOutInfo;
+    @InjectView(R.id.btn_out_info) TextView btnOutInfo;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;
@@ -85,8 +87,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
 
     @Override
     public void RecyOnClick(int loginid, int offer, int position) {
-        AdmitTask admitTask = new AdmitTask(String.valueOf(loginid), jobid, String.valueOf(offer));
-        admitTask.execute();
+        postAdmit(String.valueOf(loginid), jobid, String.valueOf(offer));
     }
 
     @OnClick(R.id.btn_out_info)
@@ -338,7 +339,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<PublishUser>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean<PublishUser> parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<PublishUser>>() {
                             }.getType());
@@ -346,7 +347,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_GET_FAIL;
@@ -354,56 +355,33 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
+                        public void onResponse(BaseBean<PublishUser> response, int id) {
+                            if (response.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();
-                                message.obj = baseBean;
+                                message.obj = response;
                                 message.arg1 = Integer.parseInt(count);
                                 message.what = MSG_GET_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
 
+
+
                     });
         }
     }
 
-    public class AdmitTask extends AsyncTask<Void, Void, Void> {
-        private final String loginid;
-        private final String jobid;
-        private final String offer;
-
-        AdmitTask(String loginid, String jobid, String offer) {
-            this.loginid = loginid;
-            this.jobid = jobid;
-            this.offer = offer;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                postAdmit();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * postInfo
          */
-        public void postAdmit() {
+        public void postAdmit(String loginid, String jobid, String offer) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
@@ -418,7 +396,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<PublishUser>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response) throws Exception {
+                        public BaseBean<PublishUser> parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<PublishUser>>() {
                             }.getType());
@@ -426,7 +404,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                         }
 
                         @Override
-                        public void onError(Call call, Exception e) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -434,24 +412,21 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
+                        public void onResponse(BaseBean<PublishUser> response, int id) {
+                            if (response.getCode().equals("200")) {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_POST_SUCCESS;
                                 mHandler.sendMessage(message);
                             } else {
                                 Message message = new Message();
-                                message.obj = baseBean.getMessage();
+                                message.obj = response.getMessage();
                                 message.what = MSG_POST_FAIL;
                                 mHandler.sendMessage(message);
                             }
                         }
-
                     });
         }
-    }
 
 
 }

@@ -111,10 +111,10 @@ public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.View
             }
         } else {
             final AffordUser.ListTUserInfoEntity user = mValues.get(position);
-            if (user.getRealname()!=null&&!user.getRealname().equals("0")){
-                holder.userName.setText(user.getRealname());
+            if (user.getRealname()!=null&&!user.getRealname().equals("2")){
+                holder.userName.setText(user.getName());
             }else {
-                holder.userName.setText("未实名");
+                holder.userName.setText(user.getName()+"（未实名）");
             }
 
             holder.tvPhone.setText(user.getTel());
