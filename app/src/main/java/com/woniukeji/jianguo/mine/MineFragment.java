@@ -76,52 +76,17 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
     @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
     @InjectView(R.id.btn_logout) Button btnLogout;
-    @InjectView(R.id.refresh) RelativeLayout refresh;
     @InjectView(R.id.ll_guanli) RelativeLayout llGuanli;
     @InjectView(R.id.about) RelativeLayout about;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = getActivity();
     private int status;
     private int loginId;
-    private int version;
-    private String apkurl;
 
 
-    @OnClick({R.id.about,R.id.hobby,R.id.ll_guanli, R.id.refresh, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.hobby,R.id.ll_guanli, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.refresh:
-                if (version > getVersion()) {//大于当前版本升级
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("检测到新版本，是否更新？")
-                            .setConfirmText("确定")
-                            .setCancelText("取消")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-                                    UpDialog upDataDialog = new UpDialog(getActivity(),apkurl);
-                                    upDataDialog.setCanceledOnTouchOutside(false);
-                                    upDataDialog.setCanceledOnTouchOutside(false);
-                                    upDataDialog.show();
-
-                                }
-                            }).show();
-
-
-                } else {
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText("已经是最新版本了")
-                            .setConfirmText("确定")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-                                }
-                            }).show();
-                }
-
-                break;
             case R.id.hobby:
                 if (loginId == 0) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -336,8 +301,7 @@ public class MineFragment extends BaseFragment {
     }
 
     public void initData(boolean init) {
-        version = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
-        apkurl = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
+
         if (init) {
             String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, "");
             String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
@@ -397,99 +361,6 @@ public class MineFragment extends BaseFragment {
         super.onDestroy();
     }
 
-    /**
-     * 获取版本号
-     *
-     * @return 当前应用的版本号
-     */
-    public int getVersion() {
-        try {
-            PackageManager manager = getActivity().getPackageManager();
-            PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
-            int version = info.versionCode;
-            return version;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
 
-    private void openFile(File file) {
-        // TODO Auto-generated method stub
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),
-                "application/vnd.android.package-archive");
-        startActivity(intent);
-    }
-
-
-    public class downLoadTask extends AsyncTask<Void, Void, Void> {
-        private SweetAlertDialog sweetAlertDialog;
-
-        downLoadTask(SweetAlertDialog sweetAlertDialog) {
-            this.sweetAlertDialog = sweetAlertDialog;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getCitys();
-            } catch (Exception e) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void getCitys() {
-            OkHttpUtils
-                    .get()
-                    .url(apkurl)
-                    .build()
-                    .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
-                    {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-
-                        }
-
-                        @Override
-                        public void onResponse(File response, int id) {
-                            sweetAlertDialog.dismissWithAnimation();
-                            openFile(response);
-                        }
-
-//                        @Override
-//                        public void inProgress(float progress) {
-////                            LogUtils.e("e",progress*100+"");
-////                            sweetAlertDialog.getProgressHelper().setProgress(progress);
-////                            sweetAlertDialog.getProgressHelper().setCircleRadius((int)progress*100);
-//                        }
-//
-//                        @Override
-//                        public void onError(Call call, Exception e) {
-//
-//                        }
-//
-//
-//                        @Override
-//                        public void onResponse(File file) {
-//                            sweetAlertDialog.dismissWithAnimation();
-//                            openFile(file);
-//
-//                        }
-                    });
-        }
-    }
 
 }

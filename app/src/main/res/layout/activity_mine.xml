@@ -17,26 +17,37 @@
     <RelativeLayout
         android:id="@+id/account"
         android:layout_width="match_parent"
-        android:background="@mipmap/img_bg"
-        android:layout_height="180dp">
-
-            <TextView
-                android:id="@+id/title_bar"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:gravity="center"
-                android:textSize="18dp"
-                android:textColor="@color/white"
-                android:text="兼果"
-                />
+        android:background="@mipmap/pic"
+        android:layout_height="178dp">
 
         <ImageView
+    android:id="@+id/iv_setting"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@mipmap/shezhi"
+    android:layout_alignParentRight="true"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="15dp"
+    />
+        <ImageView
             android:id="@+id/img_head"
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
             android:layout_marginLeft="15dp"
+            android:layout_centerInParent="true"
             android:layout_below="@+id/title_bar"
             android:src="@mipmap/icon_head_defult"
+            />
+        <TextView
+            android:id="@+id/name"
+            android:layout_below="@+id/img_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:text="昵称"
+            android:textSize="12dp"
+            android:textColor="@color/white"
             />
 <LinearLayout
     android:layout_toRightOf="@id/img_head"
@@ -46,6 +57,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginLeft="12dp"
+    android:visibility="gone"
     >
 
     <LinearLayout
@@ -54,14 +66,7 @@
         android:orientation="horizontal"
         >
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="尚未填写"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            />
+
         <TextView
             android:id="@+id/name1"
             android:layout_width="wrap_content"
@@ -97,60 +102,7 @@
         />
 </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_wallte_realname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            >
-            <LinearLayout
-                android:id="@+id/ll_money"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginRight="1dp"
-                android:background="@mipmap/img_xuanxiang_bg"
-                >
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/icon_wallet"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的钱包"
-                    android:textSize="15dp"
-                    android:textColor="#3A9DFF"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_real_name"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:background="@mipmap/img_xuanxiang_bg"
-                android:layout_marginLeft="1dp"
-                >
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/icon_renzheng"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="实名认证  "
-                    android:textColor="#3A9DFF"
-                    android:textSize="15dp"
-                    />
-            </LinearLayout>
-        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/account1"
             android:layout_width="match_parent"
@@ -187,56 +139,83 @@
                 android:layout_toRightOf="@+id/img_head1"
                 />
         </RelativeLayout>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/hobby"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center"
-        android:background="@color/white"
-        android:layout_marginTop="9dp"
-        android:paddingLeft="15dp"
-        >
-        <ImageView
-            android:id="@+id/img_hobby"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/hobby"
-            android:gravity="center"
-            />
-
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/app_bg"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:background="@mipmap/go"
-            />
         <TextView
+            android:id="@+id/title_bar"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="3dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/gray_btn_bg_color"
-            />
+            android:layout_height="52dp"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:text="我的"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
 
-        <TextView
+    <LinearLayout
+        android:id="@+id/ll_wallte_realname"
+        android:layout_width="match_parent"
+        android:layout_height="43.5dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        >
+        <LinearLayout
+            android:id="@+id/ll_money"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="求职意向"
-            android:textSize="16dp"
-            android:layout_marginLeft="12dp"
-            android:gravity="center_vertical"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/img_hobby"
-            android:layout_toEndOf="@+id/img_hobby"
-            android:id="@+id/textView3"/>
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginRight="1dp"
+
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/qianbao"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="我的钱包"
+                android:textSize="14dp"
+                />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="36dp"
+            android:background="#f3f3f3"
+            android:layout_gravity="center"
+            />
+        <LinearLayout
+            android:id="@+id/ll_real_name"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_marginLeft="1dp"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/renzheng"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="实名认证 "
+                android:layout_marginLeft="10dp"
+                android:textSize="15dp"
+                android:id="@+id/textView5"/>
+        </LinearLayout>
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/credit"
         android:layout_width="match_parent"
@@ -245,12 +224,13 @@
         android:layout_gravity="center"
         android:background="@color/white"
         android:paddingLeft="15dp"
+        android:layout_marginTop="9dp"
         >
         <ImageView
             android:id="@+id/or_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_ziliao"
+            android:src="@mipmap/geren"
             android:gravity="center"
             />
         <TextView
@@ -291,13 +271,7 @@
         android:background="@color/white"
         android:paddingLeft="15dp"
         >
-        <ImageView
-            android:id="@+id/point_img9"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_guanli"
-            android:gravity="center"
-            />
+
         <TextView
             android:layout_toRightOf="@+id/point_img9"
             android:layout_width="wrap_content"
@@ -324,6 +298,16 @@
             android:layout_alignParentBottom="true"
             android:background="@color/gray_btn_bg_color"
             />
+
+        <ImageView
+            android:id="@+id/point_img9"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/guanli"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_evaluation"
@@ -391,7 +375,7 @@
             android:id="@+id/point_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_guanzhu"
+            android:src="@mipmap/shoucang"
             android:gravity="center"
             />
         <TextView
@@ -402,6 +386,13 @@
             android:textSize="16dp"
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
             />
         <ImageView
             android:layout_alignParentRight="true"
@@ -415,6 +406,55 @@
             />
 
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/hobby"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        >
+
+        <ImageView
+            android:id="@+id/img_hobby"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/pianhao"
+            android:gravity="center"
+            />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/go"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="求职意向"
+            android:textSize="16dp"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/img_hobby"
+            android:layout_toEndOf="@+id/img_hobby"
+            android:id="@+id/textView3"/>
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_point"
         android:layout_width="match_parent"
@@ -476,7 +516,7 @@
             android:id="@+id/or_img5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_fankui"
+            android:src="@mipmap/fankui"
             android:gravity="center"
             />
         <TextView
@@ -506,48 +546,7 @@
             android:layout_marginLeft="3dp"
             />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingLeft="15dp"
-        >
-        <ImageView
-            android:id="@+id/img_01"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_gengxin"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_toRightOf="@+id/img_01"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="检测更新"
-            android:gravity="center_vertical"
-            android:textSize="16dp"
-            android:layout_marginLeft="10dp"
-            />
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/app_bg"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_go"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/gray_btn_bg_color"
-            android:layout_marginLeft="3dp"
-            />
-    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_setting"
         android:layout_width="match_parent"
@@ -596,7 +595,7 @@
             android:id="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_women"
+            android:src="@mipmap/women"
             android:gravity="center"
             />
         <TextView

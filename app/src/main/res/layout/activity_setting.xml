@@ -58,18 +58,13 @@
         android:background="@color/white"
         android:paddingLeft="15dp"
         >
-        <ImageView
-            android:id="@+id/img_01"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_pingjia"
-            android:gravity="center"
-            />
+
         <TextView
             android:layout_toRightOf="@+id/img_01"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="检测更新"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:textSize="16dp"
             />
@@ -89,6 +84,16 @@
             android:background="@color/gray_btn_bg_color"
             android:layout_marginLeft="3dp"
             />
+
+        <ImageView
+            android:id="@+id/img_01"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/gx"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/about"
@@ -102,14 +107,15 @@
             android:id="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pingjia"
+            android:src="@mipmap/mima"
             android:gravity="center"
             />
         <TextView
             android:layout_toRightOf="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="关于我们"
+            android:layout_marginLeft="10dp"
+            android:text="修改密码"
             android:gravity="center_vertical"
             android:textSize="16dp"
             />
@@ -135,12 +141,10 @@
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/button_background_logout"
+        android:background="@drawable/button_background_white"
        android:text="退出登录"
         android:textSize="14dp"
-        android:textColor="@color/white"
+        android:textColor="#FF7070"
         />
 </LinearLayout>
