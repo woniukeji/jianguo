@@ -109,6 +109,7 @@ public class PasswordLoginFragment extends BaseFragment {
                     quickLoginEvent.isQuickLogin = true;
                     EventBus.getDefault().post(quickLoginEvent);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("login",true);
                     startActivity(intent);
                     getActivity().finish();
                     break;
@@ -172,7 +173,7 @@ public class PasswordLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, user.getApk_url());
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
-
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, user.getT_user_login().getHobby());
 
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
@@ -275,16 +276,16 @@ public class PasswordLoginFragment extends BaseFragment {
      * phoneLogin
      *
      * @param tel
-     * @param sms
+     * @param pass
      */
-    public void PhoneLogin(String tel, String sms) {
+    public void PhoneLogin(String tel, String pass) {
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         OkHttpUtils
                 .get()
                 .url(Constants.LOGIN_PHONE)
                 .addParams("only", only)
                 .addParams("tel", tel)
-                .addParams("password", sms)
+                .addParams("password", pass)
                 .build()
                 .connTimeOut(60000)
                 .readTimeOut(20000)

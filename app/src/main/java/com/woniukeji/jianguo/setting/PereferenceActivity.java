@@ -18,6 +18,7 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
+import com.woniukeji.jianguo.entity.HobbyJob;
 import com.woniukeji.jianguo.entity.WeekTime;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
@@ -41,8 +42,8 @@ public class PereferenceActivity extends BaseActivity {
     private List<WeekTime> WeekTimes =new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView mJobRecyclerView;
-    BaseBean<CityCategory> cityCategoryBaseBean;
-    private List<CityCategory.ListTTypeEntity> JobEntitys=new ArrayList<>();
+    BaseBean<HobbyJob> hobbyJob;
+    private List<HobbyJob.ListTHobbyTypeBean> JobEntitys=new ArrayList<>();
     private List<CityCategory.ListTTypeEntity> JobEntityChooses=new ArrayList<>();
     private List<String> weekIds=new ArrayList<>();
 
@@ -53,6 +54,7 @@ public class PereferenceActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private int loginId;
     private TextView tvSave;
+    private GridAdapter timeAdapter;
 
     @Override
     public void setContentView() {
@@ -62,20 +64,28 @@ public class PereferenceActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvSave = (TextView) findViewById(R.id.tv_save);
-
-
+        ImageView ivBack = (ImageView) findViewById(R.id.iv_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_time);
         mJobRecyclerView = (RecyclerView) findViewById(R.id.recycler_job);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,8);
         GridLayoutManager jobLayoutManager=new GridLayoutManager(this,4);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mJobRecyclerView.setLayoutManager(jobLayoutManager);
-        mRecyclerView.setAdapter(new GridAdapter());
+        timeAdapter = new GridAdapter();
+        mRecyclerView.setAdapter(timeAdapter);
          jobAdapter = new JobAdapter();
         mJobRecyclerView.setAdapter(jobAdapter);
 //        mJobRecyclerView.addItemDecoration(new DividerGridItemDecoration(this) {});
 //添加分割线
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this) {
+        });
+
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
 
@@ -92,10 +102,10 @@ public class PereferenceActivity extends BaseActivity {
     @Override
     public void initData() {
         initTimeData();
-        String cityid = String.valueOf(SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, 1));
-        int position = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, 0);
+//        String cityid = String.valueOf(SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, ""));
+//        int position = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, 0);
         loginId = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        getCityCategory(cityid);
+        getHobby();
     }
 
     private void initTimeData() {
@@ -105,9 +115,7 @@ public class PereferenceActivity extends BaseActivity {
                 weekTime.setId(0);
                 weekTime.setName(weeks[i]);
             }
-
         }
-
     }
 
     @Override
@@ -127,8 +135,8 @@ public class PereferenceActivity extends BaseActivity {
         progressDialog.show();
         Map map=new HashMap();
         List tempList=new ArrayList();
-        for (int i = 0; i <jobChooses.size() ; i++) {
-            if (jobChooses.get(i)){
+        for (int i = 0; i <JobEntitys.size() ; i++) {
+            if (JobEntitys.get(i).getIs_type()){
                 tempList.add(JobEntitys.get(i).getId());
             }
         }
@@ -148,55 +156,6 @@ public class PereferenceActivity extends BaseActivity {
     /**
      * 获取城市列表和兼职种类
      */
-    public void getCityCategory(String cityid) {
-        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        OkHttpUtils
-                .get()
-                .url(Constants.GET_USER_CITY_CATEGORY)
-                .addParams("only", only)
-                .addParams("login_id", "0")
-                .addParams("city_id", cityid)
-                .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
-                .execute(new Callback<BaseBean<CityCategory>>() {
-                    @Override
-                    public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
-                        String string = response.body().string();
-                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
-                        }.getType());
-                        return baseBean;
-                    }
-
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Message message = new Message();
-                        message.obj = e.toString();
-                    }
-
-                    @Override
-                    public void onResponse(BaseBean baseBean,int id) {
-                        if (baseBean.getCode().equals("200")) {
-                            Message message = new Message();
-                            message.obj = baseBean;
-                            cityCategoryBaseBean = (BaseBean<CityCategory>)baseBean;
-                            JobEntitys.addAll( cityCategoryBaseBean.getData().getList_t_type());
-                            for (int i = 0; i < JobEntitys.size(); i++) {
-                                jobChooses.add(false);
-                            }
-                            jobAdapter.notifyDataSetChanged();
-                        } else {
-                            Message message = new Message();
-                            message.obj = baseBean.getMessage();
-                        }
-                    }
-
-                });
-    }
-    /**
-     * 获取城市列表和兼职种类
-     */
     public void getHobby() {
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         OkHttpUtils
@@ -208,11 +167,11 @@ public class PereferenceActivity extends BaseActivity {
                 .connTimeOut(60000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
-                .execute(new Callback<BaseBean<CityCategory>>() {
+                .execute(new Callback<BaseBean<HobbyJob>>() {
                     @Override
                     public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                         String string = response.body().string();
-                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<HobbyJob>>() {
                         }.getType());
                         return baseBean;
                     }
@@ -228,12 +187,14 @@ public class PereferenceActivity extends BaseActivity {
                         if (baseBean.getCode().equals("200")) {
                             Message message = new Message();
                             message.obj = baseBean;
-                            cityCategoryBaseBean = (BaseBean<CityCategory>)baseBean;
-                            JobEntitys.addAll( cityCategoryBaseBean.getData().getList_t_type());
+                            hobbyJob = (BaseBean<HobbyJob>)baseBean;
+                            JobEntitys.addAll( hobbyJob.getData().getList_t_hobby_type());
+                            weekIds.addAll(hobbyJob.getData().getList_t_hobby_time());
                             for (int i = 0; i < JobEntitys.size(); i++) {
                                 jobChooses.add(false);
                             }
                             jobAdapter.notifyDataSetChanged();
+                            timeAdapter.notifyDataSetChanged();
                         } else {
                             Message message = new Message();
                             message.obj = baseBean.getMessage();
@@ -313,7 +274,7 @@ public class PereferenceActivity extends BaseActivity {
                       }else {
                           for (int i = 0; i < weekIds.size(); i++) {
                               int tens= Integer.parseInt(weekIds.get(i).substring(0,1));//个位
-                              int units= Integer.parseInt(weekIds.get(i).substring(0,1));//十位
+                              int units= Integer.parseInt(weekIds.get(i).substring(1,2));//十位
                               int finalPosition=tens*8+units;
                               if (position==finalPosition){
                                   holder.imageView.setVisibility(View.VISIBLE);
@@ -377,7 +338,7 @@ public class PereferenceActivity extends BaseActivity {
         public void onBindViewHolder(final JobViewHolder holder, final int position)
         {
             holder.tv.setText(JobEntitys.get(position).getType_name());
-            if (jobChooses.get(position)){
+            if (JobEntitys.get(position).getIs_type()){
                 holder.tv.setTextColor(getResources().getColor(R.color.white));
                 holder.tv.setBackgroundColor(getResources().getColor(R.color.app_bg));
             }else {
@@ -391,30 +352,30 @@ public class PereferenceActivity extends BaseActivity {
                     {
                         //当选中第一个为职业不限的时候其余职业状态置为未选中，当点击的item不是职业不限的时候，职业不限自动置为未选中
                         if (position==0){
-                            if (!jobChooses.get(0)){
-                                for (int i = 0; i < jobChooses.size(); i++) {
-                                    if (jobChooses.get(i)){
-                                        jobChooses.set(i,false);
+                            if (!JobEntitys.get(0).getIs_type()){
+                                for (int i = 1; i < JobEntitys.size(); i++) {
+                                    if (JobEntitys.get(i).getIs_type()){
+                                        JobEntitys.get(i).setIs_type(false);
                                     }
                                 }
                                 holder.tv.setTextColor(getResources().getColor(R.color.white));
                                 holder.tv.setBackgroundColor(getResources().getColor(R.color.app_bg));
-                                jobChooses.set(0,true);
+                                JobEntitys.get(0).setIs_type(true);
                                 notifyDataSetChanged();
 
                             }
                         }else {
-                            if (jobChooses.get(position)){
-                                jobChooses.set(position,false);
+                            if (JobEntitys.get(0).getIs_type()){
+                                JobEntitys.get(position).setIs_type(false);
                                 holder.tv.setTextColor(getResources().getColor(R.color.black_text));
                                 holder.tv.setBackgroundColor(getResources().getColor(R.color.white));
 
-                            }else {
-                                jobChooses.set(position,true);
+                            }
+                                JobEntitys.get(position).setIs_type(true);
                                 holder.tv.setTextColor(getResources().getColor(R.color.white));
                                 holder.tv.setBackgroundColor(getResources().getColor(R.color.app_bg));
-                            }
-                            jobChooses.set(0,false);
+
+                            JobEntitys.get(0).setIs_type(false);
                             notifyDataSetChanged();
                         }
 

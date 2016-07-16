@@ -77,7 +77,6 @@ public class PartJobFragment extends BaseFragment {
     private int lastVisibleItem;
     private LinearLayoutManager mLayoutManager;
     public List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
-    private String cityid = "1";
     String typeid = "0";
     String areid = "0";
     String filterid = "2";
@@ -90,8 +89,8 @@ public class PartJobFragment extends BaseFragment {
     private Handler mHandler = new Myhandler(this.getActivity());
     private DropDownMenu mMenu;
     private int mtype = 0;
-    private int position;
     private boolean DataComplete=false;
+    private String cityCode;
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -152,9 +151,8 @@ public class PartJobFragment extends BaseFragment {
     }
 
     private void initData() {
-        cityid = String.valueOf(SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, 1));
-        position= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,0);
-        getCityCategory(cityid);
+        cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+        getCityCategory(cityCode);
     }
 
     private void initview() {
@@ -173,10 +171,9 @@ public class PartJobFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask = new GetTask(cityid,
+                getJobs(cityCode,
                         typeid, areid
                         , "2", "0");
-                getTask.execute();
             }
         });
     }
@@ -225,21 +222,28 @@ public class PartJobFragment extends BaseFragment {
                     areid= String.valueOf(sortId);
 //                    areid = String.valueOf(cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().get(RowIndex));
                 }
-                GetTask getTask = new GetTask(cityid,
-                        typeid, areid, filterid, "0");
-                getTask.execute();
+                getJobs(cityCode, typeid, areid, filterid, "0");
             }
         });
     }
 
     public void initDrawData(BaseBean<CityCategory> cityCategoryBaseBean) {
         List<List<BaseEntity>> items = new ArrayList<>();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().size(); i++) {
+        CityCategory.ListTCity2Entity listTCity2Entity = null;
+        citys.clear();
+        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
+            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+                break;
+            }
+        }
+        for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getArea_name());
-            baseEntity.setId(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getId());
+            baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
+            baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
+
         for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
             baseEntity.setName(cityCategoryBaseBean.getData().getList_t_type().get(i).getType_name());
@@ -274,26 +278,29 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
         mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
         mMenu.setmMenuItems(items);
-        GetTask getTask = new GetTask(cityid,
-                typeid, areid
-                , "2", "0");
-        getTask.execute();
+        getJobs(cityCode, typeid, areid, "2", "0");
     }
 
 
-    private void resetDrawMenu() {
+    private void resetDrawMenu(String cityCode) {
         List<List<BaseEntity>> items = new ArrayList<>();
+        CityCategory.ListTCity2Entity listTCity2Entity = null;
         citys.clear();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().size(); i++) {
+        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
+            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+                break;
+            }
+        }
+        for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getArea_name());
-            baseEntity.setId(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getId());
+            baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
+            baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
+
         mMenu.setAreaText();
-        GetTask getTask = new GetTask(cityid,
-                typeid, "0", filterid, "0");
-        getTask.execute();
+        getJobs(cityCode, typeid, areid, "2", "0");
     }
 
     @Override
@@ -303,9 +310,8 @@ public class PartJobFragment extends BaseFragment {
     }
 
     public void onEvent(final JobFilterEvent event) {
-        cityid= String.valueOf(event.cityId);
-        position=event.position;
-        resetDrawMenu();
+        cityCode= String.valueOf(event.cityId);
+        resetDrawMenu(cityCode);
     }
 
 
@@ -318,8 +324,7 @@ public class PartJobFragment extends BaseFragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (jobList.size() > 5 && lastVisibleItem == jobList.size() &&DataComplete) {
-                                        GetTask getTask=new GetTask(cityid, typeid, areid, filterid,String.valueOf(lastVisibleItem));
-                                        getTask.execute();
+                    getJobs(cityCode, typeid, areid, filterid,String.valueOf(lastVisibleItem));
                     DataComplete=false;
                     LogUtils.e("position",lastVisibleItem+"开始");
                 }
@@ -355,7 +360,7 @@ public class PartJobFragment extends BaseFragment {
                     .url(Constants.GET_USER_CITY_CATEGORY)
                     .addParams("only", only)
                     .addParams("login_id", "0")
-                    .addParams("city_id", cityid)
+                    .addParams("city_id", "")
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
@@ -395,46 +400,24 @@ public class PartJobFragment extends BaseFragment {
                     });
     }
 
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private String cityid;
-        private String typeid;
-        private String areaid;
-        private String filterid;
-        private String count;
-
-        GetTask(String cityid, String typeid, String areaid, String filterid, String count) {
-            this.cityid = cityid;
-            this.typeid = typeid;
-            this.areaid = areaid;
-            this.filterid = filterid;
-            this.count = count;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            LogUtils.e("fliter","cityid="+cityid+"; "+"typeid="+typeid+";"+"areid="+areaid+";"+"filterid="+filterid);
-            getJobs();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * postInfo
+         * @param cityCode
+         * @param typeid
+         * @param areid
+         * @param filterid
+         * @param count
          */
-        public void getJobs() {
+        public void getJobs(String cityCode, String typeid, String areid, String filterid, final String count) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
             OkHttpUtils
                     .get()
                     .url(Constants.GET_JOB_CATEGORY)
                     .addParams("only", only)
-                    .addParams("city_id", cityid)
+                    .addParams("city_id", cityCode)
                     .addParams("type_id", typeid)
-                    .addParams("area_id", areaid)
+                    .addParams("area_id", areid)
                     .addParams("filter_id", filterid)
                     .addParams("count", count)
                     .build()
@@ -472,11 +455,11 @@ public class PartJobFragment extends BaseFragment {
                                 message.obj = baseBean.getMessage();
                                 message.what = MSG_GET_FAIL;
                                 mHandler.sendMessage(message);
+
                             }
                         }
 
                     });
         }
-    }
 
 }

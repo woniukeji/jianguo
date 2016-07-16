@@ -228,8 +228,8 @@ public class DropDownMenu extends LinearLayout{
 
     //当第三行地址修改时 改变文本内容和选中对勾
     public void setAreaText(){
-        mTvMenuTitles.get(2).setText(mMenuItems.get(2).get(0).getName());
-        mMenuAdapters.get(2).setSelectIndex(0);
+        mTvMenuTitles.get(1).setText(mMenuItems.get(1).get(0).getName());
+        mMenuAdapters.get(1).setSelectIndex(0);
     }
     //设置对勾的icon
     public void setmCheckIcon(int checkIcon) {

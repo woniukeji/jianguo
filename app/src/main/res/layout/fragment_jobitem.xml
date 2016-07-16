@@ -109,7 +109,7 @@
             android:text="是干什么的啊,kaibinsiji凯宾斯基"
             android:gravity="center|left"
             android:layout_gravity="center"
-            android:maxEms="11"
+            android:maxEms="9"
             android:ellipsize="end"
             android:maxLines="1"
             />
@@ -131,6 +131,15 @@
             android:src="@mipmap/m"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
+            />
+        <ImageView
+            android:id="@+id/img_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/past"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:visibility="gone"
             />
     </LinearLayout>
 
