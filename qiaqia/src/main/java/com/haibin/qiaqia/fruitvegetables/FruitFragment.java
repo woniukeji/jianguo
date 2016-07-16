@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.haibin.qiaqia.http.SubscriberOnNextListener;
 import com.haibin.qiaqia.main.MainActivity;
 import com.haibin.qiaqia.utils.SPUtils;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,25 +78,22 @@ public class FruitFragment extends BaseFragment {
         recyclerviewFruit.setItemAnimator(new DefaultItemAnimator());
         adapter.setOnItemClickListener(new HomeAdapter.OnRecyclerViewItemClickListener(){
             @Override
-            public void onItemClick(View view , String data){
-                Toast.makeText(getActivity(), data,Toast.LENGTH_SHORT).show();
+            public void onItemClick(View view , ListChaoCommodity data){
+//                Toast.makeText(getActivity(), data.getName(),Toast.LENGTH_SHORT).show();
+                DisplayDialog displayDialog = new DisplayDialog(getActivity(),data,new DisplayDialog.IDisplayDialogEventListener(){
+
+                    @Override
+                    public void displayDialogEvent(int id) {
+//                        ImageView imageView = (ImageView)findViewById(R.id.);
+//                        imageView.setImageDrawable(getResources().getDrawable(id));
+                    }
+                },R.style.alert_dialog);
+                displayDialog.show();
             }
         });
     }
     private void initData() {
         int loginId = (int) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.INFO_ID, 0);
-//        relaVegetable.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().startActivity(new Intent(getActivity(), MarketActivity.class));
-//            }
-//        });
-//        relaFruit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().startActivity(new Intent(getActivity(), FruitVegetableActivity.class));
-//            }
-//        });
 
         SubListener = new SubscriberOnNextListener<Goods>() {
             @Override
@@ -104,7 +103,6 @@ public class FruitFragment extends BaseFragment {
                 Toast.makeText(getActivity(), "获取成功", Toast.LENGTH_LONG).show();
             }
         };
-//         HttpMethods.getInstance().getHomeData(new ProgressSubscriber<Goods>(SubListener, getActivity()));
         HttpMethods.getInstance().getGoods(new ProgressSubscriber<Goods>(SubListener ,getActivity()), String.valueOf(loginId),mTitle );
     }
 }
