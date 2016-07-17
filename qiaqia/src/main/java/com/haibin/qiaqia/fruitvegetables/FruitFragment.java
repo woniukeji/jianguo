@@ -85,8 +85,6 @@ public class FruitFragment extends BaseFragment {
                     @Override
                     public void displayDialogEvent(int id) {
 
-//                        ImageView imageView = (ImageView)findViewById(R.id.);
-//                        imageView.setImageDrawable(getResources().getDrawable(id));
                     }
                 },R.style.alert_dialog);
                 displayDialog.show();

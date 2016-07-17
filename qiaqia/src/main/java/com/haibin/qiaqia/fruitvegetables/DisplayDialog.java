@@ -7,10 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.haibin.qiaqia.R;
+import com.haibin.qiaqia.base.Constants;
+import com.haibin.qiaqia.base.FragmentText;
+import com.haibin.qiaqia.entity.Goods;
 import com.haibin.qiaqia.entity.ListChaoCommodity;
+import com.haibin.qiaqia.http.HttpMethods;
+import com.haibin.qiaqia.http.ProgressSubscriber;
+import com.haibin.qiaqia.http.SubscriberOnNextListener;
+import com.haibin.qiaqia.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +41,7 @@ public class DisplayDialog extends Dialog {
     ImageView ivOpen;
     @BindView(R.id.iv_add)
     ImageView ivAdd;
+    SubscriberOnNextListener<Goods> SubListener;
 
     @OnClick({R.id.iv_attention, R.id.iv_open, R.id.iv_add})
     public void onClick(View view) {
@@ -40,9 +49,22 @@ public class DisplayDialog extends Dialog {
             case R.id.iv_attention:
                 break;
             case R.id.iv_open:
+                tvDescribe.setMaxLines(20);
                 break;
             case R.id.iv_add:
-                tvDescribe.setMaxLines(20);
+                int loginId = (int) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.INFO_ID, 0);
+                int commodityid = mdata.getId();
+//                int count = mdata.getCount();
+                int count = 1;
+                SubListener = new SubscriberOnNextListener<Goods>() {
+                    @Override
+                    public void onNext(Goods goodsHttpResult) {
+
+                        Toast.makeText(mContext, "添加购物车成功", Toast.LENGTH_SHORT).show();
+                    }
+                };
+                HttpMethods.getInstance().getChangeCarGoods(new ProgressSubscriber<Goods>(SubListener ,mContext), String.valueOf(loginId),String.valueOf(commodityid),String.valueOf(count) );
+
 
                 break;
         }

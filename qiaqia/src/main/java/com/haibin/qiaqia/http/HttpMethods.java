@@ -147,4 +147,25 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+     * 加减删除购物车商品
+     */
+    public void getChangeCarGoods(Subscriber<Goods> subscriber,String login_id,String commodity_id,String count){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getChangeCarGoods(only,login_id,commodity_id,count)
+                .map(new HttpResultFunc<Goods>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    public void getCarInfo(Subscriber<Goods> subscriber,String login_id){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getCarInfo(only,login_id)
+                .map(new HttpResultFunc<Goods>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }
