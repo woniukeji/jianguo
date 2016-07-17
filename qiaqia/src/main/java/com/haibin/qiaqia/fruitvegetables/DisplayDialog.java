@@ -90,7 +90,7 @@ public class DisplayDialog extends Dialog {
         mDisplayDialogEventListener = listener;
     }
     public DisplayDialog(Context context, ListChaoCommodity data, IDisplayDialogEventListener listener, int themeResId) {
-        super(context, themeResId);
+        super(context, R.style.myDialogTheme);
         mContext = context;
         mdata = data;
         mDisplayDialogEventListener = listener;
@@ -99,9 +99,7 @@ public class DisplayDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View display_dialog = inflater.inflate(R.layout.display_dialog, null);
+        View display_dialog = LayoutInflater.from(mContext).inflate(R.layout.display_dialog, null);
         this.setContentView(display_dialog);
         ButterKnife.bind(this, display_dialog);
         Glide.with(mContext)
