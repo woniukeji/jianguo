@@ -57,6 +57,7 @@ public class CartFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         initView();
         initData();
+
         return view;
     }
 

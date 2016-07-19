@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
+
     private Context context;
     private List<ListChaoCommodity> list;
     private HomeAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = null;

@@ -41,6 +41,7 @@
                 android:ellipsize="end"
                 android:layout_marginTop="11dp"
                 />
+
             <TextView
                 android:layout_below="@+id/tv_goods_name"
                 android:id="@+id/tv_goods_price"

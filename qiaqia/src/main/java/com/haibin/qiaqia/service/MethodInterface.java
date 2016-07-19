@@ -47,6 +47,7 @@ public interface MethodInterface {
 /**
 *购物车
 */
+
         @GET("I_chao_cart_List_Id_Servlet")
         Observable<HttpResult<Goods>> getCarInfo(@Query("only") String only, @Query("login_id") String loginId);
 

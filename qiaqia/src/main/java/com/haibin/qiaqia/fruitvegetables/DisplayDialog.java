@@ -45,6 +45,7 @@ public class DisplayDialog extends Dialog {
 
     @OnClick({R.id.iv_attention, R.id.iv_open, R.id.iv_add})
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.iv_attention:
                 break;

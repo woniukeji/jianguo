@@ -159,6 +159,12 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+
+    /**
+     * 购物车
+     * @param subscriber
+     * @param login_id
+     */
     public void getCarInfo(Subscriber<Goods> subscriber,String login_id){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.getCarInfo(only,login_id)

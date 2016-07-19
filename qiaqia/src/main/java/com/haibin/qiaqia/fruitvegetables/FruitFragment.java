@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
  */
 
 public class FruitFragment extends BaseFragment {
+
     @BindView(R.id.recyclerview_fruit)
     XRecyclerView recyclerviewFruit;
     private LinearLayoutManager mLayoutManager;
