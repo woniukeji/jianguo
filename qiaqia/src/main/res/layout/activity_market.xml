@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#fff"
+        android:background="#ffffff"
         android:text="超市"
         android:gravity="center"
+        android:layout_alignParentTop="true"
         android:textSize="20sp"
-        />
 
+        />
+<TextView
+    android:layout_below="@id/tv_title"
+    android:id="@+id/tv_split"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/app_color"
+    />
+    <ImageView
+        android:layout_below="@id/tv_title"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        />
     <LinearLayout
+        android:layout_below="@id/tv_split"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -21,8 +38,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/market_rv"
             android:layout_width="0dp"
-            android:layout_weight="0.28"
-            android:background="#fff"
+            android:layout_weight="0.25"
+            android:background="@color/transparent"
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
      <!--   <View
@@ -45,4 +62,4 @@
         android:background="@color/app_color"
         />
 
-</LinearLayout>
+</RelativeLayout>

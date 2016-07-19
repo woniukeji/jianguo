@@ -4,7 +4,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.haibin.qiaqia.R;
 import com.haibin.qiaqia.base.BaseActivity;
@@ -42,6 +41,7 @@ public class MarketActivity extends BaseActivity implements MyItemClickListener{
     private MarketClassAdapter adapter;
     private MarketGoodsAdapter goodsAdapter;
     private List<ListMarket> marketList = new ArrayList<ListMarket>();
+    private int loginId;
 
     @Override
     public void setContentView() {
@@ -71,11 +71,12 @@ public class MarketActivity extends BaseActivity implements MyItemClickListener{
     @Override
     public void initData() {
 
-        int loginId = (int) SPUtils.getParam(MarketActivity.this, Constants.USER_INFO, Constants.INFO_ID, 0);
+        loginId = (int) SPUtils.getParam(MarketActivity.this, Constants.USER_INFO, Constants.INFO_ID, 0);
         GoodsSubListener=new SubscriberOnNextListener<Goods>() {
             @Override
             public void onNext(Goods goods) {
-                Toast.makeText(MarketActivity.this, goods.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MarketActivity.this, goods.toString(), Toast.LENGTH_SHORT).show();
+                list_goods_class.clear();
                 list_goods_class.addAll(goods.getListChaoCommodity());
                 goodsAdapter.notifyDataSetChanged();
             }
@@ -83,7 +84,7 @@ public class MarketActivity extends BaseActivity implements MyItemClickListener{
         SubListener = new SubscriberOnNextListener<Market>() {
             @Override
             public void onNext(Market market) {
-                Toast.makeText(MarketActivity.this, market.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MarketActivity.this, market.toString(), Toast.LENGTH_SHORT).show();
                 list_chao_class = market.getList_chao_class();
                 marketList.addAll(list_chao_class);
                 adapter.notifyDataSetChanged();
@@ -103,6 +104,8 @@ public class MarketActivity extends BaseActivity implements MyItemClickListener{
     @Override
     public void onItemClick(View view, int position) {
 
+        HttpMethods.getInstance().getGoods(new ProgressSubscriber<Goods>(GoodsSubListener, this), String.valueOf(loginId),marketList.get(position).getClass_id());
+        adapter.changeSelected(position);
     }
 
 
