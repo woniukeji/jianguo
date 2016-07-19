@@ -21,6 +21,7 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
+import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.time.PickerDateView;
@@ -52,10 +53,10 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     private int MSG_POST_FAIL=1;
     public int MSG_POST_SUCCESS=4;
     private int jobid;
-    private JobDetails.TJobInfoEntity jobinfo;
+    private JobInfo.DataBean.TJobInfoBean jobinfo;
     private String payMethod;
      private String money;
-    public SignUpPopuWin(Context context, Handler handler, int id, JobDetails.TJobInfoEntity jobinfo, String toString, String s) {
+    public SignUpPopuWin(Context context, Handler handler, int id, JobInfo.DataBean.TJobInfoBean jobinfo, String toString, String s) {
         this.context = context;
         this.mHandler=handler;
         jobid=id;

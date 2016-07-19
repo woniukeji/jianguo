@@ -26,14 +26,14 @@
     android:layout_height="wrap_content"
     android:src="@mipmap/shezhi"
     android:layout_alignParentRight="true"
-    android:layout_marginTop="15dp"
-    android:layout_marginRight="15dp"
+    android:padding="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
     />
         <ImageView
             android:id="@+id/img_head"
-            android:layout_width="58dp"
-            android:layout_height="58dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
             android:layout_centerInParent="true"
             android:layout_below="@+id/title_bar"
             android:src="@mipmap/icon_head_defult"
@@ -44,8 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp"
-            android:text="昵称"
+            android:layout_marginTop="8dp"
+            android:text="登录/注册"
             android:textSize="12dp"
             android:textColor="@color/white"
             />
@@ -169,7 +169,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginRight="1dp"
-
+            android:background="?android:attr/selectableItemBackground"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -197,8 +197,8 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:background="@color/white"
             android:layout_marginLeft="1dp"
+            android:background="?android:attr/selectableItemBackground"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -216,15 +216,25 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#f3f3f3"
+            />
     <RelativeLayout
         android:id="@+id/credit"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
-        android:layout_marginTop="9dp"
         >
         <ImageView
             android:id="@+id/or_img"
@@ -268,7 +278,7 @@
         android:layout_height="43dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
 
@@ -368,7 +378,7 @@
         android:layout_height="43dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
         <ImageView
@@ -412,7 +422,7 @@
         android:layout_height="43dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
 
@@ -502,14 +512,18 @@
             />
 
     </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#f3f3f3"
+            />
     <RelativeLayout
         android:id="@+id/rl_feedback"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:background="@color/white"
-        android:layout_marginTop="10dp"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
         <ImageView
@@ -588,7 +602,7 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
         <ImageView
@@ -626,6 +640,7 @@
             android:visibility="gone"
             />
     </RelativeLayout>
+    </LinearLayout>
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
@@ -636,6 +651,7 @@
         android:background="@drawable/button_background_logout"
         android:text="退出登录"
         android:textSize="14dp"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:layout_marginBottom="20dp"
         />

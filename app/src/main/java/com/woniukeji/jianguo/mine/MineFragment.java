@@ -58,6 +58,7 @@ import okhttp3.Call;
 public class MineFragment extends BaseFragment {
     @InjectView(R.id.title_bar) TextView titleBar;
     @InjectView(R.id.img_head) ImageView imgHead;
+    @InjectView(R.id.iv_setting) ImageView ivSetting;
     @InjectView(R.id.name) TextView name;
     @InjectView(R.id.school) TextView school;
     @InjectView(R.id.phone) TextView phone;
@@ -70,12 +71,12 @@ public class MineFragment extends BaseFragment {
     @InjectView(R.id.ll_real_name) LinearLayout llRealName;
     @InjectView(R.id.ll_wallte_realname) LinearLayout llWallteRealname;
     @InjectView(R.id.credit) RelativeLayout credit;
+    @InjectView(R.id.account) RelativeLayout account;
     @InjectView(R.id.rl_evaluation) RelativeLayout rlEvaluation;
     @InjectView(R.id.ll_collect) RelativeLayout llCollect;
     @InjectView(R.id.rl_point) RelativeLayout rlPoint;
     @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
     @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
-    @InjectView(R.id.btn_logout) Button btnLogout;
     @InjectView(R.id.ll_guanli) RelativeLayout llGuanli;
     @InjectView(R.id.about) RelativeLayout about;
     private Handler mHandler = new Myhandler(this.getActivity());
@@ -84,9 +85,16 @@ public class MineFragment extends BaseFragment {
     private int loginId;
 
 
-    @OnClick({R.id.about,R.id.hobby,R.id.ll_guanli, R.id.btn_logout, R.id.ll_money, R.id.account1, R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
+    @OnClick({R.id.about,R.id.iv_setting,R.id.hobby,R.id.ll_guanli, R.id.ll_money,  R.id.ll_real_name, R.id.credit, R.id.rl_evaluation, R.id.ll_collect, R.id.rl_point, R.id.rl_feedback, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_setting:
+                if (loginId == 0) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+                break;
             case R.id.hobby:
                 if (loginId == 0) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -165,49 +173,8 @@ public class MineFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity().getApplicationContext(), AuthActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.account1:
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-//                startActivity(new Intent(getActivity(), QuickLoginActivity.class));
-                break;
-            case R.id.btn_logout:
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("确定要退出吗?")
-                        .setCancelText("取消")
-                        .setConfirmText("确定")
-                        .showCancelButton(true)
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                                sweetAlertDialog.dismiss();
-//                                暂时关闭果聊
-//                                ChatManager chatManager = ChatManager.getInstance();
-//                                chatManager.closeWithCallback(new AVIMClientCallback() {
-//                                    @Override
-//                                    public void done(AVIMClient avimClient, AVIMException e) {
-//                                    }
-//                                });
-                                JPushInterface.stopPush(getActivity());
-//                ActivityManager.getActivityManager().finishAllActivity();
-                                SPUtils.deleteParams(getActivity());
-                                initData(false);
-                                account1.setVisibility(View.VISIBLE);
-                                btnLogout.setVisibility(View.GONE);
-                                TalkMessageEvent talkMessageEvent = new TalkMessageEvent();
-                                talkMessageEvent.isLogin = false;
-                                EventBus.getDefault().post(talkMessageEvent);
-                            }
-                        })
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.cancel();
-                                sDialog.dismiss();
-                            }
-                        })
-                        .show();
 
-                break;
+
         }
     }
 
@@ -310,13 +277,6 @@ public class MineFragment extends BaseFragment {
             status = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
             loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
 
-            if (loginId == 0) {
-                btnLogout.setVisibility(View.GONE);
-                account1.setVisibility(View.VISIBLE);
-            }else{
-                btnLogout.setVisibility(View.VISIBLE);
-                account1.setVisibility(View.GONE);
-            }
 
             if (schoolStr.equals("")) {
                 school.setText("未填写");
@@ -344,7 +304,27 @@ public class MineFragment extends BaseFragment {
                     .transform(new CropCircleTransfermation())
                     .into(imgHead);
         }
+        if (loginId == 0) {
+            name.setText("登录/注册");
+            Picasso.with(getActivity()).load("http//null")
+                    .placeholder(R.mipmap.icon_head_defult)
+                    .error(R.mipmap.icon_head_defult)
+                    .transform(new CropCircleTransfermation())
+                    .into(imgHead);
+            account.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }
+            });
+        }else {
+            account.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
+        }
 
     }
 
