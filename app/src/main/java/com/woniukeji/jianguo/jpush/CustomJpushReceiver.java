@@ -5,18 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.woniukeji.jianguo.entity.PushType;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.main.PushMessageActivity;
 import com.woniukeji.jianguo.mine.AuthActivity;
-import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
-
-import java.util.HashMap;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;

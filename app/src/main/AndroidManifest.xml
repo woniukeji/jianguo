@@ -178,11 +178,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.SignActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
             android:name="me.nereo.multi_image_selector.PreviewPicturesActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
@@ -415,12 +410,14 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
-        <activity android:name=".setting.PereferenceActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity
+            android:name=".setting.PereferenceActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
-        <activity android:name=".login.ChangePhoneActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity
+            android:name=".login.ChangePhoneActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
     </application>

@@ -3,7 +3,6 @@ package com.woniukeji.jianguo.partjob;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,11 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +27,6 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.entity.SpinnerEntity;
-import com.woniukeji.jianguo.eventbus.CityEvent;
-import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
-import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -119,8 +111,6 @@ public class PartJobFragment extends BaseFragment {
                     DataComplete=true;
                     break;
                 case 1:
-                    //                    String ErrorMessage = (String) msg.obj;
-                    //                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
                     cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
@@ -128,7 +118,6 @@ public class PartJobFragment extends BaseFragment {
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-//                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -356,7 +345,6 @@ public class PartJobFragment extends BaseFragment {
                     .url(Constants.GET_USER_CITY_CATEGORY)
                     .addParams("only", only)
                     .addParams("login_id", "0")
-                    .addParams("city_id", "")
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)
