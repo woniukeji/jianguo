@@ -11,6 +11,7 @@ import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.main.PushMessageActivity;
 import com.woniukeji.jianguo.mine.AuthActivity;
+import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import cn.jpush.android.api.JPushInterface;

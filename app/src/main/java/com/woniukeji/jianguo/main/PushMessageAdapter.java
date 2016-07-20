@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.mine.AuthActivity;
+import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import java.util.List;
