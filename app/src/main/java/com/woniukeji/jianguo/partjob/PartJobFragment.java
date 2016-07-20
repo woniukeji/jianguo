@@ -27,7 +27,11 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -84,6 +88,9 @@ public class PartJobFragment extends BaseFragment {
     private int mtype = 0;
     private boolean DataComplete=false;
     private String cityCode;
+    private SubscriberOnNextListener<RxCityCategory> subscriberOnNextListener;
+
+
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -128,13 +135,19 @@ public class PartJobFragment extends BaseFragment {
 
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_part_job, container, false);
         ButterKnife.inject(this, view);
         EventBus.getDefault().register(this);
-        initData();
         initview();
         initDropDownView(view);
         return view;
@@ -142,7 +155,8 @@ public class PartJobFragment extends BaseFragment {
 
     private void initData() {
         cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
-        getCityCategory(cityCode);
+        getCityCategory("");
+//        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<RxCityCategory>(subscriberOnNextListener,getActivity()));
     }
 
     private void initview() {
@@ -166,12 +180,15 @@ public class PartJobFragment extends BaseFragment {
                         , "2", "0");
             }
         });
+        subscriberOnNextListener=new SubscriberOnNextListener<RxCityCategory>() {
+            @Override
+            public void onNext(RxCityCategory rxCityCategory) {
+                rxCityCategory.getData();
+            }
+        };
     }
 
     private void initDropDownView(View view) {
-
-
-
         //init sex menu
         mMenu = (DropDownMenu) view.findViewById(R.id.menu);
         mMenu.setmMenuCount(3);
@@ -185,7 +202,6 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
         mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
         mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
-
 //                mMenu.setDefaultMenuTitle(headers);//默认未选择任何过滤的Menu title
         mMenu.setMenuSelectedListener(new OnMenuSelectedListener() {
             @Override

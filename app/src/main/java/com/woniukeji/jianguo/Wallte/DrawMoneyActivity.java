@@ -47,18 +47,25 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.wechat.friends.Wechat;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 
 import static cn.pedant.SweetAlert.SweetAlertDialog.*;
 
-public class DrawMoneyActivity extends BaseActivity {
+public class DrawMoneyActivity extends BaseActivity implements PlatformActionListener{
 
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
@@ -98,6 +105,7 @@ public class DrawMoneyActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.inject(this);
     }
+
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -231,6 +239,37 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
 
     }
 
+    public void getWechatInfo(){
+
+    Platform wechat = ShareSDK.getPlatform(DrawMoneyActivity.this, Wechat.NAME);
+    wechat.setPlatformActionListener(this);
+    wechat.showUser(null);//执行登录，登录后在回调里面获取用户资料
+    }
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        Iterator iterator = hashMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if (entry.getKey().equals("nickname")) {
+              entry.getValue();
+            } else if (entry.getKey().equals("headimgurl")) {
+                entry.getValue();
+            } else if (entry.getKey().equals("sex")) {
+                entry.getValue().toString();
+            }
+        }
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+
+    }
+
     @Override
     public void initData() {
         Intent balanceIntent = getIntent();
@@ -350,8 +389,9 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 getSMS.execute();
                 break;
             case R.id.rl_alipay:
-                Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
-                startActivityForResult(intentali,0);
+                getWechatInfo();
+//                Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
+//                startActivityForResult(intentali,0);
                 break;
             case R.id.rl_yinlian:
                 Intent intent=new Intent(DrawMoneyActivity.this, BindYinlianActivity.class);

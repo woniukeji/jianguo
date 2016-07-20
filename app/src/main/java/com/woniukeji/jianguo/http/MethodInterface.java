@@ -2,8 +2,8 @@ package com.woniukeji.jianguo.http;
 
 
 import com.woniukeji.jianguo.entity.HttpResult;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.RxCityCategory;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 
 import retrofit2.http.GET;
@@ -43,6 +43,11 @@ public interface MethodInterface {
 *兼职详情获取
 */
         @GET("T_Job_info_Select_JobId_Servlet")
-        Observable<JobInfo> getJobDetail(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id, @Query("merchant_id") String merchant_id,@Query("alike") String alike);
+        Observable<RxJobDetails> getJobDetail(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id, @Query("merchant_id") String merchant_id, @Query("alike") String alike);
+/**
+*拉取城市和兼职类型（兼职列表界面使用）
+*/
+        @GET("T_Job_Area_City_List_User_Servlet")
+        Observable<RxCityCategory> getCityCategory(@Query("only") String only, @Query("login_id") String login_id);
 
 }

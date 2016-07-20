@@ -14,6 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -22,13 +26,15 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.LoginActivity;
+import com.woniukeji.jianguo.talk.ChatActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -40,6 +46,9 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -94,9 +103,9 @@ public class JobDetailActivity extends BaseActivity {
     private Jobs.ListTJobEntity job;
     private String money;
     private boolean loadMore=false;
-    JobInfo.DataBean.TJobInfoBean t_job_info;
-    JobInfo.DataBean.TMerchantBean t_merchant;
-    private SubscriberOnNextListener<JobInfo> subscriberOnNextListener;
+    RxJobDetails.DataBean.TJobInfoBean t_job_info;
+    RxJobDetails.DataBean.TMerchantBean t_merchant;
+    private SubscriberOnNextListener<RxJobDetails> subscriberOnNextListener;
     private int merchantid;
 
     private static class Myhandler extends Handler {
@@ -169,9 +178,9 @@ public class JobDetailActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
-        subscriberOnNextListener=new SubscriberOnNextListener<JobInfo >() {
+        subscriberOnNextListener=new SubscriberOnNextListener<RxJobDetails>() {
             @Override
-            public void onNext(JobInfo jobInfo) {
+            public void onNext(RxJobDetails jobInfo) {
                 fillData(jobInfo);
             }
         };
@@ -192,7 +201,7 @@ public class JobDetailActivity extends BaseActivity {
         tvWage.setText(money);
         tvHiringCount.setText(count);
         businessName.setText(mername);
-        HttpMethods.getInstance().getJobDetail(new ProgressSubscriber<JobInfo>(subscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
+        HttpMethods.getInstance().getJobDetail(new ProgressSubscriber<RxJobDetails>(subscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
     }
 
     @Override
@@ -246,20 +255,56 @@ public class JobDetailActivity extends BaseActivity {
 //                startActivity(intent);
                 break;
             case R.id.tv_contact_company:
+
+
+
                 if (loginId==0){
                     showShortToast("请先登录");
                     startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
                     return;
                 }
-                String tel=t_job_info.getTel();
-                if (tel==null||tel.equals("")){
-                    showShortToast("该商家暂无电话");
-                    return;
-                }
-                Mdialog mdialog=new Mdialog(mContext,tel);
-                mdialog.show();
+//                String tel=t_job_info.getTel();
+//                if (tel==null||tel.equals("")){
+//                    showShortToast("该商家暂无电话");
+//                    return;
+//                }
+//                Mdialog mdialog=new Mdialog(mContext,tel);
+//                mdialog.show();
 
+                final int Id=t_merchant.getId();
+                             String.valueOf(Id);
+                                       final String toUserId="42";
+                                Map<String, Object> attrs = new HashMap<>();
+                                attrs.put(Constants.CREAT_NAME, "嘿嘿");
+                               attrs.put(Constants.CREAT_IMG, "嘿嘿");
+                                attrs.put(Constants.OTHER_IMG, t_merchant.getName_image());
+                                attrs.put(Constants.OTHER_NAME, t_merchant.getName());
+                                attrs.put(Constants.C_TYPE, 0);
+                                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), "嘿嘿", attrs, false, true, new AVIMConversationCreatedCallback() {
+                                        @Override
+                                        public void done(AVIMConversation avimConversation, AVIMException e) {
+                                                if (e == null) {
+                                                        Map<String, Object> attributes = new HashMap<String, Object>();
+                                                        attributes.put("userid", String.valueOf(loginId));
+                                                        attributes.put("touserid", toUserId);
+                                                        attributes.put("nickname", "嘿嘿");
+                                                        attributes.put("avatar", "嘿嘿");
+                                                        attributes.put("type", 0);
+                                                        AVIMTextMessage message = new AVIMTextMessage();
+                                                        message.setText("出来聊会天吧！");
+                                                        message.setAttrs(attributes);
+                                                        avimConversation.sendMessage(message, null);
 
+                                                                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
+                                                        intent.putExtra("mConversationId",avimConversation.getConversationId());
+                                                        startActivity(intent);
+//                                                    finish();
+                                                            }else {
+                                                        String mes = e.getMessage();
+                                                        mes.trim();
+                                                    }
+                                            }
+                                   });
                 break;
             case R.id.tv_collection:
                 if (loginId==0){
@@ -314,7 +359,7 @@ public class JobDetailActivity extends BaseActivity {
                 break;
         }
     }
-    private void fillData(JobInfo jobInfo) {
+    private void fillData(RxJobDetails jobInfo) {
         t_job_info = jobInfo.getData().getT_job_info();
         t_merchant = jobInfo.getData().getT_merchant();
         tvWorkLocation.setText(t_job_info.getAddress());

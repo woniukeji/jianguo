@@ -3,8 +3,8 @@ package com.woniukeji.jianguo.http;
 
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.HttpResult;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.RxCityCategory;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.DateUtils;
 
@@ -163,7 +163,7 @@ public class HttpMethods {
     /**
      *获取兼职详情（工作详情界面）
      */
-    public void getJobDetail(Subscriber<JobInfo> subscriber, String loginId, String jobId, String merchantId){
+    public void getJobDetail(Subscriber<RxJobDetails> subscriber, String loginId, String jobId, String merchantId){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.getJobDetail(only,loginId,jobId,merchantId,"0")
                 .subscribeOn(Schedulers.io())
@@ -171,4 +171,16 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+     *获取兼职详情（工作详情界面）
+     */
+    public void getCityCategory(Subscriber<RxCityCategory> subscriber){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getCityCategory(only,"0")
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 }

@@ -4,7 +4,7 @@ package com.woniukeji.jianguo.entity;
  * Created by Administrator on 2016/7/19.
  */
 
-public class JobInfo {
+public class RxJobDetails {
 
     /**
      * message : 兼职详情信息录入成功

@@ -44,6 +44,7 @@ import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
 import com.woniukeji.jianguo.partjob.PartJobFragment;
 import com.woniukeji.jianguo.setting.PereferenceActivity;
+import com.woniukeji.jianguo.talk.TalkFragment;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -67,26 +68,23 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
+    private String[] titles = {"首页", "兼职", "果聊", "我的"};//"果聊",
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
             R.mipmap.tab_partjob_unselect,
+            R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
     //R.mipmap.tab_guo_talk_unselect,
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
             R.mipmap.tab_partjob_select,
+            R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     // R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private long exitTime;
-    private int MSG_GET_SUCCESS = 0;
-    private int MSG_GET_FAIL = 1;
-    ArrowDownloadButton button;
     private Handler mHandler = new Myhandler(this);
     private Context context = MainActivity.this;
-    private ImageView imgeMainLead;
-    private int clickTime=0;
 
     int b = 0;
 
@@ -328,17 +326,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-//        timer.schedule(task,2000);
     }
-//    Timer timer = new Timer();
-//    TimerTask task = new TimerTask(){
-//
-//        public void run() {
-//
-//            timer.cancel();
-//        }
-
-//    };
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -364,17 +352,17 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new PartJobFragment();          //话题榜
                 case 2:
+                    return new TalkFragment();//果聊
+                case 3:
                     return new MineFragment();  //用户榜
 
-//                case 3:
-//                    return new TalkFragment();
             }
             return new FragmentText();
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 
