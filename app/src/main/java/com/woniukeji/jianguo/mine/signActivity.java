@@ -50,9 +50,6 @@ import okhttp3.Response;
  */
 public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBack {
 
-
-    private static String params1 = "type";
-    private static String params2 = "jobid";
     @InjectView(R.id.img_renwu) ImageView imgRenwu;
     @InjectView(R.id.rl_null) RelativeLayout rlNull;
     @InjectView(R.id.list) FixedRecyclerView list;
@@ -100,7 +97,6 @@ public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.inject(this);
     }
 

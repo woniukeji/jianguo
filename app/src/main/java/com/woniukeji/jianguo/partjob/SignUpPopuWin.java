@@ -56,13 +56,13 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     private JobInfo.DataBean.TJobInfoBean jobinfo;
     private String payMethod;
      private String money;
+
     public SignUpPopuWin(Context context, Handler handler, int id, JobInfo.DataBean.TJobInfoBean jobinfo, String toString, String s) {
         this.context = context;
         this.mHandler=handler;
         jobid=id;
         this.payMethod=s;
         this.jobinfo=jobinfo;
-
     }
     public void showShareWindow() {
         View view = LayoutInflater.from(context).inflate(R.layout.popwindow_signup, null);
