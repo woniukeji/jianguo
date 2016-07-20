@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tabHost) CommonTabLayout tabHost;
     @BindView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
+    private String[] titles = {"首页", "购物车",  "我的"};//"果聊",
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
             R.mipmap.tab_partjob_unselect,

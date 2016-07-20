@@ -186,7 +186,7 @@ public class PartJobFragment extends BaseFragment {
         mMenu = (DropDownMenu) view.findViewById(R.id.menu);
         mMenu.setmMenuCount(3);
         mMenu.setmShowCount(6);
-        mMenu.setShowCheck(true);//是否显示展开list的选中项
+        mMenu.setShowCheck(true);//是否显示展开list的选中项1
         mMenu.setmMenuTitleTextSize(12);//Menu的文字大小
         mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色
         mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
@@ -201,10 +201,7 @@ public class PartJobFragment extends BaseFragment {
             @Override
             //Menu展开的list点击事件  RowIndex：list的索引  ColumnIndex：menu的索引
             public void onSelected(View listview, int RowIndex, int ColumnIndex,int sortId) {
-//                MainActivity mainActivity = (MainActivity) getActivity();
-//                mainActivity.showLongToast("选中了第" + ColumnIndex + "拍" + "xuanzhongle" + RowIndex);
                 if (ColumnIndex == 0) {
-//                    typeid = String.valueOf(cityCategoryBaseBean.getData().getList_t_type().get(RowIndex).getId());
                     typeid = String.valueOf(sortId);
                 } else if (ColumnIndex == 2) {
                     switch (RowIndex) {
@@ -220,7 +217,6 @@ public class PartJobFragment extends BaseFragment {
                     }
                 } else if (ColumnIndex == 1) {
                     areid= String.valueOf(sortId);
-//                    areid = String.valueOf(cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().get(RowIndex));
                 }
                 getJobs(cityCode, typeid, areid, filterid, "0");
             }

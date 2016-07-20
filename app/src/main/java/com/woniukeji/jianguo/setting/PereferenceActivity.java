@@ -274,7 +274,7 @@ public class PereferenceActivity extends BaseActivity {
                       }else {
                           for (int i = 0; i < weekIds.size(); i++) {
                               int tens= Integer.parseInt(weekIds.get(i).substring(0,1));//个位
-                              int units= Integer.parseInt(weekIds.get(i).substring(0,1));//十位
+                              int units= Integer.parseInt(weekIds.get(i).substring(1,2));//十位
                               int finalPosition=tens*8+units;
                               if (position==finalPosition){
                                   holder.imageView.setVisibility(View.VISIBLE);

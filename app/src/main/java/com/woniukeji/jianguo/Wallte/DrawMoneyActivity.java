@@ -1,6 +1,10 @@
 package com.woniukeji.jianguo.wallte;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -29,6 +33,7 @@ import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.BaseCallback;
 import com.woniukeji.jianguo.entity.CodeCallback;
+import com.woniukeji.jianguo.entity.DrawMoney;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.BitmapUtils;
@@ -41,6 +46,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -49,6 +55,8 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
+
+import static cn.pedant.SweetAlert.SweetAlertDialog.*;
 
 public class DrawMoneyActivity extends BaseActivity {
 
@@ -143,6 +151,22 @@ public class DrawMoneyActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
+        Date date=new Date(System.currentTimeMillis());//当前时间
+        int hour= Integer.parseInt(DateUtils.getHHTime(date));
+      if (hour<8||hour>21){
+          AlertDialog.Builder builder = new AlertDialog.Builder(DrawMoneyActivity.this);
+          builder.setTitle("温馨提示");
+          builder.setMessage("尊敬的用户，您当前的提现申请将会在8:00-21:00为您处理，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+//          sweetAlertDialog.set("尊敬的用户，兼果提现申请的处理时间为每日的8:00-21:00，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+          builder.setOnCancelListener(new OnCancelListener() {
+              @Override
+              public void onCancel(DialogInterface dialog) {
+                  dialog.dismiss();
+              }
+          });
+          builder.create().show();
+      }
+
       etMoneySum.addTextChangedListener(new TextWatcher() {
 
           @Override
@@ -370,7 +394,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
         private final String type;
         private final String money;
         //        private final String kahao;
-        SweetAlertDialog pDialog = new SweetAlertDialog(DrawMoneyActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        SweetAlertDialog pDialog = new SweetAlertDialog(DrawMoneyActivity.this, PROGRESS_TYPE);
 
         PostTask(String id, String type, String money) {
             this.id = id;

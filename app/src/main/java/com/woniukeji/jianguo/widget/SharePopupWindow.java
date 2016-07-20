@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.JobDetails;
+import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.Wage;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -56,10 +57,10 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     private String linkUrl= Constants.JIANGUO_TEST2+"Html_Job_Id_Servlet";
     private String jobid;
     private Jobs.ListTJobEntity job;
-    JobDetails.TJobInfoEntity jobinfo;
+    JobInfo.DataBean.TJobInfoBean jobinfo;
     //分享相关
 
-    public SharePopupWindow(Context cx, Handler handler, String jobId, Jobs.ListTJobEntity job, JobDetails.TJobInfoEntity jobinfo, String date, String wage) {
+    public SharePopupWindow(Context cx, Handler handler, String jobId, Jobs.ListTJobEntity job, JobInfo.DataBean.TJobInfoBean jobinfo, String date, String wage) {
         this.context = cx;
         this.mHandler = handler;
         this.job=job;

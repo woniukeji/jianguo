@@ -78,7 +78,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     splashActivity.finish();
                     break;
                 case 1:
+                    //如果本地的登录信息登录失败 则删除本地缓存的用户信息，并跳转到首页
                     splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
+                    SPUtils.deleteParams(splashActivity);
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     splashActivity.finish();
@@ -216,7 +218,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     mCityName =aMapLocation.getProvince();//省信息
                 }
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
-                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()));
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()-1));
             } else {
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");

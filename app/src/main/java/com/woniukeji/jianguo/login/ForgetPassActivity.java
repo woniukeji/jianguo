@@ -98,6 +98,7 @@ public class ForgetPassActivity extends BaseActivity {
 //                    Intent intent = new Intent(registActivity, MainActivity.class);
 //                    registActivity.startActivity(intent);
                     registActivity.showShortToast("密码修改成功，请重新登录");
+                    SPUtils.deleteParams(registActivity);
                     registActivity.finish();
                     break;
                 case 1:

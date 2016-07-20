@@ -190,7 +190,16 @@ public class DateUtils {
     public static String getDate(Date date) {
         return format(date, "yyyy/MM/dd");
     }
-
+    /**
+     * 功能描述：返回字符型时间
+     *
+     * @param date
+     *            Date 日期
+     * @return 返回字符型时间 HH 格式
+     */
+    public static String getHHTime(Date date) {
+        return format(date, "HH");
+    }
     /**
      * 功能描述：返回字符型时间
      *

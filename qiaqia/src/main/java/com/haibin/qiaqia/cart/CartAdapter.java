@@ -1,142 +1,101 @@
 package com.haibin.qiaqia.cart;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.haibin.qiaqia.R;
-import com.haibin.qiaqia.entity.User;
+import com.haibin.qiaqia.entity.ListChaoCommodity;
+import com.haibin.qiaqia.home.HomeAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
-    private final List<User> mValues;
-    private final Context mContext;
-    public static final int NORMAL = 1;
-    public static final int IS_FOOTER = 2;
-    private AnimationDrawable mAnimationDrawable;
-    private boolean isFooterChange = false;
 
-    public CartAdapter(List<User> items, Context context) {
-        mValues = items;
-        mContext = context;
+    private Context context;
+    private List<ListChaoCommodity> list;
+    private HomeAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
+    public static interface OnRecyclerViewItemClickListener {
+        void onItemClick(View view, ListChaoCommodity data);
     }
 
-
-    public void setFooterChange(boolean isChange) {
-        isFooterChange = isChange;
-    }
-
-    public void mmswoon(ViewHolder holder) {
-        if (isFooterChange) {
-            holder.loading.setText("已加载全部");
-        } else {
-            holder.loading.setText("已加载全部");
-            holder.animLoading.setVisibility(View.GONE);
-//            holder.animLoading.setBackgroundResource(R.drawable.loading_footer);
-//            mAnimationDrawable = (AnimationDrawable) holder.animLoading.getBackground();
-//            mAnimationDrawable.start();
-        }
-
+    public CartAdapter(Context context, List<ListChaoCommodity> list) {
+        this.context = context;
+        this.list = list;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = View.inflate(context, R.layout.item_cart, null);
+        ViewHolder holder = new ViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    //注意这里使用getTag方法获取数据
+//                    mOnItemClickListener.onItemClick(v, (ListChaoCommodity) v.getTag());
+                }
+            }
+        });
 
-        ViewHolder holder = null;
-        switch (viewType) {
-            case NORMAL:
-                View VoteView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image, parent, false);
-                holder = new ViewHolder(VoteView, NORMAL);
-                return holder;
-
-            case IS_FOOTER:
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image, parent, false);
-                holder = new ViewHolder(view, IS_FOOTER);
-                return holder;
-
-            default:
-                break;
-        }
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        if (mValues.size() <1) {
-            holder.itemView.setVisibility(View.GONE);
-        }
-        if (mValues.size() == position) {
-            if (mValues.size()>4){
-                mmswoon(holder);
-                holder.itemView.setVisibility(View.VISIBLE);
-            }
-        } else {
-            final User job = mValues.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mContext.startActivity(new Intent());
-                }
-            });
-        }
+        ListChaoCommodity data = list.get(position);
+        holder.tvItemName.setText(data.getName());
+        holder.tvColorName.setText(data.getAlias());
+        holder.tvItemPrice.setText(String.valueOf(data.getPrice())+ "元");
+        holder.tvItemCount.setText(String.valueOf(data.getCount()));
+        Glide.with(context)
+                .load(data.getImage())
+                .placeholder(R.drawable.ic_loading_rotate)
+                .crossFade()
+                .into(holder.ivItemPic);
+//        holder.itemView.setTag(data);
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size() > 0 ? mValues.size() + 1 : 0;
+        return list.size();
     }
 
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == mValues.size()) {
-            return IS_FOOTER;
-        } else {
-            return NORMAL;
-        }
+    public void setmOnItemClickListener(HomeAdapter.OnRecyclerViewItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
-
-    static
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.iv_item_pic)
+        ImageView ivItemPic;
+        @BindView(R.id.tv_item_name)
+        TextView tvItemName;
+        @BindView(R.id.tv_item_color)
+        TextView tvItemColor;
+        @BindView(R.id.tv_color_name)
+        TextView tvColorName;
+        @BindView(R.id.tv_item_price)
+        TextView tvItemPrice;
+        @BindView(R.id.iv_item_add)
+        ImageView ivItemAdd;
+        @BindView(R.id.tv_item_count)
+        TextView tvItemCount;
+        @BindView(R.id.iv_item_down)
+        ImageView ivItemDown;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
 
-        private ImageView animLoading;
-        private TextView loading;
-
-        public ViewHolder(View view, int type) {
-            super(view);
-
-            switch (type) {
-                case NORMAL:
-                    ButterKnife.bind(this, view);
-                    break;
-                case IS_FOOTER:
-//                    animLoading = (ImageView) view.findViewById(R.id.anim_loading);
-//                    loading = (TextView) view.findViewById(R.id.tv_loading);
-                    break;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + "'";
         }
     }
-
-
 }

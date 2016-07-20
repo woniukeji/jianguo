@@ -30,60 +30,10 @@
     android:gravity="center"
     android:layout_marginTop="5dp"
     />
-    <LinearLayout
-        android:id="@+id/ll_img"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="255dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingTop="20dp"
-        android:visibility="gone"
-        >
-<ImageView
-    android:id="@+id/img_good"
-    android:layout_width="wrap_content"
-    android:layout_height="54dp"
-    android:src="@mipmap/icon_smile"
-    android:layout_weight="1"
 
-    />
-        <ImageView
-            android:id="@+id/img_bad"
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            android:src="@mipmap/icon_anger"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:layout_below="@+id/ll_img"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:paddingTop="10dp"
-        android:paddingBottom="20dp"
-        android:background="@color/white"
-        >
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="点个赞"
-        android:layout_weight="1"
-        android:gravity="center"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="吐个槽"
-            android:layout_weight="1"
-            android:gravity="center"
-            />
-    </LinearLayout>
     <TextView
         android:id="@+id/bootom"
-        android:layout_below="@+id/tv_copration"
+        android:layout_below="@+id/rl_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="兼果在手，兼职我有"
@@ -91,11 +41,18 @@
         android:textSize="12dp"
         android:layout_marginTop="30dp"
         />
+    <LinearLayout
+        android:id="@+id/rl_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="260dp"
+        android:orientation="vertical"
+        >
     <RelativeLayout
         android:id="@+id/tv_leave_opinion"
         android:layout_width="match_parent"
-        android:background="@color/white"
-       android:layout_marginTop="260dp"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
@@ -115,12 +72,16 @@
             android:background="@mipmap/icon_go"
             />
     </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f3f3f3"
+            />
     <RelativeLayout
         android:id="@+id/rl_rule"
         android:layout_below="@+id/tv_leave_opinion"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_marginTop="1dp"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
@@ -140,13 +101,16 @@
             android:background="@mipmap/icon_go"
             />
     </RelativeLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f3f3f3"
+            />
     <RelativeLayout
         android:id="@+id/rl_phone"
         android:layout_width="match_parent"
         android:layout_below="@+id/rl_rule"
-        android:background="@color/white"
-        android:layout_marginTop="1dp"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_height="48dp">
         <TextView
             android:layout_width="wrap_content"
@@ -166,28 +130,35 @@
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/tv_copration"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/rl_phone"
-        android:background="@color/white"
-        android:layout_marginTop="1dp"
-        android:layout_height="48dp">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="官方网站"
-            android:layout_marginLeft="15dp"
-            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f3f3f3"
             />
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="www.jianguojob.com"
-            android:textColor="@color/app_bg"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical"
-            />
-    </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/tv_copration"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/rl_phone"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_height="48dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="官方网站"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                />
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="www.jianguojob.com"
+                android:textColor="@color/app_bg"
+                android:layout_marginRight="15dp"
+                android:gravity="center_vertical"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
 </RelativeLayout>

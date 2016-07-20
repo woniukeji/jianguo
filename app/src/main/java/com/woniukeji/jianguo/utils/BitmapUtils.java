@@ -14,7 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.util.Base64;
 
-import com.woniukeji.jianguo.utils.io.FileUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -472,22 +471,7 @@ public class BitmapUtils {
         return compressBitmap(imageFile, true, maxSize);
     }
 
-    /**
-     * 质量压缩图片-压缩在1M以内
-     * @param imageFile
-     */
-    public static void compressImage(String imageFile) {
-        compressImage(imageFile, true, (long)(1 * FileUtils.MB));
-    }
 
-    /**
-     * 质量压缩图片-压缩在1M以内
-     * @param imageFile
-     * @return
-     */
-    public static Bitmap compressBitmap(String imageFile) {
-        return compressBitmap(imageFile, true, (long)(1 * FileUtils.MB));
-    }
 
     /**
      * 旋转bitmap

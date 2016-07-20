@@ -24,8 +24,8 @@ android {
         applicationId "com.woniukeji.jianguo"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 18
-        versionName "3.0.7"
+        versionCode 19
+        versionName "3.0.8"
         generatedDensities = []
         multiDexEnabled true
         ndk {
@@ -106,16 +106,15 @@ dependencies {
     //    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'  暂时去掉 清单文件 启动 退出
     //compile 'cn.lightsky.infiniteindicator:library:1.1.0'
     
-
     //    compile 'com.tencent.bugly:crashreport:1.2.9'
 
     // bugly后续更新SDK，请直接更新版本号
 
-    //    compile 'io.reactivex:rxjava:1.1.0'
+        compile 'io.reactivex:rxjava:1.1.0'
 
-    //    compile 'io.reactivex:rxandroid:1.1.0'
+        compile 'io.reactivex:rxandroid:1.1.0'
 
-    //    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+        compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile files('libs/android-async-http-1.4.9.jar')
     compile files('libs/happy-dns-0.2.4.jar')
     compile files('libs/httpclient-4.4.1.1.jar')
@@ -157,5 +156,7 @@ dependencies {
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     testCompile 'junit:junit:4.12'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 }
 

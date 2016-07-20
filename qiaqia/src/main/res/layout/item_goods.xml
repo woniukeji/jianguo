@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="270dp"
-                android:background="@color/transparent"
-              android:layout_height="wrap_content">
+              android:layout_width="185dp"
+                android:background="#f6f6f6"
+              android:layout_height="213dp">
 
     <LinearLayout
         android:layout_width="235dp"
@@ -11,56 +11,56 @@
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
        >
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
-            android:layout_height="188dp"
+            android:layout_height="124dp"
             android:src="@mipmap/caomei"
             android:scaleType="centerCrop"
             android:background="#ffffff"
             />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="67dp"
             android:paddingLeft="16dp"
             android:paddingRight="9dp"
-            android:paddingBottom="25dp"
             android:background="@drawable/bg_goods_item"
             >
             <TextView
                 android:id="@+id/tv_goods_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="13dp"
                 android:text="泰国红草莓"
                 android:maxEms="5"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="11dp"
                 />
+
             <TextView
                 android:layout_below="@+id/tv_goods_name"
                 android:id="@+id/tv_goods_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="18dp"
+                android:layout_marginTop="10dp"
+                android:textSize="13dp"
                 android:text="7.00元/500g"
-                android:textColor="@color/red_btn_bg_color"
+                android:textColor="#ef4432"
                 />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/jiahao_on"
-                android:layout_marginTop="28dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-
-                />
+                android:layout_alignParentEnd="true"
+                android:id="@+id/imageView3"/>
         </RelativeLayout>
     </LinearLayout>
 
