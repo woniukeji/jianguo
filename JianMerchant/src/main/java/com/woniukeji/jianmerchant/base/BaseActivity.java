@@ -22,6 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         initData();
         addActivity();
     }
+
     @Override
     protected void onStart() {
         LogUtils.i("activity",":onstart");
@@ -40,10 +41,12 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
     @Override
     protected void onStop() {
         super.onStop();
     }
+
     @Override
     protected void onDestroy() {
         LogUtils.i("activity",":onDestroy");

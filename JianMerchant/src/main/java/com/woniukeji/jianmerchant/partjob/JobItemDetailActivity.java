@@ -2,7 +2,6 @@ package com.woniukeji.jianmerchant.partjob;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -334,11 +333,11 @@ public class JobItemDetailActivity extends BaseActivity {
         }
 
         //期限（1=月结，2=周结，3=日结，4=小时结）
-        if (jobinfo.getTerm() == 0) {
+        if (jobinfo.getMode() == 0) {
             tvPayMethod.setText("月结");
-        } else if (jobinfo.getTerm() == 1) {
+        } else if (jobinfo.getMode() == 1) {
             tvPayMethod.setText("周结");
-        } else if (jobinfo.getTerm() == 2) {
+        } else if (jobinfo.getMode() == 2) {
             tvPayMethod.setText("日结");
         } else
             tvPayMethod.setText("小时结");

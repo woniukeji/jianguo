@@ -68,6 +68,7 @@ public class JobDetails implements Serializable{
         }
 
         public static class TJobInfoEntity implements Serializable{
+            private int mode;
             private int id;
             private String job_id;
             private String address;
@@ -289,6 +290,14 @@ public class JobDetails implements Serializable{
 
             public String getIs_collection() {
                 return is_collection;
+            }
+
+            public int getMode() {
+                return mode;
+            }
+
+            public void setMode(int mode) {
+                this.mode = mode;
             }
         }
 

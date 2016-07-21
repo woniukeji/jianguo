@@ -1,7 +1,6 @@
 package com.woniukeji.jianmerchant.affordwages;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,14 +19,11 @@ import com.woniukeji.jianmerchant.R;
 import com.woniukeji.jianmerchant.base.Constants;
 import com.woniukeji.jianmerchant.entity.AffordUser;
 import com.woniukeji.jianmerchant.eventbus.UserWagesEvent;
-import com.woniukeji.jianmerchant.publish.PublishDetailActivity;
 import com.woniukeji.jianmerchant.utils.CropCircleTransfermation;
+import com.woniukeji.jianmerchant.utils.LogUtils;
 import com.woniukeji.jianmerchant.utils.SPUtils;
-import com.woniukeji.jianmerchant.widget.CircleImageView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -80,7 +76,7 @@ public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        LogUtils.d("谁先调用----","onCreateViewHolder");
         ViewHolder holder = null;
         switch (viewType) {
             case NORMAL:
@@ -101,6 +97,7 @@ public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        LogUtils.d("谁先调用----","onBindViewHolder");
         if (mValues.size() < 1) {
             holder.itemView.setVisibility(View.GONE);
         }
@@ -169,12 +166,14 @@ public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.View
 
     @Override
     public int getItemCount() {
+        LogUtils.d("谁先调用----","getItemCount");
         return mValues.size() > 0 ? mValues.size() + 1 : 0;
     }
 
 
     @Override
     public int getItemViewType(int position) {
+        LogUtils.d("谁先调用----","getItemViewType");
         if (position == mValues.size()) {
             return IS_FOOTER;
         } else {
@@ -202,7 +201,7 @@ public class CalculateAdapter extends RecyclerView.Adapter<CalculateAdapter.View
 
         public ViewHolder(View view, int type) {
             super(view);
-
+            LogUtils.d("谁先调用----","ViewHolder");
             switch (type) {
                 case NORMAL:
                     ButterKnife.inject(this, view);
