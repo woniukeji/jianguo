@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.woniukeji.jianguo.setting.SettingActivity">
    <include
        layout="@layout/app_title_bar"
@@ -50,37 +51,41 @@
             android:layout_marginLeft="3dp"
             />
     </RelativeLayout>
+
+
     <RelativeLayout
-        android:id="@+id/refresh"
+        android:id="@+id/change_phone"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
         <ImageView
-            android:id="@+id/img_01"
+            android:id="@+id/img_04"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pingjia"
+            android:src="@mipmap/change_phone"
             android:gravity="center"
             />
         <TextView
-            android:layout_toRightOf="@+id/img_01"
+            android:layout_toRightOf="@+id/img_04"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="检测更新"
+            android:layout_marginLeft="10dp"
+            android:text="更换手机号"
             android:gravity="center_vertical"
             android:textSize="16dp"
             />
         <ImageView
-            android:id="@+id/img_02"
             android:layout_alignParentRight="true"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -91,36 +96,38 @@
             />
     </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/about"
+        android:id="@+id/change"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical"
-        android:background="@color/white"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingLeft="15dp"
         >
         <ImageView
             android:id="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_pingjia"
+            android:src="@mipmap/mima"
             android:gravity="center"
             />
         <TextView
             android:layout_toRightOf="@+id/img_03"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="关于我们"
+            android:layout_marginLeft="10dp"
+            android:text="修改密码"
             android:gravity="center_vertical"
             android:textSize="16dp"
             />
         <ImageView
-            android:id="@+id/img_04"
             android:layout_alignParentRight="true"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/icon_go"
-            android:gravity="center"
-            android:layout_marginRight="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/go"
             />
         <TextView
             android:layout_width="match_parent"
@@ -130,17 +137,69 @@
             android:layout_marginLeft="3dp"
             />
     </RelativeLayout>
-    
+    <RelativeLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingLeft="15dp"
+        >
+
+        <TextView
+            android:layout_toRightOf="@+id/img_01"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="检测更新"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_bg"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/go"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_btn_bg_color"
+            android:layout_marginLeft="3dp"
+            />
+
+        <ImageView
+            android:id="@+id/img_01"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/gx"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#f3f3f3"
+        />
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/button_background_logout"
+        android:background="?android:attr/selectableItemBackground"
        android:text="退出登录"
         android:textSize="14dp"
-        android:textColor="@color/white"
+        android:textColor="#FF7070"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f3f3f3"
         />
 </LinearLayout>

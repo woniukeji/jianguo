@@ -34,6 +34,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
+import com.woniukeji.jianguo.eventbus.LoginEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
 import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
@@ -42,6 +43,8 @@ import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
 import com.woniukeji.jianguo.partjob.PartJobFragment;
+import com.woniukeji.jianguo.setting.PereferenceActivity;
+import com.woniukeji.jianguo.talk.TalkFragment;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -65,30 +68,25 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.tabHost) CommonTabLayout tabHost;
     @InjectView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
+    private String[] titles = {"首页", "兼职", "果聊", "我的"};//"果聊",
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
             R.mipmap.tab_partjob_unselect,
+            R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
     //R.mipmap.tab_guo_talk_unselect,
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
             R.mipmap.tab_partjob_select,
+            R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     // R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private long exitTime;
-    private int MSG_GET_SUCCESS = 0;
-    private int MSG_GET_FAIL = 1;
-    ArrowDownloadButton button;
     private Handler mHandler = new Myhandler(this);
     private Context context = MainActivity.this;
-    private ImageView imgeMainLead;
-    private int clickTime=0;
-    private String apkurl;
 
     int b = 0;
-    private RelativeLayout up_dialog;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -134,27 +132,12 @@ public class MainActivity extends BaseActivity {
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
         ButterKnife.inject(this);
         initSystemBar(this);
-        button = (ArrowDownloadButton)findViewById(R.id.download_button);
-        up_dialog= (RelativeLayout) findViewById(R.id.up_dialog);
-        int version = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
-        apkurl = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
-        if (version > getVersion()) {//大于当前版本升级
-            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("检测到新版本，是否更新？")
-                    .setConfirmText("确定")
-                    .setCancelText("取消")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-//                            SweetAlertDialog downLoadDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-//                            downLoadDialog.setTitleText("正在下载新版本");
-//                            downLoadDialog.show();
-                            up_dialog.setVisibility(View.VISIBLE);
-                            button.startAnimating();
-                            downAPK();
-                        }
-                    }).show();
+        Intent intent=this.getIntent();
+        boolean login=intent.getBooleanExtra("login",false);
+        if (login){
+            LoginEvent loginEvent=new LoginEvent();
+            loginEvent.login=true;
+           EventBus.getDefault().post(loginEvent);
         }
     }
 
@@ -179,78 +162,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-        /**
-         * postInfo
-         */
-        public void downAPK() {
 
-            OkHttpUtils
-                    .get()
-                    .url(apkurl)
-                    .build()
-                    .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "jianguoApk")//
-                    {
-
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                        }
-//                        @Override
-//                        public void inProgress( float progress,int id) {
-//                            Message message=new Message();
-//                            message.what=2;
-//                            float tem=progress*100;
-//                            b = (int)tem;
-//                            message.arg1=b;
-//                            int i = (int) Math.round(progress+0.5);
-//                            LogUtils.e("mes", progress+"pro"+b+"mes"+i);
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    button.setProgress(b);
-//                                }
-//                            });
-//                        }
-                        @Override
-                        public void onResponse(File file,int id) {
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    up_dialog.setVisibility(View.GONE);
-                                }
-                            });
-                            openFile(file);
-
-                        }
-                    });
-        }
-    private void openFile(File file) {
-        // TODO Auto-generated method stub
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),
-                "application/vnd.android.package-archive");
-        startActivity(intent);
-    }
-
-
-    /**
-     * 获取版本号
-     *
-     * @return 当前应用的版本号
-     */
-    public int getVersion() {
-        try {
-            PackageManager manager = MainActivity.this.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(MainActivity.this.getPackageName(), 0);
-            int version = info.versionCode;
-            return version;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
 
 
     @TargetApi(19)
@@ -295,10 +207,10 @@ public class MainActivity extends BaseActivity {
         FragmentManager mFragmentManager = getSupportFragmentManager();
         tabHost = (CommonTabLayout) findViewById(R.id.tabHost);
         mainPager = (ViewPager) findViewById(R.id.mainPager);
-        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
+//        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
-        mainPager .setOffscreenPageLimit(1);
+        mainPager .setOffscreenPageLimit(2);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -359,25 +271,29 @@ public class MainActivity extends BaseActivity {
     public void initData() {
 
         int loginId = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-            int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
-        if (First==0){
-            imgeMainLead.setVisibility(View.VISIBLE);
-            imgeMainLead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   if(clickTime==0){
-                        imgeMainLead.setBackgroundResource(R.mipmap.img_three);
-                    }else if(clickTime==1){
-                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
-                    }else if(clickTime==2){
-                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
-                        imgeMainLead.setVisibility(View.GONE);
-                        SPUtils.setParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 1);
-                    }
-                    clickTime++;
-                }
-            });
+        int First = (int) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 0);
+        String hobby = (String) SPUtils.getParam(MainActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, "1");
+        if (hobby.equals("0")){
+            startActivity(new Intent(MainActivity.this, PereferenceActivity.class));
         }
+//        if (First==0){
+//            imgeMainLead.setVisibility(View.VISIBLE);
+//            imgeMainLead.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                   if(clickTime==0){
+//                        imgeMainLead.setBackgroundResource(R.mipmap.img_three);
+//                    }else if(clickTime==1){
+//                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
+//                    }else if(clickTime==2){
+//                        imgeMainLead.setBackgroundResource(R.mipmap.img_four);
+//                        imgeMainLead.setVisibility(View.GONE);
+//                        SPUtils.setParam(MainActivity.this, Constants.LOGIN_INFO, Constants.SP_FIRST, 1);
+//                    }
+//                    clickTime++;
+//                }
+//            });
+//        }
 
     }
 
@@ -410,17 +326,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-//        timer.schedule(task,2000);
     }
-//    Timer timer = new Timer();
-//    TimerTask task = new TimerTask(){
-//
-//        public void run() {
-//
-//            timer.cancel();
-//        }
-
-//    };
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -446,17 +352,17 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new PartJobFragment();          //话题榜
                 case 2:
+                    return new TalkFragment();//果聊
+                case 3:
                     return new MineFragment();  //用户榜
 
-//                case 3:
-//                    return new TalkFragment();
             }
             return new FragmentText();
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 

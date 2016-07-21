@@ -175,8 +175,8 @@ public class PartJobActivity extends BaseActivity {
     @Override
     public void initData() {
         Intent intent = getIntent();
-          cityid = intent.getIntExtra("cityid", 3);
-         type = intent.getIntExtra("type", 2);
+        cityid = intent.getIntExtra("cityid", 3);
+        type = intent.getIntExtra("type", 2);
         if (type==3){
             tvTitle.setText("兼职旅行");
         }else if(type==5){

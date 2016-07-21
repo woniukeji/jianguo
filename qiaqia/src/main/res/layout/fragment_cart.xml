@@ -1,28 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="#f3f3f3"
-             >
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="@color/transparent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/app_color"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/back_arrow"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/tv_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="购物车"
+            android:textSize="18.5dp"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/delete"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20.5dp"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
     <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:layout_below="@id/rl_header"
         android:id="@+id/recyclerview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-    <!--<android.support.v4.widget.SwipeRefreshLayout-->
-        <!--android:id="@+id/refresh_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--&gt;-->
-
-        <!--<com.woniukeji.jianguo.widget.FixedRecyclerView-->
-            <!--android:id="@+id/list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_below="@+id/rl_header"-->
-            <!--android:fastScrollEnabled="true"-->
-            <!--android:listSelector="@color/transparent"-->
-            <!--android:overScrollMode="never"-->
-            <!--android:scrollbarStyle="outsideOverlay" />-->
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 </RelativeLayout>
+

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.woniukeji.jianguo.entity.PushType;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
@@ -15,8 +13,6 @@ import com.woniukeji.jianguo.main.PushMessageActivity;
 import com.woniukeji.jianguo.mine.AuthActivity;
 import com.woniukeji.jianguo.mine.SignActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
-
-import java.util.HashMap;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
@@ -47,7 +43,7 @@ import de.greenrobot.event.EventBus;
                 String type = extras.getString(JPushInterface.EXTRA_EXTRA);//类型 0=报名，1=钱包，2=实名
                 Gson gson=new Gson();
                 PushType pushType = gson.fromJson(type, PushType.class);
-
+            if (null!=pushType&&null!=pushType.getType()){
                 if (pushType.getType().equals("0")) {
                     context.startActivity(new Intent(context, SignActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } else if (pushType.getType().equals("1")) {
@@ -56,7 +52,8 @@ import de.greenrobot.event.EventBus;
                     context.startActivity(new Intent(context, AuthActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } else
                     context.startActivity(new Intent(context, PushMessageActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            }else
+                context.startActivity(new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
-
         }
     }

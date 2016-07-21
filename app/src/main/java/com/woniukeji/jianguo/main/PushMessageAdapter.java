@@ -9,16 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.mine.AuthActivity;
 import com.woniukeji.jianguo.mine.SignActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
-import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import java.util.List;

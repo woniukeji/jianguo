@@ -109,6 +109,7 @@ public class QuickLoginFragment extends BaseFragment {
                     quickLoginEvent.isQuickLogin = true;
                     EventBus.getDefault().post(quickLoginEvent);
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("login",true);
                     startActivity(intent);
                     getActivity().finish();
                     break;
@@ -178,7 +179,8 @@ public class QuickLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, user.getApk_url());
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
-
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, user.getT_user_login().getHobby());
 
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
@@ -186,7 +188,6 @@ public class QuickLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, user.getT_user_info().getSchool() != null ? user.getT_user_info().getSchool() : "");
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
-        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_RESUMM, user.getT_user_login().getResume());
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
 
 

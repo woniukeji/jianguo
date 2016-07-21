@@ -64,8 +64,7 @@ public class PereferenceActivity extends BaseActivity {
     @Override
     public void initViews() {
         tvSave = (TextView) findViewById(R.id.tv_save);
-
-
+        ImageView ivBack = (ImageView) findViewById(R.id.iv_back);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_time);
         mJobRecyclerView = (RecyclerView) findViewById(R.id.recycler_job);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,8);
@@ -79,6 +78,14 @@ public class PereferenceActivity extends BaseActivity {
 //        mJobRecyclerView.addItemDecoration(new DividerGridItemDecoration(this) {});
 //添加分割线
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this) {
+        });
+
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
 
@@ -95,8 +102,8 @@ public class PereferenceActivity extends BaseActivity {
     @Override
     public void initData() {
         initTimeData();
-        String cityid = String.valueOf(SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, ""));
-        int position = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, 0);
+//        String cityid = String.valueOf(SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_ID, ""));
+//        int position = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.LOGIN_CITY_POSITION, 0);
         loginId = (int) SPUtils.getParam(PereferenceActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         getHobby();
     }
@@ -267,7 +274,7 @@ public class PereferenceActivity extends BaseActivity {
                       }else {
                           for (int i = 0; i < weekIds.size(); i++) {
                               int tens= Integer.parseInt(weekIds.get(i).substring(0,1));//个位
-                              int units= Integer.parseInt(weekIds.get(i).substring(0,1));//十位
+                              int units= Integer.parseInt(weekIds.get(i).substring(1,2));//十位
                               int finalPosition=tens*8+units;
                               if (position==finalPosition){
                                   holder.imageView.setVisibility(View.VISIBLE);

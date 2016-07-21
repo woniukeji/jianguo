@@ -3,7 +3,6 @@ package com.woniukeji.jianguo.partjob;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,11 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +27,11 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.entity.SpinnerEntity;
-import com.woniukeji.jianguo.eventbus.CityEvent;
-import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
+import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -89,9 +86,11 @@ public class PartJobFragment extends BaseFragment {
     private Handler mHandler = new Myhandler(this.getActivity());
     private DropDownMenu mMenu;
     private int mtype = 0;
-    private int position;
     private boolean DataComplete=false;
     private String cityCode;
+    private SubscriberOnNextListener<RxCityCategory> subscriberOnNextListener;
+
+
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -120,8 +119,6 @@ public class PartJobFragment extends BaseFragment {
                     DataComplete=true;
                     break;
                 case 1:
-                    //                    String ErrorMessage = (String) msg.obj;
-                    //                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
                     cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
@@ -129,7 +126,6 @@ public class PartJobFragment extends BaseFragment {
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-//                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -139,23 +135,28 @@ public class PartJobFragment extends BaseFragment {
 
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_part_job, container, false);
         ButterKnife.inject(this, view);
         EventBus.getDefault().register(this);
-        initData();
         initview();
         initDropDownView(view);
         return view;
     }
 
     private void initData() {
-        position= (int) SPUtils.getParam(getActivity(),Constants.LOGIN_INFO,Constants.LOGIN_CITY_POSITION,0);
-        cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
-        String cityName= (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME,"三亚");
-        getCityCategory(cityCode);
+        cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+        getCityCategory("");
+//        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<RxCityCategory>(subscriberOnNextListener,getActivity()));
     }
 
     private void initview() {
@@ -179,17 +180,20 @@ public class PartJobFragment extends BaseFragment {
                         , "2", "0");
             }
         });
+        subscriberOnNextListener=new SubscriberOnNextListener<RxCityCategory>() {
+            @Override
+            public void onNext(RxCityCategory rxCityCategory) {
+                rxCityCategory.getData();
+            }
+        };
     }
 
     private void initDropDownView(View view) {
-
-
-
         //init sex menu
         mMenu = (DropDownMenu) view.findViewById(R.id.menu);
         mMenu.setmMenuCount(3);
         mMenu.setmShowCount(6);
-        mMenu.setShowCheck(true);//是否显示展开list的选中项
+        mMenu.setShowCheck(true);//是否显示展开list的选中项1
         mMenu.setmMenuTitleTextSize(12);//Menu的文字大小
         mMenu.setmMenuTitleTextColor(Color.BLACK);//Menu的文字颜色
         mMenu.setmMenuListTextSize(12);//Menu展开list的文字大小
@@ -198,16 +202,12 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
         mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
         mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
-
 //                mMenu.setDefaultMenuTitle(headers);//默认未选择任何过滤的Menu title
         mMenu.setMenuSelectedListener(new OnMenuSelectedListener() {
             @Override
             //Menu展开的list点击事件  RowIndex：list的索引  ColumnIndex：menu的索引
             public void onSelected(View listview, int RowIndex, int ColumnIndex,int sortId) {
-//                MainActivity mainActivity = (MainActivity) getActivity();
-//                mainActivity.showLongToast("选中了第" + ColumnIndex + "拍" + "xuanzhongle" + RowIndex);
                 if (ColumnIndex == 0) {
-//                    typeid = String.valueOf(cityCategoryBaseBean.getData().getList_t_type().get(RowIndex).getId());
                     typeid = String.valueOf(sortId);
                 } else if (ColumnIndex == 2) {
                     switch (RowIndex) {
@@ -223,7 +223,6 @@ public class PartJobFragment extends BaseFragment {
                     }
                 } else if (ColumnIndex == 1) {
                     areid= String.valueOf(sortId);
-//                    areid = String.valueOf(cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().get(RowIndex));
                 }
                 getJobs(cityCode, typeid, areid, filterid, "0");
             }
@@ -232,12 +231,21 @@ public class PartJobFragment extends BaseFragment {
 
     public void initDrawData(BaseBean<CityCategory> cityCategoryBaseBean) {
         List<List<BaseEntity>> items = new ArrayList<>();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().get(0).getList_t_area().size(); i++) {
+        CityCategory.ListTCity2Entity listTCity2Entity = null;
+        citys.clear();
+        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
+            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+                break;
+            }
+        }
+        for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getArea_name());
-            baseEntity.setId(cityCategoryBaseBean.getData().getList_t_city2().get(position).getList_t_area().get(i).getId());
+            baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
+            baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
+
         for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
             baseEntity.setName(cityCategoryBaseBean.getData().getList_t_type().get(i).getType_name());
@@ -354,7 +362,6 @@ public class PartJobFragment extends BaseFragment {
                     .url(Constants.GET_USER_CITY_CATEGORY)
                     .addParams("only", only)
                     .addParams("login_id", "0")
-                    .addParams("city_id", "")
                     .build()
                     .connTimeOut(60000)
                     .readTimeOut(20000)

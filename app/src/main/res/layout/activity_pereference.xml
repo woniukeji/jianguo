@@ -14,7 +14,7 @@
         style="@style/title_bar_style">
 
         <ImageView
-            android:id="@+id/img_back"
+            android:id="@+id/iv_back"
             android:src="@mipmap/icon_back"
             android:layout_width="30dp"
             android:paddingLeft="3dp"

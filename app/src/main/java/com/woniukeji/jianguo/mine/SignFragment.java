@@ -44,7 +44,7 @@ import okhttp3.Response;
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class signFragment extends BaseFragment implements SignAdapter.RecyCallBack{
+public class SignFragment extends BaseFragment implements SignAdapter.RecyCallBack{
 
 
     private static String params1="type";
@@ -141,11 +141,11 @@ public class signFragment extends BaseFragment implements SignAdapter.RecyCallBa
             }
         }
     }
-    public static signFragment newInstance(int type) {
+    public static SignFragment newInstance(int type) {
         //通过Bundle保存数据
         Bundle args = new Bundle();
         args.putInt(params1, type);
-        signFragment fragment = new signFragment();
+        SignFragment fragment = new SignFragment();
         //将Bundle设置为fragment的参数
         fragment.setArguments(args);
         return fragment;

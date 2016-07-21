@@ -8,7 +8,6 @@
              >
 
 
-
     <LinearLayout
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -110,6 +109,8 @@
                     />
 
         </RelativeLayout>
+
+
             <LinearLayout
                 android:id="@+id/user_rule"
                 android:layout_width="match_parent"

@@ -15,6 +15,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -22,6 +25,7 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -78,7 +82,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     splashActivity.finish();
                     break;
                 case 1:
+                    //如果本地的登录信息登录失败 则删除本地缓存的用户信息，并跳转到首页
                     splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
+                    SPUtils.deleteParams(splashActivity);
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     splashActivity.finish();
@@ -216,8 +222,10 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     mCityName =aMapLocation.getProvince();//省信息
                 }
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
-                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity());
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()-1));
             } else {
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+                SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError","location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
@@ -236,7 +244,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, user.getApk_url());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
         SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
-        
+        SPUtils.setParam(context, Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, user.getT_user_login().getHobby());
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
@@ -246,10 +254,10 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
         SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
         LogUtils.e("jpush","userid"+user.getT_user_login().getId());
         //暂时关闭果聊功能
-//        final ChatManager chatManager = ChatManager.getInstance();
+        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
             //登陆leancloud服务器 给极光设置别名
-//            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
             LogUtils.e("jpush","调用jpush");
             if (JPushInterface.isPushStopped(getApplicationContext())){
                 JPushInterface.resumePush(getApplicationContext());
@@ -257,20 +265,19 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
             JPushInterface.setAlias(getApplicationContext(),"jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
-
                     LogUtils.e("jpush",s+",code="+i);
                 }
             });
         }
-//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-//            @Override
-//            public void done(AVIMClient avimClient, AVIMException e) {
-//                if (null == e) {
-//                } else {
-//                    showShortToast(e.toString());
-//                }
-//            }
-//        });
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+                } else {
+                    showShortToast(e.toString());
+                }
+            }
+        });
     }
 
 

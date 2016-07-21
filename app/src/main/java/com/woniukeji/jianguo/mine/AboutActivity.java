@@ -25,9 +25,6 @@ public class AboutActivity extends Activity {
     @InjectView(R.id.tv_title) TextView tvTitle;
     @InjectView(R.id.img_share) ImageView imgShare;
     @InjectView(R.id.img_log) ImageView imgLog;
-    @InjectView(R.id.img_good) ImageView imgGood;
-    @InjectView(R.id.img_bad) ImageView imgBad;
-    @InjectView(R.id.ll_img) LinearLayout llImg;
     @InjectView(R.id.bootom) TextView bootom;
     @InjectView(R.id.tv_copration) RelativeLayout tvCopration;
     @InjectView(R.id.tv_leave_opinion) RelativeLayout tvLeaveOpinion;

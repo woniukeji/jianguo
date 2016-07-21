@@ -155,6 +155,15 @@ public class User  implements Serializable {
         private String qqwx_token;//QQ
         private int status;// 状态（0=被封号，1=可以登录，但没有实名认证，2=已实名认证）
         private String qiniu;//QQ
+        private String hobby; //（0=未设置求职意向，1=已设置）
+
+        public String getHobby() {
+            return hobby;
+        }
+
+        public void setHobby(String hobby) {
+            this.hobby = hobby;
+        }
 
         public String getResume() {
             return resume;

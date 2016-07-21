@@ -57,16 +57,16 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tabHost) CommonTabLayout tabHost;
     @BindView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
+    private String[] titles = {"首页", "购物车",  "我的"};//"果聊",
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_unselect,
-            R.mipmap.tab_partjob_unselect,
-            R.mipmap.tab_about_me_unselect};
+            R.mipmap.shouye,
+            R.mipmap.gouwuche,
+            R.mipmap.wode};
     //R.mipmap.tab_guo_talk_unselect,
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_select,
-            R.mipmap.tab_partjob_select,
-            R.mipmap.tab_about_me_select};
+            R.mipmap.shouye_on,
+            R.mipmap.gouwuche_on,
+            R.mipmap.wode_on};
     // R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private long exitTime;

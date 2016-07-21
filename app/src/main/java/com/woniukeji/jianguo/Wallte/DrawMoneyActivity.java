@@ -1,6 +1,10 @@
 package com.woniukeji.jianguo.wallte;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -29,6 +33,7 @@ import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.BaseCallback;
 import com.woniukeji.jianguo.entity.CodeCallback;
+import com.woniukeji.jianguo.entity.DrawMoney;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.BitmapUtils;
@@ -41,16 +46,26 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.wechat.friends.Wechat;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 
-public class DrawMoneyActivity extends BaseActivity {
+import static cn.pedant.SweetAlert.SweetAlertDialog.*;
+
+public class DrawMoneyActivity extends BaseActivity implements PlatformActionListener{
 
     @InjectView(R.id.img_back) ImageView imgBack;
     @InjectView(R.id.tv_title) TextView tvTitle;
@@ -90,6 +105,7 @@ public class DrawMoneyActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.inject(this);
     }
+
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -143,6 +159,22 @@ public class DrawMoneyActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
+        Date date=new Date(System.currentTimeMillis());//当前时间
+        int hour= Integer.parseInt(DateUtils.getHHTime(date));
+      if (hour<8||hour>21){
+          AlertDialog.Builder builder = new AlertDialog.Builder(DrawMoneyActivity.this);
+          builder.setTitle("温馨提示");
+          builder.setMessage("尊敬的用户，您当前的提现申请将会在8:00-21:00为您处理，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+//          sweetAlertDialog.set("尊敬的用户，兼果提现申请的处理时间为每日的8:00-21:00，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+          builder.setOnCancelListener(new OnCancelListener() {
+              @Override
+              public void onCancel(DialogInterface dialog) {
+                  dialog.dismiss();
+              }
+          });
+          builder.create().show();
+      }
+
       etMoneySum.addTextChangedListener(new TextWatcher() {
 
           @Override
@@ -204,6 +236,37 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 }
             }
         });
+
+    }
+
+    public void getWechatInfo(){
+
+    Platform wechat = ShareSDK.getPlatform(DrawMoneyActivity.this, Wechat.NAME);
+    wechat.setPlatformActionListener(this);
+    wechat.showUser(null);//执行登录，登录后在回调里面获取用户资料
+    }
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        Iterator iterator = hashMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            if (entry.getKey().equals("nickname")) {
+              entry.getValue();
+            } else if (entry.getKey().equals("headimgurl")) {
+                entry.getValue();
+            } else if (entry.getKey().equals("sex")) {
+                entry.getValue().toString();
+            }
+        }
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
 
     }
 
@@ -326,8 +389,9 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 getSMS.execute();
                 break;
             case R.id.rl_alipay:
-                Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
-                startActivityForResult(intentali,0);
+                getWechatInfo();
+//                Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
+//                startActivityForResult(intentali,0);
                 break;
             case R.id.rl_yinlian:
                 Intent intent=new Intent(DrawMoneyActivity.this, BindYinlianActivity.class);
@@ -370,7 +434,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
         private final String type;
         private final String money;
         //        private final String kahao;
-        SweetAlertDialog pDialog = new SweetAlertDialog(DrawMoneyActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        SweetAlertDialog pDialog = new SweetAlertDialog(DrawMoneyActivity.this, PROGRESS_TYPE);
 
         PostTask(String id, String type, String money) {
             this.id = id;

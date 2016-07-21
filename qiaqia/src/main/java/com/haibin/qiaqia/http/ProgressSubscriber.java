@@ -2,7 +2,6 @@ package com.haibin.qiaqia.http;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import rx.Subscriber;
@@ -31,7 +30,7 @@ public class ProgressSubscriber<T> extends Subscriber<T>{
     @Override
     public void onCompleted() {
         progressDialog.dismiss();
-        Toast.makeText(mContext, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

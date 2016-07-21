@@ -32,7 +32,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , String data);
+        void onItemClick(View view , ListChaoCommodity data);
     }
 
 
@@ -50,7 +50,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
                     //注意这里使用getTag方法获取数据
-                    mOnItemClickListener.onItemClick(v, String.valueOf(v.getTag()));
+                    mOnItemClickListener.onItemClick(v, (ListChaoCommodity) v.getTag());
                 }
             }
         });
@@ -68,7 +68,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .placeholder(R.drawable.ic_loading_rotate)
                 .crossFade()
                 .into(holder.img);
-        holder.itemView.setTag(data.getName());
+        holder.itemView.setTag(data);
     }
 
     @Override

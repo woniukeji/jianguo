@@ -2,7 +2,6 @@ package com.woniukeji.jianguo.partjob;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -20,15 +19,12 @@ import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
-import com.woniukeji.jianguo.entity.JobDetails;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
-import com.woniukeji.jianguo.widget.time.PickerDateView;
-import com.woniukeji.jianguo.widget.time.PickerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
-import butterknife.InjectView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -52,10 +48,10 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     private int MSG_POST_FAIL=1;
     public int MSG_POST_SUCCESS=4;
     private int jobid;
-    private JobDetails.TJobInfoEntity jobinfo;
+    private RxJobDetails.DataBean.TJobInfoBean jobinfo;
     private String payMethod;
      private String money;
-    public SignUpPopuWin(Context context, Handler handler, int id, JobDetails.TJobInfoEntity jobinfo, String toString, String s) {
+    public SignUpPopuWin(Context context, Handler handler, int id, RxJobDetails.DataBean.TJobInfoBean jobinfo, String toString, String s) {
         this.context = context;
         this.mHandler=handler;
         jobid=id;
