@@ -28,21 +28,21 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 
 public class BindAliActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.tv_confirm) TextView tvConfirm;
-    @InjectView(R.id.et_alipay_name) EditText etAlipayName;
-    @InjectView(R.id.ll_change) LinearLayout llChange;
-    @InjectView(R.id.et_alipay_account) EditText etAlipayAccount;
-    @InjectView(R.id.btn_change_pay_pass) Button btnChangePayPass;
-    @InjectView(R.id.ll_changed) LinearLayout llChanged;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.tv_confirm) TextView tvConfirm;
+    @BindView(R.id.et_alipay_name) EditText etAlipayName;
+    @BindView(R.id.ll_change) LinearLayout llChange;
+    @BindView(R.id.et_alipay_account) EditText etAlipayAccount;
+    @BindView(R.id.btn_change_pay_pass) Button btnChangePayPass;
+    @BindView(R.id.ll_changed) LinearLayout llChanged;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private Handler mHandler = new Myhandler(this);
@@ -117,7 +117,7 @@ public class BindAliActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_bind_alipay);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -56,10 +56,10 @@ import okhttp3.Response;
  */
 public class PartJobFragment extends BaseFragment {
     private Context context = getActivity();
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     private String headers[] = {"职业", "排序", "地区"};
     private List<BaseEntity> jobs = new ArrayList<>();
     private List<BaseEntity> sort = new ArrayList<>();
@@ -146,13 +146,21 @@ public class PartJobFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_part_job, container, false);
-        ButterKnife.inject(this, view);
-        EventBus.getDefault().register(this);
-        initview();
-        initDropDownView(view);
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
+        initview();
+        initDropDownView(view);
+    }
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_part_job;
+    }
     private void initData() {
         cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
         getCityCategory("");
@@ -344,7 +352,7 @@ public class PartJobFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 

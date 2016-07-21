@@ -48,7 +48,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -56,29 +56,29 @@ import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 
 public class MineFragment extends BaseFragment {
-    @InjectView(R.id.title_bar) TextView titleBar;
-    @InjectView(R.id.img_head) ImageView imgHead;
-    @InjectView(R.id.iv_setting) ImageView ivSetting;
-    @InjectView(R.id.name) TextView name;
-    @InjectView(R.id.school) TextView school;
-    @InjectView(R.id.phone) TextView phone;
-    @InjectView(R.id.lin_info) LinearLayout linInfo;
-    @InjectView(R.id.account1) RelativeLayout account1;
-    @InjectView(R.id.hobby) RelativeLayout hobby;
-    @InjectView(R.id.or_img) ImageView orImg;
-    @InjectView(R.id.point_img) ImageView pointImg;
-    @InjectView(R.id.ll_money) LinearLayout llMoney;
-    @InjectView(R.id.ll_real_name) LinearLayout llRealName;
-    @InjectView(R.id.ll_wallte_realname) LinearLayout llWallteRealname;
-    @InjectView(R.id.credit) RelativeLayout credit;
-    @InjectView(R.id.account) RelativeLayout account;
-    @InjectView(R.id.rl_evaluation) RelativeLayout rlEvaluation;
-    @InjectView(R.id.ll_collect) RelativeLayout llCollect;
-    @InjectView(R.id.rl_point) RelativeLayout rlPoint;
-    @InjectView(R.id.rl_feedback) RelativeLayout rlFeedback;
-    @InjectView(R.id.rl_setting) RelativeLayout rlSetting;
-    @InjectView(R.id.ll_guanli) RelativeLayout llGuanli;
-    @InjectView(R.id.about) RelativeLayout about;
+    @BindView(R.id.title_bar) TextView titleBar;
+    @BindView(R.id.img_head) ImageView imgHead;
+    @BindView(R.id.iv_setting) ImageView ivSetting;
+    @BindView(R.id.name) TextView name;
+    @BindView(R.id.school) TextView school;
+    @BindView(R.id.phone) TextView phone;
+    @BindView(R.id.lin_info) LinearLayout linInfo;
+    @BindView(R.id.account1) RelativeLayout account1;
+    @BindView(R.id.hobby) RelativeLayout hobby;
+    @BindView(R.id.or_img) ImageView orImg;
+    @BindView(R.id.point_img) ImageView pointImg;
+    @BindView(R.id.ll_money) LinearLayout llMoney;
+    @BindView(R.id.ll_real_name) LinearLayout llRealName;
+    @BindView(R.id.ll_wallte_realname) LinearLayout llWallteRealname;
+    @BindView(R.id.credit) RelativeLayout credit;
+    @BindView(R.id.account) RelativeLayout account;
+    @BindView(R.id.rl_evaluation) RelativeLayout rlEvaluation;
+    @BindView(R.id.ll_collect) RelativeLayout llCollect;
+    @BindView(R.id.rl_point) RelativeLayout rlPoint;
+    @BindView(R.id.rl_feedback) RelativeLayout rlFeedback;
+    @BindView(R.id.rl_setting) RelativeLayout rlSetting;
+    @BindView(R.id.ll_guanli) RelativeLayout llGuanli;
+    @BindView(R.id.about) RelativeLayout about;
     private Handler mHandler = new Myhandler(this.getActivity());
     private Context context = getActivity();
     private int status;
@@ -222,12 +222,15 @@ public class MineFragment extends BaseFragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         return view;
 
 
     }
-
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_mine;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -257,7 +260,7 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 

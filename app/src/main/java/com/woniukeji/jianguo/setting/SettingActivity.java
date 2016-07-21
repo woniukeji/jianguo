@@ -28,7 +28,7 @@ import com.woniukeji.jianguo.utils.UpDialog;
 import java.io.File;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -36,22 +36,22 @@ import de.greenrobot.event.EventBus;
 
 public class SettingActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img) ImageView img;
-    @InjectView(R.id.changePassword) RelativeLayout changePassword;
-    @InjectView(R.id.refresh) RelativeLayout refresh;
-    @InjectView(R.id.or_img) ImageView orImg;
-    @InjectView(R.id.change) RelativeLayout change;
-    @InjectView(R.id.change_phone) RelativeLayout changePhone;
-    @InjectView(R.id.btn_logout) Button btnLogout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img) ImageView img;
+    @BindView(R.id.changePassword) RelativeLayout changePassword;
+    @BindView(R.id.refresh) RelativeLayout refresh;
+    @BindView(R.id.or_img) ImageView orImg;
+    @BindView(R.id.change) RelativeLayout change;
+    @BindView(R.id.change_phone) RelativeLayout changePhone;
+    @BindView(R.id.btn_logout) Button btnLogout;
     private int version;
     private String apkurl;
 
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_setting);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
     }
 

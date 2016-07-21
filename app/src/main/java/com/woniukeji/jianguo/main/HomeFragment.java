@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
@@ -68,13 +68,13 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    @InjectView(R.id.list) FixedRecyclerView recycleList;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.tv_location) TextView tvLocation;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.rl_top) RelativeLayout rl_top;
-    @InjectView(R.id.circle_dot) CircleImageView circleDot;
-    @InjectView(R.id.rl_message) RelativeLayout rlMessage;
+    @BindView(R.id.list) FixedRecyclerView recycleList;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.tv_location) TextView tvLocation;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.rl_top) RelativeLayout rl_top;
+    @BindView(R.id.circle_dot) CircleImageView circleDot;
+    @BindView(R.id.rl_message) RelativeLayout rlMessage;
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -111,6 +111,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private boolean DataComplete = false;
     private int totalDy;
     private String apkurl;
+    private View view;
 
     @OnClick(R.id.tv_location)
     public void onClick() {
@@ -243,9 +244,19 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
+         view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
+        headerView = inflater.inflate(R.layout.home_header_view, container, false);
 // Set the adapter
-        ButterKnife.inject(this, view);
+        return view;
+    }
+    @Override
+    public int getContentViewId() {
+        return view.getId();
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        ButterKnife.bind(this, view);
         RelativeLayout rlMessage = (RelativeLayout) view.findViewById(R.id.rl_message);
         rlMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +265,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                 startActivity(new Intent(getContext(), PushMessageActivity.class));
             }
         });
-        headerView = inflater.inflate(R.layout.home_header_view, container, false);
+
         assignViews(headerView);
         mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());
@@ -282,7 +293,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         });
 
         initData();
-        return view;
     }
 
     private void assignViews(View view) {
@@ -508,7 +518,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
         LogUtils.i("fragment", ":onDestroyView");
     }

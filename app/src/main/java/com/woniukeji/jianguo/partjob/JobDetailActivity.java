@@ -51,44 +51,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class JobDetailActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView img_share;
-    @InjectView(R.id.user_head) ImageView userHead;
-    @InjectView(R.id.business_name) TextView businessName;
-    @InjectView(R.id.tv_wage) TextView tvWage;
-    @InjectView(R.id.tv_hiring_count) TextView tvHiringCount;
-    @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-    @InjectView(R.id.tv_release_date) TextView tvReleaseDate;
-    @InjectView(R.id.tv_work_location) TextView tvWorkLocation;
-    @InjectView(R.id.tv_location_detail) TextView tvLocationDetail;
-    @InjectView(R.id.tv_work_date) TextView tvWorkDate;
-    @InjectView(R.id.tv_work_time) TextView tvWorkTime;
-    @InjectView(R.id.tv_collection_sites) TextView tvCollectionSites;
-    @InjectView(R.id.tv_collection_time) TextView tvCollectionTime;
-    @InjectView(R.id.tv_sex) TextView tvSex;
-    @InjectView(R.id.tv_pay_method) TextView tvPayMethod;
-    @InjectView(R.id.tv_other) TextView tvOther;
-    @InjectView(R.id.tv_notic) TextView tvNotic;
-    @InjectView(R.id.tv_work_content) TextView tvWorkContent;
-    @InjectView(R.id.rl_work) RelativeLayout rlWork;
-    @InjectView(R.id.tv_work_require) TextView tvWorkRequire;
-    @InjectView(R.id.tv_worker) TextView tvWorker;
-    @InjectView(R.id.cirimg_work) CircleImageView cirimgWork;
-    @InjectView(R.id.tv_company_name) TextView tvCompanyName;
-    @InjectView(R.id.tv_jobs_count) TextView tvJobsCount;
-    @InjectView(R.id.rl_company) RelativeLayout rlCompany;
-    @InjectView(R.id.tv_contact_company) TextView tvContactCompany;
-    @InjectView(R.id.tv_collection) TextView tvCollection;
-    @InjectView(R.id.tv_signup) TextView tvSignup;
-    @InjectView(R.id.tv_more) TextView tvMore;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView img_share;
+    @BindView(R.id.user_head) ImageView userHead;
+    @BindView(R.id.business_name) TextView businessName;
+    @BindView(R.id.tv_wage) TextView tvWage;
+    @BindView(R.id.tv_hiring_count) TextView tvHiringCount;
+    @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+    @BindView(R.id.tv_release_date) TextView tvReleaseDate;
+    @BindView(R.id.tv_work_location) TextView tvWorkLocation;
+    @BindView(R.id.tv_location_detail) TextView tvLocationDetail;
+    @BindView(R.id.tv_work_date) TextView tvWorkDate;
+    @BindView(R.id.tv_work_time) TextView tvWorkTime;
+    @BindView(R.id.tv_collection_sites) TextView tvCollectionSites;
+    @BindView(R.id.tv_collection_time) TextView tvCollectionTime;
+    @BindView(R.id.tv_sex) TextView tvSex;
+    @BindView(R.id.tv_pay_method) TextView tvPayMethod;
+    @BindView(R.id.tv_other) TextView tvOther;
+    @BindView(R.id.tv_notic) TextView tvNotic;
+    @BindView(R.id.tv_work_content) TextView tvWorkContent;
+    @BindView(R.id.rl_work) RelativeLayout rlWork;
+    @BindView(R.id.tv_work_require) TextView tvWorkRequire;
+    @BindView(R.id.tv_worker) TextView tvWorker;
+    @BindView(R.id.cirimg_work) CircleImageView cirimgWork;
+    @BindView(R.id.tv_company_name) TextView tvCompanyName;
+    @BindView(R.id.tv_jobs_count) TextView tvJobsCount;
+    @BindView(R.id.rl_company) RelativeLayout rlCompany;
+    @BindView(R.id.tv_contact_company) TextView tvContactCompany;
+    @BindView(R.id.tv_collection) TextView tvCollection;
+    @BindView(R.id.tv_signup) TextView tvSignup;
+    @BindView(R.id.tv_more) TextView tvMore;
 
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
@@ -167,7 +167,7 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_job_detail);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -270,41 +270,43 @@ public class JobDetailActivity extends BaseActivity {
 //                }
 //                Mdialog mdialog=new Mdialog(mContext,tel);
 //                mdialog.show();
-
                 final int Id=t_merchant.getId();
-                             String.valueOf(Id);
-                                       final String toUserId="42";
-                                Map<String, Object> attrs = new HashMap<>();
-                                attrs.put(Constants.CREAT_NAME, "嘿嘿");
-                               attrs.put(Constants.CREAT_IMG, "嘿嘿");
-                                attrs.put(Constants.OTHER_IMG, t_merchant.getName_image());
-                                attrs.put(Constants.OTHER_NAME, t_merchant.getName());
-                                attrs.put(Constants.C_TYPE, 0);
-                                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), "嘿嘿", attrs, false, true, new AVIMConversationCreatedCallback() {
-                                        @Override
-                                        public void done(AVIMConversation avimConversation, AVIMException e) {
-                                                if (e == null) {
-                                                        Map<String, Object> attributes = new HashMap<String, Object>();
-                                                        attributes.put("userid", String.valueOf(loginId));
-                                                        attributes.put("touserid", toUserId);
-                                                        attributes.put("nickname", "嘿嘿");
-                                                        attributes.put("avatar", "嘿嘿");
-                                                        attributes.put("type", 0);
-                                                        AVIMTextMessage message = new AVIMTextMessage();
-                                                        message.setText("出来聊会天吧！");
-                                                        message.setAttrs(attributes);
-                                                        avimConversation.sendMessage(message, null);
+                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
+                intent.putExtra("merchantId",Id);
+                startActivity(intent);
 
-                                                                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
-                                                        intent.putExtra("mConversationId",avimConversation.getConversationId());
-                                                        startActivity(intent);
-//                                                    finish();
-                                                            }else {
-                                                        String mes = e.getMessage();
-                                                        mes.trim();
-                                                    }
-                                            }
-                                   });
+//                             String.valueOf(Id);
+//                                final String toUserId="42";
+//                                Map<String, Object> attrs = new HashMap<>();
+//                                attrs.put(Constants.CREAT_NAME, "嘿嘿");
+//                                attrs.put(Constants.CREAT_IMG, "嘿嘿");
+//                                attrs.put(Constants.OTHER_IMG, t_merchant.getName_image());
+//                                attrs.put(Constants.OTHER_NAME, t_merchant.getName());
+//                                attrs.put(Constants.C_TYPE, 0);
+//                                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), "嘿嘿", attrs, false, true, new AVIMConversationCreatedCallback() {
+//                                        @Override
+//                                        public void done(AVIMConversation avimConversation, AVIMException e) {
+//                                                if (e == null) {
+//                                                        Map<String, Object> attributes = new HashMap<String, Object>();
+//                                                        attributes.put("userid", String.valueOf(loginId));
+//                                                        attributes.put("touserid", toUserId);
+//                                                        attributes.put("nickname", "嘿嘿");
+//                                                        attributes.put("avatar", "嘿嘿");
+//                                                        attributes.put("type", 0);
+//                                                        AVIMTextMessage message = new AVIMTextMessage();
+//                                                        message.setText("出来聊会天吧！");
+//                                                        message.setAttrs(attributes);
+//                                                        avimConversation.sendMessage(message, null);
+//
+//
+////                                                    finish();
+//                                                            }else {
+//                                                        String mes = e.getMessage();
+//                                                        mes.trim();
+//                                                    }
+//                                            }
+//
+//                                   });
                 break;
             case R.id.tv_collection:
                 if (loginId==0){

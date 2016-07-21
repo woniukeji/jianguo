@@ -51,7 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -62,39 +62,39 @@ import okhttp3.Response;
  * Created by invinjun on 2016/3/7.
  */
 public class ResumeActivity extends BaseActivity {
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_head) CircleImageView imgHead;
-    @InjectView(R.id.et_real_name) EditText etRealName;
-    @InjectView(R.id.rb_girl) RadioButton rbGirl;
-    @InjectView(R.id.rb_boy) RadioButton rbBoy;
-    @InjectView(R.id.rg_sex) RadioGroup rgSex;
-    @InjectView(R.id.img) ImageView img;
-    @InjectView(R.id.tv_birthday) TextView tvBirthday;
-    @InjectView(R.id.rl_birthday) RelativeLayout rlBirthday;
-    @InjectView(R.id.rl_root_view) LinearLayout root;
-    @InjectView(R.id.tv_shoes) TextView tvShoes;
-    @InjectView(R.id.rl_shoes) RelativeLayout rlShoes;
-    @InjectView(R.id.tv_clothse) TextView tvClothse;
-    @InjectView(R.id.rl_clothse) RelativeLayout rlClothse;
-    @InjectView(R.id.tv_tall) TextView tvTall;
-    @InjectView(R.id.rl_tall) RelativeLayout rlTall;
-    @InjectView(R.id.rb_yes) RadioButton rbYes;
-    @InjectView(R.id.rb_no) RadioButton rbNo;
-    @InjectView(R.id.rg_student) RadioGroup rgStudent;
-    @InjectView(R.id.tv_school) TextView tvSchool;
-    @InjectView(R.id.rl_school) RelativeLayout rlSchool;
-    @InjectView(R.id.tv_date) TextView tvDate;
-    @InjectView(R.id.rl_date) RelativeLayout rlDate;
-    @InjectView(R.id.check_button) Button checkButton;
-    @InjectView(R.id.tv_necessary_name) TextView tvNecessaryName;
-    @InjectView(R.id.tv_necessary_nickname) TextView tvNecessaryNickname;
-    @InjectView(R.id.et_nick_name) EditText etNickName;
-    @InjectView(R.id.tv_necessary_sex) TextView tvNecessarySex;
-    @InjectView(R.id.tv_necessary_date) TextView tvNecessaryDate;
-    @InjectView(R.id.img_lead) ImageView imgLead;
-    @InjectView(R.id.tv_necessary_school) TextView tvNecessarySchool;
-    @InjectView(R.id.img_edit) TextView tvEdit;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_head) CircleImageView imgHead;
+    @BindView(R.id.et_real_name) EditText etRealName;
+    @BindView(R.id.rb_girl) RadioButton rbGirl;
+    @BindView(R.id.rb_boy) RadioButton rbBoy;
+    @BindView(R.id.rg_sex) RadioGroup rgSex;
+    @BindView(R.id.img) ImageView img;
+    @BindView(R.id.tv_birthday) TextView tvBirthday;
+    @BindView(R.id.rl_birthday) RelativeLayout rlBirthday;
+    @BindView(R.id.rl_root_view) LinearLayout root;
+    @BindView(R.id.tv_shoes) TextView tvShoes;
+    @BindView(R.id.rl_shoes) RelativeLayout rlShoes;
+    @BindView(R.id.tv_clothse) TextView tvClothse;
+    @BindView(R.id.rl_clothse) RelativeLayout rlClothse;
+    @BindView(R.id.tv_tall) TextView tvTall;
+    @BindView(R.id.rl_tall) RelativeLayout rlTall;
+    @BindView(R.id.rb_yes) RadioButton rbYes;
+    @BindView(R.id.rb_no) RadioButton rbNo;
+    @BindView(R.id.rg_student) RadioGroup rgStudent;
+    @BindView(R.id.tv_school) TextView tvSchool;
+    @BindView(R.id.rl_school) RelativeLayout rlSchool;
+    @BindView(R.id.tv_date) TextView tvDate;
+    @BindView(R.id.rl_date) RelativeLayout rlDate;
+    @BindView(R.id.check_button) Button checkButton;
+    @BindView(R.id.tv_necessary_name) TextView tvNecessaryName;
+    @BindView(R.id.tv_necessary_nickname) TextView tvNecessaryNickname;
+    @BindView(R.id.et_nick_name) EditText etNickName;
+    @BindView(R.id.tv_necessary_sex) TextView tvNecessarySex;
+    @BindView(R.id.tv_necessary_date) TextView tvNecessaryDate;
+    @BindView(R.id.img_lead) ImageView imgLead;
+    @BindView(R.id.tv_necessary_school) TextView tvNecessarySchool;
+    @BindView(R.id.img_edit) TextView tvEdit;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 4;
@@ -404,7 +404,7 @@ public class ResumeActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_resume);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

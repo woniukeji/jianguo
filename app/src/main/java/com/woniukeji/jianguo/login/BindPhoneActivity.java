@@ -33,8 +33,8 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.sharesdk.framework.ShareSDK;
@@ -50,13 +50,13 @@ public class BindPhoneActivity extends BaseActivity {
             "foo@example.com:hello", "bar@example.com:world"
     };
 
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.phone_code) EditText phoneCode;
-    @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView title;
-    @InjectView(R.id.btn_get_code) Button btnGetCode;
-    @InjectView(R.id.icon_pass) ImageView iconPass;
+    @BindView(R.id.phoneNumber) EditText phoneNumber;
+    @BindView(R.id.phone_code) EditText phoneCode;
+    @BindView(R.id.sign_in_button) Button signInButton;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView title;
+    @BindView(R.id.btn_get_code) Button btnGetCode;
+    @BindView(R.id.icon_pass) ImageView iconPass;
     SmsCode smsCode;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
@@ -110,11 +110,11 @@ public class BindPhoneActivity extends BaseActivity {
         }
     }
 
+
     @Override
     public void setContentView() {
-
         setContentView(R.layout.activity_login_quick);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

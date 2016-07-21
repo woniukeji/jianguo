@@ -22,7 +22,7 @@ import com.woniukeji.jianguo.utils.DateUtils;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 
@@ -203,16 +203,16 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.img_date) ImageView imgDate;
-        @InjectView(R.id.tv_work_date) TextView tvWorkDate;
-        @InjectView(R.id.rl_date) RelativeLayout rlDate;
-        @InjectView(R.id.remark) TextView remark;
-        @InjectView(R.id.tv_content_remark) TextView tvContentRemark;
-        @InjectView(R.id.tv_wallte_wages) TextView tvWallteWages;
-        @InjectView(R.id.rl_top) RelativeLayout rlTop;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.user_head) ImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.img_date) ImageView imgDate;
+        @BindView(R.id.tv_work_date) TextView tvWorkDate;
+        @BindView(R.id.rl_date) RelativeLayout rlDate;
+        @BindView(R.id.remark) TextView remark;
+        @BindView(R.id.tv_content_remark) TextView tvContentRemark;
+        @BindView(R.id.tv_wallte_wages) TextView tvWallteWages;
+        @BindView(R.id.rl_top) RelativeLayout rlTop;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -221,7 +221,7 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

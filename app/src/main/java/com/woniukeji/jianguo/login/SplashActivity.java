@@ -40,7 +40,7 @@ import java.util.Date;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.ShareSDK;
@@ -49,7 +49,7 @@ import okhttp3.Response;
 
 public class SplashActivity extends BaseActivity implements AMapLocationListener {
 
-    @InjectView(R.id.img_splash) ImageView imgSplash;
+    @BindView(R.id.img_splash) ImageView imgSplash;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
@@ -105,7 +105,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
     public void setContentView() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_splash);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

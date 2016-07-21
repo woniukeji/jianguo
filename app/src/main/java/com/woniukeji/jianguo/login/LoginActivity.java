@@ -26,21 +26,22 @@ import com.woniukeji.jianguo.partjob.PartJobAdapter;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link } subclass.
  */
 public class LoginActivity extends BaseActivity implements OnTabSelectListener {
 
-    @InjectView(R.id.tabHost) SegmentTabLayout tabHost;
-    @InjectView(R.id.mainPager) ViewPager mainPager;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.tv_register) TextView tvRegister;
-    @InjectView(R.id.top) RelativeLayout top;
+    @BindView(R.id.tabHost) SegmentTabLayout tabHost;
+    @BindView(R.id.mainPager) ViewPager mainPager;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.tv_register) TextView tvRegister;
+    @BindView(R.id.top) RelativeLayout top;
     private PartJobAdapter adapter;
     private int lastVisibleItem;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -55,7 +56,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @OnClick({R.id.img_back, R.id.tv_register})
@@ -109,7 +110,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
+        Unbinder bind = ButterKnife.bind(this);
 //        EventBus.getDefault().register(this);
     }
 
@@ -175,7 +176,6 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.reset(this);
 //        EventBus.getDefault().unregister(this);
     }
 

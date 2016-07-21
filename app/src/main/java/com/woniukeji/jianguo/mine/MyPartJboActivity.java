@@ -20,14 +20,14 @@ import com.woniukeji.jianguo.utils.ActivityManager;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class MyPartJboActivity extends BaseActivity {
 
-    @InjectView(R.id.tl_6) CommonTabLayout tl6;
-    @InjectView(R.id.mainPager) ViewPager mainPager;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.tl_6) CommonTabLayout tl6;
+    @BindView(R.id.mainPager) ViewPager mainPager;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private String[] mTitles = {"待录取", "已录取","已完成"};
     private int[] mIconUnselectIds = {
@@ -45,7 +45,7 @@ public class MyPartJboActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_collect);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

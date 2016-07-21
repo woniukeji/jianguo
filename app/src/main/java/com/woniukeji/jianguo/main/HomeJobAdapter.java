@@ -27,7 +27,7 @@ import com.woniukeji.jianguo.widget.CircleImageView;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHolder> {
 
@@ -238,23 +238,23 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) CircleImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.img_pay) ImageView imgPay;
-        @InjectView(R.id.img_date) ImageView imgDate;
-        @InjectView(R.id.img_local) ImageView imgLocal;
-        @InjectView(R.id.img_sex) ImageView imgSex;
-        @InjectView(R.id.img_type) ImageView imgType;
-        @InjectView(R.id.img_pass) ImageView imgPast;
-        @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
-        @InjectView(R.id.demo_tv) AnimTextView demoTv;
-        @InjectView(R.id.rl_progess) RelativeLayout rlProgess;
-        @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-        @InjectView(R.id.tv_wages) TextView tvWages;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
-        @InjectView(R.id.tv_pay_method) TextView tvPayMethod;
-        @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.tv_location) TextView tvLocation;
+        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.img_pay) ImageView imgPay;
+        @BindView(R.id.img_date) ImageView imgDate;
+        @BindView(R.id.img_local) ImageView imgLocal;
+        @BindView(R.id.img_sex) ImageView imgSex;
+        @BindView(R.id.img_type) ImageView imgType;
+        @BindView(R.id.img_pass) ImageView imgPast;
+        @BindView(R.id.demo_mpc) MagicProgressCircle demoMpc;
+        @BindView(R.id.demo_tv) AnimTextView demoTv;
+        @BindView(R.id.rl_progess) RelativeLayout rlProgess;
+        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+        @BindView(R.id.tv_wages) TextView tvWages;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.tv_pay_method) TextView tvPayMethod;
+        @BindView(R.id.tv_date) TextView tvDate;
+        @BindView(R.id.tv_location) TextView tvLocation;
         private ImageView animLoading;
         private TextView loading;
 
@@ -265,7 +265,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
                 case IS_HEADER:
                     break;
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

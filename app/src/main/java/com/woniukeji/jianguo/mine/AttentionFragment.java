@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -51,9 +51,9 @@ import okhttp3.Response;
 public class AttentionFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @InjectView(R.id.img_renwu) ImageView imgRenwu;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
-    @InjectView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.img_renwu) ImageView imgRenwu;
+    @BindView(R.id.rl_null) RelativeLayout rlNull;
+    @BindView(R.id.list) FixedRecyclerView list;
 
 
     // TODO: Rename and change types of parameters
@@ -140,11 +140,16 @@ public class AttentionFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_collection, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         initview();
         return view;
     }
 
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_collection;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -184,7 +189,7 @@ public class AttentionFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 

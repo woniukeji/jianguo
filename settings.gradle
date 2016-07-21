@@ -1,1 +1,1 @@
-include ':app', ':dialoglibrary', ':multi-image-selector', ':chat', ':DrioDownlibrary', ':viewPagerlibrary', ':JianMerchant', ':DownMenulibrary', ':haibin', ':qiaqia'
+include ':app', ':dialoglibrary', ':multi-image-selector', ':chat', ':DrioDownlibrary', ':viewPagerlibrary', ':JianMerchant', ':DownMenulibrary', ':haibin', ':qiaqia', ':redpacketlibrary-aar', ':leanchatlib'

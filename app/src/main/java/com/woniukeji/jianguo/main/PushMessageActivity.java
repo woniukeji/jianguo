@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -41,11 +41,11 @@ import okhttp3.Response;
 public class PushMessageActivity extends BaseActivity {
 
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
@@ -106,7 +106,7 @@ public class PushMessageActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_push_message);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         tvTitle.setText("消息");
     }
 

@@ -20,7 +20,7 @@ import com.woniukeji.jianguo.wallte.WalletActivity;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.ViewHolder> {
 
@@ -187,11 +187,11 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.tv_title) TextView tvTitle;
-        @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.tv_content) TextView tvContent;
-        @InjectView(R.id.tv_ps) TextView tvPs;
-        @InjectView(R.id.rl_job) LinearLayout rlJob;
+        @BindView(R.id.tv_title) TextView tvTitle;
+        @BindView(R.id.tv_date) TextView tvDate;
+        @BindView(R.id.tv_content) TextView tvContent;
+        @BindView(R.id.tv_ps) TextView tvPs;
+        @BindView(R.id.rl_job) LinearLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -200,7 +200,7 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

@@ -53,7 +53,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.sharesdk.framework.Platform;
@@ -67,27 +67,27 @@ import static cn.pedant.SweetAlert.SweetAlertDialog.*;
 
 public class DrawMoneyActivity extends BaseActivity implements PlatformActionListener{
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.img_alipay) ImageView imgAlipay;
-    @InjectView(R.id.tv_alipay) TextView tvAlipay;
-    @InjectView(R.id.tv_ali_is_bind) TextView tvAliIsBind;
-    @InjectView(R.id.rl_alipay) RelativeLayout rlAlipay;
-    @InjectView(R.id.img_yinlian) ImageView imgYinlian;
-    @InjectView(R.id.tv_yinlian) TextView tvYinlian;
-    @InjectView(R.id.tv_yinlian_is_bind) TextView tvYinlianIsBind;
-    @InjectView(R.id.rl_yinlian) RelativeLayout rlYinlian;
-    @InjectView(R.id.tv_money_title) TextView tvMoneyTitle;
-    @InjectView(R.id.et_money_sum) EditText etMoneySum;
-    @InjectView(R.id.btn_post) Button btnPost;
-    @InjectView(R.id.img_go01) ImageView imgGo01;
-    @InjectView(R.id.rb_ailipay) RadioButton rbAilipay;
-    @InjectView(R.id.img_go02) ImageView imgGo02;
-    @InjectView(R.id.rb_yinlian) RadioButton rbYinlian;
-    @InjectView(R.id.tv_sms_title) TextView tvSmsTitle;
-    @InjectView(R.id.et_sms) EditText etSms;
-    @InjectView(R.id.btn_sms) Button btnSms;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.img_alipay) ImageView imgAlipay;
+    @BindView(R.id.tv_alipay) TextView tvAlipay;
+    @BindView(R.id.tv_ali_is_bind) TextView tvAliIsBind;
+    @BindView(R.id.rl_alipay) RelativeLayout rlAlipay;
+    @BindView(R.id.img_yinlian) ImageView imgYinlian;
+    @BindView(R.id.tv_yinlian) TextView tvYinlian;
+    @BindView(R.id.tv_yinlian_is_bind) TextView tvYinlianIsBind;
+    @BindView(R.id.rl_yinlian) RelativeLayout rlYinlian;
+    @BindView(R.id.tv_money_title) TextView tvMoneyTitle;
+    @BindView(R.id.et_money_sum) EditText etMoneySum;
+    @BindView(R.id.btn_post) Button btnPost;
+    @BindView(R.id.img_go01) ImageView imgGo01;
+    @BindView(R.id.rb_ailipay) RadioButton rbAilipay;
+    @BindView(R.id.img_go02) ImageView imgGo02;
+    @BindView(R.id.rb_yinlian) RadioButton rbYinlian;
+    @BindView(R.id.tv_sms_title) TextView tvSmsTitle;
+    @BindView(R.id.et_sms) EditText etSms;
+    @BindView(R.id.btn_sms) Button btnSms;
     private Balance balance;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
@@ -103,7 +103,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
 
@@ -149,7 +149,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_draw_money);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

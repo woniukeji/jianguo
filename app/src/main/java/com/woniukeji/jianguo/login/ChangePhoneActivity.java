@@ -44,8 +44,9 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
@@ -61,16 +62,16 @@ public class ChangePhoneActivity extends BaseActivity {
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.btn_get_code) Button btnGetCode;
-    @InjectView(R.id.icon_pass) ImageView iconPass;
-    @InjectView(R.id.phone_code) EditText phoneCode;
-    @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
-    @InjectView(R.id.login_form) LinearLayout loginForm;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.phoneNumber) EditText phoneNumber;
+    @BindView(R.id.btn_get_code) Button btnGetCode;
+    @BindView(R.id.icon_pass) ImageView iconPass;
+    @BindView(R.id.phone_code) EditText phoneCode;
+    @BindView(R.id.sign_in_button) Button signInButton;
+    @BindView(R.id.email_login_form) LinearLayout emailLoginForm;
+    @BindView(R.id.login_form) LinearLayout loginForm;
 
 
     private int MSG_USER_SUCCESS = 0;
@@ -86,7 +87,7 @@ public class ChangePhoneActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.reset(this);
+
         if (time!=null){
             time.cancel();
         }
@@ -97,7 +98,7 @@ public class ChangePhoneActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
 
@@ -142,7 +143,7 @@ public class ChangePhoneActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_change_phone);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

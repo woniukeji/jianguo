@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -49,10 +49,10 @@ public class SignFragment extends BaseFragment implements SignAdapter.RecyCallBa
 
     private static String params1="type";
     private static String params2="jobid";
-    @InjectView(R.id.img_renwu) ImageView imgRenwu;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_renwu) ImageView imgRenwu;
+    @BindView(R.id.rl_null) RelativeLayout rlNull;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;
@@ -70,7 +70,7 @@ public class SignFragment extends BaseFragment implements SignAdapter.RecyCallBa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 
@@ -161,7 +161,7 @@ public class SignFragment extends BaseFragment implements SignAdapter.RecyCallBa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         initview();
         return view;
 
@@ -198,6 +198,12 @@ public class SignFragment extends BaseFragment implements SignAdapter.RecyCallBa
         GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(type),"0");
         getTask.execute();
     }
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_sign;
+    }
+
     @Override
     public void onAttach(Context context) {
 

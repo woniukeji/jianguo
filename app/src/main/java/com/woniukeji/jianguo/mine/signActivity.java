@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -50,13 +50,13 @@ import okhttp3.Response;
  */
 public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBack {
 
-    @InjectView(R.id.img_renwu) ImageView imgRenwu;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.img_renwu) ImageView imgRenwu;
+    @BindView(R.id.rl_null) RelativeLayout rlNull;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;
@@ -75,7 +75,7 @@ public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 
@@ -98,7 +98,7 @@ public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @OnClick(R.id.img_back)
@@ -193,7 +193,7 @@ public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBa
         EventBus.getDefault().register(this);
         setContentView(R.layout.fragment_sign);
 //        View view = inflater.inflate(R.layout.fragment_sign, container, false);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

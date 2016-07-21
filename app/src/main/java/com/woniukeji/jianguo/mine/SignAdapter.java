@@ -26,7 +26,7 @@ import java.security.PublicKey;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
@@ -376,19 +376,19 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) CircleImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.tv_job_wages) TextView tvJobWages;
+        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.tv_job_wages) TextView tvJobWages;
 
-        @InjectView(R.id.img_pay) ImageView imgPay;
-        @InjectView(R.id.tv_work_date) TextView tvWorkDate;
-        @InjectView(R.id.rl_top) RelativeLayout rlTop;
-        @InjectView(R.id.btn_cancel_actn) Button btnCancelActn;
-        @InjectView(R.id.btn_confirm_actn) Button btnConfirmActn;
-        @InjectView(R.id.ll_button) LinearLayout llButton;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
-        @InjectView(R.id.img_job_status) ImageView imgJobStatus;
-        @InjectView(R.id.img_finish_status) ImageView imgFinishStatus;
+        @BindView(R.id.img_pay) ImageView imgPay;
+        @BindView(R.id.tv_work_date) TextView tvWorkDate;
+        @BindView(R.id.rl_top) RelativeLayout rlTop;
+        @BindView(R.id.btn_cancel_actn) Button btnCancelActn;
+        @BindView(R.id.btn_confirm_actn) Button btnConfirmActn;
+        @BindView(R.id.ll_button) LinearLayout llButton;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.img_job_status) ImageView imgJobStatus;
+        @BindView(R.id.img_finish_status) ImageView imgFinishStatus;
         private ImageView animLoading;
         private TextView loading;
 
@@ -397,7 +397,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

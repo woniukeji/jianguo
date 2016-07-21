@@ -23,7 +23,7 @@ import com.woniukeji.jianguo.widget.AnimTextView;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;;
 
@@ -156,11 +156,11 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.tv_job_count) TextView tvJobCount;
-        @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.user_head) ImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.tv_job_count) TextView tvJobCount;
+        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -169,7 +169,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

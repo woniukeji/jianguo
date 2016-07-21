@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -53,10 +53,10 @@ public class CollectionFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @InjectView(R.id.img_renwu) ImageView imgRenwu;
-    @InjectView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.img_renwu) ImageView imgRenwu;
+    @BindView(R.id.list) FixedRecyclerView list;
 
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
+    @BindView(R.id.rl_null) RelativeLayout rlNull;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -75,7 +75,7 @@ public class CollectionFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 
@@ -159,13 +159,16 @@ public class CollectionFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_collection, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         initview();
         EventBus.getDefault().register(this);
         return view;
 
     }
-
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_collection;
+    }
     private void initview() {
 //        tvTitle.setText("兼职");
 //        imgBack.setVisibility(View.GONE);

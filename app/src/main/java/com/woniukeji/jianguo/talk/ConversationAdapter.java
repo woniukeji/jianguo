@@ -27,7 +27,7 @@ import com.woniukeji.jianguo.widget.CircleImageView;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder> {
 
@@ -177,11 +177,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     static
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.circle_talk_head) CircleImageView circleTalkHead;
-        @InjectView(R.id.tv_nick) TextView tvNick;
-        @InjectView(R.id.tv_content) TextView tvContent;
-        @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.rl_school) RelativeLayout rlSchool;
+        @BindView(R.id.circle_talk_head) CircleImageView circleTalkHead;
+        @BindView(R.id.tv_nick) TextView tvNick;
+        @BindView(R.id.tv_content) TextView tvContent;
+        @BindView(R.id.tv_date) TextView tvDate;
+        @BindView(R.id.rl_school) RelativeLayout rlSchool;
 
         private ImageView animLoading;
         private TextView loading;
@@ -193,7 +193,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 case IS_HEADER:
                     break;
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

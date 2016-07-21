@@ -36,15 +36,15 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 
 public class TalkFragment extends BaseFragment {
-    @InjectView(R.id.text) TextView text;
-    @InjectView(R.id.button) Button button;
-    @InjectView(R.id.talk_const_rv) FixedRecyclerView talkConstRv;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.text) TextView text;
+    @BindView(R.id.button) Button button;
+    @BindView(R.id.talk_const_rv) FixedRecyclerView talkConstRv;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
     private List<AVIMConversation> conversations = new ArrayList<AVIMConversation>();
 
     // TODO: Rename and change types of parameters
@@ -79,7 +79,7 @@ public class TalkFragment extends BaseFragment {
         LogUtils.i("fragment", "talk:onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_talk, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -185,6 +185,11 @@ public class TalkFragment extends BaseFragment {
     }
 
     @Override
+    public int getContentViewId() {
+        return R.layout.fragment_talk;
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         LogUtils.i("fragment", "talk:onAttach");
@@ -201,7 +206,7 @@ public class TalkFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
         LogUtils.i("fragment", "talk:ondestory");
     }

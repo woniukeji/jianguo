@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.fenjuly.library.ArrowDownloadButton;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -55,7 +54,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -65,8 +64,8 @@ import okhttp3.Call;
  */
 public class MainActivity extends BaseActivity {
 
-    @InjectView(R.id.tabHost) CommonTabLayout tabHost;
-    @InjectView(R.id.mainPager) ViewPager mainPager;
+    @BindView(R.id.tabHost) CommonTabLayout tabHost;
+    @BindView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
     private String[] titles = {"首页", "兼职", "果聊", "我的"};//"果聊",
     private int[] mIconUnselectIds = {
@@ -130,7 +129,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initSystemBar(this);
         Intent intent=this.getIntent();
         boolean login=intent.getBooleanExtra("login",false);

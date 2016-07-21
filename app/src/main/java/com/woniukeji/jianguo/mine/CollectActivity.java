@@ -21,14 +21,14 @@ import com.woniukeji.jianguo.utils.ActivityManager;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class CollectActivity extends BaseActivity {
 
-    @InjectView(R.id.tl_6) CommonTabLayout tl6;
-    @InjectView(R.id.mainPager) ViewPager mainPager;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.tl_6) CommonTabLayout tl6;
+    @BindView(R.id.mainPager) ViewPager mainPager;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private String[] mTitles = {"收藏的兼职", "关注的商家"};
     private int[] mIconUnselectIds = {
@@ -44,7 +44,7 @@ public class CollectActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_collect);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

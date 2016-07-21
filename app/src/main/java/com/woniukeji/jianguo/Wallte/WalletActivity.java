@@ -35,21 +35,21 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class WalletActivity extends BaseActivity {
 
-    @InjectView(R.id.tl_6) CommonTabLayout tl6;
-    @InjectView(R.id.mainPager) ViewPager mainPager;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.top) RelativeLayout top;
-    @InjectView(R.id.tv_money_sum) TextView tvMoneySum;
-    @InjectView(R.id.tv_action_get) TextView tvActionGet;
-    @InjectView(R.id.rl_wallte_info) RelativeLayout rlWallteInfo;
+    @BindView(R.id.tl_6) CommonTabLayout tl6;
+    @BindView(R.id.mainPager) ViewPager mainPager;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.top) RelativeLayout top;
+    @BindView(R.id.tv_money_sum) TextView tvMoneySum;
+    @BindView(R.id.tv_action_get) TextView tvActionGet;
+    @BindView(R.id.rl_wallte_info) RelativeLayout rlWallteInfo;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
@@ -111,7 +111,7 @@ public class WalletActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_wallte);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

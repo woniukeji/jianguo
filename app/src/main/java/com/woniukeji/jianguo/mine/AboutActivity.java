@@ -16,27 +16,27 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.main.WebViewActivity;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class AboutActivity extends Activity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.img_log) ImageView imgLog;
-    @InjectView(R.id.bootom) TextView bootom;
-    @InjectView(R.id.tv_copration) RelativeLayout tvCopration;
-    @InjectView(R.id.tv_leave_opinion) RelativeLayout tvLeaveOpinion;
-    @InjectView(R.id.rl_rule) RelativeLayout rlRule;
-    @InjectView(R.id.rl_phone) RelativeLayout rlPhone;
-    @InjectView(R.id.tv_number) TextView tvNumber;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.img_log) ImageView imgLog;
+    @BindView(R.id.bootom) TextView bootom;
+    @BindView(R.id.tv_copration) RelativeLayout tvCopration;
+    @BindView(R.id.tv_leave_opinion) RelativeLayout tvLeaveOpinion;
+    @BindView(R.id.rl_rule) RelativeLayout rlRule;
+    @BindView(R.id.rl_phone) RelativeLayout rlPhone;
+    @BindView(R.id.tv_number) TextView tvNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         TextView tvVersion=(TextView)findViewById(R.id.tv_version);
         tvVersion.setText("版本：" +getVersionName());
 

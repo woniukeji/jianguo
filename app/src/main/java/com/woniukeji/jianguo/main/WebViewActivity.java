@@ -15,22 +15,22 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class WebViewActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.tv_loading) ProgressBar tvLoading;
-    @InjectView(R.id.webview) WebView webview;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.tv_loading) ProgressBar tvLoading;
+    @BindView(R.id.webview) WebView webview;
 
 
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_web_view);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

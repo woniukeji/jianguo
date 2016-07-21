@@ -41,16 +41,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class SchoolActivity extends BaseActivity {
-    @InjectView(R.id.et_search) EditText etSearch;
-    @InjectView(R.id.btn_clear_search_text) Button btnClearSearchText;
-    @InjectView(R.id.layout_clear_search_text) LinearLayout layoutClearSearchText;
-    @InjectView(R.id.ll_search) LinearLayout llSearch;
-    @InjectView(R.id.lv_search) ListView lvSearch;
+    @BindView(R.id.et_search) EditText etSearch;
+    @BindView(R.id.btn_clear_search_text) Button btnClearSearchText;
+    @BindView(R.id.layout_clear_search_text) LinearLayout layoutClearSearchText;
+    @BindView(R.id.ll_search) LinearLayout llSearch;
+    @BindView(R.id.lv_search) ListView lvSearch;
     private Handler mHandler = new Myhandler(this);
     private Context context = SchoolActivity.this;
     private int MSG_POST_SUCCESS = 0;
@@ -102,7 +102,7 @@ public class SchoolActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_school);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

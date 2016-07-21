@@ -24,6 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -34,6 +37,8 @@ import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
+import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
+import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -46,7 +51,7 @@ import java.lang.ref.WeakReference;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
@@ -62,17 +67,17 @@ public class PasswordLoginFragment extends BaseFragment {
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.btn_get_code) Button btnGetCode;
-    @InjectView(R.id.icon_pass) ImageView iconPass;
-    @InjectView(R.id.phone_code) EditText phoneCode;
-    @InjectView(R.id.cb_rule) CheckBox cbRule;
-    @InjectView(R.id.tv_rule) TextView tvRule;
-    @InjectView(R.id.user_rule) LinearLayout userRule;
-    @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
-    @InjectView(R.id.login_form) LinearLayout loginForm;
-    @InjectView(R.id.tv_forget_pass) TextView tvForgetPass;
+    @BindView(R.id.phoneNumber) EditText phoneNumber;
+    @BindView(R.id.btn_get_code) Button btnGetCode;
+    @BindView(R.id.icon_pass) ImageView iconPass;
+    @BindView(R.id.phone_code) EditText phoneCode;
+    @BindView(R.id.cb_rule) CheckBox cbRule;
+    @BindView(R.id.tv_rule) TextView tvRule;
+    @BindView(R.id.user_rule) LinearLayout userRule;
+    @BindView(R.id.sign_in_button) Button signInButton;
+    @BindView(R.id.email_login_form) LinearLayout emailLoginForm;
+    @BindView(R.id.login_form) LinearLayout loginForm;
+    @BindView(R.id.tv_forget_pass) TextView tvForgetPass;
 
 
     private int MSG_USER_SUCCESS = 0;
@@ -86,7 +91,7 @@ public class PasswordLoginFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
     }
 
 
@@ -137,15 +142,20 @@ public class PasswordLoginFragment extends BaseFragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_login_password, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         createLink(tvRule);
         return view;
 
     }
-
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_login_password;
+    }
 
     /**
      * 创建一个超链接
@@ -186,13 +196,13 @@ public class PasswordLoginFragment extends BaseFragment {
 
 
 // 暂时关闭果聊功能
-//        final ChatManager chatManager = ChatManager.getInstance();
+        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
             if (JPushInterface.isPushStopped(getActivity().getApplicationContext())) {
                 JPushInterface.resumePush(getActivity().getApplicationContext());
             }
             //登陆leancloud服务器 给极光设置别名
-//                        chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+                        chatManager.setupManagerWithUserId(getActivity(), String.valueOf(user.getT_user_login().getId()));
             JPushInterface.setAlias(getActivity().getApplicationContext(), "jianguo" + user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
@@ -201,18 +211,19 @@ public class PasswordLoginFragment extends BaseFragment {
                 }
             });
         }
-//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-//            @Override
-//            public void done(AVIMClient avimClient, AVIMException e) {
-//                if (null == e) {
-//                    TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
-//                    talkMessageEvent.isLogin=true;
-//                    EventBus.getDefault().post(talkMessageEvent);
-//                } else {
-//                    showShortToast(e.toString());
-//                }
-//            }
-//        });
+        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (null == e) {
+                    TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
+                    talkMessageEvent.isLogin=true;
+                    EventBus.getDefault().post(talkMessageEvent);
+                } else {
+                    Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
+//                    getActivity().showShortToast(e.toString());
+                }
+            }
+        });
 
     }
 

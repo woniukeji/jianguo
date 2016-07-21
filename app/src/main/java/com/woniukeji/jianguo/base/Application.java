@@ -9,6 +9,7 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.woniukeji.jianguo.leanmessage.MessageHandler;
+import com.woniukeji.jianguo.talk.UserProvider;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import cn.leancloud.chatkit.LCChatKit;
 import okhttp3.OkHttpClient;
 
 /**
@@ -43,7 +45,8 @@ public class Application extends android.app.Application {
         AVOSCloud.initialize(this,"AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
         MessageHandler msgHandler = new MessageHandler(this);
         AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
-
+        LCChatKit.getInstance().setProfileProvider(UserProvider.getInstance());
+        LCChatKit.getInstance().init(getApplicationContext(), "AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
 //        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
     }
 

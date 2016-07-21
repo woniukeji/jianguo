@@ -40,17 +40,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class MerchantActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     RelativeLayout mHeader;
     RelativeLayout mRlInfo;
     ImageView mImgHead;
@@ -130,7 +130,7 @@ public class MerchantActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_merchant);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

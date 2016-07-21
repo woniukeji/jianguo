@@ -50,7 +50,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -58,23 +58,23 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class AuthActivity extends BaseActivity {
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView title;
-    @InjectView(R.id.img_front) ImageView imgFront;
-    @InjectView(R.id.tv_not1) TextView tvNot1;
-    @InjectView(R.id.tv_not2) TextView tvNot2;
-    @InjectView(R.id.img_opposite) ImageView imgOpposite;
-    @InjectView(R.id.ll_top) LinearLayout llTop;
-    @InjectView(R.id.img_phone) ImageView imgPhone;
-    @InjectView(R.id.img) ImageView img;
-    @InjectView(R.id.tv_phone_auth) TextView etPhoneAuth;
-    @InjectView(R.id.et_real_name) EditText etRealName;
-    @InjectView(R.id.et_id) EditText etId;
-    @InjectView(R.id.img_pass) ImageView imgPass;
-    @InjectView(R.id.rb_man) RadioButton rbMan;
-    @InjectView(R.id.rb_woman) RadioButton rbWoman;
-    @InjectView(R.id.check_button) Button checkButton;
-    @InjectView(R.id.rl_phone) RelativeLayout rlPhone;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView title;
+    @BindView(R.id.img_front) ImageView imgFront;
+    @BindView(R.id.tv_not1) TextView tvNot1;
+    @BindView(R.id.tv_not2) TextView tvNot2;
+    @BindView(R.id.img_opposite) ImageView imgOpposite;
+    @BindView(R.id.ll_top) LinearLayout llTop;
+    @BindView(R.id.img_phone) ImageView imgPhone;
+    @BindView(R.id.img) ImageView img;
+    @BindView(R.id.tv_phone_auth) TextView etPhoneAuth;
+    @BindView(R.id.et_real_name) EditText etRealName;
+    @BindView(R.id.et_id) EditText etId;
+    @BindView(R.id.img_pass) ImageView imgPass;
+    @BindView(R.id.rb_man) RadioButton rbMan;
+    @BindView(R.id.rb_woman) RadioButton rbWoman;
+    @BindView(R.id.check_button) Button checkButton;
+    @BindView(R.id.rl_phone) RelativeLayout rlPhone;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 2;
@@ -209,7 +209,7 @@ public class AuthActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_auth);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -254,7 +254,7 @@ public class AuthActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

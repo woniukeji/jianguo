@@ -31,10 +31,12 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.woniukeji.jianguo.R;
@@ -50,7 +52,6 @@ import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 
 import org.kymjs.kjframe.KJActivity;
-import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.FileUtils;
 import org.kymjs.kjframe.utils.KJLoger;
 
@@ -64,7 +65,7 @@ import java.util.Map;
 import java.util.Random;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -73,10 +74,10 @@ import de.greenrobot.event.EventBus;
 public class ChatActivity extends KJActivity {
 
     public static final int REQUEST_CODE_GETIMAGE_BYSDCARD = 0x1;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.chat_listview) ListView chatListview;
-    @InjectView(R.id.chat_msg_input_box) KJChatKeyboard chatMsgInputBox;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.chat_listview) ListView chatListview;
+    @BindView(R.id.chat_msg_input_box) KJChatKeyboard chatMsgInputBox;
 
     private KJChatKeyboard box;
     private ListView mRealListView;
@@ -93,7 +94,7 @@ public class ChatActivity extends KJActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -118,7 +119,36 @@ public class ChatActivity extends KJActivity {
             adapter.notifyDataSetChanged();
         }
     }
-
+    /**
+     * 获取 conversation，为了避免重复的创建，此处先 query 是否已经存在只包含该 member 的 conversation
+     * 如果存在，则直接赋值给 ChatFragment，否者创建后再赋值
+     */
+    private void getConversation(final String memberId) {
+        final AVIMClient client = ChatManager.getInstance().getImClient();
+        AVIMConversationQuery conversationQuery = client.getQuery();
+        conversationQuery.withMembers(Arrays.asList(memberId), true);
+        conversationQuery.whereEqualTo("customConversationType",1);
+        conversationQuery.findInBackground(new AVIMConversationQueryCallback() {
+            @Override
+            public void done(List<AVIMConversation> list, AVIMException e) {
+//                if (filterException(e)) {
+//                    //注意：此处仍有漏洞，如果获取了多个 conversation，默认取第一个
+//                    if (null != list && list.size() > 0) {
+//                        AVIMConversation avimConversation = list.get(0);
+//                    } else {
+//                        HashMap<String,Object> attributes=new HashMap<String, Object>();
+//                        attributes.put("customConversationType",1);
+//                        client.createConversation(Arrays.asList(memberId), null, attributes, false , new AVIMConversationCreatedCallback() {
+//                            @Override
+//                            public void done(AVIMConversation avimConversation, AVIMException e) {
+//
+//                            }
+//                        });
+//                    }
+//                }
+            }
+        });
+    }
     private void queryConvById(String conid) {
         AVIMClient client = ChatManager.getInstance().getImClient();
         //登录成功
@@ -203,7 +233,7 @@ public class ChatActivity extends KJActivity {
                         goToAlbum();
                         break;
                     case 1:
-                        ViewInject.toast("跳转相机");
+//                        Viewbind.toast("跳转相机");
                         break;
                 }
             }
@@ -392,7 +422,7 @@ public class ChatActivity extends KJActivity {
             @Override
             public void onPhotoClick(int position) {
                 KJLoger.debug(datas.get(position).getContent() + "点击图片的");
-                ViewInject.toast(aty, datas.get(position).getContent() + "点击图片的");
+//                Viewbind.toast(aty, datas.get(position).getContent() + "点击图片的");
             }
 
             @Override
