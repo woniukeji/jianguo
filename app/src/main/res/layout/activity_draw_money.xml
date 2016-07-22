@@ -76,6 +76,7 @@
             android:visibility="gone"
             />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_yinlian"
         android:layout_width="match_parent"
@@ -124,6 +125,62 @@
             />
         <RadioButton
             android:id="@+id/rb_yinlian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_wx"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="5dp"
+        >
+        <ImageView
+            android:id="@+id/img_wx"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/wxpay"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_wx"
+            android:layout_toRightOf="@+id/img_wx"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信"
+            android:textSize="14dp"
+            />
+        <TextView
+            android:id="@+id/tv_wx_is_bind"
+            android:layout_below="@+id/tv_wx"
+            android:layout_toRightOf="@+id/img_wx"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未绑定"
+            android:textSize="12dp"
+            />
+
+        <ImageView
+            android:id="@+id/img_go03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_go"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            />
+        <RadioButton
+            android:id="@+id/rb_wxpay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

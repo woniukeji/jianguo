@@ -14,8 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
@@ -34,6 +36,7 @@ import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.LoginActivity;
+import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.talk.ChatActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
@@ -53,6 +56,9 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -250,6 +256,7 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_location_detail:
                 break;
             case R.id.rl_company:
+
 //                Intent intent=new Intent(this,MerchantActivity.class);
 //                intent.putExtra("merchant",merchantInfo);
 //                startActivity(intent);
@@ -270,10 +277,23 @@ public class JobDetailActivity extends BaseActivity {
 //                }
 //                Mdialog mdialog=new Mdialog(mContext,tel);
 //                mdialog.show();
-                final int Id=t_merchant.getId();
-                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
-                intent.putExtra("merchantId",Id);
-                startActivity(intent);
+                LCChatKit.getInstance().open(String.valueOf(loginId), new AVIMClientCallback() {
+                    @Override
+                    public void done(AVIMClient avimClient, AVIMException e) {
+                        if (null == e) {
+                            finish();
+                            Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
+                            intent.putExtra(LCIMConstants.PEER_ID, "76");
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+//                final int Id=t_merchant.getId();
+//                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
+//                intent.putExtra("merchantId",Id);
+//                startActivity(intent);
 
 //                             String.valueOf(Id);
 //                                final String toUserId="42";

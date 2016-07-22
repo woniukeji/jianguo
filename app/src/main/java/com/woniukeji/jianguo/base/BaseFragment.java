@@ -46,6 +46,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        bind = ButterKnife.bind(this, view);//绑定framgent
         super.onViewCreated(view, savedInstanceState);
     }
 

@@ -1,6 +1,7 @@
 package com.woniukeji.jianguo.http;
 
 
+import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
@@ -49,5 +50,16 @@ public interface MethodInterface {
 */
         @GET("T_Job_Area_City_List_User_Servlet")
         Observable<RxCityCategory> getCityCategory(@Query("only") String only, @Query("login_id") String login_id);
+/**
+*微信绑定账户接口
+*/
+        @POST("T_user_wx_Insert_Servlet")
+        Observable<HttpResult<String>> postWX(@Query("only") String only, @Query("login_id") String login_id,@Query("openid") String openid,@Query("nickname") String nickname
+        ,@Query("sex") String sex,@Query("province") String provice,@Query("city") String city,@Query("headimgurl") String headimgurl,
+        @Query("unionid") String unionid );
+
+
+        @GET("T_user_money_LoginId_Servlet")
+        Observable<Balance> getWallet(@Query("only") String only, @Query("login_id") String login_id);
 
 }

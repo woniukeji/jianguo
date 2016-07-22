@@ -55,6 +55,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
+import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -351,7 +352,7 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new PartJobFragment();          //话题榜
                 case 2:
-                    return new TalkFragment();//果聊
+                    return new LCIMConversationListFragment();//果聊
                 case 3:
                     return new MineFragment();  //用户榜
 

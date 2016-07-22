@@ -219,7 +219,7 @@ public class PasswordLoginFragment extends BaseFragment {
                     talkMessageEvent.isLogin=true;
                     EventBus.getDefault().post(talkMessageEvent);
                 } else {
-                    Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
 //                    getActivity().showShortToast(e.toString());
                 }
             }

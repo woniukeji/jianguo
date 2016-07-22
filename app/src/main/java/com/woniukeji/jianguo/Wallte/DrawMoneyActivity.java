@@ -1,15 +1,14 @@
 package com.woniukeji.jianguo.wallte;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -21,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,39 +33,38 @@ import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.BaseCallback;
 import com.woniukeji.jianguo.entity.CodeCallback;
-import com.woniukeji.jianguo.entity.DrawMoney;
+import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.utils.BitmapUtils;
-import com.woniukeji.jianguo.utils.CommonUtils;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.MethodInterface;
+import com.woniukeji.jianguo.http.NoProgressSubscriber;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.DateUtils;
-import com.woniukeji.jianguo.utils.MD5Coder;
-import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.wechat.friends.Wechat;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 
-import static cn.pedant.SweetAlert.SweetAlertDialog.*;
+import static cn.pedant.SweetAlert.SweetAlertDialog.OnCancelListener;
+import static cn.pedant.SweetAlert.SweetAlertDialog.PROGRESS_TYPE;
 
-public class DrawMoneyActivity extends BaseActivity implements PlatformActionListener{
+public class DrawMoneyActivity extends BaseActivity implements PlatformActionListener {
 
     @BindView(R.id.img_back) ImageView imgBack;
     @BindView(R.id.tv_title) TextView tvTitle;
@@ -88,22 +87,27 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     @BindView(R.id.tv_sms_title) TextView tvSmsTitle;
     @BindView(R.id.et_sms) EditText etSms;
     @BindView(R.id.btn_sms) Button btnSms;
+    @BindView(R.id.img_wx) ImageView imgWx;
+    @BindView(R.id.tv_wx_is_bind) TextView tvWxIsBind;
+    @BindView(R.id.rl_wx) RelativeLayout rlWx;
+    @BindView(R.id.rb_wxpay) RadioButton rbWXpay;
+    @BindView(R.id.img_go03) ImageView imgGo03;
     private Balance balance;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
     private Handler mHandler = new Myhandler(this);
     private String type = "";
-    private int loginid;
+    private int loginid=0;
     private double blanceMoney;
     private String sms;
     private TimeCount time;
+    private SubscriberOnNextListener<String> subscriberOnNextListener;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
 
@@ -132,8 +136,8 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
                     Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    SmsCode smsCode= (SmsCode) msg.obj;
-                    activity.sms=smsCode.getText();
+                    SmsCode smsCode = (SmsCode) msg.obj;
+                    activity.sms = smsCode.getText();
                     activity.showShortToast("验证码已经发送，请注意查收");
                     break;
                 case 3:
@@ -159,70 +163,88 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
     @Override
     public void initListeners() {
-        Date date=new Date(System.currentTimeMillis());//当前时间
-        int hour= Integer.parseInt(DateUtils.getHHTime(date));
-      if (hour<8||hour>21){
-          AlertDialog.Builder builder = new AlertDialog.Builder(DrawMoneyActivity.this);
-          builder.setTitle("温馨提示");
-          builder.setMessage("尊敬的用户，您当前的提现申请将会在8:00-21:00为您处理，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+        Date date = new Date(System.currentTimeMillis());//当前时间
+        int hour = Integer.parseInt(DateUtils.getHHTime(date));
+        if (hour < 8 || hour > 21) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(DrawMoneyActivity.this);
+            builder.setTitle("温馨提示");
+            builder.setMessage("尊敬的用户，您当前的提现申请将会在8:00-21:00为您处理，请您耐心等待提现结果，给您带来的不便，敬请谅解");
 //          sweetAlertDialog.set("尊敬的用户，兼果提现申请的处理时间为每日的8:00-21:00，请您耐心等待提现结果，给您带来的不便，敬请谅解");
-          builder.setOnCancelListener(new OnCancelListener() {
-              @Override
-              public void onCancel(DialogInterface dialog) {
-                  dialog.dismiss();
-              }
-          });
-          builder.create().show();
-      }
+            builder.setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
+        }
 
-      etMoneySum.addTextChangedListener(new TextWatcher() {
+        subscriberOnNextListener=new SubscriberOnNextListener<String>() {
+            @Override
+            public void onNext(String httpResult) {
+                progressDialog.dismiss();
+                showLongToast("微信账户绑定成功！");
+            }
+        };
 
-          @Override
-          public void onTextChanged(CharSequence s, int start, int before,
-                                    int count) {
-              if (s.toString().contains(".")) {
-                  if (s.length() - 1 - s.toString().indexOf(".") > 2) {
-                      s = s.toString().subSequence(0,
-                              s.toString().indexOf(".") + 3);
-                      etMoneySum.setText(s);
-                      etMoneySum.setSelection(s.length());
-                  }
-              }
-              if (s.toString().trim().substring(0).equals(".")) {
-                  s = "0" + s;
-                  etMoneySum.setText(s);
-                  etMoneySum.setSelection(2);
-              }
 
-              if (s.toString().startsWith("0")
-                      && s.toString().trim().length() > 1) {
-                  if (!s.toString().substring(1, 2).equals(".")) {
-                      etMoneySum.setText(s.subSequence(0, 1));
-                      etMoneySum.setSelection(1);
-                      return;
-                  }
-              }
-          }
+        etMoneySum.addTextChangedListener(new TextWatcher() {
 
-          @Override
-          public void beforeTextChanged(CharSequence s, int start, int count,
-                                        int after) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if (s.toString().contains(".")) {
+                    if (s.length() - 1 - s.toString().indexOf(".") > 2) {
+                        s = s.toString().subSequence(0,
+                                s.toString().indexOf(".") + 3);
+                        etMoneySum.setText(s);
+                        etMoneySum.setSelection(s.length());
+                    }
+                }
+                if (s.toString().trim().substring(0).equals(".")) {
+                    s = "0" + s;
+                    etMoneySum.setText(s);
+                    etMoneySum.setSelection(2);
+                }
 
-          }
+                if (s.toString().startsWith("0")
+                        && s.toString().trim().length() > 1) {
+                    if (!s.toString().substring(1, 2).equals(".")) {
+                        etMoneySum.setText(s.subSequence(0, 1));
+                        etMoneySum.setSelection(1);
+                        return;
+                    }
+                }
+            }
 
-          @Override
-          public void afterTextChanged(Editable s) {
-              // TODO Auto-generated method stub
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
 
-          }
+            }
 
-    });
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
 
-rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            }
+
+        });
+        rbWXpay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     rbAilipay.setChecked(false);
+                    rbYinlian.setChecked(false);
+                }
+            }
+        });
+        rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    rbAilipay.setChecked(false);
+                    rbWXpay.setChecked(false);
                     type = "1";
                 }
             }
@@ -232,6 +254,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     rbYinlian.setChecked(false);
+                    rbWXpay.setChecked(false);
                     type = "0";
                 }
             }
@@ -239,25 +262,47 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
 
     }
 
-    public void getWechatInfo(){
-
-    Platform wechat = ShareSDK.getPlatform(DrawMoneyActivity.this, Wechat.NAME);
-    wechat.setPlatformActionListener(this);
-    wechat.showUser(null);//执行登录，登录后在回调里面获取用户资料
+    public void getWechatInfo() {
+        progressDialog=new ProgressDialog(this);
+        progressDialog.show();
+        Platform wechat = ShareSDK.getPlatform(DrawMoneyActivity.this, Wechat.NAME);
+        wechat.setPlatformActionListener(this);
+        wechat.showUser(null);//执行登录，登录后在回调里面获取用户资料
     }
+
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        String openid = "";
+        String nickname= "";
+        String imgurl= "";
+        String sex= "";
+        String province= "";
+        String city= "";
+        String unionid= "";
         Iterator iterator = hashMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            if (entry.getKey().equals("nickname")) {
-              entry.getValue();
+            if (entry.getKey().equals("openid")) {
+                openid= (String) entry.getValue();
+            }else if (entry.getKey().equals("nickname")) {
+                 nickname= (String) entry.getValue();
             } else if (entry.getKey().equals("headimgurl")) {
-                entry.getValue();
+                imgurl= String.valueOf(entry.getValue());
             } else if (entry.getKey().equals("sex")) {
-                entry.getValue().toString();
+                sex=(String)entry.getValue().toString();
+            }
+            else if (entry.getKey().equals("city")) {
+                city=(String)entry.getValue().toString();
+            } else if (entry.getKey().equals("province")) {
+                province=(String)entry.getValue().toString();
+            } else if (entry.getKey().equals("unionid")) {
+                unionid=(String)entry.getValue().toString();
             }
         }
+//        ProgressDialog progressDialog=new ProgressDialog(DrawMoneyActivity.this);
+//        progressDialog.setMessage("加载中...");
+        HttpMethods.getInstance().bindWX(new NoProgressSubscriber<String>(subscriberOnNextListener,this,progressDialog), String.valueOf(loginid),openid,nickname,sex,province,city,imgurl,unionid);
+        progressDialog.dismiss();
     }
 
     @Override
@@ -302,41 +347,63 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
             tvAliIsBind.setText(balance.getData().getT_user_money().getName());
             type = "0";
         }
-        if (!balance.getData().getT_user_money().getYinhang().equals("0") && !balance.getData().getT_user_money().getZhifubao().equals("0")) {
-            rbAilipay.setChecked(true);
-            rbYinlian.setChecked(false);
-            type = "0";
+        if (!balance.getData().getT_user_money().getWeixin().equals("0")) {
+            rbWXpay.setChecked(true);
+            rbWXpay.setVisibility(View.VISIBLE);
+            imgGo03.setVisibility(View.GONE);
+            tvWxIsBind.setText(balance.getData().getT_user_money().getNickname());
+            type = "2";
         }
+        if (balance.getData().getT_user_money().getWeixin().equals("1") ) {
+            rbWXpay.setChecked(true);
+            rbYinlian.setChecked(false);
+            rbAilipay.setChecked(false);
+            type = "2";
+        }else if (balance.getData().getT_user_money().getZhifubao().equals("1")){
+            rbWXpay.setChecked(false);
+            rbYinlian.setChecked(false);
+            rbAilipay.setChecked(true);
+            type = "0";
+        }else if(balance.getData().getT_user_money().getYinhang().equals("1")){
+            rbWXpay.setChecked(false);
+            rbYinlian.setChecked(true);
+            rbAilipay.setChecked(false);
+            type = "1";
+        }
+
         loginid = (int) SPUtils.getParam(DrawMoneyActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
     }
-      public void checkAlipayYinLian(int bindPay){
-          if (bindPay==1) {
-              imgGo02.setVisibility(View.GONE);
-              rbYinlian.setVisibility(View.VISIBLE);
-              rbYinlian.setChecked(true);
-              rbAilipay.setChecked(false);
-              tvYinlianIsBind.setText("已绑定");
-              type = "1";
 
-          }
-          if (bindPay==0) {
-              rbAilipay.setChecked(true);
-              rbYinlian.setChecked(false);
-              rbAilipay.setVisibility(View.VISIBLE);
-              imgGo01.setVisibility(View.GONE);
-              tvAliIsBind.setText("已绑定");
-              type = "0";
-          }
+    public void checkAlipayYinLian(int bindPay) {
+        if (bindPay == 1) {
+            imgGo02.setVisibility(View.GONE);
+            rbYinlian.setVisibility(View.VISIBLE);
+            rbYinlian.setChecked(true);
+            rbAilipay.setChecked(false);
+            tvYinlianIsBind.setText("已绑定");
+            type = "1";
+
+        }
+        if (bindPay == 0) {
+            rbAilipay.setChecked(true);
+            rbYinlian.setChecked(false);
+            rbAilipay.setVisibility(View.VISIBLE);
+            imgGo01.setVisibility(View.GONE);
+            tvAliIsBind.setText("已绑定");
+            type = "0";
+        }
 //          if (!balance.getData().getT_user_money().getYinhang().equals("0") && !balance.getData().getT_user_money().getZhifubao().equals("0")) {
 //              rbAilipay.setChecked(true);
 //              rbYinlian.setChecked(false);
 //              type = "0";
 //          }
-      }
+    }
+
     @Override
     public void addActivity() {
 
     }
+
     class TimeCount extends CountDownTimer {
 
         public TimeCount(long millisInFuture, long countDownInterval) {
@@ -354,7 +421,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
         public void onFinish() {
             btnSms.setText("验证码");
             Drawable rBlack;
-            if(android.os.Build.VERSION.SDK_INT >= 21){
+            if (Build.VERSION.SDK_INT >= 21) {
                 rBlack = getResources().getDrawable(R.drawable.button_background_login, getTheme());
             } else {
                 rBlack = getResources().getDrawable(R.drawable.button_background_login);
@@ -363,39 +430,29 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
             btnSms.setClickable(true);
         }
     }
-    @OnClick({R.id.img_back, R.id.rl_alipay, R.id.rl_yinlian, R.id.btn_post,R.id.btn_sms})
+
+    @OnClick({R.id.img_back,R.id.rl_wx, R.id.rl_alipay, R.id.rl_yinlian, R.id.btn_post, R.id.btn_sms})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 finish();
                 break;
             case R.id.btn_sms:
-//                if (type.equals("")) {
-//                    showShortToast("请先绑定支付宝或银联卡！");
-//                    return;
-//                } else if (etMoneySum.getText().toString() == null || etMoneySum.getText().toString().equals("")) {
-//                    showShortToast("请输入取现金额");
-//                    return;
-//                } else if (50 >Double.valueOf(etMoneySum.getText().toString())) {
-//                    showShortToast("提现金额不能小于50元");
-//                    return;
-//                }else if (blanceMoney < Double.valueOf(etMoneySum.getText().toString())) {
-//                    showShortToast("提现金额不能大于当前余额");
-//                    return;
-//                }
                 time.start();
-                String tel= (String) SPUtils.getParam(DrawMoneyActivity.this,Constants.LOGIN_INFO,Constants.SP_TEL,"");
-                GetSMS getSMS=new GetSMS(tel);
+                String tel = (String) SPUtils.getParam(DrawMoneyActivity.this, Constants.LOGIN_INFO, Constants.SP_TEL, "");
+                GetSMS getSMS = new GetSMS(tel);
                 getSMS.execute();
                 break;
             case R.id.rl_alipay:
-                getWechatInfo();
-//                Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
-//                startActivityForResult(intentali,0);
+                Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
+                startActivityForResult(intentali,0);
                 break;
             case R.id.rl_yinlian:
-                Intent intent=new Intent(DrawMoneyActivity.this, BindYinlianActivity.class);
-                startActivityForResult(intent,1);
+                Intent intent = new Intent(DrawMoneyActivity.this, BindYinlianActivity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.rl_wx:
+                getWechatInfo();
                 break;
             case R.id.btn_post:
                 //先判断支付宝和银行卡是否绑定过，再判断选中的是哪个，最后判断金额是否正确
@@ -408,13 +465,13 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 } else if (blanceMoney < Double.valueOf(etMoneySum.getText().toString())) {
                     showShortToast("提现金额不能大于当前余额");
                     return;
-                }else if (etSms.getText().toString().equals("")) {
+                } else if (etSms.getText().toString().equals("")) {
                     showShortToast("请输入验证码");
                     return;
-                }else if (!etSms.getText().toString().equals(sms)) {
+                } else if (!etSms.getText().toString().equals(sms)) {
                     showShortToast("验证码不正确");
                     return;
-                }else if (Double.valueOf(etMoneySum.getText().toString())<50) {
+                } else if (Double.valueOf(etMoneySum.getText().toString()) < 50) {
                     showShortToast("提现金额必须大于50");
                     return;
                 }
@@ -424,6 +481,11 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        time.cancel();
+        super.onDestroy();
+    }
 
     /**
      * 提现Task
@@ -482,7 +544,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     .writeTimeOut(20000)
                     .execute(new BaseCallback() {
                         @Override
-                        public void onError(Call call, Exception e,int id) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.getMessage();
                             message.what = MSG_USER_FAIL;
@@ -491,7 +553,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
 
 
                         @Override
-                        public void onResponse(BaseBean response,int id) {
+                        public void onResponse(BaseBean response, int id) {
                             if (response.getCode().equals("200")) {
                                 Message message = new Message();
                                 message.obj = response.getMessage();
@@ -527,6 +589,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
             CheckPhone();
             return null;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -554,18 +617,18 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                     .execute(new CodeCallback() {
 
                         @Override
-                        public void onError(Call call, Exception e,int id) {
-                            Message message=new Message();
-                            message.obj=e.toString();
-                            message.what=MSG_USER_FAIL;
+                        public void onError(Call call, Exception e, int id) {
+                            Message message = new Message();
+                            message.obj = e.toString();
+                            message.what = MSG_USER_FAIL;
                             mHandler.sendMessage(message);
                         }
 
                         @Override
-                        public void onResponse(SmsCode response,int id) {
-                            Message message=new Message();
-                            message.obj=response;
-                            message.what=MSG_PHONE_SUCCESS;
+                        public void onResponse(SmsCode response, int id) {
+                            Message message = new Message();
+                            message.obj = response;
+                            message.what = MSG_PHONE_SUCCESS;
                             mHandler.sendMessage(message);
                         }
 
@@ -584,7 +647,7 @@ rbYinlian.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(
                 // ALI
                 checkAlipayYinLian(0);
             }
-        }else{
+        } else {
             if (resultCode == RESULT_OK) {
                 //yinlian
                 checkAlipayYinLian(1);

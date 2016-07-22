@@ -2,6 +2,7 @@ package com.woniukeji.jianguo.http;
 
 
 import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
@@ -10,7 +11,9 @@ import com.woniukeji.jianguo.utils.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import dalvik.bytecode.OpcodeInfo;
 import okhttp3.OkHttpClient;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -135,18 +138,7 @@ public class HttpMethods {
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(subscriber);
 //    }
-//    /**
-//     * 获取超市分类
-//     */
-//    public void getGoods(Subscriber<Goods> subscriber,String loginId,String categoryId){
-//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        methodInterface.getGoods(only,loginId,categoryId)
-//                .map(new HttpResultFunc<Goods>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
+
 
 /**
      *更换手机号
@@ -182,5 +174,27 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-
+    /**
+    *绑定微信账户
+    *@param
+    *@author invinjun
+    *created at 2016/7/22 11:53
+    */
+  public void bindWX(Subscriber<String> subscriber,String loginid,String openid,String nickname,String sex,String province,String city,String imgurl,String unionid ){
+      String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+      methodInterface.postWX(only,loginid, openid,nickname,sex,province,city,imgurl,unionid)
+              .map(new HttpResultFunc())
+              .subscribeOn(Schedulers.io())
+              .unsubscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(subscriber);
+  }
+    public void getWallte(Subscriber<Balance> subscriber,String loginid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getWallet(only,loginid)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

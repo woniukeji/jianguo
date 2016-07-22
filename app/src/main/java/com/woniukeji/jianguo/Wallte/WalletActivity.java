@@ -25,6 +25,9 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.base.FragmentText;
 import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.TabEntity;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
@@ -51,16 +54,11 @@ public class WalletActivity extends BaseActivity {
     @BindView(R.id.tv_action_get) TextView tvActionGet;
     @BindView(R.id.rl_wallte_info) RelativeLayout rlWallteInfo;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private int MSG_GET_SUCCESS = 0;
-    private int MSG_GET_FAIL = 1;
-    private int MSG_PHONE_SUCCESS = 2;
-    private int MSG_REGISTER_SUCCESS = 3;
-    private Handler mHandler = new Myhandler(this);
+    private SubscriberOnNextListener<Balance> subscriberOnNextListener;
     private Balance balance;
     private Context context = WalletActivity.this;
     private String[] mTitles = {"收入明细", "支出明细"};
     private int[] mIconUnselectIds = {
-
             R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
     private int[] mIconSelectIds = {
@@ -68,46 +66,6 @@ public class WalletActivity extends BaseActivity {
             R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     private ViewPagerAdapter adapter;
-    private static class Myhandler extends Handler {
-        private WeakReference<Context> reference;
-
-
-        public Myhandler(Context context) {
-            reference = new WeakReference<>(context);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            WalletActivity activity = (WalletActivity) reference.get();
-            switch (msg.what) {
-                case 0:
-//                    if (null != schoolActivity.pDialog) {
-//                    schoolActivity.pDialog.dismiss();
-//                }
-                    activity.balance= (Balance) msg.obj;
-                    activity.tvMoneySum.setText(activity.balance.getData().getT_user_money().getMoney()+"");
-
-                    if (activity.balance.getData().getT_user_money().getPay_status()!=2){
-                        activity.showShortToast("实名认证尚未通过，不能进行提现操作");
-                    }
-
-                    break;
-                case 1:
-//                    if (null != authActivity.pDialog) {
-//                        authActivity.pDialog.dismiss();
-//                    }
-                    String ErrorMessage = (String) msg.obj;
-                    break;
-
-
-                default:
-                    break;
-            }
-        }
-
-
-    }
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_wallte);
@@ -143,10 +101,6 @@ public class WalletActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 tl6.setCurrentTab(position);
-//                if (position==2){
-//                    tl6.hideMsg(2);
-//                }
-
             }
 
             @Override
@@ -176,21 +130,29 @@ public class WalletActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        subscriberOnNextListener=new SubscriberOnNextListener<Balance>() {
+            @Override
+            public void onNext(Balance mBalance) {
+                balance=mBalance;
+                tvMoneySum.setText(balance.getData().getT_user_money().getMoney()+"");
+
+                if (balance.getData().getT_user_money().getPay_status()!=2){
+                    showShortToast("实名认证尚未通过，不能进行提现操作");
+                }
+            }
+        };
 
     }
 
     @Override
     public void initData() {
-        int loginId = (int) SPUtils.getParam(WalletActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         int loginId = (int) SPUtils.getParam(WalletActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-
-        GetTask getTask=new GetTask(String.valueOf(loginId));
-        getTask.execute();
+        HttpMethods.getInstance().getWallte(new ProgressSubscriber<Balance>(subscriberOnNextListener,this), String.valueOf(loginId));
     }
 
     @Override
@@ -202,8 +164,6 @@ public class WalletActivity extends BaseActivity {
     public void onClick(View v) {
 
     }
-
-
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         public ViewPagerAdapter(FragmentManager fm) {
@@ -224,79 +184,6 @@ public class WalletActivity extends BaseActivity {
         @Override
         public int getCount() {
             return 4;
-        }
-    }
-
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String loginId;
-
-        GetTask(String loginId) {
-            this.loginId = loginId;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getBalance();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void getBalance() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.GET_BALANCE_INFO)
-                    .addParams("only", only)
-                    .addParams("login_id", loginId)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<Balance>() {
-                        @Override
-                        public Balance parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            Balance baseBean = new Gson().fromJson(string, new TypeToken<Balance>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_GET_FAIL;
-                            mHandler.sendMessage(message);
-                        }
-
-                        @Override
-                        public void onResponse(Balance baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.what = MSG_GET_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_GET_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
         }
     }
 }
