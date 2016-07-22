@@ -726,10 +726,10 @@ public class PublishDetailActivity extends BaseActivity {
     public void initViews() {
         Intent intent = getIntent();
         String mType = intent.getStringExtra("type");
-        if (mType.equals("old")) {
+        if (mType.equals("old")) {//模板
             Model.ListTJobEntity modle = (Model.ListTJobEntity) intent.getSerializableExtra("job");
             initModleData(modle);
-        } else if (mType.equals("change")) {
+        } else if (mType.equals("change")) {//修改兼职传过来
             String jobid = intent.getStringExtra("jobid");
             llPublish.setVisibility(View.GONE);
             llChange.setVisibility(View.VISIBLE);
@@ -934,7 +934,7 @@ public class PublishDetailActivity extends BaseActivity {
         }
 
         /**
-         * 获取城市列表和兼职种类
+         * 获取单个兼职信息用于修改
          */
         public void getSingleJobInfo() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());

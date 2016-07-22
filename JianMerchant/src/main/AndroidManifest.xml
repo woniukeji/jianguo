@@ -77,7 +77,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".login.ChangPssActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".base.MainActivity"
             android:launchMode="singleTask"
@@ -86,12 +86,12 @@
             android:name=".publish.PublishActivity"
             android:configChanges="keyboardHidden"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".partjob.demoActivity"></activity>
+        <activity android:name=".partjob.demoActivity" />
         <activity
             android:name=".publish.PublishDetailActivity"
             android:configChanges="keyboardHidden"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="me.nereo.multi_image_selector.PreviewPicturesActivity"
             android:configChanges="orientation|screenSize"
@@ -103,34 +103,34 @@
         <activity
             android:name=".publish.PreviewJobActivity"
             android:configChanges="keyboardHidden"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".publish.HistoryJobActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".partjob.PartJobManagerActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".partjob.JobItemDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".partjob.FilterActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".affordwages.CalculateActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".affordwages.ChangeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".affordwages.FinishActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".affordwages.PassWordActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".talk.ChatActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
         <service android:name="com.avos.avoscloud.PushService" />
@@ -161,7 +161,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
@@ -249,7 +249,8 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
 
-        <activity android:name=".mine.PersonExitActivity"></activity>
+        <activity android:name=".mine.PersonExitActivity" />
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

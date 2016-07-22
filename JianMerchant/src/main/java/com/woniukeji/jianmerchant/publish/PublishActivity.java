@@ -63,6 +63,7 @@ public class PublishActivity extends BaseActivity {
     private String[] fragmentsType = {"cjxjz","lsjl","mb"};
 
 
+
     @OnClick({R.id.img_back, R.id.tv_title, R.id.img_share, R.id.tl_new, R.id.vp_publish_partjob})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -179,6 +180,7 @@ public class PublishActivity extends BaseActivity {
 
             }
         });
+
 
     }
 

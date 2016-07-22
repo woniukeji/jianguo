@@ -1,10 +1,11 @@
 package com.woniukeji.jianmerchant.entity;
 
 /**
- * Created by Administrator on 2016/7/21.
+ * Created by Administrator on 2016/7/22.
  */
-public class RegionBean {
-    String region;
+public class TypeBean {
+    private String type;
+    private int id;
 
     public int getId() {
         return id;
@@ -14,20 +15,19 @@ public class RegionBean {
         this.id = id;
     }
 
-    private int id;
-    boolean isSelect = false;
+    private boolean isSelect;
+    public TypeBean(String type,int id) {
 
-    public RegionBean(String region,int id) {
-        this.region = region;
+        this.type = type;
         this.id = id;
     }
 
-    public String getRegion() {
-        return region;
+    public String getType() {
+        return type;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public boolean isSelect() {
@@ -40,11 +40,9 @@ public class RegionBean {
 
     @Override
     public String toString() {
-        return "RegionBean{" +
-                "region='" + region + '\'' +
+        return "TypeBean{" +
+                "type='" + type + '\'' +
                 ", isSelect=" + isSelect +
                 '}';
     }
-
-
 }
