@@ -32,9 +32,10 @@
         android:layout_marginRight="15dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
+        android:src="@drawable/shezhi"
         android:layout_marginLeft="23dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 </RelativeLayout>

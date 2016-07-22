@@ -1,5 +1,6 @@
 package com.woniukeji.jianmerchant.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.woniukeji.jianmerchant.R;
+import com.woniukeji.jianmerchant.affordwages.PassWordActivity;
+import com.woniukeji.jianmerchant.mine.PersonExitActivity;
+import com.woniukeji.jianmerchant.partjob.PartJobManagerActivity;
+import com.woniukeji.jianmerchant.publish.PublishActivity;
 import com.woniukeji.jianmerchant.talk.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianmerchant.utils.ActivityManager;
 import com.woniukeji.jianmerchant.utils.SPUtils;
@@ -70,6 +75,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
     }
 
 //    public ViewPager getMainPager() {
@@ -78,6 +84,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        imgBack.setVisibility(View.GONE);
+        imgShare.setVisibility(View.VISIBLE);
 //        FragmentManager mFragmentManager = getSupportFragmentManager();
 //        tabHost = (CommonTabLayout) findViewById(R.id.tabHost);
 //        mainPager = (ViewPager) findViewById(R.id.mainPager);
@@ -201,19 +209,19 @@ public class MainActivity extends BaseActivity {
      * 首页tab显示维度消息
      */
     public void onEvent(ImTypeMessageEvent event) {
-        tabHost.showDot(1);
+//        tabHost.showDot(1);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
     }
 
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        ButterKnife.reset(this);
         super.onDestroy();
     }
 
@@ -224,14 +232,23 @@ public class MainActivity extends BaseActivity {
             case R.id.img_back:
                 break;
             case R.id.fbjz:
+                //发布兼职
+                startActivity(new Intent(MainActivity.this, PublishActivity.class));
                 break;
             case R.id.jzgl:
+                //兼职管理
+                startActivity(new Intent(MainActivity.this, PartJobManagerActivity.class));
                 break;
             case R.id.cwzx:
+                //财务中心
+                startActivity(new Intent(MainActivity.this, PassWordActivity.class));
                 break;
             case R.id.wd:
+                //我的
+                startActivity(new Intent(MainActivity.this, PersonExitActivity.class));
                 break;
             case R.id.gy:
+                //关于
                 break;
             case R.id.rck:
                 break;
