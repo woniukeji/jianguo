@@ -23,6 +23,7 @@ public class MarketClassAdapter extends RecyclerView.Adapter<MarketClassAdapter.
 
     int mSelect = 0;   //选中项
     private Context context;
+
     private List<ListMarket> list;
     private MyItemClickListener myItemClickListener;
     public MarketClassAdapter(Context context, List<ListMarket> list,MyItemClickListener myItemClickListener) {
