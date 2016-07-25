@@ -142,8 +142,6 @@ public class JobDetailActivity extends BaseActivity {
                     Toast.makeText(jobDetailActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    String signMessage = (String) msg.obj;
-                    Toast.makeText(jobDetailActivity, signMessage, Toast.LENGTH_SHORT).show();
                     jobDetailActivity.tvSignup.setText("已报名");
                     jobDetailActivity.tvSignup.setBackgroundResource(R.color.gray);
                     jobDetailActivity.tvSignup.setClickable(false);

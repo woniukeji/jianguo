@@ -48,7 +48,7 @@ import okhttp3.Response;
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBack {
+public class SignUpActivity extends BaseActivity implements SignAdapter.RecyCallBack {
 
     @BindView(R.id.img_renwu) ImageView imgRenwu;
     @BindView(R.id.rl_null) RelativeLayout rlNull;
@@ -61,7 +61,7 @@ public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBa
     private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;
     private int MSG_POST_FAIL = 6;
-    private Context mContext = SignActivity.this;
+    private Context mContext = SignUpActivity.this;
     private Handler mHandler = new Myhandler(mContext);
     private List<Jobs.ListTJobEntity> modleList = new ArrayList<>();
     private SignAdapter adapter;
@@ -103,14 +103,14 @@ public class SignActivity extends BaseActivity implements SignAdapter.RecyCallBa
 
     @OnClick(R.id.img_back)
     public void onClick() {
-        mContext.startActivity(new Intent(SignActivity.this, MainActivity.class));
+        mContext.startActivity(new Intent(SignUpActivity.this, MainActivity.class));
         finish();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            mContext.startActivity(new Intent(SignActivity.this, MainActivity.class));
+            mContext.startActivity(new Intent(SignUpActivity.this, MainActivity.class));
             finish();
             return true;
         } else {

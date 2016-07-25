@@ -61,5 +61,8 @@ public interface MethodInterface {
 
         @GET("T_user_money_LoginId_Servlet")
         Observable<Balance> getWallet(@Query("only") String only, @Query("login_id") String login_id);
+        @GET("T_enroll_Insert_Servlet")
+        Observable<HttpResult<String>> postSign(@Query("only") String only, @Query("login_id") String login_id,@Query("job_id") String job_id);
+
 
 }

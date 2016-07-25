@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.mine.AuthActivity;
-import com.woniukeji.jianguo.mine.SignActivity;
+import com.woniukeji.jianguo.mine.SignUpActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import java.util.List;
@@ -155,7 +155,7 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
                 public void onClick(View v) {
                     //（0=报名，1=钱包，2=实名）
                     if (message.getType()==0){
-                        mContext.startActivity(new Intent(mContext, SignActivity.class));
+                        mContext.startActivity(new Intent(mContext, SignUpActivity.class));
                     }else if (message.getType()==1){
                         mContext.startActivity(new Intent(mContext, WalletActivity.class));
                     }else if(message.getType()==2){

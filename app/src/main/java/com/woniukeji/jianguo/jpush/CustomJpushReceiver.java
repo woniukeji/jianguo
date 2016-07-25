@@ -11,7 +11,7 @@ import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.main.PushMessageActivity;
 import com.woniukeji.jianguo.mine.AuthActivity;
-import com.woniukeji.jianguo.mine.SignActivity;
+import com.woniukeji.jianguo.mine.SignUpActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import cn.jpush.android.api.JPushInterface;
@@ -45,7 +45,7 @@ import de.greenrobot.event.EventBus;
                 PushType pushType = gson.fromJson(type, PushType.class);
             if (null!=pushType&&null!=pushType.getType()){
                 if (pushType.getType().equals("0")) {
-                    context.startActivity(new Intent(context, SignActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    context.startActivity(new Intent(context, SignUpActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } else if (pushType.getType().equals("1")) {
                     context.startActivity(new Intent(context, WalletActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } else if (pushType.getType().equals("2")) {

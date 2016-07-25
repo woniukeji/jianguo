@@ -197,4 +197,15 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+
+
+    public void MpostSign(Subscriber<String> subscriber,String loginid,String jobid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postSign(only,loginid,jobid)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

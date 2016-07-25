@@ -111,7 +111,7 @@ public class MineFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-                startActivity(new Intent(getActivity(), SignActivity.class));
+                startActivity(new Intent(getActivity(), SignUpActivity.class));
                 break;
             case R.id.credit:
                 if (loginId == 0) {

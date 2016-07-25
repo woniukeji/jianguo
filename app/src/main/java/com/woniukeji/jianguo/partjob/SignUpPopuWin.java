@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,6 +21,9 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RxJobDetails;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -45,23 +49,23 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     TextView mTvOther;
     Button mTvOk;
     ImageView mImgOff;
-    private int MSG_POST_FAIL=1;
     public int MSG_POST_SUCCESS=4;
     private int jobid;
     private RxJobDetails.DataBean.TJobInfoBean jobinfo;
     private String payMethod;
      private String money;
+    private SubscriberOnNextListener<String> stringSubscriberOnNextListener;
+
+
     public SignUpPopuWin(Context context, Handler handler, int id, RxJobDetails.DataBean.TJobInfoBean jobinfo, String toString, String s) {
         this.context = context;
         this.mHandler=handler;
         jobid=id;
         this.payMethod=s;
         this.jobinfo=jobinfo;
-
     }
     public void showShareWindow() {
         View view = LayoutInflater.from(context).inflate(R.layout.popwindow_signup, null);
-
         initView(view);
         initListeners();
         initDate();
@@ -79,8 +83,6 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置背景
         this.setBackgroundDrawable(dw);
-
-
     }
     public void initView(View view) {
             mRlRootView = (RelativeLayout) view.findViewById(R.id.rl_root_view);
@@ -101,13 +103,21 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     public void initListeners() {
         mTvOk.setOnClickListener(this);
         mImgOff.setOnClickListener(this);
+        stringSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
+            @Override
+            public void onNext(String s) {
+                Toast.makeText(context,"报名成功！",Toast.LENGTH_SHORT).show();
+                Message message = new Message();
+                message.what = MSG_POST_SUCCESS;
+                mHandler.sendMessage(message);
+                dismiss();
+            }
+        };
     }
 
 
     private void initDate() {
-
         if (jobinfo!=null){
-
             mTvWorkLocation.setText(jobinfo.getAddress());
             String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
             String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
@@ -130,7 +140,6 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
             }else{
                 mTvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
             }
-
             //期限（1=月结，2=周结，3=日结，4=小时结）
                 mTvPayMethod.setText(payMethod);
 
@@ -152,100 +161,9 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
                 break;
             case R.id.tv_ok:
                 int loginId = (int) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-                GetTask getTask=new GetTask(String.valueOf(loginId),String.valueOf(jobid));
-                getTask.execute();
-                Message message=new Message();
-//                message.obj="报名成功";
-//                message.what=4;
-//                mHandler.sendMessage(message);
-
+                HttpMethods.getInstance().MpostSign(new ProgressSubscriber<String>(stringSubscriberOnNextListener,context),String.valueOf(loginId), String.valueOf(jobid));
                 break;
         }
     }
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-        private final String login_id;
-        private final String job_id;
 
-        GetTask(String login_id,String job_id) {
-            this.job_id = job_id;
-            this.login_id = login_id;
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getJobs();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void getJobs() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.POST_SIGN)
-                    .addParams("only", only)
-                    .addParams("login_id", login_id)
-                    .addParams("job_id", job_id)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean>() {
-
-
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_POST_FAIL;
-                            mHandler.sendMessage(message);
-                            dismiss();
-                        }
-
-                        @Override
-                        public void onResponse(BaseBean baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-//                              SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_SUCCESS;
-                                mHandler.sendMessage(message);
-                                dismiss();
-                            } else if(baseBean.getCode().equals("500")){
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_FAIL;
-                                mHandler.sendMessage(message);
-                                dismiss();
-                            }else if(baseBean.getCode().equals("403")){
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_FAIL;
-                                mHandler.sendMessage(message);
-                                dismiss();
-                            }
-                        }
-                    });
-        }
-    }
 }
