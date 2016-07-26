@@ -2,7 +2,9 @@ package com.woniukeji.jianguo.http;
 
 
 import com.woniukeji.jianguo.entity.Balance;
+import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
+import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
@@ -49,7 +51,7 @@ public interface MethodInterface {
 *拉取城市和兼职类型（兼职列表界面使用）
 */
         @GET("T_Job_Area_City_List_User_Servlet")
-        Observable<RxCityCategory> getCityCategory(@Query("only") String only, @Query("login_id") String login_id);
+        Observable<HttpResult<CityCategory>> getCityCategory(@Query("only") String only, @Query("login_id") String login_id);
 /**
 *微信绑定账户接口
 */
@@ -61,8 +63,24 @@ public interface MethodInterface {
 
         @GET("T_user_money_LoginId_Servlet")
         Observable<Balance> getWallet(@Query("only") String only, @Query("login_id") String login_id);
+ /**
+ *报名接口
+ *@param
+ *@param
+ *@author invinjun
+ *created at 2016/7/26 16:43
+ */
         @GET("T_enroll_Insert_Servlet")
         Observable<HttpResult<String>> postSign(@Query("only") String only, @Query("login_id") String login_id,@Query("job_id") String job_id);
+/**
+*查询推送记录接口】、
+*@param
+*@param
+*@author invinjun
+*created at 2016/7/26 16:44
+*/
+@GET("T_push_List_Servlet")
+Observable<HttpResult<PushMessage>> getPush(@Query("only") String only, @Query("login_id") String login_id);
 
 
 }

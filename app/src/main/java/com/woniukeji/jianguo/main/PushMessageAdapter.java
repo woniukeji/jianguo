@@ -24,7 +24,7 @@ import butterknife.BindView;
 
 public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.ViewHolder> {
 
-    private final List<PushMessage.DataEntity.ListTPushEntity> mValues;
+    private final List<PushMessage.ListTPushEntity> mValues;
     private final Context mContext;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
@@ -34,7 +34,7 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public PushMessageAdapter(List<PushMessage.DataEntity.ListTPushEntity> items, Context context) {
+    public PushMessageAdapter(List<PushMessage.ListTPushEntity> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -89,7 +89,7 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
                 holder.itemView.setVisibility(View.VISIBLE);
             }
         } else {
-            final PushMessage.DataEntity.ListTPushEntity message = mValues.get(position);
+            final PushMessage.ListTPushEntity message = mValues.get(position);
 
          holder.tvTitle.setText(message.getTitle());
             holder.tvDate.setText(message.getTime());
@@ -153,13 +153,23 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
 
                 @Override
                 public void onClick(View v) {
-                    //（0=报名，1=钱包，2=实名）
+
+//                    0=报名，我的兼职
+//                    1=钱包
+//                    2=实名
+//                    3=主页
+//                    4=活动H5
+
                     if (message.getType()==0){
                         mContext.startActivity(new Intent(mContext, SignUpActivity.class));
                     }else if (message.getType()==1){
                         mContext.startActivity(new Intent(mContext, WalletActivity.class));
                     }else if(message.getType()==2){
                         mContext.startActivity(new Intent(mContext, AuthActivity.class));
+                    }else if(message.getType()==4){
+                        Intent intent=new Intent(mContext, WebViewActivity.class);
+                        intent.putExtra("url",message.getHtml_url());
+                        mContext.startActivity(intent);
                     }else {
                         mContext.startActivity(new Intent(mContext, MainActivity.class));
                     }

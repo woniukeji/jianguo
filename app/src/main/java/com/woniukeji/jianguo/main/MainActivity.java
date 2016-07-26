@@ -35,7 +35,6 @@ import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
 import com.woniukeji.jianguo.eventbus.LoginEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
-import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.FragmentText;
@@ -43,7 +42,6 @@ import com.woniukeji.jianguo.entity.TabEntity;
 import com.woniukeji.jianguo.mine.MineFragment;
 import com.woniukeji.jianguo.partjob.PartJobFragment;
 import com.woniukeji.jianguo.setting.PereferenceActivity;
-import com.woniukeji.jianguo.talk.TalkFragment;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -55,7 +53,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
-import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -306,9 +303,9 @@ public class MainActivity extends BaseActivity {
      * 处理推送过来的消息
      * 首页tab显示维度消息
      */
-    public void onEvent(ImTypeMessageEvent event) {
-        tabHost.showDot(2);
-    }
+//    public void onEvent(ImTypeMessageEvent event) {
+//        tabHost.showDot(2);
+//    }
     public void onEvent(QuickLoginEvent event) {
         if (event.isQuickLogin){
             tabHost.setCurrentTab(0);
@@ -352,7 +349,8 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new PartJobFragment();          //话题榜
                 case 2:
-                    return new LCIMConversationListFragment();//果聊
+//                    return new LCIMConversationListFragment();//果聊
+                return new MineFragment();  //用户榜
                 case 3:
                     return new MineFragment();  //用户榜
 

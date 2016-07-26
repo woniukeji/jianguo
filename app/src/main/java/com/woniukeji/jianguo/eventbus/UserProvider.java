@@ -1,4 +1,4 @@
-package com.woniukeji.jianguo.talk;
+package com.woniukeji.jianguo.eventbus;
 
 import java.util.ArrayList;
 import java.util.List;

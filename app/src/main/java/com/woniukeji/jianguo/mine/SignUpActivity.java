@@ -103,7 +103,7 @@ public class SignUpActivity extends BaseActivity implements SignAdapter.RecyCall
 
     @OnClick(R.id.img_back)
     public void onClick() {
-        mContext.startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+//        mContext.startActivity(new Intent(SignUpActivity.this, MainActivity.class));
         finish();
     }
 
@@ -172,21 +172,7 @@ public class SignUpActivity extends BaseActivity implements SignAdapter.RecyCall
             }
         }
     }
-//    public static SignActivity newInstance(int type) {
-//        //通过Bundle保存数据
-//        Bundle args = new Bundle();
-//        args.putInt(params1, type);
-//        SignActivity fragment = new SignActivity();
-//        //将Bundle设置为fragment的参数
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        type = getArguments().getInt(params1);
-//
-//    }
+
 
     @Override
     public void setContentView() {

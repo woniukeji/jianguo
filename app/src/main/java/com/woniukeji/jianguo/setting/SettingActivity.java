@@ -10,14 +10,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.eventbus.TalkMessageEvent;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.ChangePhoneActivity;
 import com.woniukeji.jianguo.login.ForgetPassActivity;
 import com.woniukeji.jianguo.login.LoginActivity;

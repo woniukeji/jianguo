@@ -22,6 +22,9 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.DrawMoney;
 import com.woniukeji.jianguo.entity.PushMessage;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
@@ -52,11 +55,11 @@ public class PushMessageActivity extends BaseActivity {
     private int MSG_REGISTER_SUCCESS = 3;
     PushMessageAdapter adapter;
     private int lastVisibleItem;
-    private List<PushMessage.DataEntity.ListTPushEntity> listPush=new ArrayList<PushMessage.DataEntity.ListTPushEntity>();
+    private List<PushMessage.ListTPushEntity> listPush = new ArrayList<PushMessage.ListTPushEntity>();
     private LinearLayoutManager mLayoutManager;
-    private Handler mHandler = new Myhandler(this);
     private Context context = PushMessageActivity.this;
     private int loginId;
+    private SubscriberOnNextListener<PushMessage> pushMessageSubscriberOnNextListener;
 
 
     @OnClick(R.id.img_back)
@@ -65,43 +68,6 @@ public class PushMessageActivity extends BaseActivity {
     }
 
 
-    private static class Myhandler extends Handler {
-        private WeakReference<Context> reference;
-
-        public Myhandler(Context context) {
-            reference = new WeakReference<>(context);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            PushMessageActivity activity = (PushMessageActivity) reference.get();
-            switch (msg.what) {
-                case 0:
-                    if (activity.refreshLayout.isRefreshing()){
-                        activity.refreshLayout.setRefreshing(false);
-                    }
-                    activity.listPush.clear();
-                    PushMessage messageDate = (PushMessage) msg.obj;
-                    activity.listPush.addAll( messageDate.getData().getList_t_push());
-                    activity.adapter.notifyDataSetChanged();
-                    break;
-                case 1:
-                    String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(activity, ErrorMessage, Toast.LENGTH_SHORT).show();
-                    break;
-                case 2:
-
-                    break;
-                case 3:
-                    String sms = (String) msg.obj;
-                    Toast.makeText(activity, sms, Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
     @Override
     public void setContentView() {
@@ -112,7 +78,7 @@ public class PushMessageActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        adapter = new PushMessageAdapter(listPush,context);
+        adapter = new PushMessageAdapter(listPush, context);
         mLayoutManager = new LinearLayoutManager(PushMessageActivity.this);
 //设置布局管理器
         list.setLayoutManager(mLayoutManager);
@@ -129,15 +95,25 @@ public class PushMessageActivity extends BaseActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetTask getTask = new GetTask(String.valueOf(loginId));
-                getTask.execute();
+                HttpMethods.getInstance().getPush(new ProgressSubscriber<PushMessage>(pushMessageSubscriberOnNextListener, PushMessageActivity.this), String.valueOf(loginId));
+//
             }
         });
     }
 
     @Override
     public void initListeners() {
-
+        pushMessageSubscriberOnNextListener = new SubscriberOnNextListener<PushMessage>() {
+            @Override
+            public void onNext(PushMessage pushMessage) {
+                if (refreshLayout.isRefreshing()) {
+                    refreshLayout.setRefreshing(false);
+                }
+                listPush.clear();
+                listPush.addAll(pushMessage.getList_t_push());
+                adapter.notifyDataSetChanged();
+            }
+        };
     }
 
     @Override
@@ -153,88 +129,12 @@ public class PushMessageActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        GetTask getTask = new GetTask(String.valueOf(loginId));
-        getTask.execute();
+        HttpMethods.getInstance().getPush(new ProgressSubscriber<PushMessage>(pushMessageSubscriberOnNextListener, this), String.valueOf(loginId));
     }
 
     @Override
     public void onClick(View view) {
 
-    }
-    public class GetTask extends AsyncTask<Void, Void, Void> {
-//        private final String count;
-        private final String loginId;
 
-        GetTask(String loginId) {
-            this.loginId = loginId;
-//            this.count=count;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                getJobs();
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * postInfo
-         */
-        public void getJobs() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.PUSH_MESSAGE)
-                    .addParams("only", only)
-                    .addParams("login_id", loginId)
-//                    .addParams("count", count)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<PushMessage>() {
-                        @Override
-                        public PushMessage parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            PushMessage baseBean = new Gson().fromJson(string, new TypeToken<PushMessage>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_USER_FAIL;
-                            mHandler.sendMessage(message);
-                        }
-
-                        @Override
-                        public void onResponse(PushMessage baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-//                                message.arg1= Integer.parseInt(count);
-                                message.what = MSG_USER_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_USER_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
     }
 }

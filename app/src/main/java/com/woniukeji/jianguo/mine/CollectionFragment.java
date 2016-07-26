@@ -24,7 +24,6 @@ import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
-import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.partjob.PartJobAdapter;
 import com.woniukeji.jianguo.utils.DateUtils;

@@ -88,7 +88,7 @@ public class PartJobFragment extends BaseFragment {
     private int mtype = 0;
     private boolean DataComplete=false;
     private String cityCode;
-    private SubscriberOnNextListener<RxCityCategory> subscriberOnNextListener;
+    private SubscriberOnNextListener<CityCategory> subscriberOnNextListener;
 
 
 
@@ -115,24 +115,20 @@ public class PartJobFragment extends BaseFragment {
                     }
                     jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
+
+
+
                     adapter.notifyDataSetChanged();
                     DataComplete=true;
-                    break;
-                case 1:
                     break;
                 case 2:
                     cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
                     initDrawData(cityCategoryBaseBean);
                     break;
-                case 3:
-                    String sms = (String) msg.obj;
-                    break;
                 default:
                     break;
             }
         }
-
-
     }
 
 
@@ -164,7 +160,7 @@ public class PartJobFragment extends BaseFragment {
     private void initData() {
         cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
         getCityCategory("");
-//        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<RxCityCategory>(subscriberOnNextListener,getActivity()));
+//        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<CityCategory>(subscriberOnNextListener,getActivity()));
     }
 
     private void initview() {
@@ -188,10 +184,10 @@ public class PartJobFragment extends BaseFragment {
                         , "2", "0");
             }
         });
-        subscriberOnNextListener=new SubscriberOnNextListener<RxCityCategory>() {
+        subscriberOnNextListener=new SubscriberOnNextListener<CityCategory>() {
             @Override
-            public void onNext(RxCityCategory rxCityCategory) {
-                rxCityCategory.getData();
+            public void onNext(CityCategory rxCityCategory) {
+                rxCityCategory.getList_t_type();
             }
         };
     }
@@ -253,14 +249,12 @@ public class PartJobFragment extends BaseFragment {
             baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
-
         for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
             baseEntity.setName(cityCategoryBaseBean.getData().getList_t_type().get(i).getType_name());
             baseEntity.setId(cityCategoryBaseBean.getData().getList_t_type().get(i).getId());
             jobs.add(baseEntity);
         }
-
         BaseEntity baseEntity=new BaseEntity();
         baseEntity.setName("推荐排序");
         baseEntity.setId(2);
@@ -308,22 +302,17 @@ public class PartJobFragment extends BaseFragment {
             baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
-
         mMenu.setAreaText();
         getJobs(cityCode, typeid, areid, "2", "0");
     }
-
     @Override
     public void onStart() {
         super.onStart();
-
     }
-
     public void onEvent(final JobFilterEvent event) {
         cityCode= String.valueOf(event.cityId);
         resetDrawMenu(cityCode);
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -339,7 +328,6 @@ public class PartJobFragment extends BaseFragment {
                     LogUtils.e("position",lastVisibleItem+"开始");
                 }
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -348,18 +336,15 @@ public class PartJobFragment extends BaseFragment {
         });
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.img_back)
     public void onClick() {
     }
-
         /**
          * 获取城市列表和兼职种类
          */
@@ -408,7 +393,6 @@ public class PartJobFragment extends BaseFragment {
 
                     });
     }
-
 
         /**
          * postInfo
@@ -467,7 +451,6 @@ public class PartJobFragment extends BaseFragment {
 
                             }
                         }
-
                     });
         }
 

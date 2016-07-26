@@ -186,15 +186,15 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
-         <service android:name="com.avos.avoscloud.PushService"/>
+         <!--<service android:name="com.avos.avoscloud.PushService"/>-->
 
 
-         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
-         <intent-filter>
-         <action android:name="android.intent.action.BOOT_COMPLETED"/>
-         <action android:name="android.intent.action.USER_PRESENT"/>
-         </intent-filter>
-         </receiver>
+         <!--<receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">-->
+         <!--<intent-filter>-->
+         <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+         <!--<action android:name="android.intent.action.USER_PRESENT"/>-->
+         <!--</intent-filter>-->
+         <!--</receiver>-->
         <!-- 实时通信模块、推送 END -->
         <!-- 极光推送配置 开始 -->
         <!-- Required SDK核心功能 -->
@@ -302,9 +302,9 @@
             android:name=".mine.SchoolActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity
-            android:name=".talk.ChatActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!--<activity-->
+            <!--android:name=".talk.ChatActivity"-->
+            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>-->
         <activity
             android:name=".setting.SettingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -421,7 +421,7 @@
             >
         </activity>
         <activity
-            android:name=".mine.SignActivity"
+            android:name=".mine.SignUpActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>

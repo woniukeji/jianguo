@@ -378,7 +378,6 @@ public class AuthActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //ADW: sometimes on rotating the phone, some widgets fail to restore its states.... so... damn.
-
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 // 获取返回的图片列表
@@ -405,12 +404,6 @@ public class AuthActivity extends BaseActivity {
 //                imgOpposite.setImageURI(imgSource);
                 Bitmap bitmap=BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),1080, 720);
                 imgOpposite.setImageBitmap(bitmap);
-//                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
-//                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
-
-//                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),true, 1080, 720);
-//                Bitmap bitmap = BitmapUtils.compressImage(imgFile2.getAbsolutePath(),null, false,1000,);
-//                BitmapUtils.saveBitmap(bitmap, imgFile2);
             }
         }
         if (requestCode==2){//弹出提示 提示返回 然后跳转拍照界面 正面

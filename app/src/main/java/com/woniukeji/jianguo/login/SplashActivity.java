@@ -25,7 +25,6 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
@@ -43,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import cn.leancloud.chatkit.LCChatKit;
 import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -215,10 +215,22 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
         SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
         LogUtils.e("jpush","userid"+user.getT_user_login().getId());
         //暂时关闭果聊功能
-        final ChatManager chatManager = ChatManager.getInstance();
+//        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
             //登陆leancloud服务器 给极光设置别名
-            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+                @Override
+                public void done(AVIMClient avimClient, AVIMException e) {
+                    if (null == e) {
+                        finish();
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+//            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
             LogUtils.e("jpush","调用jpush");
             if (JPushInterface.isPushStopped(getApplicationContext())){
                 JPushInterface.resumePush(getApplicationContext());
@@ -230,16 +242,21 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 }
             });
         }
-        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-                if (null == e) {
-                } else {
-                    showShortToast(e.toString());
-                }
-            }
-        });
+
+
     }
+
+
+//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
+//            @Override
+//            public void done(AVIMClient avimClient, AVIMException e) {
+//                if (null == e) {
+//                } else {
+//                    showShortToast(e.toString());
+//                }
+//            }
+//        });
+
 
 
     @Override

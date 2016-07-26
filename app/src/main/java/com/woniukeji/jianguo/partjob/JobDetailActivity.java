@@ -15,11 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -28,33 +25,26 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
-import com.woniukeji.jianguo.leanmessage.ChatManager;
 import com.woniukeji.jianguo.login.LoginActivity;
-import com.woniukeji.jianguo.main.MainActivity;
-import com.woniukeji.jianguo.talk.ChatActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
-import com.woniukeji.jianguo.widget.Mdialog;
 import com.woniukeji.jianguo.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.activity.LCIMConversationActivity;
@@ -275,19 +265,19 @@ public class JobDetailActivity extends BaseActivity {
 //                }
 //                Mdialog mdialog=new Mdialog(mContext,tel);
 //                mdialog.show();
-                LCChatKit.getInstance().open(String.valueOf(loginId), new AVIMClientCallback() {
-                    @Override
-                    public void done(AVIMClient avimClient, AVIMException e) {
-                        if (null == e) {
-                            finish();
-                            Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
-                            intent.putExtra(LCIMConstants.PEER_ID, "76");
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                        LCChatKit.getInstance().open("Tom", new AVIMClientCallback() {
+                            @Override
+                            public void done(AVIMClient avimClient, AVIMException e) {
+                                if (null == e) {
+                                    finish();
+                                    Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
+                                    intent.putExtra(LCIMConstants.PEER_ID, "77");
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 //                final int Id=t_merchant.getId();
 //                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
 //                intent.putExtra("merchantId",Id);

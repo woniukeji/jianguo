@@ -3,7 +3,9 @@ package com.woniukeji.jianguo.http;
 
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.Balance;
+import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
+import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
@@ -100,23 +102,7 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-//    /**
-//     *获取首页数据
-//     *@author invinjun
-//     *created at 2016/6/15 11:30
-//     * @param
-//     * @param
-//     * @param subscriber
-//     */
-//    public void getHomeData(Subscriber <Goods> subscriber ){
-//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        methodInterface.getHomeInfo(only)
-//                .map(new HttpResultFunc<Goods>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
+
     public void Login(Subscriber<User> subscriber ,String phone,String password){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.Login(only,phone,password)
@@ -125,19 +111,7 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-//
-//    /**
-//     * 获取超市分类
-//     */
-//    public void getMarketClass(Subscriber<Market> subscriber,String type){
-//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        methodInterface.getMarketClass(only,type)
-//                .map(new HttpResultFunc<Market>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
+
 
 
 /**
@@ -166,9 +140,10 @@ public class HttpMethods {
     /**
      *获取兼职详情（工作详情界面）
      */
-    public void getCityCategory(Subscriber<RxCityCategory> subscriber){
+    public void getCityCategory(Subscriber<CityCategory> subscriber){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.getCityCategory(only,"0")
+                .map(new HttpResultFunc<CityCategory>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -189,6 +164,13 @@ public class HttpMethods {
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(subscriber);
   }
+    /**
+    *钱包数据
+    *@param
+    *@param
+    *@author invinjun
+    *created at 2016/7/26 16:46
+    */
     public void getWallte(Subscriber<Balance> subscriber,String loginid){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.getWallet(only,loginid)
@@ -198,7 +180,13 @@ public class HttpMethods {
                 .subscribe(subscriber);
     }
 
-
+/**
+*报名接口
+*@param
+*@param
+*@author invinjun
+*created at 2016/7/26 16:46
+*/
     public void MpostSign(Subscriber<String> subscriber,String loginid,String jobid){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.postSign(only,loginid,jobid)
@@ -208,4 +196,21 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+    *推送信息获取
+    *@param
+    *@param
+    *@author invinjun
+    *created at 2016/7/26 16:46
+    */
+    public void getPush(Subscriber<PushMessage> subscriber, String loginid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getPush(only,loginid)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    
 }

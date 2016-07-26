@@ -8,41 +8,6 @@ import java.util.List;
 
 public class PushMessage {
 
-    /**
-     * message : 成功
-     * data : {"list_t_push":[{"id":71,"login_id":8257,"job_name":"家乐福海口四家门店招收银员（长期兼职）","title":"报名","content":"报名信息已提交，请等待商家确认","type":0,"time":"2016-05-31 07:01:12"},{"id":72,"login_id":8257,"job_name":"家乐福海口四家门店招收银员（长期兼职）","title":"取消报名","content":"工作成功取消，多次取消会影响您的信用等级","type":0,"time":"2016-05-31 07:01:37"}]}
-     * code : 200
-     */
-
-    private String message;
-    private DataEntity data;
-    private String code;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public DataEntity getData() {
-        return data;
-    }
-
-    public void setData(DataEntity data) {
-        this.data = data;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public static class DataEntity {
         /**
          * id : 71
          * login_id : 8257
@@ -71,6 +36,15 @@ public class PushMessage {
             private String content;
             private int type;//（0=报名，1=钱包，2=实名）
             private String time;
+            private String html_url;
+
+            public String getHtml_url() {
+                return html_url;
+            }
+
+            public void setHtml_url(String html_url) {
+                this.html_url = html_url;
+            }
 
             public int getId() {
                 return id;
@@ -129,4 +103,3 @@ public class PushMessage {
             }
         }
     }
-}
