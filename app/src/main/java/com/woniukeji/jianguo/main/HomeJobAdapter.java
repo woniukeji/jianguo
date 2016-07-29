@@ -206,11 +206,6 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
                 public void onClick(View view) {
                     Intent intent=new Intent(mContext, JobDetailActivity.class);
                     intent.putExtra("job",job.getId());
-                    intent.putExtra("jobbean",job);
-                    intent.putExtra("merchant",job.getMerchant_id());
-                    intent.putExtra("money", finalType);
-                    intent.putExtra("count", job.getCount()+"/"+job.getSum());
-                    intent.putExtra("mername", job.getName());
                     mContext.startActivity(intent);
                 }
             });

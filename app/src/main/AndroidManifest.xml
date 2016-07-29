@@ -425,7 +425,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
 
+            />
     </application>
 
 </manifest>

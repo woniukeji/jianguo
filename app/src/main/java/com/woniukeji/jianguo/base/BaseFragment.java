@@ -35,14 +35,6 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mRootView =inflater.inflate(getContentViewId(),container,false);
-        bind = ButterKnife.bind(this, mRootView);//绑定framgent
-        this.context = getActivity();
-        return mRootView;
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

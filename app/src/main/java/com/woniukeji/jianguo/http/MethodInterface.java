@@ -45,8 +45,9 @@ public interface MethodInterface {
 /**
 *兼职详情获取
 */
-        @GET("T_Job_info_Select_JobId_Servlet")
-        Observable<RxJobDetails> getJobDetail(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id, @Query("merchant_id") String merchant_id, @Query("alike") String alike);
+//        @GET("T_Job_info_Select_JobId_Servlet")
+        @GET("T_Job_info_Select_Servlet")
+        Observable<RxJobDetails> getJobDetail(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id);
 /**
 *拉取城市和兼职类型（兼职列表界面使用）
 */
@@ -79,8 +80,15 @@ public interface MethodInterface {
 *@author invinjun
 *created at 2016/7/26 16:44
 */
-@GET("T_push_List_Servlet")
-Observable<HttpResult<PushMessage>> getPush(@Query("only") String only, @Query("login_id") String login_id);
+        @GET("T_push_List_Servlet")
+        Observable<HttpResult<PushMessage>> getPush(@Query("only") String only, @Query("login_id") String login_id);
 
-
+/**
+*实名认证
+*/
+        @GET("T_user_realname_Insert_Servlet")
+        Observable<HttpResult<String>> postRealName(@Query("only") String only, @Query("login_id") String login_id,
+                                                    @Query("front_image") String front_image, @Query("behind_image") String behind_image,
+                                                    @Query("realname") String realname, @Query("id_number") String id_number,
+                                                    @Query("sex") String sex);
 }

@@ -87,17 +87,18 @@ public class PasswordLoginFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (time!=null){
+            time.cancel();
+        }
 
     }
 
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
-
         public Myhandler(Context context) {
             reference = new WeakReference<>(context);
         }
-
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -352,7 +353,6 @@ public class PasswordLoginFragment extends BaseFragment {
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new CodeCallback() {
-
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Message message = new Message();
@@ -360,7 +360,6 @@ public class PasswordLoginFragment extends BaseFragment {
                         message.what = MSG_USER_FAIL;
                         mHandler.sendMessage(message);
                     }
-
                     @Override
                     public void onResponse(SmsCode response, int id) {
                         Message message = new Message();
@@ -368,8 +367,6 @@ public class PasswordLoginFragment extends BaseFragment {
                         message.what = MSG_PHONE_SUCCESS;
                         mHandler.sendMessage(message);
                     }
-
-
                 });
     }
 

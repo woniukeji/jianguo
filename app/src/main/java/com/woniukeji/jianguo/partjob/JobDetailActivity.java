@@ -14,9 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -46,9 +43,6 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.leancloud.chatkit.LCChatKit;
-import cn.leancloud.chatkit.activity.LCIMConversationActivity;
-import cn.leancloud.chatkit.utils.LCIMConstants;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -96,13 +90,13 @@ public class JobDetailActivity extends BaseActivity {
     private int jobid;
     private String resume;
     private String sex;
-    private Jobs.ListTJobEntity job;
-    private String money;
+//    private Jobs.ListTJobEntity job;
     private boolean loadMore=false;
     RxJobDetails.DataBean.TJobInfoBean t_job_info;
     RxJobDetails.DataBean.TMerchantBean t_merchant;
     private SubscriberOnNextListener<RxJobDetails> subscriberOnNextListener;
-    private int merchantid;
+    private RxJobDetails.DataBean.TJobBean t_job;
+    private String money;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -175,7 +169,12 @@ public class JobDetailActivity extends BaseActivity {
         subscriberOnNextListener=new SubscriberOnNextListener<RxJobDetails>() {
             @Override
             public void onNext(RxJobDetails jobInfo) {
-                fillData(jobInfo);
+                if(jobInfo.getCode().equals("200")){
+                    fillData(jobInfo);
+                }else {
+                    Toast.makeText(JobDetailActivity.this,jobInfo.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+
             }
         };
     }
@@ -183,19 +182,11 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void initData() {
         Intent intent= getIntent();
-        job= (Jobs.ListTJobEntity) intent.getSerializableExtra("jobbean");
         jobid= intent.getIntExtra("job",0);
-        merchantid=  intent.getIntExtra("merchant",0);
-        money=  intent.getStringExtra("money");
-        String count=intent.getStringExtra("count");
-        String mername=intent.getStringExtra("mername");
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
         sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
-        tvWage.setText(money);
-        tvHiringCount.setText(count);
-        businessName.setText(mername);
-        HttpMethods.getInstance().getJobDetail(new ProgressSubscriber<RxJobDetails>(subscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
+        HttpMethods.getInstance().getJobDetail(new ProgressSubscriber<RxJobDetails>(subscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid));
     }
 
     @Override
@@ -235,7 +226,7 @@ public class JobDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_share:
-                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler,String.valueOf(jobid),job,t_job_info,tvWorkDate.getText().toString(),tvWage.getText().toString());
+                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler,String.valueOf(jobid),t_job,t_job_info,tvWorkDate.getText().toString(),tvWage.getText().toString());
                 share.showShareWindow();
                 // 显示窗口 (设置layout在PopupWindow中显示的位置)
                 share.showAtLocation(JobDetailActivity.this.getLayoutInflater().inflate(R.layout.activity_job_detail, null),
@@ -265,19 +256,19 @@ public class JobDetailActivity extends BaseActivity {
 //                }
 //                Mdialog mdialog=new Mdialog(mContext,tel);
 //                mdialog.show();
-                        LCChatKit.getInstance().open("Tom", new AVIMClientCallback() {
-                            @Override
-                            public void done(AVIMClient avimClient, AVIMException e) {
-                                if (null == e) {
-                                    finish();
-                                    Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
-                                    intent.putExtra(LCIMConstants.PEER_ID, "77");
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                        LCChatKit.getInstance().open("Tom", new AVIMClientCallback() {
+//                            @Override
+//                            public void done(AVIMClient avimClient, AVIMException e) {
+//                                if (null == e) {
+//                                    finish();
+//                                    Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
+//                                    intent.putExtra(LCIMConstants.PEER_ID, "77");
+//                                    startActivity(intent);
+//                                } else {
+//                                    Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
 //                final int Id=t_merchant.getId();
 //                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
 //                intent.putExtra("merchantId",Id);
@@ -353,7 +344,7 @@ public class JobDetailActivity extends BaseActivity {
                         return;
                     }
                 }
-                if (job.getCount()>=job.getSum()){
+                if (t_job.getCount()>=t_job.getSum()){
                         showShortToast("该兼职已报满，再看看其它的吧！");
                         return;
                 }
@@ -372,7 +363,9 @@ public class JobDetailActivity extends BaseActivity {
     private void fillData(RxJobDetails jobInfo) {
         t_job_info = jobInfo.getData().getT_job_info();
         t_merchant = jobInfo.getData().getT_merchant();
+        t_job = jobInfo.getData().getT_job();
         tvWorkLocation.setText(t_job_info.getAddress());
+        businessName.setText(t_job.getName());
         if (t_job_info!=null){
             if (t_job_info.getStart_date()!=null&&t_job_info.getStop_date()!=null){
                 String date = DateUtils.getTime(Long.valueOf(t_job_info.getStart_date()),Long.valueOf( t_job_info.getStop_date()));
@@ -384,8 +377,41 @@ public class JobDetailActivity extends BaseActivity {
             tvWorkTime.setText(time);
             tvCollectionSites.setText(t_job_info.getSet_place());
             tvCollectionTime.setText(setTime);
-            if (job!=null){
-                if (job.getStatus()!=0){
+            if (t_job!=null){
+                money = String.valueOf(t_job.getMoney());
+                if(money.indexOf(".") > 0){
+                    //正则表达
+                    money = money.replaceAll("0+?$", "");//去掉后面无用的零
+                    money = money.replaceAll("[.]$", "");//如小数点后面全是零则去掉小数点
+                }
+                // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
+                String type="";
+                if (t_job.getTerm()==0){
+                    tvWage.setText(money+"/月");
+                    type="元/月";
+                }else if(t_job.getTerm()==1){
+                    tvWage.setText(money+"元/周");
+                    type="元/周";
+                }else if(t_job.getTerm()==2){
+                    tvWage.setText(money+"元/日");
+                    type="元/日";
+                }else if(t_job.getTerm()==3){
+                    tvWage.setText(money+"元/时");
+                    type="/时";
+                }else if(t_job.getTerm()==4){
+                    tvWage.setText(money+"元/次");
+                    type="元/次";
+                }else if(t_job.getTerm()==5){
+                    tvWage.setText("义工");
+                    type="义工";
+                }else if(t_job.getTerm()==6){
+                    tvWage.setText("面议");
+                    type="面议";
+                }
+                money=money+type;
+                tvHiringCount.setText(t_job.getCount()+"/"+t_job.getSum());
+
+                if (t_job.getStatus()!=0){
                     tvSignup.setText("该兼职已过期");
                     tvSignup.setBackgroundResource(R.color.gray);
                     tvSignup.setClickable(false);
@@ -397,11 +423,11 @@ public class JobDetailActivity extends BaseActivity {
                     }
                 }
                 //期限（1=月结，2=周结，3=日结，4=小时结）
-                if (job.getMode()==0){
+                if (t_job.getMode()==0){
                     tvPayMethod.setText("月结");
-                }else if(job.getMode()==1){
+                }else if(t_job.getMode()==1){
                     tvPayMethod.setText("周结");
-                }else if(job.getMode()==2){
+                }else if(t_job.getMode()==2){
                     tvPayMethod.setText("日结");
                 }else {
                     tvPayMethod.setText("旅行");
@@ -436,7 +462,7 @@ public class JobDetailActivity extends BaseActivity {
 
             tvWorkContent.setText(t_job_info.getWork_content());
             tvWorkRequire.setText(t_job_info.getWork_require());
-            tvReleaseDate.setText(job.getRegedit_time().substring(0,10)+" 发布");
+            tvReleaseDate.setText(t_job.getRegedit_time().substring(0,10)+" 发布");
             //商家信息
 
             tvCompanyName.setText(t_merchant.getName());
@@ -452,7 +478,7 @@ public class JobDetailActivity extends BaseActivity {
                     .error(R.mipmap.icon_head_defult)
                     .transform(new CropCircleTransfermation())
                     .into(cirimgWork);
-            Picasso.with(JobDetailActivity.this).load(job.getName_image())
+            Picasso.with(JobDetailActivity.this).load(t_job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
                     .transform(new CropCircleTransfermation())

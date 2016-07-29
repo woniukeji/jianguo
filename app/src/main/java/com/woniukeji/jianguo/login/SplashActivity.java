@@ -15,9 +15,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -36,13 +33,13 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-import cn.leancloud.chatkit.LCChatKit;
 import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -218,29 +215,44 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
 //        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
             //登陆leancloud服务器 给极光设置别名
-            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
-                @Override
-                public void done(AVIMClient avimClient, AVIMException e) {
-                    if (null == e) {
-                        finish();
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+//            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+//                @Override
+//                public void done(AVIMClient avimClient, AVIMException e) {
+//                    if (null == e) {
+//                        finish();
+//                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                    } else {
+//                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
 //            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
             LogUtils.e("jpush","调用jpush");
             if (JPushInterface.isPushStopped(getApplicationContext())){
                 JPushInterface.resumePush(getApplicationContext());
             }
-            JPushInterface.setAlias(getApplicationContext(),"jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+
+            // ","隔开的多个 转换成 Set
+            String tag = "test";
+//            String[] sArray = tag.split(",");
+            Set<String> tagSet = new LinkedHashSet<String>();
+            tagSet.add(tag);
+//            for (String sTagItme : sArray) {
+//                tagSet.add(sTagItme);
+//            }
+            JPushInterface.setAliasAndTags(getApplicationContext(),"jianguo"+user.getT_user_login().getId(),tagSet, new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
                     LogUtils.e("jpush",s+",code="+i);
                 }
             });
+//            JPushInterface.setAlias(getApplicationContext(),"jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+//                @Override
+//                public void gotResult(int i, String s, Set<String> set) {
+//                    LogUtils.e("jpush",s+",code="+i);
+//                }
+//            });
         }
 
 

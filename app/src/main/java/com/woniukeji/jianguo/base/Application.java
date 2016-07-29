@@ -6,9 +6,6 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVOSCloud;
-import com.woniukeji.jianguo.eventbus.CustomUserProvider;
-import com.woniukeji.jianguo.eventbus.UserProvider;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -17,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-import cn.leancloud.chatkit.LCChatKit;
 import okhttp3.OkHttpClient;
 
 /**
@@ -46,9 +42,9 @@ public class Application extends android.app.Application {
 //        MessageHandler msgHandler = new MessageHandler(this);
 //        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
 
-        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
-        AVOSCloud.setDebugLogEnabled(true);
-        LCChatKit.getInstance().init(getApplicationContext(), "AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
+//        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+//        AVOSCloud.setDebugLogEnabled(true);
+//        LCChatKit.getInstance().init(getApplicationContext(), "AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
 //        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
 //            public void done(AVException e) {
 //                if (e == null) {

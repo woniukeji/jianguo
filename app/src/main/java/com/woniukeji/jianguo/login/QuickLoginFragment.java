@@ -84,7 +84,9 @@ public class QuickLoginFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
+        if (time!=null){
+            time.cancel();
+        }
     }
 
 
@@ -193,7 +195,6 @@ public class QuickLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
 
-
 // 暂时关闭果聊功能
 //        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
@@ -285,6 +286,9 @@ public class QuickLoginFragment extends BaseFragment {
 
         @Override
         public void onFinish() {
+            if (time!=null){
+                btnGetCode.setText("验证码");
+            }
             btnGetCode.setText("验证码");
             btnGetCode.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_login));
             btnGetCode.setClickable(true);

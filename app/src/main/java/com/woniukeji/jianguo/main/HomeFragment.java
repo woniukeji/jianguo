@@ -257,6 +257,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        ButterKnife.bind(this, view);
+
         RelativeLayout rlMessage = (RelativeLayout) view.findViewById(R.id.rl_message);
         rlMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +266,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                 startActivity(new Intent(getContext(), PushMessageActivity.class));
             }
         });
-
         assignViews(headerView);
         mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());

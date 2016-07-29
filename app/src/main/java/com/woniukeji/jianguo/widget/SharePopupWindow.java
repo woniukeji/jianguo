@@ -54,11 +54,11 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     private String wage;
     private String linkUrl= Constants.JIANGUO_TEST2+"Html_Job_Id_Servlet";
     private String jobid;
-    private Jobs.ListTJobEntity job;
+    private RxJobDetails.DataBean.TJobBean job;
     RxJobDetails.DataBean.TJobInfoBean jobinfo;
     //分享相关
 
-    public SharePopupWindow(Context cx, Handler handler, String jobId, Jobs.ListTJobEntity job, RxJobDetails.DataBean.TJobInfoBean jobinfo, String date, String wage) {
+    public SharePopupWindow(Context cx, Handler handler, String jobId, RxJobDetails.DataBean.TJobBean job, RxJobDetails.DataBean.TJobInfoBean jobinfo, String date, String wage) {
         this.context = cx;
         this.mHandler = handler;
         this.job=job;

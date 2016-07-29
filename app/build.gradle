@@ -116,13 +116,12 @@ dependencies {
     //    compile 'com.tencent.bugly:crashreport:1.2.9'
 
     // bugly后续更新SDK，请直接更新版本号
-    compile files('libs/android-async-http-1.4.9.jar')
     compile files('libs/happy-dns-0.2.4.jar')
     compile files('libs/httpclient-4.4.1.1.jar')
     compile files('libs/KJFrameForAndroid_v2.234.jar')
     compile files('libs/MobCommons-2016.0301.1053.jar')
     compile files('libs/MobTools-2016.0301.1053.jar')
-    compile files('libs/qiniu-android-sdk-7.0.9.jar')
+    compile 'com.qiniu:qiniu-android-sdk:7.2.+'
     compile files('libs/ShareSDK-Core-2.7.0.jar')
     compile files('libs/ShareSDK-QQ-2.7.0.jar')
     compile files('libs/ShareSDK-QZone-2.7.0.jar')
@@ -160,6 +159,7 @@ dependencies {
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    compile ('cn.leancloud.android:chatkit:1.0.0')
+    //    compile ('cn.leancloud.android:chatkit:1.0.0')
+    compile project(':cropper')
 }
 

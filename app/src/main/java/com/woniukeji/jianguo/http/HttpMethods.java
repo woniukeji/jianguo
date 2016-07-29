@@ -129,9 +129,9 @@ public class HttpMethods {
     /**
      *获取兼职详情（工作详情界面）
      */
-    public void getJobDetail(Subscriber<RxJobDetails> subscriber, String loginId, String jobId, String merchantId){
+    public void getJobDetail(Subscriber<RxJobDetails> subscriber, String loginId, String jobId){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        methodInterface.getJobDetail(only,loginId,jobId,merchantId,"0")
+        methodInterface.getJobDetail(only,loginId,jobId)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -212,5 +212,13 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-    
+    public void postReal(Subscriber<String> subscriber, String loginid,String front,String behind,String name,String id,String sex){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postRealName(only,loginid,front,behind,name,id,sex)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

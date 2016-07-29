@@ -319,7 +319,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     public void initData() {
         Intent balanceIntent = getIntent();
         balance = (Balance) balanceIntent.getSerializableExtra("balance");
-
         /**
          * id : 1
          * login_id : 4
