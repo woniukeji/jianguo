@@ -65,17 +65,15 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tabHost) CommonTabLayout tabHost;
     @BindView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
-    private String[] titles = {"首页", "兼职", "果聊", "我的"};//"果聊",
+    private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect,
             R.mipmap.tab_partjob_unselect,
-            R.mipmap.tab_guo_talk_unselect,
             R.mipmap.tab_about_me_unselect};
     //R.mipmap.tab_guo_talk_unselect,
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select,
             R.mipmap.tab_partjob_select,
-            R.mipmap.tab_guo_talk_select,
             R.mipmap.tab_about_me_select};
     // R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
@@ -351,8 +349,8 @@ public class MainActivity extends BaseActivity {
                 case 2:
 //                    return new LCIMConversationListFragment();//果聊
                 return new MineFragment();  //用户榜
-                case 3:
-                    return new MineFragment();  //用户榜
+//                case 3:
+//                    return new MineFragment();  //用户榜
 
             }
             return new FragmentText();
@@ -360,7 +358,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
     }
 

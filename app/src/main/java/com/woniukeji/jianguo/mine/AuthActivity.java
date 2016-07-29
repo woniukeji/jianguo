@@ -365,7 +365,7 @@ public class AuthActivity extends BaseActivity {
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 if (position==1){
                      url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+key;
-                    circleProDialog.setMsg("正在上传第二张");
+                    circleProDialog.setMsg("正在上传第二张……");
                     upLoadQiNiu(context, MD5Coder.getQiNiuName(String.valueOf(loginId)), realFilePath2,2,name,id);
                 }
                 else {

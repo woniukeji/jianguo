@@ -21,6 +21,15 @@ public class Balance implements Serializable{
 
     private DataEntity data;
     private String code;
+    private String weixin;
+
+    public String getWeixin() {
+        return weixin;
+    }
+
+    public void setWeixin(String weixin) {
+        this.weixin = weixin;
+    }
 
     public String getMessage() {
         return message;

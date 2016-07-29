@@ -330,7 +330,9 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
          * pay_password : 0
          */
         blanceMoney = balance.getData().getT_user_money().getMoney();
-
+         if (balance.getWeixin().equals("0")){
+             rlWx.setVisibility(View.GONE);
+         }
         if (!balance.getData().getT_user_money().getYinhang().equals("0")) {
             imgGo02.setVisibility(View.GONE);
             rbYinlian.setVisibility(View.VISIBLE);
