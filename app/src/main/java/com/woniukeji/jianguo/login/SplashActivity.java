@@ -290,8 +290,6 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 }
              chooseActivity();
             }
-
-            ;
         }.start();
         super.onStart();
     }
