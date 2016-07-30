@@ -80,7 +80,6 @@ public class FruitFragment extends BaseFragment {
             public void onItemClick(View view , ListChaoCommodity data){
 //                Toast.makeText(getActivity(), data.getName(),Toast.LENGTH_SHORT).show();
                 DisplayDialog displayDialog = new DisplayDialog(getActivity(),data,new DisplayDialog.IDisplayDialogEventListener(){
-
                     @Override
                     public void displayDialogEvent(int id) {
 
