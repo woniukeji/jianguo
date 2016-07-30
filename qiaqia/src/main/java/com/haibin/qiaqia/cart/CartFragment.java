@@ -129,6 +129,7 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
                     adapter.isShowChexkBox(false);
                     adapter.notifyDataSetChanged();
                     clickNum ++;
+
                 }
                 break;
             case R.id.cart_submit:
