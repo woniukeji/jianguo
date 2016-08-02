@@ -69,7 +69,7 @@ public class Application extends android.app.Application {
     }
 
     private void init(){
-//        JPushInterface.init(getApplicationContext());
+        JPushInterface.init(getApplicationContext());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
 //                .addInterceptor(new LoggerInterceptor("TAG"))
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -80,8 +80,8 @@ public class Application extends android.app.Application {
         OkHttpUtils.initClient(okHttpClient);
 
 
-    }
-    public static Application getInstance(){
-        return instance;
-    }
 }
+public static Application getInstance(){
+        return instance;
+        }
+        }
