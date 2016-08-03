@@ -3,6 +3,8 @@ package com.woniukeji.jianguo.utils;
 import android.content.Context;
 import android.widget.ImageView;
 
+
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 

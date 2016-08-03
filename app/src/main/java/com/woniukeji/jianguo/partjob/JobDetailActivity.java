@@ -14,9 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -30,7 +30,6 @@ import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
@@ -474,15 +473,13 @@ public class JobDetailActivity extends BaseActivity {
             }
 
 //        tvHiringCount.setText(merchantInfo.getJob_count());
-            Picasso.with(JobDetailActivity.this).load(t_merchant.getName_image())
+            Glide.with(JobDetailActivity.this).load(t_merchant.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(cirimgWork);
-            Picasso.with(JobDetailActivity.this).load(t_job.getName_image())
+            Glide.with(JobDetailActivity.this).load(t_job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(userHead);
 
         }

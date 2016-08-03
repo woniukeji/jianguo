@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
@@ -36,11 +36,11 @@ import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.setting.FeedBackActivity;
 import com.woniukeji.jianguo.setting.PereferenceActivity;
 import com.woniukeji.jianguo.setting.SettingActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.utils.UpDialog;
 import com.woniukeji.jianguo.wallte.WalletActivity;
+import com.woniukeji.jianguo.widget.CircleImageView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
 
@@ -57,7 +57,7 @@ import okhttp3.Call;
 
 public class MineFragment extends BaseFragment {
     @BindView(R.id.title_bar) TextView titleBar;
-    @BindView(R.id.img_head) ImageView imgHead;
+    @BindView(R.id.img_head) CircleImageView imgHead;
     @BindView(R.id.iv_setting) ImageView ivSetting;
     @BindView(R.id.name) TextView name;
     @BindView(R.id.school) TextView school;
@@ -245,10 +245,9 @@ public class MineFragment extends BaseFragment {
     }
 
     public void onEvent(HeadImgEvent event) {
-        Picasso.with(getActivity()).load(event.ImgUrl)
+        Glide.with(getActivity()).load(event.ImgUrl)
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
-                .transform(new CropCircleTransfermation())
                 .into(imgHead);
     }
 
@@ -294,25 +293,22 @@ public class MineFragment extends BaseFragment {
 
             phone.setText(tel);
             if (img != null && !img.equals("")) {
-                Picasso.with(getActivity()).load(img)
+                Glide.with(getActivity()).load(img)
                         .placeholder(R.mipmap.icon_head_defult)
                         .error(R.mipmap.icon_head_defult)
-                        .transform(new CropCircleTransfermation())
                         .into(imgHead);
             }
         } else {
-            Picasso.with(getActivity()).load("http//null")
+            Glide.with(getActivity()).load("http//null")
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(imgHead);
         }
         if (loginId == 0) {
             name.setText("登录/注册");
-            Picasso.with(getActivity()).load("http//null")
+            Glide.with(getActivity()).load("http//null")
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(imgHead);
             account.setOnClickListener(new View.OnClickListener() {
                 @Override

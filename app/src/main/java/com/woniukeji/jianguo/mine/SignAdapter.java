@@ -14,11 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
 
@@ -253,10 +252,9 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
                 holder.imgFinishStatus.setVisibility(View.VISIBLE);
                 holder.imgFinishStatus.setBackgroundResource(R.mipmap.icon_shangjia);
             }
-            Picasso.with(mContext).load(jobEntity.getName_image())
+            Glide.with(mContext).load(jobEntity.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-//                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
 
             if (type.equals("面议")||type.equals("义工")){

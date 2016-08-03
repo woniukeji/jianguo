@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.qiniu.android.http.ResponseInfo;
@@ -30,7 +31,6 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
-import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.woniukeji.jianguo.R;
@@ -45,7 +45,6 @@ import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
 import com.woniukeji.jianguo.widget.CircleProDialog;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.FileUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
@@ -556,16 +555,14 @@ public class ResumeActivity extends BaseActivity {
         fileName = userResum.getName_image();
 
         if (userResum.getName_image() != null && !userResum.getName_image().equals("")) {
-            Picasso.with(context).load(userResum.getName_image())
+            Glide.with(context).load(userResum.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(imgHead);
         } else {
-        Picasso.with(context).load("http//null")
+        Glide.with(context).load("http//null")
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
-                .transform(new CropCircleTransfermation())
                 .into(imgHead);
     }
 

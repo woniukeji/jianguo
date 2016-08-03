@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
@@ -173,7 +173,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
                 holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
 
 
-            Picasso.with(mContext).load(job.getName_image())
+            Glide.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
 //                    .transform(new CropCircleTransfermation())

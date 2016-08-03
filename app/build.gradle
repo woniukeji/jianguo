@@ -100,7 +100,6 @@ dependencies {
     //avoscloud-sdk 为 LeanCloud基础包
 
     //avoscloud-push 为推送与实时聊天需要的包
-    compile project(':multi-image-selector')
     compile project(path: ':DrioDownlibrary')
     compile project(path: ':viewPagerlibrary')
     //    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
@@ -159,6 +158,8 @@ dependencies {
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.picasso:picasso:2.4.0'
     //    compile ('cn.leancloud.android:chatkit:1.0.0')
     compile project(':cropper')
     compile files('libs/AMap_Location_V2.7.0_20160726.jar')

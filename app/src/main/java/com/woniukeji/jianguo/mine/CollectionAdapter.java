@@ -14,15 +14,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
 
@@ -160,10 +160,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                 holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
 
 
-            Picasso.with(mContext).load(job.getName_image())
+            Glide.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
 
             //动画
@@ -245,7 +244,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.user_head) ImageView userHead;
+        @BindView(R.id.user_head) CircleImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.img_pay) ImageView imgPay;
         @BindView(R.id.img_date) ImageView imgDate;

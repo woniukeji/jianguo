@@ -11,7 +11,6 @@ import com.woniukeji.jianguo.R;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 public class PicTipActivity extends Activity {
 

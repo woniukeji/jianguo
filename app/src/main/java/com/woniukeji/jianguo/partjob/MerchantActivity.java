@@ -17,9 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -28,7 +28,6 @@ import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.main.HomeJobAdapter;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
@@ -181,10 +180,9 @@ public class MerchantActivity extends BaseActivity {
          Merchant = (JobDetails.TMerchantEntity) intent.getSerializableExtra("merchant");
         if (Merchant != null) {
             tvTitle.setText(Merchant.getName());
-            Picasso.with(MerchantActivity.this).load(Merchant.getName_image())
+            Glide.with(MerchantActivity.this).load(Merchant.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(mImgHead);
         }
         if (Merchant.getIs_follow().equals("0")){

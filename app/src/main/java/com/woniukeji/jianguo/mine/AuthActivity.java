@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.qiniu.android.http.ResponseInfo;
@@ -26,7 +27,6 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
-import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.woniukeji.jianguo.R;
@@ -196,8 +196,8 @@ public class AuthActivity extends BaseActivity {
             imgOpposite.setClickable(false);
             String id=realName.getT_user_realname().getId_number();
             etId.setText(id.substring(0,id.length()-6)+"******");
-            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
-            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
+            Glide.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
+            Glide.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
 
         }else if(realName.getT_user_realname().getStatus()==4){//未通过
             checkButton.setText("重新审核");

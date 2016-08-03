@@ -14,11 +14,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
 import com.woniukeji.jianguo.widget.CircleImageView;
@@ -159,7 +158,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                 holder.imgPast.setVisibility(View.GONE);
             }
 
-            Picasso.with(mContext).load(job.getName_image())
+            Glide.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
 //                    .transform(new CropCircleTransfermation())

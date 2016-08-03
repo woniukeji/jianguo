@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Wage;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
 
@@ -123,10 +123,9 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 //            holder.imgSex.setVisibility(View.GONE);
 
 
-            Picasso.with(mContext).load(job.getJob_image())
+            Glide.with(mContext).load(job.getJob_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
              holder.tvWallteWages.setText("+"+job.getReal_money());
             holder.businessName.setText(job.getJob_name());
@@ -203,7 +202,7 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.user_head) ImageView userHead;
+        @BindView(R.id.user_head) CircleImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.img_date) ImageView imgDate;
         @BindView(R.id.tv_work_date) TextView tvWorkDate;
