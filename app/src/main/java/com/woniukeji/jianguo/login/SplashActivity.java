@@ -179,6 +179,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 if (mCityName ==null|| mCityName.equals("")){
                     mCityName =aMapLocation.getProvince();//省信息
                 }
+                Log.e("AmapError","location success, CityCode:"
+                        + aMapLocation.getCityCode() + ", Province:"
+                        + aMapLocation.getProvince());
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()-1));
             } else {
@@ -233,26 +236,26 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 JPushInterface.resumePush(getApplicationContext());
             }
 
-            // ","隔开的多个 转换成 Set
-            String tag = "test";
+            // ","隔开的多个 转换成 Set,设置tags
+//            String tag = "test";
 //            String[] sArray = tag.split(",");
-            Set<String> tagSet = new LinkedHashSet<String>();
-            tagSet.add(tag);
+//            Set<String> tagSet = new LinkedHashSet<String>();
+//            tagSet.add(tag);
 //            for (String sTagItme : sArray) {
 //                tagSet.add(sTagItme);
 //            }
-            JPushInterface.setAliasAndTags(getApplicationContext(),"jianguo"+user.getT_user_login().getId(),tagSet, new TagAliasCallback() {
-                @Override
-                public void gotResult(int i, String s, Set<String> set) {
-                    LogUtils.e("jpush",s+",code="+i);
-                }
-            });
-//            JPushInterface.setAlias(getApplicationContext(),"jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+//            JPushInterface.setAliasAndTags(getApplicationContext(),"jianguo"+user.getT_user_login().getId(),tagSet, new TagAliasCallback() {
 //                @Override
 //                public void gotResult(int i, String s, Set<String> set) {
 //                    LogUtils.e("jpush",s+",code="+i);
 //                }
 //            });
+            JPushInterface.setAlias(getApplicationContext(),"jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
+                @Override
+                public void gotResult(int i, String s, Set<String> set) {
+                    LogUtils.e("jpush",s+",code="+i);
+                }
+            });
         }
 
 

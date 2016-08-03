@@ -161,5 +161,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     //    compile ('cn.leancloud.android:chatkit:1.0.0')
     compile project(':cropper')
+    compile files('libs/AMap_Location_V2.7.0_20160726.jar')
 }
 

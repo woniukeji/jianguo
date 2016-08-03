@@ -154,7 +154,9 @@ public class PartJobFragment extends BaseFragment {
     }
     private void initData() {
         cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
-//        getCityCategory("");
+        if(cityCode==null||cityCode.equals("")){
+            cityCode="010";
+        }
         HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<CityCategory>(subscriberOnNextListener,getActivity()));
     }
 
