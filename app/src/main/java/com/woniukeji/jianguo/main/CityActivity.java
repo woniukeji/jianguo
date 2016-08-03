@@ -1,8 +1,8 @@
 package com.woniukeji.jianguo.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,8 +37,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -49,12 +51,25 @@ public class CityActivity extends BaseActivity {
     @BindView(R.id.layout_clear_search_text) LinearLayout layoutClearSearchText;
     @BindView(R.id.ll_search) LinearLayout llSearch;
     @BindView(R.id.lv_search) ListView lvSearch;
+    @BindView(R.id.img_back) ImageView imgBack;
     private Handler mHandler = new Myhandler(this);
     private Context context = CityActivity.this;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
-    private List<CityBannerEntity.ListTCityEntity> listTCityEntities =new ArrayList<CityBannerEntity.ListTCityEntity>();
+    private List<CityBannerEntity.ListTCityEntity> listTCityEntities = new ArrayList<CityBannerEntity.ListTCityEntity>();
     private Adapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.img_back)
+    public void onClick() {
+        finish();
+    }
 
 
     private static class Myhandler extends Handler {
@@ -103,7 +118,7 @@ public class CityActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-         adapter=new Adapter();
+        adapter = new Adapter();
         lvSearch.setAdapter(adapter);
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -113,13 +128,15 @@ public class CityActivity extends BaseActivity {
             }
         });
     }
+
     private void sendEvent(CityBannerEntity.ListTCityEntity mCity) {
         CityEvent event = new CityEvent();
         event.city = mCity;
-        event.isGPS=false;
+        event.isGPS = false;
         EventBus.getDefault().post(event);
         finish();
     }
+
     @Override
     public void initListeners() {
         //搜索按键 模糊查询
@@ -159,7 +176,7 @@ public class CityActivity extends BaseActivity {
 
     }
 
-    private  class Adapter extends BaseAdapter {
+    private class Adapter extends BaseAdapter {
 
         private CityBannerEntity.ListTCityEntity Item;
 
@@ -183,19 +200,21 @@ public class CityActivity extends BaseActivity {
         public View getView(int i, View convertView, ViewGroup viewGroup) {
             Item = listTCityEntities.get(i);
             ViewHolder holder;
-            LayoutInflater layoutInflater = LayoutInflater.from(context);;
-            if (convertView==null) {
-                convertView = layoutInflater.inflate(R.layout.school_item,null);
-                holder=new ViewHolder();
-                holder.tvSchool= (TextView) convertView.findViewById(R.id.tv_school);
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            ;
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.school_item, null);
+                holder = new ViewHolder();
+                holder.tvSchool = (TextView) convertView.findViewById(R.id.tv_school);
                 convertView.setTag(holder);
-            }else {
+            } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.tvSchool.setText(Item.getCity());
             return convertView;
         }
-         class ViewHolder{
+
+        class ViewHolder {
             TextView tvSchool;
 
         }
@@ -243,7 +262,7 @@ public class CityActivity extends BaseActivity {
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityBannerEntity>>() {
                         @Override
-                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
+                        public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
                             String string = response.body().string();
                             BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityBannerEntity>>() {
                             }.getType());
@@ -251,7 +270,7 @@ public class CityActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(Call call, Exception e,int id) {
+                        public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
                             message.what = MSG_POST_FAIL;
@@ -259,7 +278,7 @@ public class CityActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onResponse(BaseBean baseBean,int id) {
+                        public void onResponse(BaseBean baseBean, int id) {
                             if (baseBean.getCode().equals("200")) {
 //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                                 Message message = new Message();

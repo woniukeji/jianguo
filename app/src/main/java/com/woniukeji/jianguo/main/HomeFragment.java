@@ -159,8 +159,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
                     banners = cityBannerEntityBaseBean.getData().getList_t_banner();
 //                    defultCity=cityBannerEntityBaseBean.getData().getList_t_city().get(0);
-                    String cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
-                    String cityName = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME, "三亚");
+                    String cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+                    String cityName = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");
                     defultCity = new CityBannerEntity.ListTCityEntity();
                     defultCity.setCode(cityCode);
                     defultCity.setCity(cityName.substring(0, cityName.length()));

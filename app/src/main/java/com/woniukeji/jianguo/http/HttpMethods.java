@@ -142,7 +142,7 @@ public class HttpMethods {
      */
     public void getCityCategory(Subscriber<CityCategory> subscriber){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        methodInterface.getCityCategory(only,"0")
+        methodInterface.getCityCategory(only)
                 .map(new HttpResultFunc<CityCategory>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -221,4 +221,15 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    public void postResum(Subscriber<String> subscriber, String loginid,String name,String nickname,String school,String height,
+                          String student,String name_image,String intoschool_date,String birth_date,String shoe_size,String clothing_size,String sex){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postResume(only,loginid,name,nickname,school,height,student,name_image,intoschool_date,birth_date,shoe_size,clothing_size,sex)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 }

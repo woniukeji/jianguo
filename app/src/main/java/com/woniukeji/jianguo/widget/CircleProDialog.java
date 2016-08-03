@@ -1,25 +1,15 @@
-package com.woniukeji.jianguo.utils;
+package com.woniukeji.jianguo.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.liulishuo.magicprogresswidget.MagicProgressBar;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import com.woniukeji.jianguo.R;
-import com.woniukeji.jianguo.widget.AnimTextView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.FileCallBack;
-
-import java.io.File;
 
 import cn.dreamtobe.percentsmoothhandler.ISmoothTarget;
-import okhttp3.Call;
 
 /**
  * Created by invinjun on 2016/4/19.

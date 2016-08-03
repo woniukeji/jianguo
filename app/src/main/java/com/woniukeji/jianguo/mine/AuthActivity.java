@@ -1,17 +1,13 @@
 package com.woniukeji.jianguo.mine;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,33 +38,24 @@ import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.login.BindPhoneActivity;
-import com.woniukeji.jianguo.setting.SettingActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
-import com.woniukeji.jianguo.utils.CircleProDialog;
-import com.woniukeji.jianguo.utils.CommonUtils;
+import com.woniukeji.jianguo.widget.CircleProDialog;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.EditCheckUtil;
 import com.woniukeji.jianguo.utils.FileUtils;
-import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
 import com.woniukeji.jianguo.utils.SPUtils;
-import com.woniukeji.jianguo.utils.UpDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -90,8 +77,6 @@ public class AuthActivity extends BaseActivity {
     @BindView(R.id.rb_woman) RadioButton rbWoman;
     @BindView(R.id.check_button) Button checkButton;
     @BindView(R.id.rl_phone) RelativeLayout rlPhone;
-    private int MSG_POST_SUCCESS = 0;
-    private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 2;
     private int MSG_GET_FAIL = 3;
     private int loginId;

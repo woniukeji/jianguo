@@ -82,7 +82,7 @@ public class PartJobFragment extends BaseFragment {
     private int MSG_GET_FAIL = 1;
     private int MSG_CITY_SUCCESS = 2;
     private int MSG_CITY_FAIL = 3;
-    BaseBean<CityCategory> cityCategoryBaseBean;
+    CityCategory cityCategory;
     private Handler mHandler = new Myhandler(this.getActivity());
     private DropDownMenu mMenu;
     private int mtype = 0;
@@ -115,15 +115,10 @@ public class PartJobFragment extends BaseFragment {
                     }
                     jobs.getData().getList_t_job();
                     jobList.addAll(jobs.getData().getList_t_job());
-
-
-
                     adapter.notifyDataSetChanged();
                     DataComplete=true;
                     break;
                 case 2:
-                    cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
-                    initDrawData(cityCategoryBaseBean);
                     break;
                 default:
                     break;
@@ -135,7 +130,6 @@ public class PartJobFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
     }
 
     @Override
@@ -152,6 +146,7 @@ public class PartJobFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         initview();
         initDropDownView(view);
+        initData();
     }
     @Override
     public int getContentViewId() {
@@ -159,8 +154,8 @@ public class PartJobFragment extends BaseFragment {
     }
     private void initData() {
         cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
-        getCityCategory("");
-//        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<CityCategory>(subscriberOnNextListener,getActivity()));
+//        getCityCategory("");
+        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<CityCategory>(subscriberOnNextListener,getActivity()));
     }
 
     private void initview() {
@@ -187,7 +182,8 @@ public class PartJobFragment extends BaseFragment {
         subscriberOnNextListener=new SubscriberOnNextListener<CityCategory>() {
             @Override
             public void onNext(CityCategory rxCityCategory) {
-                rxCityCategory.getList_t_type();
+                    cityCategory=rxCityCategory;
+                    initDrawData(rxCityCategory);
             }
         };
     }
@@ -233,13 +229,13 @@ public class PartJobFragment extends BaseFragment {
         });
     }
 
-    public void initDrawData(BaseBean<CityCategory> cityCategoryBaseBean) {
+    public void initDrawData(CityCategory  listTTypeEntitys) {
         List<List<BaseEntity>> items = new ArrayList<>();
         CityCategory.ListTCity2Entity listTCity2Entity = null;
         citys.clear();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
-            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
-                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+        for (int i = 0; i < listTTypeEntitys.getList_t_city2().size(); i++) {
+            if (listTTypeEntitys.getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=listTTypeEntitys.getList_t_city2().get(i);
                 break;
             }
         }
@@ -249,10 +245,10 @@ public class PartJobFragment extends BaseFragment {
             baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_type().size(); i++) {
+        for (int i = 0; i < listTTypeEntitys.getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(cityCategoryBaseBean.getData().getList_t_type().get(i).getType_name());
-            baseEntity.setId(cityCategoryBaseBean.getData().getList_t_type().get(i).getId());
+            baseEntity.setName(listTTypeEntitys.getList_t_type().get(i).getType_name());
+            baseEntity.setId(listTTypeEntitys.getList_t_type().get(i).getId());
             jobs.add(baseEntity);
         }
         BaseEntity baseEntity=new BaseEntity();
@@ -287,12 +283,11 @@ public class PartJobFragment extends BaseFragment {
 
 
     private void resetDrawMenu(String cityCode) {
-        List<List<BaseEntity>> items = new ArrayList<>();
         CityCategory.ListTCity2Entity listTCity2Entity = null;
         citys.clear();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
-            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
-                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+        for (int i = 0; i < cityCategory.getList_t_city2().size(); i++) {
+            if (cityCategory.getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=cityCategory.getList_t_city2().get(i);
                 break;
             }
         }

@@ -34,6 +34,7 @@ import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
+import com.woniukeji.jianguo.widget.Mdialog;
 import com.woniukeji.jianguo.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -249,13 +250,13 @@ public class JobDetailActivity extends BaseActivity {
                     startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
                     return;
                 }
-//                String tel=t_job_info.getTel();
-//                if (tel==null||tel.equals("")){
-//                    showShortToast("该商家暂无电话");
-//                    return;
-//                }
-//                Mdialog mdialog=new Mdialog(mContext,tel);
-//                mdialog.show();
+                String tel=t_job_info.getTel();
+                if (tel==null||tel.equals("")){
+                    showShortToast("该商家暂无电话");
+                    return;
+                }
+                Mdialog mdialog=new Mdialog(mContext,tel);
+                mdialog.show();
 //                        LCChatKit.getInstance().open("Tom", new AVIMClientCallback() {
 //                            @Override
 //                            public void done(AVIMClient avimClient, AVIMException e) {
