@@ -346,116 +346,116 @@ public class PartJobFragment extends BaseFragment {
     public void onClick() {
     }
 
-        /**
-         * 获取城市列表和兼职种类
-         */
-        public void getCityCategory(String cityid) {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.GET_USER_CITY_CATEGORY)
-                    .addParams("only", only)
-                    .addParams("login_id", "0")
-                    .addParams("city_id", "")
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<CityCategory>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
-                            }.getType());
-                            return baseBean;
-                        }
+    /**
+     * 获取城市列表和兼职种类
+     */
+    public void getCityCategory(String cityid) {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_USER_CITY_CATEGORY)
+                .addParams("only", only)
+                .addParams("login_id", "0")
+                .addParams("city_id", "")
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean<CityCategory>>() {
+                    @Override
+                    public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
+                        String string = response.body().string();
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
+                        }.getType());
+                        return baseBean;
+                    }
 
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
+                    @Override
+                    public void onError(Call call, Exception e,int id) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_CITY_FAIL;
+                        mHandler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onResponse(BaseBean baseBean,int id) {
+                        if (baseBean.getCode().equals("200")) {
                             Message message = new Message();
-                            message.obj = e.toString();
+                            message.obj = baseBean;
+                            message.what = MSG_CITY_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = baseBean.getMessage();
                             message.what = MSG_CITY_FAIL;
                             mHandler.sendMessage(message);
                         }
+                    }
 
-                        @Override
-                        public void onResponse(BaseBean baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.what = MSG_CITY_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_CITY_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
+                });
     }
 
 
-        /**
-         * postInfo
-         * @param cityCode
-         * @param typeid
-         * @param areid
-         * @param filterid
-         * @param count
-         */
-        public void getJobs(String cityCode, String typeid, String areid, String filterid, final String count) {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.GET_JOB_CATEGORY)
-                    .addParams("only", only)
-                    .addParams("city_id", cityCode)
-                    .addParams("type_id", typeid)
-                    .addParams("area_id", areid)
-                    .addParams("filter_id", filterid)
-                    .addParams("count", count)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean<Jobs>>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
-                            }.getType());
-                            return baseBean;
-                        }
+    /**
+     * postInfo
+     * @param cityCode
+     * @param typeid
+     * @param areid
+     * @param filterid
+     * @param count
+     */
+    public void getJobs(String cityCode, String typeid, String areid, String filterid, final String count) {
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_JOB_CATEGORY)
+                .addParams("only", only)
+                .addParams("city_id", cityCode)
+                .addParams("type_id", typeid)
+                .addParams("area_id", areid)
+                .addParams("filter_id", filterid)
+                .addParams("count", count)
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new Callback<BaseBean<Jobs>>() {
+                    @Override
+                    public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
+                        String string = response.body().string();
+                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<Jobs>>() {
+                        }.getType());
+                        return baseBean;
+                    }
 
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
+                    @Override
+                    public void onError(Call call, Exception e,int id) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        message.what = MSG_GET_FAIL;
+                        mHandler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onResponse(BaseBean baseBean,int id) {
+                        if (baseBean.getCode().equals("200")) {
+                            //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
-                            message.obj = e.toString();
+                            message.obj = baseBean;
+                            message.arg1 = Integer.parseInt(count);
+                            message.what = MSG_GET_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.obj = baseBean.getMessage();
                             message.what = MSG_GET_FAIL;
                             mHandler.sendMessage(message);
+
                         }
+                    }
 
-                        @Override
-                        public void onResponse(BaseBean baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-                                //                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.arg1 = Integer.parseInt(count);
-                                message.what = MSG_GET_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_GET_FAIL;
-                                mHandler.sendMessage(message);
-
-                            }
-                        }
-
-                    });
-        }
+                });
+    }
 
 }
