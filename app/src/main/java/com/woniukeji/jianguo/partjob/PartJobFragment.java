@@ -233,6 +233,7 @@ public class PartJobFragment extends BaseFragment {
         List<List<BaseEntity>> items = new ArrayList<>();
         CityCategory.ListTCity2Entity listTCity2Entity = null;
         citys.clear();
+
         for (int i = 0; i < listTTypeEntitys.getList_t_city2().size(); i++) {
             if (listTTypeEntitys.getList_t_city2().get(i).getCode().equals(cityCode)){
                 listTCity2Entity=listTTypeEntitys.getList_t_city2().get(i);
