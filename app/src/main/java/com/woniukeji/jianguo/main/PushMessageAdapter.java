@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.woniukeji.jianguo.R;
-import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.mine.AuthActivity;
 import com.woniukeji.jianguo.mine.SignUpActivity;

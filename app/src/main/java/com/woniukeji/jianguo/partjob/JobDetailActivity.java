@@ -22,7 +22,6 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.http.HttpMethods;

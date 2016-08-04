@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.RxJobDetails;
-import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.utils.LogUtils;
 
 import java.util.HashMap;

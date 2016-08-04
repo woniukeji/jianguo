@@ -2,7 +2,6 @@ package com.woniukeji.jianguo.partjob;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -15,22 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
 

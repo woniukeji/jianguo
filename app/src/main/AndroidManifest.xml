@@ -341,10 +341,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.MyPartJboActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
             android:name=".login.LeadActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
@@ -420,11 +416,6 @@
         </activity>
         <activity
             android:name=".login.ChangePhoneActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-        </activity>
-        <activity
-            android:name=".mine.SignUpActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>

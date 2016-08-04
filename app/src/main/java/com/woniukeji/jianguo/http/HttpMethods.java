@@ -6,16 +6,13 @@ import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.PushMessage;
-import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
-import dalvik.bytecode.OpcodeInfo;
 import okhttp3.OkHttpClient;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -5,7 +5,6 @@ import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.PushMessage;
-import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 

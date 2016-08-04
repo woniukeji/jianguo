@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
-import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.PushType;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
 import com.woniukeji.jianguo.main.MainActivity;
