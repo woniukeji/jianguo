@@ -355,9 +355,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     .addParams("token", token)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(5000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
@@ -412,9 +410,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     .addParams("city_id", cityid)
                     .addParams("city_name", cityName)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

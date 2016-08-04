@@ -258,9 +258,9 @@ public class ChangPssActivity extends BaseActivity {
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new CodeCallback() {
 
                         @Override

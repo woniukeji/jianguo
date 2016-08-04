@@ -525,9 +525,9 @@ public class JobDetailActivity extends BaseActivity {
                     .addParams("follow", follow)
                     .addParams("collection", collection)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<JobDetails>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

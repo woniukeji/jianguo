@@ -334,7 +334,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                     .addParams("type", type)
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<PublishUser>>() {
@@ -391,7 +391,7 @@ public class FilterFragment extends BaseFragment implements FilterAdapter.RecyCa
                     .addParams("login_id", loginid)
                     .addParams("offer", offer)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<PublishUser>>() {

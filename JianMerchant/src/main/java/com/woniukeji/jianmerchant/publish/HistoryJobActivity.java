@@ -273,7 +273,7 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
                     .addParams("count", count)
                     .addParams("merchant_id",String.valueOf(merchantid))
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Model>>() {
@@ -330,7 +330,7 @@ public class HistoryJobActivity extends BaseActivity implements HistoryJobAdapte
                     .addParams("merchant_id", merchantid)
                     .addParams("job_id", jobid)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {

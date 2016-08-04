@@ -274,7 +274,7 @@ public class PartJobActivity extends BaseActivity {
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -326,7 +326,7 @@ public class PartJobActivity extends BaseActivity {
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -379,7 +379,7 @@ public class PartJobActivity extends BaseActivity {
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {

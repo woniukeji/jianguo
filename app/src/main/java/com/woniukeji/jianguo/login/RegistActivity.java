@@ -274,9 +274,9 @@ public class RegistActivity extends BaseActivity {
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new CodeCallback() {
 
                         @Override
@@ -318,9 +318,9 @@ public class RegistActivity extends BaseActivity {
                     .addParams("password", pass)
                     .addParams("sms_code", phoneCode.getText().toString())
                     .build()
-                    .connTimeOut(30000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(3000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

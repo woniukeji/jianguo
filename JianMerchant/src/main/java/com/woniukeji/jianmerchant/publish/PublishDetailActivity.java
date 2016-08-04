@@ -944,7 +944,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("job_id", jobId)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Model>>() {
@@ -1016,7 +1016,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityCategory>>() {
@@ -1128,7 +1128,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("work_require", work_require)
                     .addParams("job_model", mjob_model)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -1203,7 +1203,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("work_require", work_require)
                     .addParams("job_id", job_id)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {

@@ -103,17 +103,6 @@ public class HttpMethods {
                 .subscribe(subscriber);
     }
 
-    public void Login(Subscriber<User> subscriber ,String phone,String password){
-        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        methodInterface.Login(only,phone,password)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-
-
-
 /**
      *更换手机号
      */
@@ -212,6 +201,9 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+    *提交实名信息
+    */
     public void postReal(Subscriber<String> subscriber, String loginid,String front,String behind,String name,String id,String sex){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.postRealName(only,loginid,front,behind,name,id,sex)
@@ -221,6 +213,9 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+    *提交用户资料
+    */
     public void postResum(Subscriber<String> subscriber, String loginid,String name,String nickname,String school,String height,
                           String student,String name_image,String intoschool_date,String birth_date,String shoe_size,String clothing_size,String sex){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());

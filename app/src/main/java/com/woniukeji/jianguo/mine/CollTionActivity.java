@@ -228,9 +228,9 @@ public class CollTionActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("login_id", loginid)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
@@ -283,9 +283,9 @@ public class CollTionActivity extends BaseActivity {
                     .addParams("id", id)
                     .addParams("type", "1")
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int  id) throws Exception {

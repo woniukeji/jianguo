@@ -295,7 +295,7 @@ public class PasswordLoginFragment extends BaseFragment {
                 .addParams("tel", tel)
                 .addParams("password", pass)
                 .build()
-                .connTimeOut(60000)
+                .connTimeOut(6000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new Callback<BaseBean<User>>() {
@@ -349,7 +349,7 @@ public class PasswordLoginFragment extends BaseFragment {
                 .addParams("tel", tel)
                 .addParams("only", only)
                 .build()
-                .connTimeOut(60000)
+                .connTimeOut(6000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new CodeCallback() {

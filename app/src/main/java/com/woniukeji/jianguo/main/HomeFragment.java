@@ -50,6 +50,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
 import cn.lightsky.infiniteindicator.page.Page;
@@ -112,6 +113,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private int totalDy;
     private String apkurl;
     private View view;
+    private Unbinder bind;
 
     @OnClick(R.id.tv_location)
     public void onClick() {
@@ -246,18 +248,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                              Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
+        bind = ButterKnife.bind(this, view);//绑定framgent
 // Set the adapter
-        return view;
-    }
-    @Override
-    public int getContentViewId() {
-        return view.getId();
-    }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        ButterKnife.bind(this, view);
-
         RelativeLayout rlMessage = (RelativeLayout) view.findViewById(R.id.rl_message);
         rlMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,6 +285,16 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         });
 
         initData();
+        return view;
+    }
+    @Override
+    public int getContentViewId() {
+        return view.getId();
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        ButterKnife.bind(this, view);
     }
 
     private void assignViews(View view) {
@@ -518,7 +520,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
+        bind.unbind();
         EventBus.getDefault().unregister(this);
         LogUtils.i("fragment", ":onDestroyView");
     }
@@ -549,7 +551,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .addParams("city_id", city_id)
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -598,7 +600,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .url(Constants.GET_CITY)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityBannerEntity>>() {

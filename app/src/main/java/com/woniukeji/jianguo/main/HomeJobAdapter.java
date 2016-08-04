@@ -19,7 +19,6 @@ import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
 import com.woniukeji.jianguo.widget.CircleImageView;

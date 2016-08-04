@@ -314,7 +314,7 @@ public class PayActivity extends BaseActivity implements CalculateAdapter.delete
                     .addParams("merchant_id", merchantid)
                     .addParams("job_id", jobid)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {

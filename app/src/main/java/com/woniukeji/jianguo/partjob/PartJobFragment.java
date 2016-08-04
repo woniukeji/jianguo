@@ -136,18 +136,14 @@ public class PartJobFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_part_job, container, false);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         initview();
         initDropDownView(view);
         initData();
+        return view;
     }
+
     @Override
     public int getContentViewId() {
         return R.layout.fragment_part_job;
@@ -354,7 +350,7 @@ public class PartJobFragment extends BaseFragment {
                     .addParams("only", only)
                     .addParams("login_id", "0")
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityCategory>>() {
@@ -412,7 +408,7 @@ public class PartJobFragment extends BaseFragment {
                     .addParams("filter_id", filterid)
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {

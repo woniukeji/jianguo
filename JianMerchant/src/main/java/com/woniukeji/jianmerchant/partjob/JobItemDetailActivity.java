@@ -405,9 +405,9 @@ public class JobItemDetailActivity extends BaseActivity {
                 .addParams("merchant_id", merchant_id)
                 .addParams("alike", alike)
                 .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
+                .connTimeOut(6000)
+                .readTimeOut(2000)
+                .writeTimeOut(2000)
                 .execute(new Callback<BaseBean<JobDetails>>() {
                     @Override
                     public BaseBean<JobDetails> parseNetworkResponse(Response response, int id) throws Exception {
@@ -457,9 +457,9 @@ public class JobItemDetailActivity extends BaseActivity {
                 .addParams("offer", offer)
                 .addParams("alike", modleJob.getAlike())
                 .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
+                .connTimeOut(6000)
+                .readTimeOut(2000)
+                .writeTimeOut(2000)
                 .execute(new Callback<BaseBean>() {
                     @Override
                     public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
@@ -510,9 +510,9 @@ public class JobItemDetailActivity extends BaseActivity {
                 .addParams("offer", offer)
                 .addParams("alike", modleJob.getAlike())
                 .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
+                .connTimeOut(6000)
+                .readTimeOut(2000)
+                .writeTimeOut(2000)
                 .execute(new Callback<BaseBean>() {
                     @Override
                     public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
