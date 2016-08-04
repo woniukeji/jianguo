@@ -2,7 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="102dp">
+
+    <CheckBox
+        android:id="@+id/cart_cb"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        />
     <ImageView
+        android:layout_toRightOf="@+id/cart_cb"
         android:id="@+id/iv_item_pic"
         android:layout_width="95dp"
         android:layout_height="80dp"
@@ -35,46 +44,51 @@
         android:text="黄色狗狗球"
         android:layout_alignTop="@id/tv_item_color"
         />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/tv_item_color"
+        android:layout_alignLeft="@id/tv_item_color"
+        >
     <TextView
         android:id="@+id/tv_item_price"
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:textSize="12dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:text="7.00元"
+        android:gravity="center"
+        android:layout_centerVertical="true"
         android:textColor="#E34C50"
-        android:layout_below="@id/tv_item_color"
-        android:layout_alignLeft="@id/tv_item_color"
         />
     <ImageView
         android:id="@+id/iv_item_add"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/tv_item_price"
-        android:src="@mipmap/jiahao"
+        android:src="@mipmap/jiahao_cart"
+        android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
         />
     <TextView
         android:id="@+id/tv_item_count"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="1"
-        android:textSize="18dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-
+        android:layout_centerVertical="true"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:layout_marginRight="15dp"
         android:layout_toLeftOf="@id/iv_item_add"
-        android:layout_alignTop="@id/iv_item_add"/>
+        />
     <ImageView
         android:id="@+id/iv_item_down"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/tv_item_price"
-        android:src="@mipmap/jiahao"
+        android:layout_height="match_parent"
+
+        android:src="@mipmap/jianhao_cart"
         android:layout_marginRight="15dp"
         android:layout_toLeftOf="@id/tv_item_count"
         />
-
-
-
+    </RelativeLayout>
 </RelativeLayout>

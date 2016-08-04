@@ -34,7 +34,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
@@ -44,15 +44,15 @@ import okhttp3.Call;
  */
 public class DrawPassActivity extends BaseActivity  {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView title;
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.btn_get_code) Button btnGetCode;
-    @InjectView(R.id.phoneCode) EditText phoneCode;
-    @InjectView(R.id.passWord1) EditText passWord1;
-    @InjectView(R.id.passWord2) EditText passWord2;
-    @InjectView(R.id.phone_sign_in_button) Button phoneSignInButton;
-    @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView title;
+    @BindView(R.id.phoneNumber) EditText phoneNumber;
+    @BindView(R.id.btn_get_code) Button btnGetCode;
+    @BindView(R.id.phoneCode) EditText phoneCode;
+    @BindView(R.id.passWord1) EditText passWord1;
+    @BindView(R.id.passWord2) EditText passWord2;
+    @BindView(R.id.phone_sign_in_button) Button phoneSignInButton;
+    @BindView(R.id.email_login_form) LinearLayout emailLoginForm;
     private String patternCoder = "(?<!\\d)\\d{6}(?!\\d)";
     private BroadcastReceiver smsReceiver;
     private IntentFilter filter2;
@@ -119,7 +119,7 @@ public class DrawPassActivity extends BaseActivity  {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_draw_password);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -261,9 +261,9 @@ public class DrawPassActivity extends BaseActivity  {
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new CodeCallback() {
 
                         @Override

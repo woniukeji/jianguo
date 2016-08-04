@@ -1,7 +1,5 @@
 package com.woniukeji.jianguo.eventbus;
 
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
 
 /**

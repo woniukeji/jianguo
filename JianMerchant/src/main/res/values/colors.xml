@@ -60,4 +60,9 @@
     <color name="check_bg">#f2f2f2</color>
     <color name="un_press_color">#9C27B0</color>
 
+    <color name="tab_selected_bg" >#3c9cff</color>
+    <color name="tab_unselected_bg">#ffffff</color>
+    <color name="tab_selected_text">#ffffff</color>
+    <color name="tab_unselected_text">#666666</color>
+
 </resources>

@@ -284,7 +284,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .addParams("tel", phone)
                 .addParams("password", s)
                 .build()
-                .connTimeOut(60000)
+                .connTimeOut(6000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new Callback<BaseBean<User>>() {

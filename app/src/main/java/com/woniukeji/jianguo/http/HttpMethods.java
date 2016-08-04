@@ -2,15 +2,20 @@ package com.woniukeji.jianguo.http;
 
 
 import com.woniukeji.jianguo.base.Constants;
+import com.woniukeji.jianguo.entity.Balance;
+import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.PushMessage;
+import com.woniukeji.jianguo.entity.RxCityCategory;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import dalvik.bytecode.OpcodeInfo;
 import okhttp3.OkHttpClient;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -97,56 +102,6 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-//    /**
-//     *获取首页数据
-//     *@author invinjun
-//     *created at 2016/6/15 11:30
-//     * @param
-//     * @param
-//     * @param subscriber
-//     */
-//    public void getHomeData(Subscriber <Goods> subscriber ){
-//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        methodInterface.getHomeInfo(only)
-//                .map(new HttpResultFunc<Goods>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
-    public void Login(Subscriber<User> subscriber ,String phone,String password){
-        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        methodInterface.Login(only,phone,password)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-    }
-//
-//    /**
-//     * 获取超市分类
-//     */
-//    public void getMarketClass(Subscriber<Market> subscriber,String type){
-//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        methodInterface.getMarketClass(only,type)
-//                .map(new HttpResultFunc<Market>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
-//    /**
-//     * 获取超市分类
-//     */
-//    public void getGoods(Subscriber<Goods> subscriber,String loginId,String categoryId){
-//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-//        methodInterface.getGoods(only,loginId,categoryId)
-//                .map(new HttpResultFunc<Goods>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
 
 /**
      *更换手机号
@@ -163,12 +118,113 @@ public class HttpMethods {
     /**
      *获取兼职详情（工作详情界面）
      */
-    public void getJobDetail(Subscriber<JobInfo> subscriber, String loginId, String jobId, String merchantId){
+    public void getJobDetail(Subscriber<RxJobDetails> subscriber, String loginId, String jobId){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        methodInterface.getJobDetail(only,loginId,jobId,merchantId,"0")
+        methodInterface.getJobDetail(only,loginId,jobId)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+    /**
+     *获取兼职详情（工作详情界面）
+     */
+    public void getCityCategory(Subscriber<CityCategory> subscriber){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getCityCategory(only)
+                .map(new HttpResultFunc<CityCategory>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    /**
+    *绑定微信账户
+    *@param
+    *@author invinjun
+    *created at 2016/7/22 11:53
+    */
+  public void bindWX(Subscriber<String> subscriber,String loginid,String openid,String nickname,String sex,String province,String city,String imgurl,String unionid ){
+      String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+      methodInterface.postWX(only,loginid, openid,nickname,sex,province,city,imgurl,unionid)
+              .map(new HttpResultFunc())
+              .subscribeOn(Schedulers.io())
+              .unsubscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(subscriber);
+  }
+    /**
+    *钱包数据
+    *@param
+    *@param
+    *@author invinjun
+    *created at 2016/7/26 16:46
+    */
+    public void getWallte(Subscriber<Balance> subscriber,String loginid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getWallet(only,loginid)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+/**
+*报名接口
+*@param
+*@param
+*@author invinjun
+*created at 2016/7/26 16:46
+*/
+    public void MpostSign(Subscriber<String> subscriber,String loginid,String jobid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postSign(only,loginid,jobid)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    /**
+    *推送信息获取
+    *@param
+    *@param
+    *@author invinjun
+    *created at 2016/7/26 16:46
+    */
+    public void getPush(Subscriber<PushMessage> subscriber, String loginid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getPush(only,loginid)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    /**
+    *提交实名信息
+    */
+    public void postReal(Subscriber<String> subscriber, String loginid,String front,String behind,String name,String id,String sex){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postRealName(only,loginid,front,behind,name,id,sex)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    /**
+    *提交用户资料
+    */
+    public void postResum(Subscriber<String> subscriber, String loginid,String name,String nickname,String school,String height,
+                          String student,String name_image,String intoschool_date,String birth_date,String shoe_size,String clothing_size,String sex){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postResume(only,loginid,name,nickname,school,height,student,name_image,intoschool_date,birth_date,shoe_size,clothing_size,sex)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 }

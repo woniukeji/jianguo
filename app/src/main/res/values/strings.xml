@@ -19,4 +19,43 @@
     <string name="title_activity_regist">regist</string>
     <string name="title_activity_login">兼果</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string-array name="region_string" >
+        <item>全国</item>
+        <item>三亚</item>
+        <item>海口</item>
+        <item>北京</item>
+        <item>西安</item>
+        <item>杭州</item>
+    </string-array>
+
+    <string-array name="type_string" >
+        <item>短期</item>
+        <item>长期</item>
+        <item>实习生</item>
+        <item>寒/暑假工</item>
+    </string-array>
+
+    <string-array name="jobs_string" >
+        <item>不限</item>
+        <item>礼仪模特</item>
+        <item>摄影助理</item>
+        <item>传单派发</item>
+        <item>快递分拣</item>
+        <item>文案编辑</item>
+        <item>话务客服</item>
+        <item>保安/场控</item>
+        <item>校园代理</item>
+        <item>地推拉新</item>
+        <item>会展协助</item>
+        <item>活动充场</item>
+        <item>家教/助教</item>
+        <item>外卖/跑腿</item>
+        <item>实习生</item>
+        <item>长期</item>
+        <item>酒吧KTV</item>
+        <item>服务生</item>
+        <item>钟点工</item>
+        <item>调研员</item>
+        <item>送餐员</item>
+    </string-array>
 </resources>

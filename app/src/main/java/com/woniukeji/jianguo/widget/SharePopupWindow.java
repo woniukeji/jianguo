@@ -15,10 +15,8 @@ import android.widget.RelativeLayout;
 
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.entity.Wage;
 import com.woniukeji.jianguo.utils.LogUtils;
 
 import java.util.HashMap;
@@ -56,11 +54,11 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
     private String wage;
     private String linkUrl= Constants.JIANGUO_TEST2+"Html_Job_Id_Servlet";
     private String jobid;
-    private Jobs.ListTJobEntity job;
-    JobInfo.DataBean.TJobInfoBean jobinfo;
+    private RxJobDetails.DataBean.TJobBean job;
+    RxJobDetails.DataBean.TJobInfoBean jobinfo;
     //分享相关
 
-    public SharePopupWindow(Context cx, Handler handler, String jobId, Jobs.ListTJobEntity job, JobInfo.DataBean.TJobInfoBean jobinfo, String date, String wage) {
+    public SharePopupWindow(Context cx, Handler handler, String jobId, RxJobDetails.DataBean.TJobBean job, RxJobDetails.DataBean.TJobInfoBean jobinfo, String date, String wage) {
         this.context = cx;
         this.mHandler = handler;
         this.job=job;
@@ -226,7 +224,8 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
                 qqsp.title = job.getName();
                 qqsp.text =wage+"\n"+date+"\n"+job.getAddress();
                 qqsp.setImageUrl(job.getName_image());
-
+//                qqsp.setUrl(linkUrl+"?job_id="+jobid);
+                qqsp.setTitleUrl(linkUrl+"?job_id="+jobid);
                 Platform qq = ShareSDK.getPlatform(QQ.NAME);
 
                 qq.setPlatformActionListener(new PlatformActionListener() {

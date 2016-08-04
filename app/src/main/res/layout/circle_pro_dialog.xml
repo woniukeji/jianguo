@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="200dp"
+    android:layout_height="160dp"
+    android:background="@drawable/dialog_tel_bg"
+    android:visibility="visible"
+    android:padding="5dp"
+    android:layout_marginBottom="30dp"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true">
+
+    <ImageView
+        android:id="@+id/iv_split"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#d8d8d8"
+        android:layout_marginTop="30dp"
+        />
+        <com.liulishuo.magicprogresswidget.MagicProgressCircle
+            android:layout_below="@+id/iv_split"
+            android:id="@+id/progress_bar"
+            android:layout_marginTop="26dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:mpc_stroke_width="3dp"
+            app:mpc_start_color="@color/app_bg"
+            app:mpc_end_color="@color/app_bg"
+            app:mpb_fill_color="@color/app_bg"
+            app:mpb_background_color="#e5e5e5"
+            android:layout_centerInParent="true"
+            app:mpb_flat="true"/>
+        <com.woniukeji.jianguo.widget.AnimTextView
+            android:layout_below="@+id/progress_bar"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="14dp"
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10%"
+            android:textSize="12dp"
+            android:textColor="#646464"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="正在上传第一张……"
+        android:textSize="10dp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="#363636"
+        android:id="@+id/tv_title"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/iv_split"
+        android:layout_alignStart="@+id/iv_split"/>
+
+</RelativeLayout>

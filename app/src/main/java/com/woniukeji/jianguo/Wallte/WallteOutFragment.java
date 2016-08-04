@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -51,10 +51,10 @@ public class WallteOutFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @InjectView(R.id.img_renwu) ImageView imgRenwu;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
+    @BindView(R.id.img_renwu) ImageView imgRenwu;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.rl_null) RelativeLayout rlNull;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -75,7 +75,7 @@ public class WallteOutFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+
         EventBus.getDefault().unregister(this);
     }
 
@@ -159,7 +159,7 @@ public class WallteOutFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallte, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         initview();
         EventBus.getDefault().register(this);
         return view;
@@ -189,6 +189,11 @@ public class WallteOutFragment extends BaseFragment {
                 getTask.execute();
             }
         });
+    }
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_wallte;
     }
 
     @Override
@@ -267,9 +272,9 @@ public class WallteOutFragment extends BaseFragment {
                     .addParams("login_id", loginId)
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<DrawMoney>() {
                         @Override
                         public DrawMoney parseNetworkResponse(Response response,int id) throws Exception {
@@ -344,7 +349,7 @@ public class WallteOutFragment extends BaseFragment {
 //                    .addParams("id", id)
 //                    .addParams("type", "1")
 //                    .build()
-//                    .connTimeOut(60000)
+//                    .connTimeOut(6000)
 //                    .readTimeOut(20000)
 //                    .writeTimeOut(20000)
 //                    .execute(new Callback<BaseBean<Jobs>>() {

@@ -10,18 +10,18 @@ import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class EvaluationActivity extends BaseActivity {
 
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
 
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_evaluation);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

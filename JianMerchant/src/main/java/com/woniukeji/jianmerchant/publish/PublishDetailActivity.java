@@ -726,10 +726,10 @@ public class PublishDetailActivity extends BaseActivity {
     public void initViews() {
         Intent intent = getIntent();
         String mType = intent.getStringExtra("type");
-        if (mType.equals("old")) {
+        if (mType.equals("old")) {//模板
             Model.ListTJobEntity modle = (Model.ListTJobEntity) intent.getSerializableExtra("job");
             initModleData(modle);
-        } else if (mType.equals("change")) {
+        } else if (mType.equals("change")) {//修改兼职传过来
             String jobid = intent.getStringExtra("jobid");
             llPublish.setVisibility(View.GONE);
             llChange.setVisibility(View.VISIBLE);
@@ -934,7 +934,7 @@ public class PublishDetailActivity extends BaseActivity {
         }
 
         /**
-         * 获取城市列表和兼职种类
+         * 获取单个兼职信息用于修改
          */
         public void getSingleJobInfo() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
@@ -944,7 +944,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("job_id", jobId)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Model>>() {
@@ -1016,7 +1016,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityCategory>>() {
@@ -1128,7 +1128,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("work_require", work_require)
                     .addParams("job_model", mjob_model)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -1203,7 +1203,7 @@ public class PublishDetailActivity extends BaseActivity {
                     .addParams("work_require", work_require)
                     .addParams("job_id", job_id)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean>() {

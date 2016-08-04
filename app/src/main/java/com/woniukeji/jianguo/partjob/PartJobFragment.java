@@ -3,7 +3,6 @@ package com.woniukeji.jianguo.partjob;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,11 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +27,11 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.entity.SpinnerEntity;
-import com.woniukeji.jianguo.eventbus.CityEvent;
-import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
+import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.LogUtils;
@@ -48,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -59,10 +56,10 @@ import okhttp3.Response;
  */
 public class PartJobFragment extends BaseFragment {
     private Context context = getActivity();
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     private String headers[] = {"职业", "排序", "地区"};
     private List<BaseEntity> jobs = new ArrayList<>();
     private List<BaseEntity> sort = new ArrayList<>();
@@ -85,12 +82,15 @@ public class PartJobFragment extends BaseFragment {
     private int MSG_GET_FAIL = 1;
     private int MSG_CITY_SUCCESS = 2;
     private int MSG_CITY_FAIL = 3;
-    BaseBean<CityCategory> cityCategoryBaseBean;
+    CityCategory cityCategory;
     private Handler mHandler = new Myhandler(this.getActivity());
     private DropDownMenu mMenu;
     private int mtype = 0;
     private boolean DataComplete=false;
     private String cityCode;
+    private SubscriberOnNextListener<CityCategory> subscriberOnNextListener;
+
+
 
     private class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -118,41 +118,42 @@ public class PartJobFragment extends BaseFragment {
                     adapter.notifyDataSetChanged();
                     DataComplete=true;
                     break;
-                case 1:
-                    //                    String ErrorMessage = (String) msg.obj;
-                    //                    Toast.makeText(mainActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
-                    break;
                 case 2:
-                    cityCategoryBaseBean = (BaseBean<CityCategory>) msg.obj;
-                    initDrawData(cityCategoryBaseBean);
-                    break;
-                case 3:
-                    String sms = (String) msg.obj;
-//                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
             }
         }
+    }
 
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_part_job, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        initData();
         initview();
         initDropDownView(view);
+        initData();
         return view;
     }
 
+    @Override
+    public int getContentViewId() {
+        return R.layout.fragment_part_job;
+    }
     private void initData() {
         cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
-        getCityCategory(cityCode);
+        if(cityCode==null||cityCode.equals("")){
+            cityCode="010";
+        }
+        HttpMethods.getInstance().getCityCategory(new ProgressSubscriber<CityCategory>(subscriberOnNextListener,getActivity()));
     }
 
     private void initview() {
@@ -176,12 +177,16 @@ public class PartJobFragment extends BaseFragment {
                         , "2", "0");
             }
         });
+        subscriberOnNextListener=new SubscriberOnNextListener<CityCategory>() {
+            @Override
+            public void onNext(CityCategory rxCityCategory) {
+                    cityCategory=rxCityCategory;
+                    initDrawData(rxCityCategory);
+            }
+        };
     }
 
     private void initDropDownView(View view) {
-
-
-
         //init sex menu
         mMenu = (DropDownMenu) view.findViewById(R.id.menu);
         mMenu.setmMenuCount(3);
@@ -195,7 +200,6 @@ public class PartJobFragment extends BaseFragment {
         mMenu.setmUpArrow(R.drawable.arrow_up);//Menu默认状态的箭头
         mMenu.setmDownArrow(R.drawable.arrow_down);//Menu按下状态的箭头
         mMenu.setmCheckIcon(R.drawable.ico_make);//Menu展开list的勾选图片
-
 //                mMenu.setDefaultMenuTitle(headers);//默认未选择任何过滤的Menu title
         mMenu.setMenuSelectedListener(new OnMenuSelectedListener() {
             @Override
@@ -223,13 +227,14 @@ public class PartJobFragment extends BaseFragment {
         });
     }
 
-    public void initDrawData(BaseBean<CityCategory> cityCategoryBaseBean) {
+    public void initDrawData(CityCategory  listTTypeEntitys) {
         List<List<BaseEntity>> items = new ArrayList<>();
         CityCategory.ListTCity2Entity listTCity2Entity = null;
         citys.clear();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
-            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
-                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+
+        for (int i = 0; i < listTTypeEntitys.getList_t_city2().size(); i++) {
+            if (listTTypeEntitys.getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=listTTypeEntitys.getList_t_city2().get(i);
                 break;
             }
         }
@@ -239,14 +244,12 @@ public class PartJobFragment extends BaseFragment {
             baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
-
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_type().size(); i++) {
+        for (int i = 0; i < listTTypeEntitys.getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(cityCategoryBaseBean.getData().getList_t_type().get(i).getType_name());
-            baseEntity.setId(cityCategoryBaseBean.getData().getList_t_type().get(i).getId());
+            baseEntity.setName(listTTypeEntitys.getList_t_type().get(i).getType_name());
+            baseEntity.setId(listTTypeEntitys.getList_t_type().get(i).getId());
             jobs.add(baseEntity);
         }
-
         BaseEntity baseEntity=new BaseEntity();
         baseEntity.setName("推荐排序");
         baseEntity.setId(2);
@@ -279,12 +282,11 @@ public class PartJobFragment extends BaseFragment {
 
 
     private void resetDrawMenu(String cityCode) {
-        List<List<BaseEntity>> items = new ArrayList<>();
         CityCategory.ListTCity2Entity listTCity2Entity = null;
         citys.clear();
-        for (int i = 0; i < cityCategoryBaseBean.getData().getList_t_city2().size(); i++) {
-            if (cityCategoryBaseBean.getData().getList_t_city2().get(i).getCode().equals(cityCode)){
-                listTCity2Entity=cityCategoryBaseBean.getData().getList_t_city2().get(i);
+        for (int i = 0; i < cityCategory.getList_t_city2().size(); i++) {
+            if (cityCategory.getList_t_city2().get(i).getCode().equals(cityCode)){
+                listTCity2Entity=cityCategory.getList_t_city2().get(i);
                 break;
             }
         }
@@ -294,22 +296,17 @@ public class PartJobFragment extends BaseFragment {
             baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
             citys.add(baseEntity);
         }
-
         mMenu.setAreaText();
         getJobs(cityCode, typeid, areid, "2", "0");
     }
-
     @Override
     public void onStart() {
         super.onStart();
-
     }
-
     public void onEvent(final JobFilterEvent event) {
         cityCode= String.valueOf(event.cityId);
         resetDrawMenu(cityCode);
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -325,7 +322,6 @@ public class PartJobFragment extends BaseFragment {
                     LogUtils.e("position",lastVisibleItem+"开始");
                 }
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -334,66 +330,14 @@ public class PartJobFragment extends BaseFragment {
         });
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
         EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.img_back)
     public void onClick() {
-    }
-
-    /**
-     * 获取城市列表和兼职种类
-     */
-    public void getCityCategory(String cityid) {
-        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-        OkHttpUtils
-                .get()
-                .url(Constants.GET_USER_CITY_CATEGORY)
-                .addParams("only", only)
-                .addParams("login_id", "0")
-                .addParams("city_id", "")
-                .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
-                .execute(new Callback<BaseBean<CityCategory>>() {
-                    @Override
-                    public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
-                        String string = response.body().string();
-                        BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean<CityCategory>>() {
-                        }.getType());
-                        return baseBean;
-                    }
-
-                    @Override
-                    public void onError(Call call, Exception e,int id) {
-                        Message message = new Message();
-                        message.obj = e.toString();
-                        message.what = MSG_CITY_FAIL;
-                        mHandler.sendMessage(message);
-                    }
-
-                    @Override
-                    public void onResponse(BaseBean baseBean,int id) {
-                        if (baseBean.getCode().equals("200")) {
-                            Message message = new Message();
-                            message.obj = baseBean;
-                            message.what = MSG_CITY_SUCCESS;
-                            mHandler.sendMessage(message);
-                        } else {
-                            Message message = new Message();
-                            message.obj = baseBean.getMessage();
-                            message.what = MSG_CITY_FAIL;
-                            mHandler.sendMessage(message);
-                        }
-                    }
-
-                });
     }
 
 
@@ -437,6 +381,7 @@ public class PartJobFragment extends BaseFragment {
                         mHandler.sendMessage(message);
                     }
 
+
                     @Override
                     public void onResponse(BaseBean baseBean,int id) {
                         if (baseBean.getCode().equals("200")) {
@@ -453,9 +398,11 @@ public class PartJobFragment extends BaseFragment {
                             mHandler.sendMessage(message);
 
                         }
+
                     }
 
                 });
     }
+
 
 }

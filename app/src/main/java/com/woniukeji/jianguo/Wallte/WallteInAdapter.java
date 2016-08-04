@@ -11,18 +11,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Wage;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 
@@ -123,10 +123,9 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 //            holder.imgSex.setVisibility(View.GONE);
 
 
-            Picasso.with(mContext).load(job.getJob_image())
+            Glide.with(mContext).load(job.getJob_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
              holder.tvWallteWages.setText("+"+job.getReal_money());
             holder.businessName.setText(job.getJob_name());
@@ -203,16 +202,16 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.img_date) ImageView imgDate;
-        @InjectView(R.id.tv_work_date) TextView tvWorkDate;
-        @InjectView(R.id.rl_date) RelativeLayout rlDate;
-        @InjectView(R.id.remark) TextView remark;
-        @InjectView(R.id.tv_content_remark) TextView tvContentRemark;
-        @InjectView(R.id.tv_wallte_wages) TextView tvWallteWages;
-        @InjectView(R.id.rl_top) RelativeLayout rlTop;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.img_date) ImageView imgDate;
+        @BindView(R.id.tv_work_date) TextView tvWorkDate;
+        @BindView(R.id.rl_date) RelativeLayout rlDate;
+        @BindView(R.id.remark) TextView remark;
+        @BindView(R.id.tv_content_remark) TextView tvContentRemark;
+        @BindView(R.id.tv_wallte_wages) TextView tvWallteWages;
+        @BindView(R.id.rl_top) RelativeLayout rlTop;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -221,7 +220,7 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

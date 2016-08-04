@@ -11,19 +11,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.widget.AnimTextView;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;;
 
@@ -97,10 +97,9 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
             // 1=月结，2=周结，3=日结，4=小时结
             holder.businessName.setText(merchantEntity.getName());
             holder.tvJobCount.setText(merchantEntity.getJob_count()+"个职位在招");
-            Picasso.with(mContext).load(merchantEntity.getName_image())
+            Glide.with(mContext).load(merchantEntity.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,11 +155,11 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.tv_job_count) TextView tvJobCount;
-        @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.tv_job_count) TextView tvJobCount;
+        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -169,7 +168,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

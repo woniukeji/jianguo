@@ -19,7 +19,7 @@ import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 
@@ -183,15 +183,15 @@ public class WallteOutAdapter extends RecyclerView.Adapter<WallteOutAdapter.View
     static
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.tv_method_name) TextView tvMethodName;
-        @InjectView(R.id.tv_status) TextView tvStatus;
-        @InjectView(R.id.tv_content_remark) TextView tvContentRemark;
-        @InjectView(R.id.rl_status) RelativeLayout rlStatus;
-        @InjectView(R.id.tv_out_date) TextView tvOutDate;
-        @InjectView(R.id.rl_date) RelativeLayout rlDate;
-        @InjectView(R.id.tv_out_wages) TextView tvOutWages;
-        @InjectView(R.id.rl_top) RelativeLayout rlTop;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.tv_method_name) TextView tvMethodName;
+        @BindView(R.id.tv_status) TextView tvStatus;
+        @BindView(R.id.tv_content_remark) TextView tvContentRemark;
+        @BindView(R.id.rl_status) RelativeLayout rlStatus;
+        @BindView(R.id.tv_out_date) TextView tvOutDate;
+        @BindView(R.id.rl_date) RelativeLayout rlDate;
+        @BindView(R.id.tv_out_wages) TextView tvOutWages;
+        @BindView(R.id.rl_top) RelativeLayout rlTop;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -200,7 +200,7 @@ public class WallteOutAdapter extends RecyclerView.Adapter<WallteOutAdapter.View
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

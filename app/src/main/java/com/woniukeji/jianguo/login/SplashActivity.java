@@ -33,10 +33,11 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.ShareSDK;
@@ -45,7 +46,7 @@ import okhttp3.Response;
 
 public class SplashActivity extends BaseActivity implements AMapLocationListener {
 
-    @InjectView(R.id.img_splash) ImageView imgSplash;
+    @BindView(R.id.img_splash) ImageView imgSplash;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private int MSG_PHONE_SUCCESS = 2;
@@ -101,7 +102,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
     public void setContentView() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_splash);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -141,46 +142,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
         locationClient.setLocationOption(locationOption);
 //启动定位
         locationClient.startLocation();
-//        AMapLocationListener mAMapLocationListener = new AMapLocationListener(){
-//            @Override
-//            public void onLocationChanged(AMapLocation amapLocation) {
-//                if (amapLocation != null) {
-//                    if (amapLocation.getErrorCode() == 0) {
-//                        //定位成功回调信息，设置相关消息
-//                        amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-//                        amapLocation.getLatitude();//获取纬度
-//                        amapLocation.getLongitude();//获取经度
-//                        amapLocation.getAccuracy();//获取精度信息
-//                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                        Date date = new Date(amapLocation.getTime());
-//                        df.format(date);//定位时间
-//                        amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-//                        amapLocation.getCountry();//国家信息
-//                        amapLocation.getProvince();//省信息
-//                        amapLocation.getCity();//城市信息
-//                        amapLocation.getDistrict();//城区信息
-//                        amapLocation.getStreet();//街道信息
-//                        amapLocation.getStreetNum();//街道门牌号信息
-//                        amapLocation.getCityCode();//城市编码
-//                        amapLocation.getAdCode();//地区编码
-//                        amapLocation.getAoiName();//获取当前定位点的AOI信息
-//                        } else {
-//                        //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-//                        Log.e("AmapError","location Error, ErrCode:"
-//                                + amapLocation.getErrorCode() + ", errInfo:"
-//                        + amapLocation.getErrorInfo());
-//                        }
-//                    }
-//                }
-//        };
-        // 设置定位模式为高精度模式
-//        locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-//        // 设置定位监听
-//        locationClient.setLocationListener(this);
-//        // 设置定位参数
-//        locationClient.setLocationOption(locationOption);
-//        // 启动定位
-//        locationClient.startLocation();
+
     }
 
     @Override
@@ -217,6 +179,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 if (mCityName ==null|| mCityName.equals("")){
                     mCityName =aMapLocation.getProvince();//省信息
                 }
+                Log.e("AmapError","location success, CityCode:"
+                        + aMapLocation.getCityCode() + ", Province:"
+                        + aMapLocation.getProvince());
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()-1));
             } else {
@@ -253,19 +218,50 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
 //        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
             //登陆leancloud服务器 给极光设置别名
+//            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+//                @Override
+//                public void done(AVIMClient avimClient, AVIMException e) {
+//                    if (null == e) {
+//                        finish();
+//                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                    } else {
+//                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
 //            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
             LogUtils.e("jpush","调用jpush");
             if (JPushInterface.isPushStopped(getApplicationContext())){
                 JPushInterface.resumePush(getApplicationContext());
             }
+
+            // ","隔开的多个 转换成 Set,设置tags
+//            String tag = "test";
+//            String[] sArray = tag.split(",");
+//            Set<String> tagSet = new LinkedHashSet<String>();
+//            tagSet.add(tag);
+//            for (String sTagItme : sArray) {
+//                tagSet.add(sTagItme);
+//            }
+//            JPushInterface.setAliasAndTags(getApplicationContext(),"jianguo"+user.getT_user_login().getId(),tagSet, new TagAliasCallback() {
+//                @Override
+//                public void gotResult(int i, String s, Set<String> set) {
+//                    LogUtils.e("jpush",s+",code="+i);
+//                }
+//            });
             JPushInterface.setAlias(getApplicationContext(),"jianguo"+user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
-
                     LogUtils.e("jpush",s+",code="+i);
                 }
             });
         }
+
+
+    }
+
+
 //        ChatManager.getInstance().openClient(new AVIMClientCallback() {
 //            @Override
 //            public void done(AVIMClient avimClient, AVIMException e) {
@@ -275,7 +271,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
 //                }
 //            }
 //        });
-    }
+
 
 
     @Override
@@ -297,8 +293,6 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 }
              chooseActivity();
             }
-
-            ;
         }.start();
         super.onStart();
     }
@@ -361,9 +355,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     .addParams("token", token)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(5000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
@@ -418,9 +410,9 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     .addParams("city_id", cityid)
                     .addParams("city_name", cityName)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

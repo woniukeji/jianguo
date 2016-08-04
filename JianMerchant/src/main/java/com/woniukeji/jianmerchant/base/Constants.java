@@ -21,10 +21,11 @@ public class Constants {
     public static final String JIANGUO_FACTORY="http://192.168.1.132/JianGuo_Server/";
     public static final String JIANGUO_TEST="http://192.168.1.233/JianGuo_Server/";
     public static final String JIANGUO_TEST2="http://v3.jianguojob.com:8080/";
-    public static final String JIANGUO_USING=JIANGUO_FACTORY;
+    public static final String JIANGUO_USING=JIANGUO_TEST2;
     public static final String LOGIN= JIANGUO_USING+"T_user_login_Login_Merchant_Servlet";//
     public static final String REC_SMS= JIANGUO_USING+"T_user_login_Check_BackTel_Servlet";//忘记密码 快速登录
     public static final String GET_CITY_CATEGORY= JIANGUO_USING+"T_Job_Area_City_List_Servlet";//地区类型信息 兼 职种类
+
     public static final String POST_PART_INFO= JIANGUO_USING+"T_Job_Insert_Servlet";//提交兼职信息
     public static final String GET_PART_HISTORY= JIANGUO_USING+"T_job_Model_List_Servlet";//获取兼职历史记录
     public static final String DELETE_JOB_MODEL= JIANGUO_USING+"T_job_Model_Delete_Servlet";//删除兼职模板
@@ -89,14 +90,12 @@ public class Constants {
     public static final String UPDATED_AT = "updatedAt";
 
     /*
-
         leancloud消息协议
         creatimg    string   创建者头像
         otherimg    string   被邀请者头像
         creatname   string   创建者名字
         othername   string   被邀请者名字
         ctype        int     对话类型：私人对话0，提醒1，通知2，群聊3
-
      */
     public static final String CREAT_IMG = "creatimg";
     public static final String CREAT_NAME = "creatname";

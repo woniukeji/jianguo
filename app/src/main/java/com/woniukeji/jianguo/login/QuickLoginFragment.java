@@ -45,7 +45,7 @@ import java.lang.ref.WeakReference;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
@@ -61,16 +61,16 @@ public class QuickLoginFragment extends BaseFragment {
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.btn_get_code) Button btnGetCode;
-    @InjectView(R.id.icon_pass) ImageView iconPass;
-    @InjectView(R.id.phone_code) EditText phoneCode;
-    @InjectView(R.id.cb_rule) CheckBox cbRule;
-    @InjectView(R.id.tv_rule) TextView tvRule;
-    @InjectView(R.id.user_rule) LinearLayout userRule;
-    @InjectView(R.id.sign_in_button) Button signInButton;
-    @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
-    @InjectView(R.id.login_form) LinearLayout loginForm;
+    @BindView(R.id.phoneNumber) EditText phoneNumber;
+    @BindView(R.id.btn_get_code) Button btnGetCode;
+    @BindView(R.id.icon_pass) ImageView iconPass;
+    @BindView(R.id.phone_code) EditText phoneCode;
+    @BindView(R.id.cb_rule) CheckBox cbRule;
+    @BindView(R.id.tv_rule) TextView tvRule;
+    @BindView(R.id.user_rule) LinearLayout userRule;
+    @BindView(R.id.sign_in_button) Button signInButton;
+    @BindView(R.id.email_login_form) LinearLayout emailLoginForm;
+    @BindView(R.id.login_form) LinearLayout loginForm;
 
 
     private int MSG_USER_SUCCESS = 0;
@@ -84,7 +84,9 @@ public class QuickLoginFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        if (time!=null){
+            time.cancel();
+        }
     }
 
 
@@ -140,13 +142,16 @@ public class QuickLoginFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_login_quick, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         createLink(tvRule);
         initListeners();
         return view;
 
     }
-
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_login_quick;
+    }
 
     public void initListeners() {
         time = new TimeCount(60000, 1000);//构造CountDownTimer对象
@@ -189,7 +194,6 @@ public class QuickLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_CREDIT, user.getT_user_info().getCredit());
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
-
 
 // 暂时关闭果聊功能
 //        final ChatManager chatManager = ChatManager.getInstance();
@@ -282,6 +286,9 @@ public class QuickLoginFragment extends BaseFragment {
 
         @Override
         public void onFinish() {
+            if (time!=null){
+                btnGetCode.setText("验证码");
+            }
             btnGetCode.setText("验证码");
             btnGetCode.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_background_login));
             btnGetCode.setClickable(true);
@@ -303,7 +310,7 @@ public class QuickLoginFragment extends BaseFragment {
                 .addParams("tel", tel)
                 .addParams("sms_code", sms)
                 .build()
-                .connTimeOut(60000)
+                .connTimeOut(6000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new Callback<BaseBean<User>>() {
@@ -357,9 +364,9 @@ public class QuickLoginFragment extends BaseFragment {
                 .addParams("tel", tel)
                 .addParams("only", only)
                 .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
+                .connTimeOut(6000)
+                .readTimeOut(2000)
+                .writeTimeOut(2000)
                 .execute(new CodeCallback() {
 
                     @Override

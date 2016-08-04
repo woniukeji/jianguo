@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.fenjuly.library.ArrowDownloadButton;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -36,7 +35,6 @@ import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.eventbus.CityJobTypeEvent;
 import com.woniukeji.jianguo.eventbus.LoginEvent;
 import com.woniukeji.jianguo.eventbus.QuickLoginEvent;
-import com.woniukeji.jianguo.leanmessage.ImTypeMessageEvent;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.FragmentText;
@@ -54,7 +52,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -64,8 +62,8 @@ import okhttp3.Call;
  */
 public class MainActivity extends BaseActivity {
 
-    @InjectView(R.id.tabHost) CommonTabLayout tabHost;
-    @InjectView(R.id.mainPager) ViewPager mainPager;
+    @BindView(R.id.tabHost) CommonTabLayout tabHost;
+    @BindView(R.id.mainPager) ViewPager mainPager;
     private ViewPagerAdapter adapter;
     private String[] titles = {"首页", "兼职",  "我的"};//"果聊",
     private int[] mIconUnselectIds = {
@@ -80,13 +78,8 @@ public class MainActivity extends BaseActivity {
     // R.mipmap.tab_guo_talk_select,
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private long exitTime;
-    private int MSG_GET_SUCCESS = 0;
-    private int MSG_GET_FAIL = 1;
-    ArrowDownloadButton button;
     private Handler mHandler = new Myhandler(this);
     private Context context = MainActivity.this;
-    private ImageView imgeMainLead;
-    private int clickTime=0;
 
     int b = 0;
 
@@ -132,7 +125,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //          loadingView = (CircleLoadingView) findViewById(R.id.loading);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initSystemBar(this);
         Intent intent=this.getIntent();
         boolean login=intent.getBooleanExtra("login",false);
@@ -308,9 +301,9 @@ public class MainActivity extends BaseActivity {
      * 处理推送过来的消息
      * 首页tab显示维度消息
      */
-    public void onEvent(ImTypeMessageEvent event) {
-        tabHost.showDot(2);
-    }
+//    public void onEvent(ImTypeMessageEvent event) {
+//        tabHost.showDot(2);
+//    }
     public void onEvent(QuickLoginEvent event) {
         if (event.isQuickLogin){
             tabHost.setCurrentTab(0);
@@ -328,17 +321,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-//        timer.schedule(task,2000);
     }
-//    Timer timer = new Timer();
-//    TimerTask task = new TimerTask(){
-//
-//        public void run() {
-//
-//            timer.cancel();
-//        }
-
-//    };
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -364,10 +347,11 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return new PartJobFragment();          //话题榜
                 case 2:
-                    return new MineFragment();  //用户榜
-
+//                    return new LCIMConversationListFragment();//果聊
+                return new MineFragment();  //用户榜
 //                case 3:
-//                    return new TalkFragment();
+//                    return new MineFragment();  //用户榜
+
             }
             return new FragmentText();
         }

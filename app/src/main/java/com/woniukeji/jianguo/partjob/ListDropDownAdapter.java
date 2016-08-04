@@ -12,7 +12,7 @@ import com.woniukeji.jianguo.R;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 
 public class ListDropDownAdapter extends BaseAdapter {
@@ -74,11 +74,11 @@ public class ListDropDownAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @InjectView(R.id.text)
+        @BindView(R.id.text)
         TextView mText;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

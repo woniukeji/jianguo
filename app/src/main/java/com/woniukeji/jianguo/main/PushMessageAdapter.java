@@ -9,26 +9,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
+import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.mine.AuthActivity;
-import com.woniukeji.jianguo.mine.SignActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
-import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.mine.SignUpActivity;
+import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.wallte.WalletActivity;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.ViewHolder> {
 
-    private final List<PushMessage.DataEntity.ListTPushEntity> mValues;
+    private final List<PushMessage.ListTPushEntity> mValues;
     private final Context mContext;
     public static final int NORMAL = 1;
     public static final int IS_FOOTER = 2;
@@ -38,7 +36,7 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
     private AnimationDrawable mAnimationDrawable;
     private boolean isFooterChange = false;
 
-    public PushMessageAdapter(List<PushMessage.DataEntity.ListTPushEntity> items, Context context) {
+    public PushMessageAdapter(List<PushMessage.ListTPushEntity> items, Context context) {
         mValues = items;
         mContext = context;
     }
@@ -93,77 +91,38 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
                 holder.itemView.setVisibility(View.VISIBLE);
             }
         } else {
-            final PushMessage.DataEntity.ListTPushEntity message = mValues.get(position);
+            final PushMessage.ListTPushEntity message = mValues.get(position);
 
          holder.tvTitle.setText(message.getTitle());
             holder.tvDate.setText(message.getTime());
             holder.tvContent.setText("消息详情："+message.getContent());
-//            if (message.getType()==0){
-//                //报名
-//                holder.tvPs.setText("备注：请到\"我的—兼职管理\"中查看详情");
-//            }else{
-//                holder.tvPs.setText("备注：请到\"我的—我的钱包\"中查看详情");
-//            }
-
-
-
-
-
-
-            //等待数据设置
-            // 1=月结，2=周结，3=日结，4=小时结
-//            if (job.getTerm() == 0) {
-//                holder.tvPayMethod.setText("月结");
-//                holder.tvWages.setText(job.getMoney() + "/月");
-//            } else if (job.getTerm() == 1) {
-//                holder.tvPayMethod.setText("周结");
-//                holder.tvWages.setText(job.getMoney() + "/周");
-//            } else if (job.getTerm() == 2) {
-//                holder.tvPayMethod.setText("日结");
-//                holder.tvWages.setText(job.getMoney() + "/日");
-//            } else {
-//                holder.tvPayMethod.setText("小时结");
-//                holder.tvWages.setText(job.getMoney() + "/小时");
-//            }
-//
-//            holder.businessName.setText(job.getName());
-//            holder.tvLocation.setText(job.getAddress());
-//            String date = DateUtils.getTime(Long.valueOf(job.getStart_date()), Long.valueOf(job.getStop_date()));
-//            holder.tvDate.setText(date);
-//            //性别限制（0=只招女，1=只招男，2=不限男女）
-//            if (job.getLimit_sex() == 0) {
-//                holder.imgSex.setImageResource(R.mipmap.icon_man);
-//            } else if (job.getLimit_sex() == 1) {
-//                holder.imgSex.setImageResource(R.mipmap.icon_man);
-//            }
-//            holder.imgSex.setVisibility(View.GONE);
-
-
-//            Picasso.with(mContext).load(message.getJob_image())
-//                    .placeholder(R.mipmap.icon_head_defult)
-//                    .error(R.mipmap.icon_head_defult)
-//                    .transform(new CropCircleTransfermation())
-//                    .into(holder.userHead);
-//            holder.tvWallteWages.setText("+" + message.getReal_money());
-//            holder.businessName.setText(message.getJob_name());
-//            if (job.getRemarks().equals("") || message.getRemarks() == null || job.getRemarks().equals("null")) {
-//                holder.tvContentRemark.setText("无备注信息");
-//            } else {
-//                holder.tvContentRemark.setText(job.getRemarks());
-//            }
-//            holder.tvWorkDate.setText(DateUtils.getTime(Long.valueOf(job.getJob_start()), Long.valueOf(job.getJob_stop())));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    //（0=报名，1=钱包，2=实名）
+
+//                    0=报名，我的兼职
+//                    1=钱包
+//                    2=实名
+//                    3=主页
+//                    4=活动H5
                     if (message.getType()==0){
-                        mContext.startActivity(new Intent(mContext, SignActivity.class));
+                        mContext.startActivity(new Intent(mContext, SignUpActivity.class));
                     }else if (message.getType()==1){
                         mContext.startActivity(new Intent(mContext, WalletActivity.class));
                     }else if(message.getType()==2){
                         mContext.startActivity(new Intent(mContext, AuthActivity.class));
+                    }else if(message.getType()==3){
+                        mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    }else if(message.getType()==4){
+                        Intent intent=new Intent(mContext, WebViewActivity.class);
+                        intent.putExtra("url",message.getHtml_url());
+                        mContext.startActivity(intent);
+                    }else if(message.getType()==5){
+                        Intent intent=new Intent(mContext, JobDetailActivity.class);
+                        intent.putExtra("job",message.getJob_id());
+                        mContext.startActivity(intent);
                     }else {
                         mContext.startActivity(new Intent(mContext, MainActivity.class));
                     }
@@ -191,11 +150,11 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.tv_title) TextView tvTitle;
-        @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.tv_content) TextView tvContent;
-        @InjectView(R.id.tv_ps) TextView tvPs;
-        @InjectView(R.id.rl_job) LinearLayout rlJob;
+        @BindView(R.id.tv_title) TextView tvTitle;
+        @BindView(R.id.tv_date) TextView tvDate;
+        @BindView(R.id.tv_content) TextView tvContent;
+        @BindView(R.id.tv_ps) TextView tvPs;
+        @BindView(R.id.rl_job) LinearLayout rlJob;
         private ImageView animLoading;
         private TextView loading;
 
@@ -204,7 +163,7 @@ public class PushMessageAdapter extends RecyclerView.Adapter<PushMessageAdapter.
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

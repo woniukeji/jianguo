@@ -14,23 +14,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobDetails;
-import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.entity.RealName;
+import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
@@ -41,45 +40,45 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class JobDetailActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView img_share;
-    @InjectView(R.id.user_head) ImageView userHead;
-    @InjectView(R.id.business_name) TextView businessName;
-    @InjectView(R.id.tv_wage) TextView tvWage;
-    @InjectView(R.id.tv_hiring_count) TextView tvHiringCount;
-    @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-    @InjectView(R.id.tv_release_date) TextView tvReleaseDate;
-    @InjectView(R.id.tv_work_location) TextView tvWorkLocation;
-    @InjectView(R.id.tv_location_detail) TextView tvLocationDetail;
-    @InjectView(R.id.tv_work_date) TextView tvWorkDate;
-    @InjectView(R.id.tv_work_time) TextView tvWorkTime;
-    @InjectView(R.id.tv_collection_sites) TextView tvCollectionSites;
-    @InjectView(R.id.tv_collection_time) TextView tvCollectionTime;
-    @InjectView(R.id.tv_sex) TextView tvSex;
-    @InjectView(R.id.tv_pay_method) TextView tvPayMethod;
-    @InjectView(R.id.tv_other) TextView tvOther;
-    @InjectView(R.id.tv_notic) TextView tvNotic;
-    @InjectView(R.id.tv_work_content) TextView tvWorkContent;
-    @InjectView(R.id.rl_work) RelativeLayout rlWork;
-    @InjectView(R.id.tv_work_require) TextView tvWorkRequire;
-    @InjectView(R.id.tv_worker) TextView tvWorker;
-    @InjectView(R.id.cirimg_work) CircleImageView cirimgWork;
-    @InjectView(R.id.tv_company_name) TextView tvCompanyName;
-    @InjectView(R.id.tv_jobs_count) TextView tvJobsCount;
-    @InjectView(R.id.rl_company) RelativeLayout rlCompany;
-    @InjectView(R.id.tv_contact_company) TextView tvContactCompany;
-    @InjectView(R.id.tv_collection) TextView tvCollection;
-    @InjectView(R.id.tv_signup) TextView tvSignup;
-    @InjectView(R.id.tv_more) TextView tvMore;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView img_share;
+    @BindView(R.id.user_head) ImageView userHead;
+    @BindView(R.id.business_name) TextView businessName;
+    @BindView(R.id.tv_wage) TextView tvWage;
+    @BindView(R.id.tv_hiring_count) TextView tvHiringCount;
+    @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+    @BindView(R.id.tv_release_date) TextView tvReleaseDate;
+    @BindView(R.id.tv_work_location) TextView tvWorkLocation;
+    @BindView(R.id.tv_location_detail) TextView tvLocationDetail;
+    @BindView(R.id.tv_work_date) TextView tvWorkDate;
+    @BindView(R.id.tv_work_time) TextView tvWorkTime;
+    @BindView(R.id.tv_collection_sites) TextView tvCollectionSites;
+    @BindView(R.id.tv_collection_time) TextView tvCollectionTime;
+    @BindView(R.id.tv_sex) TextView tvSex;
+    @BindView(R.id.tv_pay_method) TextView tvPayMethod;
+    @BindView(R.id.tv_other) TextView tvOther;
+    @BindView(R.id.tv_notic) TextView tvNotic;
+    @BindView(R.id.tv_work_content) TextView tvWorkContent;
+    @BindView(R.id.rl_work) RelativeLayout rlWork;
+    @BindView(R.id.tv_work_require) TextView tvWorkRequire;
+    @BindView(R.id.tv_worker) TextView tvWorker;
+    @BindView(R.id.cirimg_work) CircleImageView cirimgWork;
+    @BindView(R.id.tv_company_name) TextView tvCompanyName;
+    @BindView(R.id.tv_jobs_count) TextView tvJobsCount;
+    @BindView(R.id.rl_company) RelativeLayout rlCompany;
+    @BindView(R.id.tv_contact_company) TextView tvContactCompany;
+    @BindView(R.id.tv_collection) TextView tvCollection;
+    @BindView(R.id.tv_signup) TextView tvSignup;
+    @BindView(R.id.tv_more) TextView tvMore;
 
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
@@ -91,13 +90,13 @@ public class JobDetailActivity extends BaseActivity {
     private int jobid;
     private String resume;
     private String sex;
-    private Jobs.ListTJobEntity job;
-    private String money;
+//    private Jobs.ListTJobEntity job;
     private boolean loadMore=false;
-    JobInfo.DataBean.TJobInfoBean t_job_info;
-    JobInfo.DataBean.TMerchantBean t_merchant;
-    private SubscriberOnNextListener<JobInfo> subscriberOnNextListener;
-    private int merchantid;
+    RxJobDetails.DataBean.TJobInfoBean t_job_info;
+    RxJobDetails.DataBean.TMerchantBean t_merchant;
+    private SubscriberOnNextListener<RxJobDetails> subscriberOnNextListener;
+    private RxJobDetails.DataBean.TJobBean t_job;
+    private String money;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -127,8 +126,6 @@ public class JobDetailActivity extends BaseActivity {
                     Toast.makeText(jobDetailActivity, sms, Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    String signMessage = (String) msg.obj;
-                    Toast.makeText(jobDetailActivity, signMessage, Toast.LENGTH_SHORT).show();
                     jobDetailActivity.tvSignup.setText("已报名");
                     jobDetailActivity.tvSignup.setBackgroundResource(R.color.gray);
                     jobDetailActivity.tvSignup.setClickable(false);
@@ -158,7 +155,7 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_job_detail);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -169,10 +166,15 @@ public class JobDetailActivity extends BaseActivity {
 
     @Override
     public void initListeners() {
-        subscriberOnNextListener=new SubscriberOnNextListener<JobInfo >() {
+        subscriberOnNextListener=new SubscriberOnNextListener<RxJobDetails>() {
             @Override
-            public void onNext(JobInfo jobInfo) {
-                fillData(jobInfo);
+            public void onNext(RxJobDetails jobInfo) {
+                if(jobInfo.getCode().equals("200")){
+                    fillData(jobInfo);
+                }else {
+                    Toast.makeText(JobDetailActivity.this,jobInfo.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+
             }
         };
     }
@@ -180,19 +182,11 @@ public class JobDetailActivity extends BaseActivity {
     @Override
     public void initData() {
         Intent intent= getIntent();
-        job= (Jobs.ListTJobEntity) intent.getSerializableExtra("jobbean");
         jobid= intent.getIntExtra("job",0);
-        merchantid=  intent.getIntExtra("merchant",0);
-        money=  intent.getStringExtra("money");
-        String count=intent.getStringExtra("count");
-        String mername=intent.getStringExtra("mername");
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
         sex = (String)SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
-        tvWage.setText(money);
-        tvHiringCount.setText(count);
-        businessName.setText(mername);
-        HttpMethods.getInstance().getJobDetail(new ProgressSubscriber<JobInfo>(subscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid),String.valueOf(merchantid));
+        HttpMethods.getInstance().getJobDetail(new ProgressSubscriber<RxJobDetails>(subscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid));
     }
 
     @Override
@@ -232,7 +226,7 @@ public class JobDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_share:
-                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler,String.valueOf(jobid),job,t_job_info,tvWorkDate.getText().toString(),tvWage.getText().toString());
+                SharePopupWindow share = new SharePopupWindow(JobDetailActivity.this, mHandler,String.valueOf(jobid),t_job,t_job_info,tvWorkDate.getText().toString(),tvWage.getText().toString());
                 share.showShareWindow();
                 // 显示窗口 (设置layout在PopupWindow中显示的位置)
                 share.showAtLocation(JobDetailActivity.this.getLayoutInflater().inflate(R.layout.activity_job_detail, null),
@@ -241,11 +235,15 @@ public class JobDetailActivity extends BaseActivity {
             case R.id.tv_location_detail:
                 break;
             case R.id.rl_company:
+
 //                Intent intent=new Intent(this,MerchantActivity.class);
 //                intent.putExtra("merchant",merchantInfo);
 //                startActivity(intent);
                 break;
             case R.id.tv_contact_company:
+
+
+
                 if (loginId==0){
                     showShortToast("请先登录");
                     startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
@@ -258,8 +256,56 @@ public class JobDetailActivity extends BaseActivity {
                 }
                 Mdialog mdialog=new Mdialog(mContext,tel);
                 mdialog.show();
+//                        LCChatKit.getInstance().open("Tom", new AVIMClientCallback() {
+//                            @Override
+//                            public void done(AVIMClient avimClient, AVIMException e) {
+//                                if (null == e) {
+//                                    finish();
+//                                    Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
+//                                    intent.putExtra(LCIMConstants.PEER_ID, "77");
+//                                    startActivity(intent);
+//                                } else {
+//                                    Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//                final int Id=t_merchant.getId();
+//                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
+//                intent.putExtra("merchantId",Id);
+//                startActivity(intent);
 
-
+//                             String.valueOf(Id);
+//                                final String toUserId="42";
+//                                Map<String, Object> attrs = new HashMap<>();
+//                                attrs.put(Constants.CREAT_NAME, "嘿嘿");
+//                                attrs.put(Constants.CREAT_IMG, "嘿嘿");
+//                                attrs.put(Constants.OTHER_IMG, t_merchant.getName_image());
+//                                attrs.put(Constants.OTHER_NAME, t_merchant.getName());
+//                                attrs.put(Constants.C_TYPE, 0);
+//                                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), "嘿嘿", attrs, false, true, new AVIMConversationCreatedCallback() {
+//                                        @Override
+//                                        public void done(AVIMConversation avimConversation, AVIMException e) {
+//                                                if (e == null) {
+//                                                        Map<String, Object> attributes = new HashMap<String, Object>();
+//                                                        attributes.put("userid", String.valueOf(loginId));
+//                                                        attributes.put("touserid", toUserId);
+//                                                        attributes.put("nickname", "嘿嘿");
+//                                                        attributes.put("avatar", "嘿嘿");
+//                                                        attributes.put("type", 0);
+//                                                        AVIMTextMessage message = new AVIMTextMessage();
+//                                                        message.setText("出来聊会天吧！");
+//                                                        message.setAttrs(attributes);
+//                                                        avimConversation.sendMessage(message, null);
+//
+//
+////                                                    finish();
+//                                                            }else {
+//                                                        String mes = e.getMessage();
+//                                                        mes.trim();
+//                                                    }
+//                                            }
+//
+//                                   });
                 break;
             case R.id.tv_collection:
                 if (loginId==0){
@@ -298,7 +344,7 @@ public class JobDetailActivity extends BaseActivity {
                         return;
                     }
                 }
-                if (job.getCount()>=job.getSum()){
+                if (t_job.getCount()>=t_job.getSum()){
                         showShortToast("该兼职已报满，再看看其它的吧！");
                         return;
                 }
@@ -314,10 +360,12 @@ public class JobDetailActivity extends BaseActivity {
                 break;
         }
     }
-    private void fillData(JobInfo jobInfo) {
+    private void fillData(RxJobDetails jobInfo) {
         t_job_info = jobInfo.getData().getT_job_info();
         t_merchant = jobInfo.getData().getT_merchant();
+        t_job = jobInfo.getData().getT_job();
         tvWorkLocation.setText(t_job_info.getAddress());
+        businessName.setText(t_job.getName());
         if (t_job_info!=null){
             if (t_job_info.getStart_date()!=null&&t_job_info.getStop_date()!=null){
                 String date = DateUtils.getTime(Long.valueOf(t_job_info.getStart_date()),Long.valueOf( t_job_info.getStop_date()));
@@ -329,8 +377,41 @@ public class JobDetailActivity extends BaseActivity {
             tvWorkTime.setText(time);
             tvCollectionSites.setText(t_job_info.getSet_place());
             tvCollectionTime.setText(setTime);
-            if (job!=null){
-                if (job.getStatus()!=0){
+            if (t_job!=null){
+                money = String.valueOf(t_job.getMoney());
+                if(money.indexOf(".") > 0){
+                    //正则表达
+                    money = money.replaceAll("0+?$", "");//去掉后面无用的零
+                    money = money.replaceAll("[.]$", "");//如小数点后面全是零则去掉小数点
+                }
+                // 期限（0=月结，1=周结，2=日结，3=小时结，4=次，5=义工
+                String type="";
+                if (t_job.getTerm()==0){
+                    tvWage.setText(money+"/月");
+                    type="元/月";
+                }else if(t_job.getTerm()==1){
+                    tvWage.setText(money+"元/周");
+                    type="元/周";
+                }else if(t_job.getTerm()==2){
+                    tvWage.setText(money+"元/日");
+                    type="元/日";
+                }else if(t_job.getTerm()==3){
+                    tvWage.setText(money+"元/时");
+                    type="/时";
+                }else if(t_job.getTerm()==4){
+                    tvWage.setText(money+"元/次");
+                    type="元/次";
+                }else if(t_job.getTerm()==5){
+                    tvWage.setText("义工");
+                    type="义工";
+                }else if(t_job.getTerm()==6){
+                    tvWage.setText("面议");
+                    type="面议";
+                }
+                money=money+type;
+                tvHiringCount.setText(t_job.getCount()+"/"+t_job.getSum());
+
+                if (t_job.getStatus()!=0){
                     tvSignup.setText("该兼职已过期");
                     tvSignup.setBackgroundResource(R.color.gray);
                     tvSignup.setClickable(false);
@@ -342,11 +423,11 @@ public class JobDetailActivity extends BaseActivity {
                     }
                 }
                 //期限（1=月结，2=周结，3=日结，4=小时结）
-                if (job.getMode()==0){
+                if (t_job.getMode()==0){
                     tvPayMethod.setText("月结");
-                }else if(job.getMode()==1){
+                }else if(t_job.getMode()==1){
                     tvPayMethod.setText("周结");
-                }else if(job.getMode()==2){
+                }else if(t_job.getMode()==2){
                     tvPayMethod.setText("日结");
                 }else {
                     tvPayMethod.setText("旅行");
@@ -381,7 +462,7 @@ public class JobDetailActivity extends BaseActivity {
 
             tvWorkContent.setText(t_job_info.getWork_content());
             tvWorkRequire.setText(t_job_info.getWork_require());
-            tvReleaseDate.setText(job.getRegedit_time().substring(0,10)+" 发布");
+            tvReleaseDate.setText(t_job.getRegedit_time().substring(0,10)+" 发布");
             //商家信息
 
             tvCompanyName.setText(t_merchant.getName());
@@ -392,15 +473,13 @@ public class JobDetailActivity extends BaseActivity {
             }
 
 //        tvHiringCount.setText(merchantInfo.getJob_count());
-            Picasso.with(JobDetailActivity.this).load(t_merchant.getName_image())
+            Glide.with(JobDetailActivity.this).load(t_merchant.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(cirimgWork);
-            Picasso.with(JobDetailActivity.this).load(job.getName_image())
+            Glide.with(JobDetailActivity.this).load(t_job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(userHead);
 
         }
@@ -446,9 +525,9 @@ public class JobDetailActivity extends BaseActivity {
                     .addParams("follow", follow)
                     .addParams("collection", collection)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<JobDetails>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

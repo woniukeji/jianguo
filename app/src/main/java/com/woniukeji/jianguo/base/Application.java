@@ -4,7 +4,9 @@ package com.woniukeji.jianguo.base;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.widget.Toast;
 
+import com.woniukeji.jianguo.main.MainActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.Set;
@@ -40,7 +42,24 @@ public class Application extends android.app.Application {
 //        MessageHandler msgHandler = new MessageHandler(this);
 //        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
 
-//        CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
+//        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+//        AVOSCloud.setDebugLogEnabled(true);
+//        LCChatKit.getInstance().init(getApplicationContext(), "AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
+//        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+//            public void done(AVException e) {
+//                if (e == null) {
+//                    // 保存成功
+//                    String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+//                    Toast.makeText(getApplicationContext(),"保存成功",Toast.LENGTH_SHORT).show();
+//                    // 关联  installationId 到用户表等操作……
+//                } else {
+//                    Toast.makeText(getApplicationContext(),"保存失败",Toast.LENGTH_SHORT).show();
+//                    // 保存失败，输出错误信息
+//                }
+//            }
+//        });
+//        PushService.setDefaultPushCallback(this, MainActivity.class);
+//  CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
     }
 
     @Override
@@ -61,8 +80,8 @@ public class Application extends android.app.Application {
         OkHttpUtils.initClient(okHttpClient);
 
 
-    }
-    public static Application getInstance(){
-        return instance;
-    }
 }
+public static Application getInstance(){
+        return instance;
+        }
+        }

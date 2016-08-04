@@ -22,10 +22,6 @@
         android:layout_height="wrap_content">
 
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
     <com.woniukeji.jianguo.widget.FixedRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -37,13 +33,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
-
+    </android.support.v4.widget.SwipeRefreshLayout>
     <RelativeLayout
         android:id="@+id/rl_top"
         android:background="@color/app_bg"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -71,18 +66,19 @@
             />
         <RelativeLayout
             android:id="@+id/rl_message"
-            android:layout_width="21dp"
-            android:layout_height="17dp"
+            android:layout_width="37dp"
+            android:layout_height="34dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-
             >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon_message"
-                android:paddingTop="2dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="8dp"
+                android:paddingBottom="8dp"
                 />
             <com.woniukeji.jianguo.widget.CircleImageView
                 android:id="@+id/circle_dot"
@@ -92,6 +88,7 @@
                 android:visibility="gone"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:layout_margin="8dp"
                 />
         </RelativeLayout>
     </RelativeLayout>

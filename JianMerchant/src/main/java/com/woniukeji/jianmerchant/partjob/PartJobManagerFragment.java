@@ -229,7 +229,7 @@ public class PartJobManagerFragment extends BaseFragment implements PartJobManag
                 .addParams("count", count)
                 .addParams("status", status)
                 .build()
-                .connTimeOut(60000)
+                .connTimeOut(6000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
                 .execute(new Callback<BaseBean<Model>>() {

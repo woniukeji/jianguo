@@ -27,20 +27,20 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 
 public class BindYinlianActivity extends BaseActivity {
 
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.et_yinlian_name) EditText etYinlianName;
-    @InjectView(R.id.et_bank_name) EditText etBankName;
-    @InjectView(R.id.ll_bank) LinearLayout llBank;
-    @InjectView(R.id.et_bank_number) EditText etBankNumber;
-    @InjectView(R.id.btn_save_yinlian) Button btnSaveYinlian;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.et_yinlian_name) EditText etYinlianName;
+    @BindView(R.id.et_bank_name) EditText etBankName;
+    @BindView(R.id.ll_bank) LinearLayout llBank;
+    @BindView(R.id.et_bank_number) EditText etBankNumber;
+    @BindView(R.id.btn_save_yinlian) Button btnSaveYinlian;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
     private Handler mHandler = new Myhandler(this);
@@ -54,7 +54,7 @@ public class BindYinlianActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
 
@@ -100,7 +100,7 @@ public class BindYinlianActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_bind_yinlian);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override

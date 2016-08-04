@@ -16,7 +16,7 @@ import com.woniukeji.jianguo.utils.SPUtils;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
@@ -24,8 +24,8 @@ import cn.lightsky.infiniteindicator.page.Page;
 
 public class LeadActivity extends Activity implements OnPageClickListener,ViewPager.OnPageChangeListener {
 
-    @InjectView(R.id.indicator_default_circle) InfiniteIndicator indicatorDefaultCircle;
-    @InjectView(R.id.btn_enter) Button btnEnter;
+    @BindView(R.id.indicator_default_circle) InfiniteIndicator indicatorDefaultCircle;
+    @BindView(R.id.btn_enter) Button btnEnter;
     private InfiniteIndicator mAnimCircleIndicator;
     private ArrayList<Page> pageViews = new ArrayList<>();
     private int[] drawables = new int[]{R.mipmap.lead1, R.mipmap.lead2, R.mipmap.lead3};
@@ -34,7 +34,7 @@ public class LeadActivity extends Activity implements OnPageClickListener,ViewPa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lead);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
 

@@ -21,8 +21,9 @@ import butterknife.ButterKnife;
 
 public class MarketClassAdapter extends RecyclerView.Adapter<MarketClassAdapter.ViewHolder> {
 
-
+    int mSelect = 0;   //选中项
     private Context context;
+
     private List<ListMarket> list;
     private MyItemClickListener myItemClickListener;
     public MarketClassAdapter(Context context, List<ListMarket> list,MyItemClickListener myItemClickListener) {
@@ -30,7 +31,12 @@ public class MarketClassAdapter extends RecyclerView.Adapter<MarketClassAdapter.
         this.list = list;
         this.myItemClickListener=myItemClickListener;
     }
-
+    public void changeSelected(int positon){ //刷新方法
+        if(positon != mSelect){
+            mSelect = positon;
+            notifyDataSetChanged();
+        }
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = View.inflate(context, R.layout.item_market_class, null);
@@ -49,6 +55,14 @@ public class MarketClassAdapter extends RecyclerView.Adapter<MarketClassAdapter.
                 myItemClickListener.onItemClick(v,position);
             }
         });
+
+        if(mSelect==position){
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.transparent));  //选中项背景
+            holder.itemMarketName.setTextColor(context.getResources().getColor(R.color.red));
+        }else{
+            holder.itemMarketName.setTextColor(context.getResources().getColor(R.color.black));
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.gray));  //其他项背景
+        }
     }
 
     @Override

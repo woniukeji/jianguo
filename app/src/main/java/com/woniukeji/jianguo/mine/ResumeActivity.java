@@ -1,9 +1,10 @@
 package com.woniukeji.jianguo.mine;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
@@ -22,27 +23,37 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.Resume;
 import com.woniukeji.jianguo.eventbus.HeadImgEvent;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
-import com.woniukeji.jianguo.utils.CommonUtils;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
+import com.woniukeji.jianguo.widget.CircleProDialog;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.FileUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
-import com.woniukeji.jianguo.utils.QiNiu;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.CircleImageView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -51,10 +62,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -62,39 +72,39 @@ import okhttp3.Response;
  * Created by invinjun on 2016/3/7.
  */
 public class ResumeActivity extends BaseActivity {
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_head) CircleImageView imgHead;
-    @InjectView(R.id.et_real_name) EditText etRealName;
-    @InjectView(R.id.rb_girl) RadioButton rbGirl;
-    @InjectView(R.id.rb_boy) RadioButton rbBoy;
-    @InjectView(R.id.rg_sex) RadioGroup rgSex;
-    @InjectView(R.id.img) ImageView img;
-    @InjectView(R.id.tv_birthday) TextView tvBirthday;
-    @InjectView(R.id.rl_birthday) RelativeLayout rlBirthday;
-    @InjectView(R.id.rl_root_view) LinearLayout root;
-    @InjectView(R.id.tv_shoes) TextView tvShoes;
-    @InjectView(R.id.rl_shoes) RelativeLayout rlShoes;
-    @InjectView(R.id.tv_clothse) TextView tvClothse;
-    @InjectView(R.id.rl_clothse) RelativeLayout rlClothse;
-    @InjectView(R.id.tv_tall) TextView tvTall;
-    @InjectView(R.id.rl_tall) RelativeLayout rlTall;
-    @InjectView(R.id.rb_yes) RadioButton rbYes;
-    @InjectView(R.id.rb_no) RadioButton rbNo;
-    @InjectView(R.id.rg_student) RadioGroup rgStudent;
-    @InjectView(R.id.tv_school) TextView tvSchool;
-    @InjectView(R.id.rl_school) RelativeLayout rlSchool;
-    @InjectView(R.id.tv_date) TextView tvDate;
-    @InjectView(R.id.rl_date) RelativeLayout rlDate;
-    @InjectView(R.id.check_button) Button checkButton;
-    @InjectView(R.id.tv_necessary_name) TextView tvNecessaryName;
-    @InjectView(R.id.tv_necessary_nickname) TextView tvNecessaryNickname;
-    @InjectView(R.id.et_nick_name) EditText etNickName;
-    @InjectView(R.id.tv_necessary_sex) TextView tvNecessarySex;
-    @InjectView(R.id.tv_necessary_date) TextView tvNecessaryDate;
-    @InjectView(R.id.img_lead) ImageView imgLead;
-    @InjectView(R.id.tv_necessary_school) TextView tvNecessarySchool;
-    @InjectView(R.id.img_edit) TextView tvEdit;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_head) CircleImageView imgHead;
+    @BindView(R.id.et_real_name) EditText etRealName;
+    @BindView(R.id.rb_girl) RadioButton rbGirl;
+    @BindView(R.id.rb_boy) RadioButton rbBoy;
+    @BindView(R.id.rg_sex) RadioGroup rgSex;
+    @BindView(R.id.img) ImageView img;
+    @BindView(R.id.tv_birthday) TextView tvBirthday;
+    @BindView(R.id.rl_birthday) RelativeLayout rlBirthday;
+    @BindView(R.id.rl_root_view) LinearLayout root;
+    @BindView(R.id.tv_shoes) TextView tvShoes;
+    @BindView(R.id.rl_shoes) RelativeLayout rlShoes;
+    @BindView(R.id.tv_clothse) TextView tvClothse;
+    @BindView(R.id.rl_clothse) RelativeLayout rlClothse;
+    @BindView(R.id.tv_tall) TextView tvTall;
+    @BindView(R.id.rl_tall) RelativeLayout rlTall;
+    @BindView(R.id.rb_yes) RadioButton rbYes;
+    @BindView(R.id.rb_no) RadioButton rbNo;
+    @BindView(R.id.rg_student) RadioGroup rgStudent;
+    @BindView(R.id.tv_school) TextView tvSchool;
+    @BindView(R.id.rl_school) RelativeLayout rlSchool;
+    @BindView(R.id.tv_date) TextView tvDate;
+    @BindView(R.id.rl_date) RelativeLayout rlDate;
+    @BindView(R.id.check_button) Button checkButton;
+    @BindView(R.id.tv_necessary_name) TextView tvNecessaryName;
+    @BindView(R.id.tv_necessary_nickname) TextView tvNecessaryNickname;
+    @BindView(R.id.et_nick_name) EditText etNickName;
+    @BindView(R.id.tv_necessary_sex) TextView tvNecessarySex;
+    @BindView(R.id.tv_necessary_date) TextView tvNecessaryDate;
+    @BindView(R.id.img_lead) ImageView imgLead;
+    @BindView(R.id.tv_necessary_school) TextView tvNecessarySchool;
+    @BindView(R.id.img_edit) TextView tvEdit;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 4;
@@ -117,6 +127,9 @@ public class ResumeActivity extends BaseActivity {
     private String shoes="";
     private String clothse="";
     private File file;
+    private CircleProDialog circleProDialog;
+    SubscriberOnNextListener<String> realSubscriberOnNextListener;
+    private String realFilePath="";
 
 
     private boolean chaeckContent() {
@@ -179,13 +192,7 @@ public class ResumeActivity extends BaseActivity {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
-                                    String name = etRealName.getText().toString().trim();
-                                    if (chaeckContent()) {
-                                        QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
-                                        postResume(String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
-                                                date, sex, tall, student,birDate,
-                                                shoes, clothse);
-                                    }
+                                    PostResume();
 
                                 }
                             })
@@ -203,8 +210,9 @@ public class ResumeActivity extends BaseActivity {
 
                 break;
             case R.id.img_head:
+                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1);
                 //单选多选,requestCode,最多选择数，单选模式
-                MultiImageSelectorActivity.startSelect(ResumeActivity.this, 0, 1, 0);
+//                MultiImageSelectorActivity.startSelect(ResumeActivity.this, 0, 1, 0);
                 break;
             case R.id.rb_girl:
                 sex = "0";
@@ -274,12 +282,7 @@ public class ResumeActivity extends BaseActivity {
             case R.id.img_edit:
                 if (save){
                     save=false;
-                    String name = etRealName.getText().toString().trim();
-                    if (chaeckContent()) {
-                        QiNiu.upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), file);
-                        postResume(String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
-                                date, sex, tall, student,birDate,
-                                shoes, clothse);
+                    PostResume();
                         tvEdit.setText("编辑");
                         root.setClickable(true);
                         imgBack.setClickable(true);
@@ -303,7 +306,6 @@ public class ResumeActivity extends BaseActivity {
                         rbBoy.setClickable(false);
                         imgBack.setClickable(true);
                         imgBack.setOnClickListener(this);
-                    }
                 }else {
                     save=true;
                     tvEdit.setText("保存");
@@ -332,6 +334,24 @@ public class ResumeActivity extends BaseActivity {
         }
     }
 
+    private void PostResume() {
+        if (chaeckContent()) {
+            //未选择头像的时候，直接提交头像以前的url，如果更新了头像则上传图片
+            if (realFilePath==null||realFilePath.equals("")){
+                HttpMethods.getInstance().postResum(new ProgressSubscriber<String>(realSubscriberOnNextListener,context),String.valueOf(loginId),
+                        etRealName.getText().toString().trim(), etNickName.getText().toString(), tvSchool.getText().toString().trim(),tall,student,url2,
+                        date,  birDate,  shoes, clothse,sex);
+            }else {
+                circleProDialog = new CircleProDialog(ResumeActivity.this);
+                circleProDialog.setCanceledOnTouchOutside(false);
+                circleProDialog.setCanceledOnTouchOutside(false);
+                circleProDialog.show();
+                upLoadQiNiu(context, MD5Coder.getQiNiuName(String.valueOf(loginId)), realFilePath);
+            }
+
+         }
+    }
+
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -352,7 +372,6 @@ public class ResumeActivity extends BaseActivity {
                     SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_IMG, resumeActivity.url2);
                     SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_NAME,resumeActivity.etRealName.getText().toString().trim() );
                     SPUtils.setParam(resumeActivity, Constants.USER_INFO, Constants.SP_SCHOOL,resumeActivity.tvSchool.getText().toString().trim() );
-
                     HeadImgEvent headImgEvent=new HeadImgEvent();
                     headImgEvent.ImgUrl=resumeActivity.url2;
                     EventBus.getDefault().post(headImgEvent);
@@ -404,7 +423,7 @@ public class ResumeActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_resume);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -440,13 +459,27 @@ public class ResumeActivity extends BaseActivity {
         rbYes.setClickable(false);
         rbGirl.setClickable(false);
         rbBoy.setClickable(false);
+        realSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
+            @Override
+            public void onNext(String s) {
+                SPUtils.setParam(ResumeActivity.this, Constants.LOGIN_INFO, Constants.SP_RESUMM, "1");
+                SPUtils.setParam(ResumeActivity.this, Constants.USER_INFO, Constants.USER_SEX, sex);
+                SPUtils.setParam(ResumeActivity.this, Constants.USER_INFO, Constants.SP_IMG,url2);
+                SPUtils.setParam(ResumeActivity.this, Constants.USER_INFO, Constants.SP_NAME,etRealName.getText().toString().trim() );
+                SPUtils.setParam(ResumeActivity.this, Constants.USER_INFO, Constants.SP_SCHOOL,tvSchool.getText().toString().trim() );
+                HeadImgEvent headImgEvent=new HeadImgEvent();
+                headImgEvent.ImgUrl=url2;
+                EventBus.getDefault().post(headImgEvent);
+                Toast.makeText(ResumeActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
+                 finish();
+            }
+        };
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -522,16 +555,14 @@ public class ResumeActivity extends BaseActivity {
         fileName = userResum.getName_image();
 
         if (userResum.getName_image() != null && !userResum.getName_image().equals("")) {
-            Picasso.with(context).load(userResum.getName_image())
+            Glide.with(context).load(userResum.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(imgHead);
         } else {
-        Picasso.with(context).load("http//null")
+        Glide.with(context).load("http//null")
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
-                .transform(new CropCircleTransfermation())
                 .into(imgHead);
     }
 
@@ -554,78 +585,6 @@ public class ResumeActivity extends BaseActivity {
 
         /**
          * postInfo
-         * 传参：login_id		登录ID
-         * 传参：name		姓名
-         * 传参：name_image	头像
-         * 传参：school		学校
-         * 传参：intoschool_date	入校时间
-         * 传参：sex		性别（0=女，1=男）
-         * 传参：height		身高（int型）
-         * 传参：student		学生（int型：0=不是学生，1=是学生）
-         * 传参：birth_date	出生日期
-         * 传参：shoe_size		鞋码
-         * 传参：clothing_size	服装尺码
-         */
-        public void postResume(String loginId, String name, String nickName, String name_image, String school, String date, String sex, String tall, String student, String birDate, String shoes, String clothse) {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.CHANGE_RESUME)
-                    .addParams("only", only)
-                    .addParams("login_id", loginId)
-                    .addParams("name", name)
-                    .addParams("nickname", nickName)
-                    .addParams("school", school)
-                    .addParams("height", tall)
-                    .addParams("student",student)
-                    .addParams("name_image", name_image)
-                    .addParams("intoschool_date", date)
-                    .addParams("birth_date", birDate)
-                    .addParams("shoe_size", shoes)
-                    .addParams("clothing_size", clothse)
-                    .addParams("sex",sex)
-                    .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new Callback<BaseBean>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
-                            }.getType());
-                            return baseBean;
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_POST_FAIL;
-                            mHandler.sendMessage(message);
-                        }
-
-                        @Override
-                        public void onResponse(BaseBean baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.what = MSG_POST_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
-
-        /**
-         * postInfo
          */
         public void getResume(String loginId) {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
@@ -635,9 +594,9 @@ public class ResumeActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<Resume>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
@@ -677,22 +636,25 @@ public class ResumeActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                // 获取返回的图片列表
-                List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                // 处理你自己的逻辑 ....
-                imgFile = new File(path.get(0));
-                String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
-                fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
-                Uri imgSource = Uri.fromFile(imgFile);
-                imgHead.setImageURI(imgSource);
-                file = new File(Environment.getExternalStorageDirectory() + "/"+fileName+".png");
-                FileUtils.copyfile(imgFile,file,true);
-                BitmapUtils.compressBitmap(file.getAbsolutePath(), 300, 300);
-                url2 = "http://7xlell.com2.z0.glb.qiniucdn.com/" + MD5Coder.getQiNiuName(fileName);
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1 && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+            } else {
+                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
             }
-        } else if (requestCode == 1) {
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                realFilePath = FileUtils.getRealFilePath(ResumeActivity.this, result.getUri());
+                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath,1080, 720);
+                imgHead.setImageBitmap(bitmap);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+         if (requestCode == 1) {
             tvBirthday.setText(data.getStringExtra("date"));
         } else if (requestCode == 2) {
             tvDate.setText(data.getStringExtra("date"));
@@ -702,10 +664,12 @@ public class ResumeActivity extends BaseActivity {
             }
 
         }
-
-
     }
-
+    private void startCropImageActivity(Uri imageUri,int requestCode) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this,requestCode);
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -718,13 +682,7 @@ public class ResumeActivity extends BaseActivity {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
-                                String name = etRealName.getText().toString().trim();
-                                if (chaeckContent()) {
-                                    postResume(String.valueOf(loginId), name, etNickName.getText().toString(), url2, tvSchool.getText().toString().trim(),
-                                            date, sex, tall, student,birDate,
-                                            shoes, clothse);
-                                }
-
+                                PostResume();
                             }
                         })
                         .setCancelText("取消")
@@ -738,6 +696,40 @@ public class ResumeActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+
+    }
+
+    public  void upLoadQiNiu(final Context context, String key, String filePath) {
+        String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
+        // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
+        UploadManager uploadManager = new UploadManager();
+        uploadManager.put(filePath, key, commonUploadToken, new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                    url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+key;
+                    circleProDialog.dismiss();
+
+                HttpMethods.getInstance().postResum(new ProgressSubscriber<String>(realSubscriberOnNextListener,context),String.valueOf(loginId),
+                        etRealName.getText().toString().trim(), etNickName.getText().toString(), tvSchool.getText().toString().trim(),tall,student,url2,
+                        date,  birDate,  shoes, clothse,sex);
+
+//                    postRealName(String.valueOf(loginId),url1,url2,name,id,sex);
+                /**
+                 *(@Query("only") String only, @Query("login_id") String login_id,
+                 @Query("name") String name, @Query("nickname") String nickname,
+                 @Query("school") String school, @Query("height") String height,
+                 @Query("student") String student, @Query("name_image") String name_image,
+                 @Query("intoschool_date") String intoschool_date, @Query("birth_date") String birth_date,
+                 @Query("shoe_size") String shoe_size, @Query("clothing_size") String clothing_size,
+                 @Query("sex") String sex);
+                 */
+            }
+        }, new UploadOptions(null, null, false,
+                new UpProgressHandler(){
+                    public void progress(String key, double percent){
+                        circleProDialog.setMsg(percent);
+                    }
+                }, null));
 
     }
 }

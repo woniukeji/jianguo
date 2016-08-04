@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Fragment
  *
@@ -16,6 +19,12 @@ import android.view.ViewGroup;
  */
 public abstract class BaseFragment extends Fragment {
     protected BaseActivity mActivity;
+    private Unbinder bind;
+
+    public abstract int getContentViewId();
+    protected Context context;
+    protected View mRootView;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -26,14 +35,10 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        bind = ButterKnife.bind(this, view);//绑定framgent
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -64,6 +69,9 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        if (bind!=null){
+            bind.unbind();
+        }
         super.onDestroyView();
     }
 

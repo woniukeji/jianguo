@@ -21,6 +21,15 @@ public class Balance implements Serializable{
 
     private DataEntity data;
     private String code;
+    private String weixin;
+
+    public String getWeixin() {
+        return weixin;
+    }
+
+    public void setWeixin(String weixin) {
+        this.weixin = weixin;
+    }
 
     public String getMessage() {
         return message;
@@ -78,6 +87,24 @@ public class Balance implements Serializable{
             private String kahao;
             private String pay_password;
             private int pay_status;
+            private String weixin;//0未绑定
+            private String nickname;
+
+            public String getWeixin() {
+                return weixin;
+            }
+
+            public void setWeixin(String weixin) {
+                this.weixin = weixin;
+            }
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
 
             public int getPay_status() {
                 return pay_status;

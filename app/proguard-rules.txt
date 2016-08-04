@@ -443,8 +443,8 @@
 
 # Keep Butterknife stuff
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.InjectView *;}
+-keep class **$$Viewbindor { *; }
+-keepnames class * { @butterknife.Bind *;}
 
 -keepclassmembers class ** {
     public void onEvent*(**);

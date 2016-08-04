@@ -14,20 +14,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.widget.AnimTextView;
+import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 
@@ -160,10 +160,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                 holder.imgSex.setImageResource(R.mipmap.icon_xingbie);
 
 
-            Picasso.with(mContext).load(job.getName_image())
+            Glide.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(holder.userHead);
 
             //动画
@@ -245,22 +244,22 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.user_head) ImageView userHead;
-        @InjectView(R.id.business_name) TextView businessName;
-        @InjectView(R.id.img_pay) ImageView imgPay;
-        @InjectView(R.id.img_date) ImageView imgDate;
-        @InjectView(R.id.img_local) ImageView imgLocal;
-        @InjectView(R.id.img_sex) ImageView imgSex;
-        @InjectView(R.id.img_type) ImageView imgType;
-        @InjectView(R.id.demo_mpc) MagicProgressCircle demoMpc;
-        @InjectView(R.id.demo_tv) AnimTextView demoTv;
-        @InjectView(R.id.rl_progess) RelativeLayout rlProgess;
-        @InjectView(R.id.tv_enroll_num) TextView tvEnrollNum;
-        @InjectView(R.id.tv_wages) TextView tvWages;
-        @InjectView(R.id.rl_job) RelativeLayout rlJob;
-        @InjectView(R.id.tv_pay_method) TextView tvPayMethod;
-        @InjectView(R.id.tv_date) TextView tvDate;
-        @InjectView(R.id.tv_location) TextView tvLocation;
+        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.business_name) TextView businessName;
+        @BindView(R.id.img_pay) ImageView imgPay;
+        @BindView(R.id.img_date) ImageView imgDate;
+        @BindView(R.id.img_local) ImageView imgLocal;
+        @BindView(R.id.img_sex) ImageView imgSex;
+        @BindView(R.id.img_type) ImageView imgType;
+        @BindView(R.id.demo_mpc) MagicProgressCircle demoMpc;
+        @BindView(R.id.demo_tv) AnimTextView demoTv;
+        @BindView(R.id.rl_progess) RelativeLayout rlProgess;
+        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+        @BindView(R.id.tv_wages) TextView tvWages;
+        @BindView(R.id.rl_job) RelativeLayout rlJob;
+        @BindView(R.id.tv_pay_method) TextView tvPayMethod;
+        @BindView(R.id.tv_date) TextView tvDate;
+        @BindView(R.id.tv_location) TextView tvLocation;
         private ImageView animLoading;
         private TextView loading;
 
@@ -269,7 +268,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
             switch (type) {
                 case NORMAL:
-                    ButterKnife.inject(this, view);
+                    ButterKnife.bind(this, view);
                     break;
                 case IS_FOOTER:
                     animLoading = (ImageView) view.findViewById(R.id.anim_loading);

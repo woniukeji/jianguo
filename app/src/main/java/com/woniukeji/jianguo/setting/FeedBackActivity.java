@@ -26,19 +26,19 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class FeedBackActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.et_content) EditText etContent;
-    @InjectView(R.id.et_contact) EditText etContact;
-    @InjectView(R.id.btn_confirm) Button btnConfirm;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.et_content) EditText etContent;
+    @BindView(R.id.et_contact) EditText etContact;
+    @BindView(R.id.btn_confirm) Button btnConfirm;
     private int MSG_POST_SUCCESS = 0;
     private int MSG_POST_FAIL = 1;
     private Handler mHandler = new Myhandler(this);
@@ -53,7 +53,7 @@ public class FeedBackActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_feed_back);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -148,9 +148,9 @@ public class FeedBackActivity extends BaseActivity {
                     .addParams("tel", tel)
                     .addParams("text", text)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response ,int id) throws Exception {

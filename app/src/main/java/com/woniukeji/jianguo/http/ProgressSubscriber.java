@@ -24,7 +24,7 @@ public class ProgressSubscriber<T> extends Subscriber<T>{
     public void onStart() {
         super.onStart();
         progressDialog=new ProgressDialog(mContext);
-        progressDialog.setMessage("正在加载...");
+        progressDialog.setMessage("请稍后...");
         progressDialog.show();
     }
 

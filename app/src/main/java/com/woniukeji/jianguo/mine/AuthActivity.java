@@ -1,9 +1,9 @@
 package com.woniukeji.jianguo.mine;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,25 +19,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.squareup.picasso.Picasso;
+import com.qiniu.android.storage.UploadOptions;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.RealName;
+import com.woniukeji.jianguo.http.HttpMethods;
+import com.woniukeji.jianguo.http.ProgressSubscriber;
+import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.login.BindPhoneActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
-import com.woniukeji.jianguo.utils.CommonUtils;
+import com.woniukeji.jianguo.widget.CircleProDialog;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.EditCheckUtil;
 import com.woniukeji.jianguo.utils.FileUtils;
-import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.MD5Coder;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -45,52 +51,49 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
-import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class AuthActivity extends BaseActivity {
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView title;
-    @InjectView(R.id.img_front) ImageView imgFront;
-    @InjectView(R.id.tv_not1) TextView tvNot1;
-    @InjectView(R.id.tv_not2) TextView tvNot2;
-    @InjectView(R.id.img_opposite) ImageView imgOpposite;
-    @InjectView(R.id.ll_top) LinearLayout llTop;
-    @InjectView(R.id.img_phone) ImageView imgPhone;
-    @InjectView(R.id.img) ImageView img;
-    @InjectView(R.id.tv_phone_auth) TextView etPhoneAuth;
-    @InjectView(R.id.et_real_name) EditText etRealName;
-    @InjectView(R.id.et_id) EditText etId;
-    @InjectView(R.id.img_pass) ImageView imgPass;
-    @InjectView(R.id.rb_man) RadioButton rbMan;
-    @InjectView(R.id.rb_woman) RadioButton rbWoman;
-    @InjectView(R.id.check_button) Button checkButton;
-    @InjectView(R.id.rl_phone) RelativeLayout rlPhone;
-    private int MSG_POST_SUCCESS = 0;
-    private int MSG_POST_FAIL = 1;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView title;
+    @BindView(R.id.img_front) ImageView imgFront;
+    @BindView(R.id.tv_not1) TextView tvNot1;
+    @BindView(R.id.tv_not2) TextView tvNot2;
+    @BindView(R.id.img_opposite) ImageView imgOpposite;
+    @BindView(R.id.ll_top) LinearLayout llTop;
+    @BindView(R.id.img_phone) ImageView imgPhone;
+    @BindView(R.id.img) ImageView img;
+    @BindView(R.id.tv_phone_auth) TextView etPhoneAuth;
+    @BindView(R.id.et_real_name) EditText etRealName;
+    @BindView(R.id.et_id) EditText etId;
+    @BindView(R.id.img_pass) ImageView imgPass;
+    @BindView(R.id.rb_man) RadioButton rbMan;
+    @BindView(R.id.rb_woman) RadioButton rbWoman;
+    @BindView(R.id.check_button) Button checkButton;
+    @BindView(R.id.rl_phone) RelativeLayout rlPhone;
     private int MSG_GET_SUCCESS = 2;
     private int MSG_GET_FAIL = 3;
-    private File imgFile;
-    private String fileName;
-    private String fileName2;
-    private File imgFile2;
     private int loginId;
     private int status;
     private String tel;
     private String sex="1";
-    public SweetAlertDialog pDialog ;
 
     private Handler mHandler = new Myhandler(this);
     private Context context = AuthActivity.this;
+    private String realFilePath1;
+    private String realFilePath2;
+    private String url1;
+    private String url2;
+    private CircleProDialog circleProDialog;
+
+    private SubscriberOnNextListener<String> realSubscriberOnNextListener;
+
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
 
@@ -104,8 +107,8 @@ public class AuthActivity extends BaseActivity {
             AuthActivity authActivity = (AuthActivity) reference.get();
             switch (msg.what) {
                 case 0:
-                    if (null!=authActivity.pDialog){
-                        authActivity.pDialog.dismiss();
+                    if (null!=authActivity.circleProDialog){
+                        authActivity.circleProDialog.dismiss();
                     }
                     BaseBean baseBean = (BaseBean) msg.obj;
                     //手动保存认证状态 防止未重新登录情况下再次进入该界面
@@ -114,23 +117,23 @@ public class AuthActivity extends BaseActivity {
                     authActivity.finish();
                     break;
                 case 1:
-                    if (null!=authActivity.pDialog){
-                        authActivity.pDialog.dismiss();
+                    if (null!=authActivity.circleProDialog){
+                        authActivity.circleProDialog.dismiss();
                     }
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(authActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    if (null!=authActivity.pDialog){
-                        authActivity.pDialog.dismiss();
+                    if (null!=authActivity.circleProDialog){
+                        authActivity.circleProDialog.dismiss();
                     }
                     BaseBean<RealName> realNameBaseBean = (BaseBean<RealName>) msg.obj;
 //                    authActivity.showShortToast("获取实名信息成功");
                     authActivity.setInf(realNameBaseBean.getData());
                     break;
                 case 3:
-                    if (null!=authActivity.pDialog){
-                        authActivity.pDialog.dismiss();
+                    if (null!=authActivity.circleProDialog){
+                        authActivity.circleProDialog.dismiss();
                     }
                     String sms = (String) msg.obj;
                     Toast.makeText(authActivity, sms, Toast.LENGTH_SHORT).show();
@@ -193,35 +196,37 @@ public class AuthActivity extends BaseActivity {
             imgOpposite.setClickable(false);
             String id=realName.getT_user_realname().getId_number();
             etId.setText(id.substring(0,id.length()-6)+"******");
-            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
-            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
+            Glide.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
+            Glide.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
 
         }else if(realName.getT_user_realname().getStatus()==4){//未通过
             checkButton.setText("重新审核");
             etId.setText("");
-//            Picasso.with(context).load(realName.getT_user_realname().getFront_image()).placeholder(R.mipmap.icon_fanmian).error(R.mipmap.icon_fanmian).into(imgFront);
-//            Picasso.with(context).load(realName.getT_user_realname().getBehind_image()).placeholder(R.mipmap.icon_zhengmian).error(R.mipmap.icon_zhengmian).into(imgOpposite);
             checkButton.setBackgroundResource(R.drawable.button_background_login);
-//            PostTask postTask=new PostTask(false,String.valueOf(loginId),null,null,null,null,null);
-//            postTask.execute();
         }
     }
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_auth);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
     public void initViews() {
         FileUtils.newFolder(Constants.IMG_PATH);
-        pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         title.setText("实名认证");
     }
 
     @Override
     public void initListeners() {
-
+        realSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
+            @Override
+            public void onNext(String s) {
+                SPUtils.setParam(context,Constants.LOGIN_INFO,Constants.SP_STATUS,3);
+                showShortToast("实名信息上传成功!");
+                finish();
+            }
+        };
     }
 
     @Override
@@ -254,7 +259,7 @@ public class AuthActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -273,17 +278,10 @@ public class AuthActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_front:
-                //单选多选
-                Intent intent=new Intent(AuthActivity.this,PicTipActivity.class);
-                intent.putExtra("front",true);
-                startActivityForResult(intent,2);
-//                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
+                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1);
                 break;
             case R.id.img_opposite:
-                Intent intent1=new Intent(AuthActivity.this,PicTipActivity.class);
-                intent1.putExtra("front",false);
-                startActivityForResult(intent1,3);
-
+                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2);
                 break;
             case R.id.rb_man:
                 sex="1";
@@ -300,7 +298,7 @@ public class AuthActivity extends BaseActivity {
                 String name = etRealName.getText().toString().trim();
                 String id = etId.getText().toString().trim();
 
-                if (fileName == null || fileName2 == null || fileName.equals("") || fileName2.equals("")) {
+                if (realFilePath1 == null || realFilePath2 == null || realFilePath1.equals("") || realFilePath2.equals("")) {
                     showShortToast("请先上传身份证图片！");
                     break;
                 }
@@ -314,12 +312,11 @@ public class AuthActivity extends BaseActivity {
                     showShortToast("身份证号码不正确");
                     break;
                 }
-
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("请稍后...");
-                pDialog.setCancelable(false);
-                pDialog.show();
-               upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName), imgFile,1,name,id);
+                circleProDialog = new CircleProDialog(AuthActivity.this);
+                circleProDialog.setCanceledOnTouchOutside(false);
+                circleProDialog.setCanceledOnTouchOutside(false);
+                circleProDialog.show();
+               upLoadQiNiu(context, MD5Coder.getQiNiuName(String.valueOf(loginId)), realFilePath1,1,name,id);
                 break;
         }
     }
@@ -330,7 +327,6 @@ public class AuthActivity extends BaseActivity {
         try{
             super.onRestoreInstanceState(savedInstanceState);
         }catch(Exception e){
-            savedInstanceState = null;
         }
     }
 
@@ -345,141 +341,98 @@ public class AuthActivity extends BaseActivity {
 
     }
 
-    public  void upLoadQiNiu(final Context context, String key, File imgFile, final int position, final String name, final String id) {
+    public  void upLoadQiNiu(final Context context, String key, String filePath, final int position, final String name, final String id) {
         String commonUploadToken = (String) SPUtils.getParam(context, Constants.LOGIN_INFO, Constants.SP_QNTOKEN, "");
         // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
         UploadManager uploadManager = new UploadManager();
-        uploadManager.put(imgFile, key, commonUploadToken,
-                new UpCompletionHandler() {
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject res) {
-                        //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
-                        LogUtils.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                        if (position==1){
-                            upLoadQiNiu(context, MD5Coder.getQiNiuName(fileName2), imgFile2,2,name,id);
-                        }
-                        if (position==2){
-                            if (res!=null){
-                                String url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName);
-                                String url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+MD5Coder.getQiNiuName(fileName2);
-//                                PostTask postTask=new PostTask(true,String.valueOf(loginId),url1,url2,name,id,sex);
-//                                postTask.execute(String.valueOf(loginId),url1,url2,name,id,sex);
-                                postRealName(String.valueOf(loginId),url1,url2,name,id,sex);
-                            }else {
-                                pDialog.dismiss();
-                                showShortToast("上传失败，请重试！");
-                            }
-
-                        }
+        uploadManager.put(filePath, key, commonUploadToken, new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                if (position==1){
+                     url1="http://7xlell.com2.z0.glb.qiniucdn.com/"+key;
+                    circleProDialog.setMsg("正在上传第二张……");
+                    upLoadQiNiu(context, MD5Coder.getQiNiuName(String.valueOf(loginId)), realFilePath2,2,name,id);
+                }
+                else {
+                    url2="http://7xlell.com2.z0.glb.qiniucdn.com/"+key;
+                    circleProDialog.dismiss();
+                    HttpMethods.getInstance().postReal(new ProgressSubscriber<String>(realSubscriberOnNextListener,context),String.valueOf(loginId),url1,url2,name,id,sex);
+//                    postRealName(String.valueOf(loginId),url1,url2,name,id,sex);
+                }
+            }
+        }, new UploadOptions(null, null, false,
+                new UpProgressHandler(){
+                    public void progress(String key, double percent){
+                        circleProDialog.setMsg(percent);
                     }
-                }, null);
+                }, null));
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //ADW: sometimes on rotating the phone, some widgets fail to restore its states.... so... damn.
-
-        if (requestCode == 0) {
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1 && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            boolean requirePermissions = false;
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                requirePermissions = true;
+//                mCropImageUri = imageUri;
+//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
+            }
+        }
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2 && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            boolean requirePermissions = false;
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                requirePermissions = true;
+//                mCropImageUri = imageUri;
+//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2);
+            }
+        }
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                // 获取返回的图片列表
-                List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                // 处理你自己的逻辑 ....
-                imgFile = new File(path.get(0));
-                String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
-                fileName = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
-                Uri imgSource = Uri.fromFile(imgFile);
-//                imgFront.setImageURI(imgSource);
-                Bitmap bitmap=BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
+                realFilePath1 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
+//                FileInputStream is = new  FileInputStream(realFilePath1);
+                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath1,1080, 720);
                 imgFront.setImageBitmap(bitmap);
+//                imgFront.setImageURI(result.getUri());
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
         }
-        if (requestCode == 1) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                // 获取返回的图片列表
-                List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                // 处理你自己的逻辑 ....
-                imgFile2 = new File(path.get(0));
-                String choosePic = path.get(0).substring(path.get(0).lastIndexOf("."));
-                fileName2 = Constants.IMG_PATH + CommonUtils.generateFileName() + choosePic;
-                Uri imgSource = Uri.fromFile(imgFile2);
-//                imgOpposite.setImageURI(imgSource);
-                Bitmap bitmap=BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),1080, 720);
+                 realFilePath2 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
+//                imgOpposite.setImageURI(result.getUri());
+//                FileInputStream is = new  FileInputStream(realFilePath1);
+                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath2,1080, 720);
                 imgOpposite.setImageBitmap(bitmap);
-//                BitmapUtils.compressBitmap(imgFile.getAbsolutePath(),1080, 720);
-//                BitmapUtils.compressImage(imgFile.getAbsolutePath(),10000);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
 
-//                Bitmap bitmap = BitmapUtils.compressBitmap(imgFile2.getAbsolutePath(),true, 1080, 720);
-//                Bitmap bitmap = BitmapUtils.compressImage(imgFile2.getAbsolutePath(),null, false,1000,);
-//                BitmapUtils.saveBitmap(bitmap, imgFile2);
-            }
-        }
-        if (requestCode==2){//弹出提示 提示返回 然后跳转拍照界面 正面
-            if (resultCode == RESULT_OK) {
-                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
-            }
-        }
-        if (requestCode==3){//弹出提示 提示返回 然后跳转拍照界面 背面
-            if (resultCode == RESULT_OK) {
-                MultiImageSelectorActivity.startSelect(AuthActivity.this, 1, 1, 0);
-            }
-        }
     }
-        /**
-         * postInfo
-         * @param id
-         * @param sex
-         */
-        public void postRealName(String loginId, String frontImage, String behindImage, String realname, String id, String sex) {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.POST_REAL_NAME)
-                    .addParams("only", only)
-                    .addParams("login_id", loginId)
-                    .addParams("front_image", frontImage)
-                    .addParams("behind_image", behindImage)
-                    .addParams("realname", realname)
-                    .addParams("id_number", id)
-                    .addParams("sex", sex)
-                    .build()
-                    .connTimeOut(100000)
-                    .readTimeOut(100000)
-                    .writeTimeOut(100000)
-                    .execute(new Callback<BaseBean>() {
-                        @Override
-                        public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
-                            String string = response.body().string();
-                            BaseBean baseBean = new Gson().fromJson(string, new TypeToken<BaseBean>() {
-                            }.getType());
-                            return baseBean;
-                        }
 
-                        @Override
-                        public void onError(Call call, Exception e,int id) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = MSG_POST_FAIL;
-                            mHandler.sendMessage(message);
-                        }
+    private void startCropImageActivity(Uri imageUri,int requestCode) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this,requestCode);
+    }
 
-                        @Override
-                        public void onResponse(BaseBean baseBean,int id) {
-                            if (baseBean.getCode().equals("200")) {
-//                                SPUtils.setParam(AuthActivity.this, Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
-                                Message message = new Message();
-                                message.obj = baseBean;
-                                message.what = MSG_POST_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = baseBean.getMessage();
-                                message.what = MSG_POST_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-                        }
-
-                    });
-        }
         /**
          * postInfo
          */
@@ -491,7 +444,7 @@ public class AuthActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("login_id", loginId)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<RealName>>() {

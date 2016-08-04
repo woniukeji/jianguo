@@ -16,7 +16,7 @@
         app:tl_iconWidth="30dp"
         app:tl_indicator_color="#2C97DE"
         app:tl_indicator_height="0dp"
-        app:tl_textSelectColor="#2C97DE"
+        app:tl_textSelectColor="#66000000"
         app:tl_textUnselectColor="#66000000"
         app:tl_textsize="10sp"
         app:tl_underline_color="#DDDDDD"

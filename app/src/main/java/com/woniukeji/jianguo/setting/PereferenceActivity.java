@@ -164,9 +164,9 @@ public class PereferenceActivity extends BaseActivity {
                 .addParams("only", only)
                 .addParams("login_id", String.valueOf(loginId))
                 .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
+                .connTimeOut(6000)
+                .readTimeOut(2000)
+                .writeTimeOut(2000)
                 .execute(new Callback<BaseBean<HobbyJob>>() {
                     @Override
                     public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
@@ -216,9 +216,9 @@ public class PereferenceActivity extends BaseActivity {
                 .addParams("json_type", jobJson)
                 .addParams("json_time", weekJson)
                 .build()
-                .connTimeOut(60000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
+                .connTimeOut(6000)
+                .readTimeOut(2000)
+                .writeTimeOut(2000)
                 .execute(new Callback<BaseBean<CityCategory>>() {
                     @Override
                     public BaseBean parseNetworkResponse(Response response, int id) throws Exception {

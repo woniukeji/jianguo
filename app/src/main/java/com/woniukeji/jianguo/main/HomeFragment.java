@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
@@ -18,13 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fenjuly.library.ArrowDownloadButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -45,19 +40,17 @@ import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.utils.UpDialog;
 import com.woniukeji.jianguo.widget.CircleImageView;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
-import com.woniukeji.jianguo.widget.UpDataDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
-import com.zhy.http.okhttp.callback.FileCallBack;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.lightsky.infiniteindicator.InfiniteIndicator;
 import cn.lightsky.infiniteindicator.page.OnPageClickListener;
 import cn.lightsky.infiniteindicator.page.Page;
@@ -76,13 +69,13 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    @InjectView(R.id.list) FixedRecyclerView recycleList;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.tv_location) TextView tvLocation;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.rl_top) RelativeLayout rl_top;
-    @InjectView(R.id.circle_dot) CircleImageView circleDot;
-    @InjectView(R.id.rl_message) RelativeLayout rlMessage;
+    @BindView(R.id.list) FixedRecyclerView recycleList;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.tv_location) TextView tvLocation;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.rl_top) RelativeLayout rl_top;
+    @BindView(R.id.circle_dot) CircleImageView circleDot;
+    @BindView(R.id.rl_message) RelativeLayout rlMessage;
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -119,6 +112,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private boolean DataComplete = false;
     private int totalDy;
     private String apkurl;
+    private View view;
+    private Unbinder bind;
 
     @OnClick(R.id.tv_location)
     public void onClick() {
@@ -166,8 +161,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     cityBannerEntityBaseBean = (BaseBean<CityBannerEntity>) msg.obj;
                     banners = cityBannerEntityBaseBean.getData().getList_t_banner();
 //                    defultCity=cityBannerEntityBaseBean.getData().getList_t_city().get(0);
-                    String cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "0");
-                    String cityName = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME, "三亚");
+                    String cityCode = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
+                    String cityName = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");
                     defultCity = new CityBannerEntity.ListTCityEntity();
                     defultCity.setCode(cityCode);
                     defultCity.setCity(cityName.substring(0, cityName.length()));
@@ -251,9 +246,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
+         view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
+        headerView = inflater.inflate(R.layout.home_header_view, container, false);
+        bind = ButterKnife.bind(this, view);//绑定framgent
 // Set the adapter
-        ButterKnife.inject(this, view);
         RelativeLayout rlMessage = (RelativeLayout) view.findViewById(R.id.rl_message);
         rlMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,7 +258,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                 startActivity(new Intent(getContext(), PushMessageActivity.class));
             }
         });
-        headerView = inflater.inflate(R.layout.home_header_view, container, false);
         assignViews(headerView);
         mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
         mAnimCircleIndicator.setImageLoader(new PicassoLoader());
@@ -291,6 +286,15 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
         initData();
         return view;
+    }
+    @Override
+    public int getContentViewId() {
+        return view.getId();
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        ButterKnife.bind(this, view);
     }
 
     private void assignViews(View view) {
@@ -516,7 +520,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        bind.unbind();
         EventBus.getDefault().unregister(this);
         LogUtils.i("fragment", ":onDestroyView");
     }
@@ -547,7 +551,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .addParams("city_id", city_id)
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -596,7 +600,7 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     .url(Constants.GET_CITY)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<CityBannerEntity>>() {

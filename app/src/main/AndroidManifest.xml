@@ -160,11 +160,14 @@
         <meta-data
             android:name="TencentMapSDK"
             android:value="CIWBZ-PFOHV-6R6P3-U62N6-RCZ4E-WDFIH"/>
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="271aae9c316665f0d9707d1a905ae915">
-            //开发者申请的key
         </meta-data>
+        <!-- 定位需要的服务 -->
+        <service android:name="com.amap.api.location.APSService" >
+        </service>
         <!-- 腾讯地图配置 结束 -->
         <!-- 自动升级 结束 -->
 
@@ -178,11 +181,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.SignActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
             android:name="me.nereo.multi_image_selector.PreviewPicturesActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
@@ -191,15 +189,15 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
-        <!-- <service android:name="com.avos.avoscloud.PushService"/> -->
+         <!--<service android:name="com.avos.avoscloud.PushService"/>-->
 
 
-        <!-- <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
-        <!-- <action android:name="android.intent.action.USER_PRESENT"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
+         <!--<receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">-->
+         <!--<intent-filter>-->
+         <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+         <!--<action android:name="android.intent.action.USER_PRESENT"/>-->
+         <!--</intent-filter>-->
+         <!--</receiver>-->
         <!-- 实时通信模块、推送 END -->
         <!-- 极光推送配置 开始 -->
         <!-- Required SDK核心功能 -->
@@ -307,9 +305,9 @@
             android:name=".mine.SchoolActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity
-            android:name=".talk.ChatActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!--<activity-->
+            <!--android:name=".talk.ChatActivity"-->
+            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>-->
         <activity
             android:name=".setting.SettingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -415,14 +413,24 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
-        <activity android:name=".setting.PereferenceActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity
+            android:name=".setting.PereferenceActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
-        <activity android:name=".login.ChangePhoneActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity
+            android:name=".login.ChangePhoneActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
+        <activity
+            android:name=".mine.SignUpActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
+        </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+
+            />
     </application>
 
 </manifest>

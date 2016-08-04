@@ -45,7 +45,7 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
@@ -56,17 +56,17 @@ import okhttp3.Response;
  */
 public class RegistActivity extends BaseActivity {
 
-    @InjectView(R.id.tv_title) TextView title;
-    @InjectView(R.id.phoneNumber) EditText phoneNumber;
-    @InjectView(R.id.btn_get_code) Button btnGetCode;
-    @InjectView(R.id.phoneCode) EditText phoneCode;
-    @InjectView(R.id.passWord1) EditText passWord1;
-    @InjectView(R.id.passWord2) EditText passWord2;
-    @InjectView(R.id.phone_sign_in_button) Button phoneSignInButton;
-    @InjectView(R.id.email_login_form) LinearLayout emailLoginForm;
-    @InjectView(R.id.user_rule) LinearLayout userRule;
-    @InjectView(R.id.cb_rule) CheckBox cbRule;
-    @InjectView(R.id.tv_rule) TextView tvRule;
+    @BindView(R.id.tv_title) TextView title;
+    @BindView(R.id.phoneNumber) EditText phoneNumber;
+    @BindView(R.id.btn_get_code) Button btnGetCode;
+    @BindView(R.id.phoneCode) EditText phoneCode;
+    @BindView(R.id.passWord1) EditText passWord1;
+    @BindView(R.id.passWord2) EditText passWord2;
+    @BindView(R.id.phone_sign_in_button) Button phoneSignInButton;
+    @BindView(R.id.email_login_form) LinearLayout emailLoginForm;
+    @BindView(R.id.user_rule) LinearLayout userRule;
+    @BindView(R.id.cb_rule) CheckBox cbRule;
+    @BindView(R.id.tv_rule) TextView tvRule;
     private String patternCoder = "(?<!\\d)\\d{6}(?!\\d)";
     private BroadcastReceiver smsReceiver;
     private IntentFilter filter2;
@@ -133,7 +133,7 @@ public class RegistActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_regist);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -274,9 +274,9 @@ public class RegistActivity extends BaseActivity {
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new CodeCallback() {
 
                         @Override
@@ -318,9 +318,9 @@ public class RegistActivity extends BaseActivity {
                     .addParams("password", pass)
                     .addParams("sms_code", phoneCode.getText().toString())
                     .build()
-                    .connTimeOut(30000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(3000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<User>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

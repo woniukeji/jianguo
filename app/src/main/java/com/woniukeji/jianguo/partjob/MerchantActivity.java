@@ -17,9 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -28,7 +28,6 @@ import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.main.HomeJobAdapter;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CropCircleTransfermation;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
@@ -40,17 +39,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class MerchantActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     RelativeLayout mHeader;
     RelativeLayout mRlInfo;
     ImageView mImgHead;
@@ -130,7 +129,7 @@ public class MerchantActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_merchant);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -181,10 +180,9 @@ public class MerchantActivity extends BaseActivity {
          Merchant = (JobDetails.TMerchantEntity) intent.getSerializableExtra("merchant");
         if (Merchant != null) {
             tvTitle.setText(Merchant.getName());
-            Picasso.with(MerchantActivity.this).load(Merchant.getName_image())
+            Glide.with(MerchantActivity.this).load(Merchant.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-                    .transform(new CropCircleTransfermation())
                     .into(mImgHead);
         }
         if (Merchant.getIs_follow().equals("0")){
@@ -245,9 +243,9 @@ public class MerchantActivity extends BaseActivity {
                     .addParams("only", only)
                     .addParams("hot", type)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<Jobs>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {
@@ -324,9 +322,9 @@ public class MerchantActivity extends BaseActivity {
                     .addParams("follow", follow)
                     .addParams("collection", collection)
                     .build()
-                    .connTimeOut(60000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
+                    .connTimeOut(6000)
+                    .readTimeOut(2000)
+                    .writeTimeOut(2000)
                     .execute(new Callback<BaseBean<JobDetails>>() {
                         @Override
                         public BaseBean parseNetworkResponse(Response response,int id) throws Exception {

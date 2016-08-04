@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -49,14 +49,14 @@ import okhttp3.Response;
  */
 public class PartJobActivity extends BaseActivity {
 
-    @InjectView(R.id.img_back) ImageView imgBack;
-    @InjectView(R.id.tv_title) TextView tvTitle;
-    @InjectView(R.id.list) FixedRecyclerView list;
-    @InjectView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
-    @InjectView(R.id.img_share) ImageView imgShare;
-    @InjectView(R.id.img_menu) ImageView imgMenu;
-    @InjectView(R.id.img_renwu) ImageView imgRenwu;
-    @InjectView(R.id.rl_null) RelativeLayout rlNull;
+    @BindView(R.id.img_back) ImageView imgBack;
+    @BindView(R.id.tv_title) TextView tvTitle;
+    @BindView(R.id.list) FixedRecyclerView list;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.img_share) ImageView imgShare;
+    @BindView(R.id.img_menu) ImageView imgMenu;
+    @BindView(R.id.img_renwu) ImageView imgRenwu;
+    @BindView(R.id.rl_null) RelativeLayout rlNull;
     private String headers[] = {"职业", "排序", "地区"};
     private PartJobAdapter adapter;
     private int lastVisibleItem;
@@ -81,7 +81,7 @@ public class PartJobActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
 
@@ -142,7 +142,7 @@ public class PartJobActivity extends BaseActivity {
     @Override
     public void setContentView() {
         setContentView(R.layout.activity_part_job);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 //        EventBus.getDefault().register(this);
 //        initDropDownView();
     }
@@ -222,7 +222,7 @@ public class PartJobActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.reset(this);
+
 //        EventBus.getDefault().unregister(this);
     }
 
@@ -274,7 +274,7 @@ public class PartJobActivity extends BaseActivity {
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -326,7 +326,7 @@ public class PartJobActivity extends BaseActivity {
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
@@ -379,7 +379,7 @@ public class PartJobActivity extends BaseActivity {
                     .addParams("city_id", String.valueOf(cityid))
                     .addParams("count", count)
                     .build()
-                    .connTimeOut(60000)
+                    .connTimeOut(6000)
                     .readTimeOut(20000)
                     .writeTimeOut(20000)
                     .execute(new Callback<BaseBean<Jobs>>() {
