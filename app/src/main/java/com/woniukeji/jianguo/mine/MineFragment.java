@@ -272,7 +272,6 @@ public class MineFragment extends BaseFragment {
     }
 
     public void initData(boolean init) {
-
         if (init) {
             String nick = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, "");
             String schoolStr = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_SCHOOL, "");
@@ -280,8 +279,6 @@ public class MineFragment extends BaseFragment {
             String img = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, "");
             status = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_STATUS, 0);
             loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-
-
             if (schoolStr.equals("")) {
                 school.setText("未填写");
             } else {
@@ -292,7 +289,6 @@ public class MineFragment extends BaseFragment {
             } else {
                 name.setText(nick);
             }
-
             phone.setText(tel);
             if (img != null && !img.equals("")) {
                 Glide.with(getActivity()).load(img)
