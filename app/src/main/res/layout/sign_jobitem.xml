@@ -15,7 +15,7 @@
     >
 
 
-    <com.woniukeji.jianguo.widget.CircleImageView
+    <ImageView
         android:id="@+id/user_head"
         android:layout_width="38dp"
         android:layout_height="38dp"

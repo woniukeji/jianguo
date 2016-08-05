@@ -396,8 +396,8 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     private void initData() {
         loginId = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_USERID, 0);
-        cityName = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.USER_LOCATION_NAME, "北京");
-        cityId = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.USER_LOCATION_CODE, "010");
+        cityName = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_NAME, "北京");
+        cityId = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
         getCitys();
     }
 

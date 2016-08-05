@@ -19,6 +19,7 @@ import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.security.PublicKey;
@@ -255,6 +256,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
             Glide.with(mContext).load(jobEntity.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(mContext))
                     .into(holder.userHead);
 
             if (type.equals("面议")||type.equals("义工")){
@@ -374,7 +376,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.user_head) ImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.tv_job_wages) TextView tvJobWages;
 

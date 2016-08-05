@@ -36,6 +36,7 @@ import com.woniukeji.jianguo.main.MainActivity;
 import com.woniukeji.jianguo.setting.FeedBackActivity;
 import com.woniukeji.jianguo.setting.PereferenceActivity;
 import com.woniukeji.jianguo.setting.SettingActivity;
+import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.utils.UpDialog;
@@ -57,7 +58,7 @@ import okhttp3.Call;
 
 public class MineFragment extends BaseFragment {
     @BindView(R.id.title_bar) TextView titleBar;
-    @BindView(R.id.img_head) CircleImageView imgHead;
+    @BindView(R.id.img_head) ImageView imgHead;
     @BindView(R.id.iv_setting) ImageView ivSetting;
     @BindView(R.id.name) TextView name;
     @BindView(R.id.school) TextView school;
@@ -248,6 +249,7 @@ public class MineFragment extends BaseFragment {
         Glide.with(getActivity()).load(event.ImgUrl)
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
+                .transform(new GlideCircleTransform(getActivity()))
                 .into(imgHead);
     }
 
@@ -296,12 +298,14 @@ public class MineFragment extends BaseFragment {
                 Glide.with(getActivity()).load(img)
                         .placeholder(R.mipmap.icon_head_defult)
                         .error(R.mipmap.icon_head_defult)
+                        .transform(new GlideCircleTransform(getActivity()))
                         .into(imgHead);
             }
         } else {
             Glide.with(getActivity()).load("http//null")
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(getActivity()))
                     .into(imgHead);
         }
         if (loginId == 0) {
@@ -309,6 +313,7 @@ public class MineFragment extends BaseFragment {
             Glide.with(getActivity()).load("http//null")
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(getActivity()))
                     .into(imgHead);
             account.setOnClickListener(new View.OnClickListener() {
                 @Override

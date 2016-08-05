@@ -9,12 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
-        android:text="暂无数据"
+        android:text="该城市暂无数据"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:background="@color/white"
+        android:background="@color/transparent"
         android:textSize="12dp"
-        android:layout_marginTop="322dp"
+        android:layout_marginTop="325dp"
         />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"

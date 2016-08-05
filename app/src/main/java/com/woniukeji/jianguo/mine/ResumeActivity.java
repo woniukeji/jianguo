@@ -44,6 +44,7 @@ import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
+import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.widget.CircleProDialog;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.FileUtils;
@@ -74,7 +75,7 @@ import okhttp3.Response;
 public class ResumeActivity extends BaseActivity {
     @BindView(R.id.img_back) ImageView imgBack;
     @BindView(R.id.tv_title) TextView tvTitle;
-    @BindView(R.id.img_head) CircleImageView imgHead;
+    @BindView(R.id.img_head) ImageView imgHead;
     @BindView(R.id.et_real_name) EditText etRealName;
     @BindView(R.id.rb_girl) RadioButton rbGirl;
     @BindView(R.id.rb_boy) RadioButton rbBoy;
@@ -558,11 +559,13 @@ public class ResumeActivity extends BaseActivity {
             Glide.with(context).load(userResum.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(ResumeActivity.this))
                     .into(imgHead);
         } else {
         Glide.with(context).load("http//null")
                 .placeholder(R.mipmap.icon_head_defult)
                 .error(R.mipmap.icon_head_defult)
+                .transform(new GlideCircleTransform(ResumeActivity.this))
                 .into(imgHead);
     }
 

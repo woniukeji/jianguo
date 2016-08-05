@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -31,8 +32,8 @@ import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.login.LoginActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.utils.SPUtils;
-import com.woniukeji.jianguo.widget.CircleImageView;
 import com.woniukeji.jianguo.widget.Mdialog;
 import com.woniukeji.jianguo.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -71,7 +72,7 @@ public class JobDetailActivity extends BaseActivity {
     @BindView(R.id.rl_work) RelativeLayout rlWork;
     @BindView(R.id.tv_work_require) TextView tvWorkRequire;
     @BindView(R.id.tv_worker) TextView tvWorker;
-    @BindView(R.id.cirimg_work) CircleImageView cirimgWork;
+    @BindView(R.id.cirimg_work) ImageView cirimgWork;
     @BindView(R.id.tv_company_name) TextView tvCompanyName;
     @BindView(R.id.tv_jobs_count) TextView tvJobsCount;
     @BindView(R.id.rl_company) RelativeLayout rlCompany;
@@ -80,8 +81,6 @@ public class JobDetailActivity extends BaseActivity {
     @BindView(R.id.tv_signup) TextView tvSignup;
     @BindView(R.id.tv_more) TextView tvMore;
 
-    private int MSG_GET_SUCCESS = 0;
-    private int MSG_GET_FAIL = 1;
     private int MSG_POST_SUCCESS = 5;
     private int MSG_POST_FAIL = 6;
     private Handler mHandler = new Myhandler(this);
@@ -473,13 +472,20 @@ public class JobDetailActivity extends BaseActivity {
             }
 
 //        tvHiringCount.setText(merchantInfo.getJob_count());
+//             RequestManager glideRequest;
+//            glideRequest = Glide.with(this);
+//            glideRequest.load("https://www.baidu.com/img/bdlogo.png").transform(new GlideCircleTransform(JobDetailActivity.this)).into(cirimgWork);
             Glide.with(JobDetailActivity.this).load(t_merchant.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(JobDetailActivity.this))
+                    .crossFade()
                     .into(cirimgWork);
             Glide.with(JobDetailActivity.this).load(t_job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(JobDetailActivity.this))
+                    .crossFade()
                     .into(userHead);
 
         }

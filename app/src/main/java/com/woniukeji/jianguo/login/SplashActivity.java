@@ -182,6 +182,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 Log.e("AmapError","location success, CityCode:"
                         + aMapLocation.getCityCode() + ", Province:"
                         + aMapLocation.getProvince());
+
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_CODE, aMapLocation.getCityCode());
                 SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_LOCATION_NAME, aMapLocation.getCity().substring(0,aMapLocation.getCity().length()-1));
             } else {

@@ -3,6 +3,7 @@ package com.woniukeji.jianguo.wallte;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.woniukeji.jianguo.entity.Wage;
 import com.woniukeji.jianguo.eventbus.AttentionCollectionEvent;
 import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.widget.CircleImageView;
 
 import java.util.List;
@@ -126,6 +128,7 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
             Glide.with(mContext).load(job.getJob_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
+                    .transform(new GlideCircleTransform(mContext))
                     .into(holder.userHead);
              holder.tvWallteWages.setText("+"+job.getReal_money());
             holder.businessName.setText(job.getJob_name());
@@ -202,7 +205,7 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.user_head) ImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.img_date) ImageView imgDate;
         @BindView(R.id.tv_work_date) TextView tvWorkDate;

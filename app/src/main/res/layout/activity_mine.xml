@@ -30,7 +30,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginRight="5dp"
     />
-        <com.woniukeji.jianguo.widget.CircleImageView
+        <ImageView
             android:id="@+id/img_head"
             android:layout_width="68dp"
             android:layout_height="68dp"

@@ -230,7 +230,6 @@ public class PartJobFragment extends BaseFragment {
     public void initDrawData(CityCategory  listTTypeEntitys) {
         List<List<BaseEntity>> items = new ArrayList<>();
         CityCategory.ListTCity2Entity listTCity2Entity = null;
-        citys.clear();
 
         for (int i = 0; i < listTTypeEntitys.getList_t_city2().size(); i++) {
             if (listTTypeEntitys.getList_t_city2().get(i).getCode().equals(cityCode)){
@@ -238,12 +237,22 @@ public class PartJobFragment extends BaseFragment {
                 break;
             }
         }
-        for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
+        //如果定位信息有误 默认选取第一个城市
+        if (listTCity2Entity==null){
+            listTCity2Entity=cityCategory.getList_t_city2().get(0);
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
-            baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
+            baseEntity.setName("不限地区");
+            baseEntity.setId(0);
             citys.add(baseEntity);
+        }else {
+            for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
+                BaseEntity baseEntity=new BaseEntity();
+                baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
+                baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
+                citys.add(baseEntity);
+            }
         }
+
         for (int i = 0; i < listTTypeEntitys.getList_t_type().size(); i++) {
             BaseEntity baseEntity=new BaseEntity();
             baseEntity.setName(listTTypeEntitys.getList_t_type().get(i).getType_name());
@@ -290,12 +299,22 @@ public class PartJobFragment extends BaseFragment {
                 break;
             }
         }
-        for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
+        //如果定位信息有误 默认选取第一个城市
+        if (listTCity2Entity==null){
+            listTCity2Entity=cityCategory.getList_t_city2().get(0);
             BaseEntity baseEntity=new BaseEntity();
-            baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
-            baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
+            baseEntity.setName("不限地区");
+            baseEntity.setId(0);
             citys.add(baseEntity);
+        }else {
+            for (int i = 0; i < listTCity2Entity.getList_t_area().size(); i++) {
+                BaseEntity baseEntity=new BaseEntity();
+                baseEntity.setName(listTCity2Entity.getList_t_area().get(i).getArea_name());
+                baseEntity.setId(listTCity2Entity.getList_t_area().get(i).getId());
+                citys.add(baseEntity);
+            }
         }
+
         mMenu.setAreaText();
         getJobs(cityCode, typeid, areid, "2", "0");
     }

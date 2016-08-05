@@ -19,6 +19,7 @@ import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.entity.Jobs;
 import com.woniukeji.jianguo.utils.DateUtils;
+import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.widget.AnimTextView;
 import com.woniukeji.jianguo.widget.CircleImageView;
 
@@ -161,7 +162,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
             Glide.with(mContext).load(job.getName_image())
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
-//                    .transform(new CropCircleTransfermation())
+                    .transform(new GlideCircleTransform(mContext))
                     .into(holder.userHead);
 
             //动画
@@ -223,7 +224,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.user_head) ImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.img_pay) ImageView imgPay;
         @BindView(R.id.img_date) ImageView imgDate;
