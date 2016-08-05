@@ -64,12 +64,10 @@ public class PartJobActivity extends BaseActivity {
     public List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
     private int MSG_GET_SUCCESS = 0;
     private int MSG_GET_FAIL = 1;
-    private int MSG_CITY_SUCCESS = 2;
-    private int MSG_CITY_FAIL = 3;
     BaseBean<CityCategory> cityCategoryBaseBean;
     private Handler mHandler = new Myhandler(this);
     private DropDownMenu mMenu;
-    private int cityid=3;
+    private String cityid="010";
     private int type= 0;
 
     @Override
@@ -175,7 +173,7 @@ public class PartJobActivity extends BaseActivity {
     @Override
     public void initData() {
         Intent intent = getIntent();
-        cityid = intent.getIntExtra("cityid", 3);
+        cityid = intent.getStringExtra("cityid");
         type = intent.getIntExtra("type", 2);
         if (type==3){
             tvTitle.setText("兼职旅行");
