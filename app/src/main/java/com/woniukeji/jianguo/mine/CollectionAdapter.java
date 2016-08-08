@@ -244,7 +244,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.user_head) CircleImageView userHead;
+        @BindView(R.id.user_head) ImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.img_pay) ImageView imgPay;
         @BindView(R.id.img_date) ImageView imgDate;

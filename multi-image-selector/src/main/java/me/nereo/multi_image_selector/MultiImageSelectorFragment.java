@@ -33,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -423,6 +425,11 @@ public class MultiImageSelectorFragment extends Fragment {
 
         if (requestCode == REQUEST_PREVIEW) {
             if (resultCode == Activity.RESULT_OK) {
+//                Intent data1 = new Intent();
+//                resultList.add(imageFile.getAbsolutePath());
+//                data1.putStringArrayListExtra(getActivity().EXTRA_RESULT, resultList);
+//                setResult(RESULT_OK, data1);
+//                finish();
                 ((MultiImageSelectorActivity) getActivity()).finishSelect();
             }
         }
@@ -548,16 +555,26 @@ public class MultiImageSelectorFragment extends Fragment {
             } else if (mode == MODE_SINGLE) {
                 // 单选模式
                 if (mCallback != null) {
-                    Intent intent = new Intent(getActivity(), PreviewPicturesActivity.class);
-                    ArrayList<String> pic = new ArrayList<>();
-                    pic.add(image.path);
-                    intent.putExtra("pics", pic);
-                    startActivityForResult(intent, REQUEST_SINGLE);
+//                    Intent intent = new Intent(getActivity(), PreviewPicturesActivity.class);
+//                    ArrayList<String> pic = new ArrayList<>();
+//                    pic.add(image.path);
+//                    intent.putExtra("pics", pic);
+//
+//                    startActivityForResult(intent, REQUEST_SINGLE);
+//                    File file = new File(image.path);
+//                    Uri imgSource = Uri.fromFile(file);
+//                    startCropImageActivity(imgSource,REQUEST_SINGLE);
+                        mCallback.onSingleImageSelected(image.path);
+
                 }
             }
         }
     }
-
+    private void startCropImageActivity(Uri imageUri,int requestCode) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(getActivity(),requestCode);
+    }
     /**
      * 回调接口
      */

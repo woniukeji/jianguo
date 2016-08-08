@@ -125,11 +125,9 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
             DrawMoneyActivity activity = (DrawMoneyActivity) reference.get();
             switch (msg.what) {
                 case 0:
-//                    SPUtils.setParam(activity.context, Constants.USER_INFO,Constants.USER_PAY_PASS,activity.newPassWord);
-//                    SPUtils.setParam(activity, Constants.USER_INFO,Constants.USER_PAY_PASS,activity.newPassWord);
                     String Message = (String) msg.obj;
+                    activity.showDialog();
                     Toast.makeText(activity, Message, Toast.LENGTH_SHORT).show();
-                    activity.finish();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -163,22 +161,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
     @Override
     public void initListeners() {
-        Date date = new Date(System.currentTimeMillis());//当前时间
-        int hour = Integer.parseInt(DateUtils.getHHTime(date));
-        if (hour < 8 || hour > 21) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(DrawMoneyActivity.this);
-            builder.setTitle("温馨提示");
-            builder.setMessage("尊敬的用户，您当前的提现申请将会在8:00-21:00为您处理，请您耐心等待提现结果，给您带来的不便，敬请谅解");
-//          sweetAlertDialog.set("尊敬的用户，兼果提现申请的处理时间为每日的8:00-21:00，请您耐心等待提现结果，给您带来的不便，敬请谅解");
-            builder.setOnCancelListener(new OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    dialog.dismiss();
-                }
-            });
-            builder.create().show();
-        }
-
         subscriberOnNextListener=new SubscriberOnNextListener<String>() {
             @Override
             public void onNext(String httpResult) {
@@ -262,6 +244,20 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
     }
 
+    private void showDialog() {
+        new SweetAlertDialog(DrawMoneyActivity.this,SweetAlertDialog.NORMAL_TYPE)
+                .setContentText("尊敬的用户，您的提现申请")
+                .setTitleText("温馨提示")
+                .setConfirmText("确定")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                        finish();
+                    }
+                }).show();
+    }
+
     public void getWechatInfo() {
         progressDialog=new ProgressDialog(this);
         progressDialog.show();
@@ -339,7 +335,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
             rbYinlian.setChecked(true);
             tvYinlianIsBind.setText(balance.getData().getT_user_money().getYinhang());
             type = "1";
-
         }
         if (!balance.getData().getT_user_money().getZhifubao().equals("0")) {
             rbAilipay.setChecked(true);
@@ -371,7 +366,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
             rbAilipay.setChecked(false);
             type = "1";
         }
-
         loginid = (int) SPUtils.getParam(DrawMoneyActivity.this, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
     }
 
@@ -527,7 +521,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
         /**
          * UserRegisterPhone
-         * 修改密码
+         *
          */
         public void UserRegisterPhone() {
             String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());

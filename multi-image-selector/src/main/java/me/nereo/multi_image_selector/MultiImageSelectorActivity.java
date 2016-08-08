@@ -138,6 +138,7 @@ public class MultiImageSelectorActivity extends AppCompatActivity implements Mul
         data.putStringArrayListExtra(EXTRA_RESULT, resultList);
         setResult(RESULT_OK, data);
         finish();
+
     }
 
     @Override

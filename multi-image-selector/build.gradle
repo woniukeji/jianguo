@@ -21,8 +21,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs ', include: ['*.jar'])
-
+    compile fileTree(include: ['*.jar'], dir: 'libs ')
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.android.support:design:23.1.1'
+    compile project(':cropper')
+    compile project(path: ':cropper')
 }

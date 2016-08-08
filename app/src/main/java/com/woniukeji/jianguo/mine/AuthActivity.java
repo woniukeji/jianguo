@@ -51,11 +51,14 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -253,7 +256,6 @@ public class AuthActivity extends BaseActivity {
             rlPhone.setClickable(false);
         }
         getRealName(String.valueOf(loginId));
-
     }
 
     @Override
@@ -278,10 +280,16 @@ public class AuthActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.img_front:
-                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1);
+                Intent intent2=new Intent(AuthActivity.this,PicTipActivity.class);
+                intent2.putExtra("front",false);
+                startActivityForResult(intent2,2);
+//                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1);
                 break;
             case R.id.img_opposite:
-                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2);
+                Intent intent3=new Intent(AuthActivity.this,PicTipActivity.class);
+                intent3.putExtra("front",false);
+                startActivityForResult(intent3,3);
+//                CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2);
                 break;
             case R.id.rb_man:
                 sex="1";
@@ -368,38 +376,41 @@ public class AuthActivity extends BaseActivity {
                 }, null));
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1 && resultCode == Activity.RESULT_OK) {
-            Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            // For API >= 23 we need to check specifically that we have permissions to read external storage.
-            boolean requirePermissions = false;
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
-                // request permissions and handle the result in onRequestPermissionsResult()
-                requirePermissions = true;
-//                mCropImageUri = imageUri;
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-            } else {
-                // no permissions required or already grunted, can start crop image activity
-                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
+        //ADW: sometimes on rotating the phone, some widgets fail to restore its states.... so... damn.
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                // 获取返回的图片列表
+                List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                // 处理你自己的逻辑 ....
+                File file = new File(path.get(0));
+                Uri imgSource = Uri.fromFile(file);
+                startCropImageActivity(imgSource,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
             }
         }
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2 && resultCode == Activity.RESULT_OK) {
-            Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            // For API >= 23 we need to check specifically that we have permissions to read external storage.
-            boolean requirePermissions = false;
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
-                // request permissions and handle the result in onRequestPermissionsResult()
-                requirePermissions = true;
-//                mCropImageUri = imageUri;
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-            } else {
-                // no permissions required or already grunted, can start crop image activity
-                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                // 获取返回的图片列表
+                List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                // 处理你自己的逻辑 ....
+                File file = new File(path.get(0));
+                Uri imgSource = Uri.fromFile(file);
+                startCropImageActivity(imgSource,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2);
             }
         }
-        // handle result of CropImageActivity
+        if (requestCode==2){//弹出提示 提示返回 然后跳转拍照界面 正面
+            if (resultCode == RESULT_OK) {
+                MultiImageSelectorActivity.startSelect(AuthActivity.this, 0, 1, 0);
+            }
+        }
+        if (requestCode==3){//弹出提示 提示返回 然后跳转拍照界面 背面
+            if (resultCode == RESULT_OK) {
+                MultiImageSelectorActivity.startSelect(AuthActivity.this, 1, 1, 0);
+            }
+        }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
@@ -415,7 +426,7 @@ public class AuthActivity extends BaseActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                 realFilePath2 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
+                realFilePath2 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
 //                imgOpposite.setImageURI(result.getUri());
 //                FileInputStream is = new  FileInputStream(realFilePath1);
                 Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath2,1080, 720);
@@ -424,8 +435,65 @@ public class AuthActivity extends BaseActivity {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
         }
-
     }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1 && resultCode == Activity.RESULT_OK) {
+//            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+//            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+//            boolean requirePermissions = false;
+//            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+//                // request permissions and handle the result in onRequestPermissionsResult()
+//                requirePermissions = true;
+////                mCropImageUri = imageUri;
+////                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+//            } else {
+//                // no permissions required or already grunted, can start crop image activity
+//                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
+//            }
+//        }
+//        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2 && resultCode == Activity.RESULT_OK) {
+//            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+//            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+//            boolean requirePermissions = false;
+//            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+//                // request permissions and handle the result in onRequestPermissionsResult()
+//                requirePermissions = true;
+////                mCropImageUri = imageUri;
+////                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+//            } else {
+//                // no permissions required or already grunted, can start crop image activity
+//                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2);
+//            }
+//        }
+//        // handle result of CropImageActivity
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//            if (resultCode == RESULT_OK) {
+//                realFilePath1 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
+////                FileInputStream is = new  FileInputStream(realFilePath1);
+//                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath1,1080, 720);
+//                imgFront.setImageBitmap(bitmap);
+////                imgFront.setImageURI(result.getUri());
+//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+//            }
+//        }
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//            if (resultCode == RESULT_OK) {
+//                 realFilePath2 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
+////                imgOpposite.setImageURI(result.getUri());
+////                FileInputStream is = new  FileInputStream(realFilePath1);
+//                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath2,1080, 720);
+//                imgOpposite.setImageBitmap(bitmap);
+//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//    }
 
     private void startCropImageActivity(Uri imageUri,int requestCode) {
         CropImage.activity(imageUri)

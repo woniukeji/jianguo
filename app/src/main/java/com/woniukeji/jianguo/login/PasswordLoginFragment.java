@@ -181,7 +181,7 @@ public class PasswordLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, user.getVersion());
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_CONTENT, user.getContent());
         SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_HOBBY, user.getT_user_login().getHobby());
-
+        SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NICK, user.getT_user_info().getNickname() != null ? user.getT_user_info().getNickname() : "");
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_NAME, user.getT_user_info().getName() != null ? user.getT_user_info().getName() : "");
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_IMG, user.getT_user_info().getName_image() != null ? user.getT_user_info().getName_image() : "");
@@ -318,7 +318,6 @@ public class PasswordLoginFragment extends BaseFragment {
                     @Override
                     public void onResponse(BaseBean user, int id) {
                         if (user.getCode().equals("200")) {
-                            SPUtils.setParam(getActivity(), Constants.LOGIN_INFO, Constants.SP_TYPE, "0");
                             Message message = new Message();
                             message.obj = user;
                             message.what = MSG_USER_SUCCESS;
