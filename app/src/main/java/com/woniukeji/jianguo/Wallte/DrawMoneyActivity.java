@@ -500,7 +500,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
         }
 
         protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
             UserRegisterPhone();
             return null;
         }

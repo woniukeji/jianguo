@@ -14,6 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.gson.Gson;
@@ -44,6 +47,9 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.activity.LCIMConversationActivity;
+import cn.leancloud.chatkit.utils.LCIMConstants;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -248,63 +254,27 @@ public class JobDetailActivity extends BaseActivity {
                     startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
                     return;
                 }
-                String tel=t_job_info.getTel();
-                if (tel==null||tel.equals("")){
-                    showShortToast("该商家暂无电话");
-                    return;
-                }
-                Mdialog mdialog=new Mdialog(mContext,tel);
-                mdialog.show();
-//                        LCChatKit.getInstance().open("Tom", new AVIMClientCallback() {
-//                            @Override
-//                            public void done(AVIMClient avimClient, AVIMException e) {
-//                                if (null == e) {
-//                                    finish();
-//                                    Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
-//                                    intent.putExtra(LCIMConstants.PEER_ID, "77");
-//                                    startActivity(intent);
-//                                } else {
-//                                    Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
-//                final int Id=t_merchant.getId();
-//                Intent intent=new Intent(JobDetailActivity.this, ChatActivity.class);
-//                intent.putExtra("merchantId",Id);
-//                startActivity(intent);
+//                String tel=t_job_info.getTel();
+//                if (tel==null||tel.equals("")){
+//                    showShortToast("该商家暂无电话");
+//                    return;
+//                }
+//                Mdialog mdialog=new Mdialog(mContext,tel);
+//                mdialog.show();
+                        LCChatKit.getInstance().open(String.valueOf(loginId), new AVIMClientCallback() {
+                            @Override
+                            public void done(AVIMClient avimClient, AVIMException e) {
+                                if (null == e) {
+                                    finish();
+                                    Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
+                                    intent.putExtra(LCIMConstants.PEER_ID, "Tom");
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
-//                             String.valueOf(Id);
-//                                final String toUserId="42";
-//                                Map<String, Object> attrs = new HashMap<>();
-//                                attrs.put(Constants.CREAT_NAME, "嘿嘿");
-//                                attrs.put(Constants.CREAT_IMG, "嘿嘿");
-//                                attrs.put(Constants.OTHER_IMG, t_merchant.getName_image());
-//                                attrs.put(Constants.OTHER_NAME, t_merchant.getName());
-//                                attrs.put(Constants.C_TYPE, 0);
-//                                ChatManager.getInstance().getImClient().createConversation(Arrays.asList(toUserId), "嘿嘿", attrs, false, true, new AVIMConversationCreatedCallback() {
-//                                        @Override
-//                                        public void done(AVIMConversation avimConversation, AVIMException e) {
-//                                                if (e == null) {
-//                                                        Map<String, Object> attributes = new HashMap<String, Object>();
-//                                                        attributes.put("userid", String.valueOf(loginId));
-//                                                        attributes.put("touserid", toUserId);
-//                                                        attributes.put("nickname", "嘿嘿");
-//                                                        attributes.put("avatar", "嘿嘿");
-//                                                        attributes.put("type", 0);
-//                                                        AVIMTextMessage message = new AVIMTextMessage();
-//                                                        message.setText("出来聊会天吧！");
-//                                                        message.setAttrs(attributes);
-//                                                        avimConversation.sendMessage(message, null);
-//
-//
-////                                                    finish();
-//                                                            }else {
-//                                                        String mes = e.getMessage();
-//                                                        mes.trim();
-//                                                    }
-//                                            }
-//
-//                                   });
                 break;
             case R.id.tv_collection:
                 if (loginId==0){
@@ -314,8 +284,6 @@ public class JobDetailActivity extends BaseActivity {
                 }
                 PostAttTask postAttTask=new PostAttTask(String.valueOf(loginId),"0",String.valueOf(t_job_info.getJob_id()));
                 postAttTask.execute();
-
-
                 break;
             case R.id.tv_signup:
                     if (loginId==0){

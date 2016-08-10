@@ -24,6 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -51,6 +56,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -106,14 +113,6 @@ public class PasswordLoginFragment extends BaseFragment {
                 case 0:
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
                     saveToSP(user.getData());
-                    Toast.makeText(getActivity(), user.getMessage(), Toast.LENGTH_SHORT).show();
-                    QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
-                    quickLoginEvent.isQuickLogin = true;
-                    EventBus.getDefault().post(quickLoginEvent);
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("login",true);
-                    startActivity(intent);
-                    getActivity().finish();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
@@ -153,7 +152,14 @@ public class PasswordLoginFragment extends BaseFragment {
     public int getContentViewId() {
         return R.layout.activity_login_password;
     }
-
+    /**
+     * 发送消息刷新对话列表界面
+     *
+     */
+    private void sendEvent() {
+        LCIMIMTypeMessageEvent event = new LCIMIMTypeMessageEvent();
+        EventBus.getDefault().post(event);
+    }
     /**
      * 创建一个超链接
      */
@@ -199,7 +205,24 @@ public class PasswordLoginFragment extends BaseFragment {
                 JPushInterface.resumePush(getActivity().getApplicationContext());
             }
             //登陆leancloud服务器 给极光设置别名
-//                        chatManager.setupManagerWithUserId(getActivity(), String.valueOf(user.getT_user_login().getId()));
+            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+                @Override
+                public void done(AVIMClient avimClient, AVIMException e) {
+                    if (null == e) {
+                        Toast.makeText(getActivity(), "leancloud成功", Toast.LENGTH_SHORT).show();
+                        QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
+                        quickLoginEvent.isQuickLogin = true;
+                        EventBus.getDefault().post(quickLoginEvent);
+                        sendEvent();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("login",true);
+                        startActivity(intent);
+                        getActivity().finish();
+                    } else {
+                        Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             JPushInterface.setAlias(getActivity().getApplicationContext(), "jianguo" + user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {

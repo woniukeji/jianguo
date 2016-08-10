@@ -13,6 +13,7 @@ import com.woniukeji.jianguo.utils.DateUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.leancloud.chatkit.LCChatKitUser;
 import dalvik.bytecode.OpcodeInfo;
 import okhttp3.OkHttpClient;
 import retrofit2.Callback;
@@ -226,5 +227,16 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-
+    /**
+    *获取果聊用户资料
+    */
+    public void getTalkUser(Subscriber<LCChatKitUser> lcChatKitUserSubscriber,String loginid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getTalkUser(only,loginid)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(lcChatKitUserSubscriber);
+    }
 }

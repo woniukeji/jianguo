@@ -9,7 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -27,6 +33,8 @@ import butterknife.ButterKnife;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
+import cn.leancloud.chatkit.LCChatKit;
+import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 
@@ -132,19 +140,21 @@ public class SettingActivity extends BaseActivity {
                                 sweetAlertDialog.cancel();
                                 sweetAlertDialog.dismiss();
 //                                暂时关闭果聊
-//                                ChatManager chatManager = ChatManager.getInstance();
-//                                chatManager.closeWithCallback(new AVIMClientCallback() {
-//                                    @Override
-//                                    public void done(AVIMClient avimClient, AVIMException e) {
-//                                    }
-//                                });
+                                LCChatKit.getInstance().close(new AVIMClientCallback() {
+                                    @Override
+                                    public void done(AVIMClient avimClient, AVIMException e) {
+                                        Toast.makeText(SettingActivity.this,"leancloud退出成功",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
                                 JPushInterface.stopPush(SettingActivity.this);
 //                ActivityManager.getActivityManager().finishAllActivity();
                                 SPUtils.deleteParams(SettingActivity.this);
                                 btnLogout.setVisibility(View.GONE);
-                                TalkMessageEvent talkMessageEvent = new TalkMessageEvent();
-                                talkMessageEvent.isLogin = false;
-                                EventBus.getDefault().post(talkMessageEvent);
+                                sendEvent();
+//                                TalkMessageEvent talkMessageEvent = new TalkMessageEvent();
+//                                talkMessageEvent.isLogin = false;
+//                                EventBus.getDefault().post(talkMessageEvent);
                                 finish();
                             }
                         })
@@ -163,7 +173,16 @@ public class SettingActivity extends BaseActivity {
 
 
     }
-
+    /**
+     * 发送退出登录消息 清空聊天界面消息记录
+     *聊天界面会判断conversation是否为空
+     * 不会接受该消息
+     */
+    private void sendEvent() {
+        LCIMIMTypeMessageEvent event = new LCIMIMTypeMessageEvent();
+        event.messageNull = true;
+        EventBus.getDefault().post(event);
+    }
 
     /**
      * 获取版本号

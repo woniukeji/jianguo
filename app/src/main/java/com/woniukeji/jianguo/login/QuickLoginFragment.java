@@ -24,6 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -49,6 +52,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import cn.leancloud.chatkit.LCChatKit;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -106,7 +110,6 @@ public class QuickLoginFragment extends BaseFragment {
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
 //                    BaseBean<User> user = msg.;
                     saveToSP(user.getData());
-                    Toast.makeText(getActivity(), user.getMessage(), Toast.LENGTH_SHORT).show();
                     QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
                     quickLoginEvent.isQuickLogin = true;
                     EventBus.getDefault().post(quickLoginEvent);
@@ -202,7 +205,16 @@ public class QuickLoginFragment extends BaseFragment {
                 JPushInterface.resumePush(getActivity().getApplicationContext());
             }
             //登陆leancloud服务器 给极光设置别名
-//                        chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
+            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+                @Override
+                public void done(AVIMClient avimClient, AVIMException e) {
+                    if (null == e) {
+                        Toast.makeText(getActivity(), "leancloud成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             JPushInterface.setAlias(getActivity().getApplicationContext(), "jianguo" + user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {

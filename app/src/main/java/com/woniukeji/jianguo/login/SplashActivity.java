@@ -15,6 +15,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
@@ -40,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import cn.leancloud.chatkit.LCChatKit;
 import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -74,9 +78,6 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 case 0:
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
                     splashActivity.saveToSP(user.getData());
-                    Intent intent = new Intent(splashActivity, MainActivity.class);
-                    splashActivity.startActivity(intent);
-                    splashActivity.finish();
                     break;
                 case 1:
                     //如果本地的登录信息登录失败 则删除本地缓存的用户信息，并跳转到首页
@@ -218,19 +219,26 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
         //暂时关闭果聊功能
 //        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
-            //登陆leancloud服务器 给极光设置别名
-//            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+//            LCChatKit.getInstance().open(String.valueOf(loginId), new AVIMClientCallback() {
 //                @Override
 //                public void done(AVIMClient avimClient, AVIMException e) {
-//                    if (null == e) {
-//                        finish();
-//                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-//                        startActivity(intent);
-//                    } else {
-//                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-//                    }
+//                    Toast.makeText(getApplicationContext(), "登陆leancloud=", Toast.LENGTH_SHORT).show();
 //                }
 //            });
+            //登陆leancloud服务器 给极光设置别名
+            LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
+                @Override
+                public void done(AVIMClient avimClient, AVIMException e) {
+                    if (null == e) {
+                        Toast.makeText(SplashActivity.this, "leancloud成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 //            chatManager.setupManagerWithUserId(this, String.valueOf(user.getT_user_login().getId()));
             LogUtils.e("jpush","调用jpush");
             if (JPushInterface.isPushStopped(getApplicationContext())){
