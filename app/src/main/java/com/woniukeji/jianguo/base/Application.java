@@ -48,7 +48,7 @@ public class Application extends android.app.Application {
 //        MessageHandler msgHandler = new MessageHandler(this);
 //        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
 
-        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance());
+        LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance(getApplicationContext()));
 
 //        AVOSCloud.setDebugLogEnabled(true);
         LCChatKit.getInstance().init(getApplicationContext(), "AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");

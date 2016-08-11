@@ -11,6 +11,7 @@ import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.DateUtils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.leancloud.chatkit.LCChatKitUser;
@@ -230,10 +231,10 @@ public class HttpMethods {
     /**
     *获取果聊用户资料
     */
-    public void getTalkUser(Subscriber<LCChatKitUser> lcChatKitUserSubscriber,String loginid){
+    public void getTalkUser(Subscriber<List<LCChatKitUser>> lcChatKitUserSubscriber, String loginid){
         String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
         methodInterface.getTalkUser(only,loginid)
-                .map(new HttpResultFunc())
+                .map(new HttpResultFunc<List<LCChatKitUser>>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

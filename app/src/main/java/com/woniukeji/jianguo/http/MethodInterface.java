@@ -9,6 +9,9 @@ import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
 
+import java.util.List;
+
+import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -100,7 +103,6 @@ public interface MethodInterface {
 /**
 *查询果聊用户信息
 */
-        @GET("T_user_realname_Insert_Servlet")
-        Observable<HttpResult<LCChatKitUser>> getTalkUser(@Query("only") String only, @Query("login_id") String login_id);
-
+        @GET("T_UserGroup_Servlet")//T_UserGroup_Servlet
+        Observable<HttpResult<List<LCChatKitUser>>> getTalkUser(@Query("only") String only, @Query("login_id") String login_id);
 }

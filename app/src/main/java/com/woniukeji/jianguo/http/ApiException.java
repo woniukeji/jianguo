@@ -6,6 +6,7 @@ package com.woniukeji.jianguo.http;
 public class ApiException extends RuntimeException {
 
     public static final int ERROR_KEY = 404;
+    public static final int ERROR_NORMAL = 400;
     public static final int WRONG_PARAMS = 500;
 
     public ApiException(int resultCode) {
@@ -25,6 +26,9 @@ public class ApiException extends RuntimeException {
     private static String getApiExceptionMessage(int code){
         String message = "";
         switch (code) {
+            case ERROR_NORMAL:
+                message = "参数错误";
+                break;
             case ERROR_KEY:
                 message = "密钥错误";
                 break;

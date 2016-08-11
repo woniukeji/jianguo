@@ -163,5 +163,6 @@ dependencies {
     compile files('libs/AMap_Location_V2.7.0_20160726.jar')
     compile project(':multi-image-selector')
     compile project(':leancloudchatkit')
+    
 }
 
