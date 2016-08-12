@@ -13,8 +13,10 @@
     <application>
 
         <activity android:name="cn.leancloud.chatkit.activity.LCIMConversationActivity"
+
             android:launchMode="singleTask">
             <intent-filter>
+                <action android:name="cn.leancloud.chatkit.chat_notification_action"/>
                 <action android:name="cn.leancloud.chatkit.conversation_item_click_action"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

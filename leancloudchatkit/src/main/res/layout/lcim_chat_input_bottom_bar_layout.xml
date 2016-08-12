@@ -24,8 +24,8 @@
                 android:id="@+id/input_bar_btn_action"
                 android:layout_width="@dimen/lcim_bottom_bar_button_size"
                 android:layout_height="@dimen/lcim_bottom_bar_button_size"
-                android:layout_marginLeft="3dp"
-                android:background="@drawable/lcim_bottom_bar_action_button_bg"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/message_input_plus_pressed"/>
         </LinearLayout>
 
         <include layout="@layout/lcim_bottom_bar_text_layout"/>

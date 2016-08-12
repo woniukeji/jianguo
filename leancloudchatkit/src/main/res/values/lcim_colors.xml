@@ -2,6 +2,7 @@
 <resources>
     <color name="lcim_common_blue">#3B9BFF</color>
     <color name="lcim_common_gray">#898989</color>
+    <color name="lcim_common_gray1">#b0afaf</color>
     <color name="lcim_commom_read">#ff0000</color>
 
     <color name="lcim_bottom_bar_text_black">#3e3e39</color>

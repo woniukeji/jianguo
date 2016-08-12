@@ -201,6 +201,7 @@
         <!-- 实时通信模块、推送 END -->
         <!-- 极光推送配置 开始 -->
         <!-- Required SDK核心功能 -->
+
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"

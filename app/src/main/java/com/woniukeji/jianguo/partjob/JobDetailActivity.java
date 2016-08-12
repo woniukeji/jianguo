@@ -267,7 +267,7 @@ public class JobDetailActivity extends BaseActivity {
                                 if (null == e) {
                                     finish();
                                     Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
-                                    intent.putExtra(LCIMConstants.PEER_ID, String.valueOf(t_job_info.getId()));
+                                    intent.putExtra(LCIMConstants.PEER_ID,"3"); //String.valueOf(t_job_info.getId())
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
