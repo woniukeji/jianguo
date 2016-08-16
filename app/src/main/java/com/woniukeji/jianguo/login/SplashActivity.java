@@ -20,6 +20,7 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -84,14 +85,14 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                     splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
                     SPUtils.deleteParams(splashActivity);
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(splashActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(splashActivity, ErrorMessage, TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     splashActivity.finish();
                     break;
                 case 2:
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(splashActivity, sms, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(splashActivity, sms, TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     break;
                 default:
                     break;
@@ -230,12 +231,12 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
                     if (null == e) {
-                        Toast.makeText(SplashActivity.this, "leancloud成功", Toast.LENGTH_SHORT).show();
                         finish();
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        TastyToast.makeText(getApplicationContext(), "聊天服务启动失败!", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+//                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -118,7 +119,7 @@ public class ChangePhoneActivity extends BaseActivity {
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(context, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(quickLoginActivity, ErrorMessage, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     break;
                 case 2:
                     SmsCode smsCode = (SmsCode) msg.obj;
@@ -131,7 +132,7 @@ public class ChangePhoneActivity extends BaseActivity {
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(context, sms, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(quickLoginActivity, sms, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     break;
                 default:
                     break;
@@ -156,7 +157,7 @@ public class ChangePhoneActivity extends BaseActivity {
         changeSubListener=new SubscriberOnNextListener<String>() {
             @Override
             public void onNext(String s) {
-                Toast.makeText(ChangePhoneActivity.this,"更换手机号成功！",Toast.LENGTH_LONG).show();
+                TastyToast.makeText(ChangePhoneActivity.this, "更换手机号成功！", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                 SPUtils.setParam(ChangePhoneActivity.this,Constants.LOGIN_INFO, Constants.SP_TEL, phoneNumber.getText().toString().trim());
                 finish();
             }
@@ -205,7 +206,7 @@ public class ChangePhoneActivity extends BaseActivity {
                     time.start();
                     CheckPhone(phone);
                 } else {
-                    Toast.makeText(context, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(ChangePhoneActivity.this, "请输入正确的手机号！", TastyToast.LENGTH_LONG, TastyToast.WARNING);
                 }
 
                 break;
@@ -214,14 +215,14 @@ public class ChangePhoneActivity extends BaseActivity {
 
     private boolean CheckStatus() {
         if (phoneNumber.getText().toString().trim().length() != 11) {
-            Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_SHORT).show();
+            showShortToast("手机号码格式不正确！");
             return false;
         }
         if (phoneNumber.getText().toString().equals("")) {
-            Toast.makeText(context, "手机号不能为空", Toast.LENGTH_SHORT).show();
+            showShortToast("手机号不能为空！");
             return false;
         } else if (phoneCode.getText().toString().equals("")) {
-            Toast.makeText(context, "验证码不能为空", Toast.LENGTH_SHORT).show();
+            showShortToast("验证码不能为空！");
             return false;
         }
         return true;

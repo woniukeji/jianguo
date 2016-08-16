@@ -322,7 +322,7 @@ public class JobDetailActivity extends BaseActivity {
                 int winHeight =JobDetailActivity.this. getWindow().getDecorView().getHeight();
                 signUpPopuWin.showAtLocation(JobDetailActivity.this.getWindow().getDecorView(),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, winHeight-rect.bottom);
-                showShortToast("每天最多可以报名三个兼职！");
+                showShortToast("每天至多可以报名三个兼职！");
 //                shareBoard.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM, 0,winHeight-rect.bottom);
                 break;
         }
@@ -389,15 +389,17 @@ public class JobDetailActivity extends BaseActivity {
                         tvSignup.setClickable(false);
                     }
                 }
-                //期限（1=月结，2=周结，3=日结，4=小时结）
+                //期限（0=月结，1=周结，2=日结，3=小时结）
                 if (t_job.getMode()==0){
                     tvPayMethod.setText("月结");
                 }else if(t_job.getMode()==1){
                     tvPayMethod.setText("周结");
                 }else if(t_job.getMode()==2){
                     tvPayMethod.setText("日结");
-                }else {
+                }else if(t_job.getMode()==3){
                     tvPayMethod.setText("旅行");
+                }else if(t_job.getMode()==4){
+                    tvPayMethod.setText("完工结");
                 }
             }
             if (t_job_info.getIs_collection().equals("0")){

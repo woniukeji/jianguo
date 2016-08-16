@@ -31,6 +31,7 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
@@ -116,11 +117,13 @@ public class PasswordLoginFragment extends BaseFragment {
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(getActivity(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity().getApplicationContext(), ErrorMessage, TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     break;
                 case 2:
+                    TastyToast.makeText(getActivity().getApplicationContext(),  "验证码已经发送，请注意查收", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
 //                    quickLoginActivity.smsCode = (SmsCode) msg.obj;
-                    Toast.makeText(getActivity(), "验证码已经发送，请注意查收", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "验证码已经发送，请注意查收", Toast.LENGTH_SHORT).show();
 //                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
 //                        quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
 //                    }else{

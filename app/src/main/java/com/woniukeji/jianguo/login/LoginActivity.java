@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.partjob.PartJobAdapter;
@@ -92,7 +93,7 @@ public class LoginActivity extends BaseActivity implements OnTabSelectListener {
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(mainActivity, sms, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(mainActivity, sms, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     break;
                 default:
                     break;

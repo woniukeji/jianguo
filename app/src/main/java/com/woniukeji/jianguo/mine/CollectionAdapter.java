@@ -136,8 +136,10 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                 holder.tvPayMethod.setText("周结");
             }else if(job.getMode()==2){
                 holder.tvPayMethod.setText("日结");
-            }else {
+            }else if(job.getMode()==3){
                 holder.tvPayMethod.setText("旅行");
+            }else if(job.getMode()==4){
+                holder.tvPayMethod.setText("完工结");
             }
             if (job.getMax()==1){
                 holder.imgType.setVisibility(View.VISIBLE);
@@ -179,9 +181,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             set.setInterpolator(new AccelerateInterpolator());
             set.start();
             if (type.equals("面议")||type.equals("义工")){
-
             }else {
-
 //                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
             }
             final String finalType = type;

@@ -142,8 +142,10 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
                 holder.tvPayMethod.setText("周结");
             }else if(job.getMode()==2){
                 holder.tvPayMethod.setText("日结");
-            }else {
+            }else if(job.getMode()==3){
                 holder.tvPayMethod.setText("旅行");
+            }else if(job.getMode()==4){
+                holder.tvPayMethod.setText("完工结");
             }
 
 

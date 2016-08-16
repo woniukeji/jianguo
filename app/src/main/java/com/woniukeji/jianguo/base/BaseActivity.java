@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.sdsmdg.tastytoast.TastyToast;
 import com.umeng.analytics.MobclickAgent;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.utils.ActivityManager;
@@ -94,13 +95,31 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         return (int) (scale * dipValue + 0.5f);
     }
     public void showShortToast(String text) {
-        Toast.makeText(BaseActivity.this,text,Toast.LENGTH_SHORT).show();
+        TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
     }
     public void showLongToast(String text) {
-        Toast.makeText(BaseActivity.this,text,Toast.LENGTH_LONG).show();
+        TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
     }
 
-
+    public void showShortToast(String text,int type) {
+        switch (type){
+            case TastyToast.DEFAULT:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+                break;
+            case TastyToast.WARNING:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.WARNING);
+                break;
+            case TastyToast.ERROR:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+                break;
+            case TastyToast.SUCCESS:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                break;
+            case TastyToast.INFO:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.WARNING);
+                break;
+        }
+    }
 
 
     @TargetApi(19)

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -98,19 +99,19 @@ public class RegistActivity extends BaseActivity {
             switch (msg.what) {
                 case 0:
 //                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-                    Toast.makeText(registActivity, "注册成功，请登陆", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(registActivity, "注册成功，请登陆", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     registActivity.finish();
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(registActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(registActivity, ErrorMessage, TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     break;
                 case 2:
                     registActivity.smsCode = (SmsCode) msg.obj;
                     if (registActivity.smsCode.getIs_tel().equals("1")) {
                         registActivity.showShortToast("该手机号码已经注册，不能重复注册");
                     } else {
-                        registActivity.showShortToast("验证码已经发送，请注意查收");
+                        TastyToast.makeText(registActivity, "验证码已经发送，请注意查收", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     }
 
                     break;

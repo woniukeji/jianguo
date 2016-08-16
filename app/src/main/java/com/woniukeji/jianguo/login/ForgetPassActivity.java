@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -103,7 +104,8 @@ public class ForgetPassActivity extends BaseActivity {
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
-                    Toast.makeText(registActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(registActivity, ErrorMessage, TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
                     break;
                 case 2:
                     registActivity.smsCode = (SmsCode) msg.obj;
@@ -114,7 +116,7 @@ public class ForgetPassActivity extends BaseActivity {
                     break;
                 case 3:
                     String sms = (String) msg.obj;
-                    Toast.makeText(registActivity, sms, Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(registActivity, sms, TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     break;
                 default:
                     break;

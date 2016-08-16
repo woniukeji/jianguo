@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.sdsmdg.tastytoast.TastyToast;
+
 import rx.Subscriber;
 
 /**
@@ -37,7 +39,9 @@ public class NoProgressSubscriber<T> extends Subscriber<T>{
 
     @Override
     public void onError(Throwable e) {
-        Toast.makeText(mContext, "error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        TastyToast.makeText(mContext,  e.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
+//        Toast.makeText(mContext, "error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
         progressDialog.dismiss();
     }
 

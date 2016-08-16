@@ -294,7 +294,7 @@
             android:id="@+id/tv_tel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="010-5350021"
+            android:text="010-53350021"
             android:textColorHint="@color/app_bg"
             android:textSize="10dp"
             android:textColor="@color/app_bg"

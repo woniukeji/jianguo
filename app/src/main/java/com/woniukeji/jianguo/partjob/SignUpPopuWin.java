@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
@@ -106,7 +107,7 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
         stringSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
             @Override
             public void onNext(String s) {
-                Toast.makeText(context,"报名成功！",Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(context, "报名成功!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                 Message message = new Message();
                 message.what = MSG_POST_SUCCESS;
                 mHandler.sendMessage(message);

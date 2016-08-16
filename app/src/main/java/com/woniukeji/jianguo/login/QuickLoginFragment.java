@@ -29,6 +29,7 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
@@ -124,7 +125,9 @@ public class QuickLoginFragment extends BaseFragment {
                     break;
                 case 2:
 //                    quickLoginActivity.smsCode = (SmsCode) msg.obj;
-                    Toast.makeText(getActivity(), "验证码已经发送，请注意查收", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity().getApplicationContext(),  "验证码已经发送，请注意查收", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
+//                    Toast.makeText(getActivity(), "验证码已经发送，请注意查收", Toast.LENGTH_SHORT).show();
 //                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
 //                        quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
 //                    }else{
