@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -92,6 +93,8 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     @BindView(R.id.rl_wx) RelativeLayout rlWx;
     @BindView(R.id.rb_wxpay) RadioButton rbWXpay;
     @BindView(R.id.img_go03) ImageView imgGo03;
+    @BindView(R.id.tv_tel) TextView tvTel;
+
     private Balance balance;
     private int MSG_USER_SUCCESS = 0;
     private int MSG_USER_FAIL = 1;
@@ -426,9 +429,13 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
         }
     }
 
-    @OnClick({R.id.img_back,R.id.rl_wx, R.id.rl_alipay, R.id.rl_yinlian, R.id.btn_post, R.id.btn_sms})
+    @OnClick({R.id.img_back,R.id.rl_wx, R.id.rl_alipay, R.id.rl_yinlian, R.id.btn_post, R.id.btn_sms,R.id.tv_tel})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_tel:
+                Intent intentTel=new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+tvTel.getText()));
+                startActivity(intentTel);
+                break;
             case R.id.img_back:
                 finish();
                 break;

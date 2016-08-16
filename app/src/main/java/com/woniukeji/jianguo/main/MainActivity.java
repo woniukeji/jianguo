@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
+import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -140,7 +141,14 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    /**
+     * 处理推送过来的消息
+     * 同理，避免无效消息，此处加了 conversation id 判断
+     */
+    public void onEvent(LCIMIMTypeMessageEvent messageEvent) {
+        tabHost.showMsg(2,1);
 
+    }
     public static void initSystemBar(Activity activity) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

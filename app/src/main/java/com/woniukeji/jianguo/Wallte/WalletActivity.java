@@ -183,7 +183,7 @@ public class WalletActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 2;
         }
     }
 }

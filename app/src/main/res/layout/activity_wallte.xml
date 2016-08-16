@@ -91,6 +91,12 @@
         android:layout_centerHorizontal="true"
         android:clickable="true"
         />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true"
+            />
     </RelativeLayout>
     <com.flyco.tablayout.CommonTabLayout
         android:layout_below="@+id/rl_wallte_info"
@@ -100,11 +106,12 @@
         android:background="#51b2ff"
         tl:tl_iconVisible="false"
         tl:tl_indicator_corner_radius="1.5dp"
-        tl:tl_divider_color="#ffffff"
-        tl:tl_divider_padding="13dp"
+        tl:tl_divider_color="#EAE8E8"
+        tl:tl_divider_padding="10dp"
         tl:tl_divider_width="1dp"
         tl:tl_indicator_height="3dp"
-        tl:tl_indicator_color="@color/white"
+        tl:tl_indicator_style="TRIANGLE"
+        tl:tl_indicator_color="#ffffff"
         tl:tl_textSelectColor="@color/white"
         tl:tl_textUnselectColor="#EAE8E8"
         tl:tl_textsize="16dp"/>
