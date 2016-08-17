@@ -249,7 +249,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
     private void showDialog() {
         new SweetAlertDialog(DrawMoneyActivity.this,SweetAlertDialog.NORMAL_TYPE)
-                .setContentText("尊敬的用户，您的提现申请")
+                .setContentText("尊敬的用户，您的提现申请已经提交，工作人员将在24小时内为您处理，请您耐心等待")
                 .setTitleText("温馨提示")
                 .setConfirmText("确定")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

@@ -5,22 +5,22 @@
                 android:clipToPadding="true"
                 android:fitsSystemWindows="true"
     android:orientation="vertical">
-
     <com.flyco.tablayout.CommonTabLayout
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="54dp"
         android:layout_alignParentBottom="true"
-        android:background="#fafafa"
-        app:tl_iconHeight="30dp"
-        app:tl_iconWidth="30dp"
+        android:background="#ffffff"
+        app:tl_iconHeight="26dp"
+        app:tl_iconWidth="26dp"
         app:tl_indicator_color="#2C97DE"
         app:tl_indicator_height="0dp"
         app:tl_textSelectColor="#2C97DE"
         app:tl_textUnselectColor="#66000000"
-        app:tl_textsize="10sp"
+        app:tl_textsize="12sp"
         app:tl_underline_color="#DDDDDD"
-        app:tl_underline_height="1dp" />
+        app:tl_underline_height="1dp"/>
+
     <ImageView
         android:id="@id/img_split"
         android:layout_width="match_parent"

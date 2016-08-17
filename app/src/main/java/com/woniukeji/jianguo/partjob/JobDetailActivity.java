@@ -420,9 +420,11 @@ public class JobDetailActivity extends BaseActivity {
                 tvSex.setText("女");
             }else if (t_job_info.getLimit_sex() == 31) {
                 tvSex.setText("男");
-            }else
+            }else  if (t_job_info.getLimit_sex() == 2) {
                 tvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
-
+            }else if (t_job_info.getLimit_sex() == 3) {
+                tvSex.setText("男女各限");//性别限制（0=只招女，1=只招男，2=不限男女）
+            }
             if (t_job_info.getOther()==null||t_job_info.getOther().equals("null")||t_job_info.getOther().equals("")){
                 tvOther.setText("暂无");
             }else{

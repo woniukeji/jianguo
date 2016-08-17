@@ -18,9 +18,11 @@ import java.util.Arrays;
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
+import cn.leancloud.chatkit.event.LCIMTalkingConversationIdEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMConversationUtils;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 16/2/29.
@@ -30,6 +32,7 @@ import cn.leancloud.chatkit.utils.LCIMLogUtils;
 public class LCIMConversationActivity extends AppCompatActivity {
 
   protected LCIMConversationFragment conversationFragment;
+  private String conversationId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
       if (extras.containsKey(LCIMConstants.PEER_ID)) {
         getConversation(extras.getString(LCIMConstants.PEER_ID));
       } else if (extras.containsKey(LCIMConstants.CONVERSATION_ID)) {
-        String conversationId = extras.getString(LCIMConstants.CONVERSATION_ID);
+        conversationId = extras.getString(LCIMConstants.CONVERSATION_ID);
         updateConversation(LCChatKit.getInstance().getClient().getConversation(conversationId));
       } else {
         showToast("memberId or conversationId is needed");
@@ -132,6 +135,24 @@ public class LCIMConversationActivity extends AppCompatActivity {
       });
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    LCIMConversationItemCache.getInstance().clearUnread(conversationId);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    LCIMConversationItemCache.getInstance().clearUnread(conversationId);
+  }
+  private void sendEvent(boolean exit,String conversationId) {
+    LCIMTalkingConversationIdEvent event = new LCIMTalkingConversationIdEvent();
+    event.exitConversation = exit;
+    event.conversationId = conversationId;
+    EventBus.getDefault().post(event);
+
+  }
   /**
    * 弹出 toast
    *

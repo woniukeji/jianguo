@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
     private Handler mHandler = new Myhandler(this);
     private Context context = MainActivity.this;
 
-    int b = 0;
+    int msgCount = 0;
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
@@ -144,10 +144,19 @@ public class MainActivity extends BaseActivity {
     /**
      * 处理推送过来的消息
      * 同理，避免无效消息，此处加了 conversation id 判断
+     * 当前选中的是果聊界面的时候不显示消息数量
+     * 否则消息数量自加
      */
     public void onEvent(LCIMIMTypeMessageEvent messageEvent) {
-        tabHost.showMsg(2,1);
 
+        if (tabHost.getCurrentTab()==2) {
+            tabHost.hideMsg(2);
+            msgCount=0;
+        }else {
+            msgCount++;
+            tabHost.showMsg(2,msgCount);
+            tabHost.setMsgMargin(2, -7, 5);
+        }
     }
     public static void initSystemBar(Activity activity) {
 

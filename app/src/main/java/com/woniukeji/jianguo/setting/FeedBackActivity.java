@@ -89,10 +89,10 @@ public class FeedBackActivity extends BaseActivity {
                     showShortToast("请输入反馈内容");
                     return;
                 }else if(etContact.getText().toString().equals("")){
-                    showShortToast("请输入联系方式");
+                    showShortToast("请输入手机号");
                     return;
                 }
-                postOpinion(etContact.getText().toString(),etContent.getText().toString());
+                postOpinion(String.valueOf(loginId),etContent.getText().toString());
                 showShortToast("感谢您的反馈！我们将及时处理");
                 finish();
                 break;

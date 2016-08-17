@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.java_websocket.exceptions.InvalidFrameException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import cn.leancloud.chatkit.adapter.LCIMCommonListAdapter;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
+import cn.leancloud.chatkit.event.LCIMTalkingConversationIdEvent;
 import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
 import cn.leancloud.chatkit.viewholder.LCIMConversationItemHolder;
 import de.greenrobot.event.EventBus;
@@ -36,6 +38,9 @@ public class LCIMConversationListFragment extends Fragment {
   protected LCIMCommonListAdapter<AVIMConversation> itemAdapter;
   protected LinearLayoutManager layoutManager;
   protected LinearLayout messageNullLayout;
+  private boolean mExitConversation=true;
+  private String conversationId;
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.lcim_conversation_list_fragment, container, false);
@@ -72,8 +77,21 @@ public class LCIMConversationListFragment extends Fragment {
   }
 
   /**
+  *进入某一对话的时候通知对话列表界面停止显示改对话的未读消息数
+   * 退出对话的时候恢复显示
+  */
+  public void onEvent(LCIMTalkingConversationIdEvent event) {
+    mExitConversation=event.exitConversation;
+    if (!event.exitConversation) {
+      conversationId = event.conversationId;
+    }
+  }
+  /**
    * 收到对方消息时响应此事件
    * @param event
+   * 未登录时显示空消息窗
+   * 进入某一具体消息时候 停止更新该对话未读消息
+   * 退出该对话时恢复显示
    */
   public void onEventMainThread(LCIMIMTypeMessageEvent event) {
     if (event.messageNull!=null&&event.messageNull){
@@ -82,7 +100,13 @@ public class LCIMConversationListFragment extends Fragment {
       itemAdapter.notifyDataSetChanged();
       messageNullLayout.setVisibility(View.VISIBLE);
     }
-    updateConversationList();
+    if (mExitConversation){
+      updateConversationList();
+    }else {
+      if (!event.conversation.getConversationId().equals(conversationId)){
+        updateConversationList();
+      }
+    }
   }
   /**
    * 刷新页面
