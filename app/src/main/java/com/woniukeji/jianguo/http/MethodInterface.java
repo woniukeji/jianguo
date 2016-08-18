@@ -46,7 +46,6 @@ public interface MethodInterface {
 /**
 *兼职详情获取
 */
-//        @GET("T_Job_info_Select_JobId_Servlet")
         @GET("T_Job_info_Select_Servlet")
         Observable<RxJobDetails> getJobDetail(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id);
 /**

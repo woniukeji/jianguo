@@ -362,24 +362,22 @@ public class PereferenceActivity extends BaseActivity {
                                 holder.tv.setBackgroundColor(getResources().getColor(R.color.app_bg));
                                 JobEntitys.get(0).setIs_type(true);
                                 notifyDataSetChanged();
-
                             }
                         }else {
-                            if (JobEntitys.get(0).getIs_type()){
-                                JobEntitys.get(position).setIs_type(false);
-                                holder.tv.setTextColor(getResources().getColor(R.color.black_text));
-                                holder.tv.setBackgroundColor(getResources().getColor(R.color.white));
-
-                            }
+                            if (!JobEntitys.get(position).getIs_type()){
                                 JobEntitys.get(position).setIs_type(true);
                                 holder.tv.setTextColor(getResources().getColor(R.color.white));
                                 holder.tv.setBackgroundColor(getResources().getColor(R.color.app_bg));
+                                JobEntitys.get(0).setIs_type(false);
+                                notifyDataSetChanged();
+                            }else {
+                                JobEntitys.get(position).setIs_type(false);
+                                holder.tv.setTextColor(getResources().getColor(R.color.black_text));
+                                holder.tv.setBackgroundColor(getResources().getColor(R.color.white));
+                                notifyDataSetChanged();
+                            }
 
-                            JobEntitys.get(0).setIs_type(false);
-                            notifyDataSetChanged();
                         }
-
-
 
                     }
                 });

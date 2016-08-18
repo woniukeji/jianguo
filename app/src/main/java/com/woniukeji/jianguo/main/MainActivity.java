@@ -55,6 +55,7 @@ import butterknife.ButterKnife;
 import butterknife.BindView;
 import cn.leancloud.chatkit.activity.LCIMConversationListFragment;
 import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
+import cn.leancloud.chatkit.event.LCIMUnReadCountEvent;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
@@ -140,7 +141,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
+    public void onEvent(LCIMUnReadCountEvent event) {
+        if (event.unReadCount!=0&& tabHost.getCurrentTab()!=2) {
+            tabHost.showMsg(2,event.unReadCount);
+            tabHost.setMsgMargin(2, -7, 5);
+        }
+    }
     /**
      * 处理推送过来的消息
      * 同理，避免无效消息，此处加了 conversation id 判断
@@ -390,8 +396,15 @@ public class MainActivity extends BaseActivity {
                 exitTime = System.currentTimeMillis();
 
             } else {
-                finish();
-                System.exit(0);
+                Intent i= new Intent(Intent.ACTION_MAIN);
+
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                i.addCategory(Intent.CATEGORY_HOME);
+
+                startActivity(i);
+//                finish();
+//                System.exit(0);
             }
             return true;
         }

@@ -32,12 +32,9 @@ import java.util.List;
 import cn.leancloud.chatkit.LCChatMessageInterface;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
-import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
-import cn.leancloud.chatkit.event.LCIMTalkingConversationIdEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMConversationUtils;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 15/10/8.

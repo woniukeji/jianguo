@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.java_websocket.exceptions.InvalidFrameException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ import cn.leancloud.chatkit.adapter.LCIMCommonListAdapter;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
 import cn.leancloud.chatkit.event.LCIMIMTypeMessageEvent;
 import cn.leancloud.chatkit.event.LCIMOfflineMessageCountChangeEvent;
-import cn.leancloud.chatkit.event.LCIMTalkingConversationIdEvent;
+import cn.leancloud.chatkit.event.LCIMUnReadCountEvent;
 import cn.leancloud.chatkit.view.LCIMDividerItemDecoration;
 import cn.leancloud.chatkit.viewholder.LCIMConversationItemHolder;
 import de.greenrobot.event.EventBus;
@@ -38,8 +37,8 @@ public class LCIMConversationListFragment extends Fragment {
   protected LCIMCommonListAdapter<AVIMConversation> itemAdapter;
   protected LinearLayoutManager layoutManager;
   protected LinearLayout messageNullLayout;
-  private boolean mExitConversation=true;
-  private String conversationId;
+//  private boolean mExitConversation=true;
+//  private String conversationId;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,11 +79,11 @@ public class LCIMConversationListFragment extends Fragment {
   *进入某一对话的时候通知对话列表界面停止显示改对话的未读消息数
    * 退出对话的时候恢复显示
   */
-  public void onEvent(LCIMTalkingConversationIdEvent event) {
-    mExitConversation=event.exitConversation;
-    if (!event.exitConversation) {
-      conversationId = event.conversationId;
-    }
+  public void onEvent(LCIMUnReadCountEvent event) {
+//    mExitConversation=event.exitConversation;
+//    if (!event.exitConversation) {
+//      conversationId = event.conversationId;
+//    }
   }
   /**
    * 收到对方消息时响应此事件
@@ -100,18 +99,20 @@ public class LCIMConversationListFragment extends Fragment {
       itemAdapter.notifyDataSetChanged();
       messageNullLayout.setVisibility(View.VISIBLE);
     }
-    if (mExitConversation){
-      updateConversationList();
-    }else {
-      if (!event.conversation.getConversationId().equals(conversationId)){
-        updateConversationList();
-      }
-    }
+    updateConversationList();
+//    if (mExitConversation){
+//      updateConversationList();
+//    }else {
+//      if (!event.conversation.getConversationId().equals(conversationId)){
+//        updateConversationList();
+//      }
+//    }
   }
   /**
    * 刷新页面
    */
   private void updateConversationList() {
+    int unreadCount=0;
     List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
     List<AVIMConversation> conversationList = new ArrayList<>();
     for (String convId : convIdList) {
@@ -124,14 +125,49 @@ public class LCIMConversationListFragment extends Fragment {
     }
     itemAdapter.setDataList(conversationList);
     itemAdapter.notifyDataSetChanged();
+    for (int i = 0; i < conversationList.size(); i++) {
+      int mUnreadCount = LCIMConversationItemCache.getInstance().getUnreadCount(conversationList.get(i).getConversationId());
+      unreadCount=unreadCount+mUnreadCount;
+    }
+    sendEvent(unreadCount);
+
   }
 
+  /**
+   * 刷新页面
+   */
+  private void updateConversationList(boolean init) {
+    int unreadCount=0;
+    List<String> convIdList = LCIMConversationItemCache.getInstance().getSortedConversationList();
+    List<AVIMConversation> conversationList = new ArrayList<>();
+    for (String convId : convIdList) {
+      conversationList.add(LCChatKit.getInstance().getClient().getConversation(convId));
+    }
+    if (conversationList.size()>0){
+      messageNullLayout.setVisibility(View.GONE);
+    }else {
+      messageNullLayout.setVisibility(View.VISIBLE);
+    }
+    itemAdapter.setDataList(conversationList);
+    itemAdapter.notifyDataSetChanged();
+    for (int i = 0; i < conversationList.size(); i++) {
+      int mUnreadCount = LCIMConversationItemCache.getInstance().getUnreadCount(conversationList.get(i).getConversationId());
+      unreadCount=unreadCount+mUnreadCount;
+    }
+    sendEvent(unreadCount);
+  }
+
+  private void sendEvent(int count) {
+    LCIMUnReadCountEvent event = new LCIMUnReadCountEvent();
+    event.unReadCount = count;
+    EventBus.getDefault().post(event);
+  }
   /**
    * 离线消息数量发生变化是响应此事件
    * 避免登陆后先进入此页面，然后才收到离线消息数量的通知导致的页面不刷新的问题
    * @param updateEvent
    */
   public void onEvent(LCIMOfflineMessageCountChangeEvent updateEvent) {
-    updateConversationList();
+    updateConversationList(true);
   }
 }

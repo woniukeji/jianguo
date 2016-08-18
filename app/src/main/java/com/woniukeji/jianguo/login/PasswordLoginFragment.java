@@ -212,7 +212,6 @@ public class PasswordLoginFragment extends BaseFragment {
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
                     if (null == e) {
-                        Toast.makeText(getActivity(), "leancloud成功", Toast.LENGTH_SHORT).show();
                         QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
                         quickLoginEvent.isQuickLogin = true;
                         EventBus.getDefault().post(quickLoginEvent);
@@ -222,7 +221,7 @@ public class PasswordLoginFragment extends BaseFragment {
                         startActivity(intent);
                         getActivity().finish();
                     } else {
-                        Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "登录服务器失败，请重试", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

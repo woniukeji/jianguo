@@ -217,15 +217,7 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
         SPUtils.setParam(context, Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
         SPUtils.setParam(context, Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
         LogUtils.e("jpush","userid"+user.getT_user_login().getId());
-        //暂时关闭果聊功能
-//        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
-//            LCChatKit.getInstance().open(String.valueOf(loginId), new AVIMClientCallback() {
-//                @Override
-//                public void done(AVIMClient avimClient, AVIMException e) {
-//                    Toast.makeText(getApplicationContext(), "登陆leancloud=", Toast.LENGTH_SHORT).show();
-//                }
-//            });
             //登陆leancloud服务器 给极光设置别名
             LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
                 @Override

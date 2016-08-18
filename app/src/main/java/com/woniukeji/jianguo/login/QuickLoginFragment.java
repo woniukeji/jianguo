@@ -111,29 +111,14 @@ public class QuickLoginFragment extends BaseFragment {
                     BaseBean<User> user = (BaseBean<User>) msg.obj;
 //                    BaseBean<User> user = msg.;
                     saveToSP(user.getData());
-                    QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
-                    quickLoginEvent.isQuickLogin = true;
-                    EventBus.getDefault().post(quickLoginEvent);
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("login",true);
-                    startActivity(intent);
-                    getActivity().finish();
+
                     break;
                 case 1:
                     String ErrorMessage = (String) msg.obj;
                     Toast.makeText(getActivity(), ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-//                    quickLoginActivity.smsCode = (SmsCode) msg.obj;
                     TastyToast.makeText(getActivity().getApplicationContext(),  "验证码已经发送，请注意查收", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-
-//                    Toast.makeText(getActivity(), "验证码已经发送，请注意查收", Toast.LENGTH_SHORT).show();
-//                    if (quickLoginActivity.smsCode.getIs_tel().equals("1")){
-//                        quickLoginActivity.showShortToast("验证码已经发送，请注意查收");
-//                    }else{
-//                        quickLoginActivity.showShortToast("该手机号码已经注册，不能重复注册");
-//                    }
-
                     break;
                 case 3:
                     String sms = (String) msg.obj;
@@ -201,8 +186,6 @@ public class QuickLoginFragment extends BaseFragment {
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.SP_INTEGRAL, user.getT_user_info().getIntegral());
         SPUtils.setParam(getActivity(), Constants.USER_INFO, Constants.USER_SEX, user.getT_user_info().getUser_sex());
 
-// 暂时关闭果聊功能
-//        final ChatManager chatManager = ChatManager.getInstance();
         if (!TextUtils.isEmpty(String.valueOf(user.getT_user_login().getId()))) {
             if (JPushInterface.isPushStopped(getActivity().getApplicationContext())) {
                 JPushInterface.resumePush(getActivity().getApplicationContext());
@@ -212,32 +195,25 @@ public class QuickLoginFragment extends BaseFragment {
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
                     if (null == e) {
-                        Toast.makeText(getActivity(), "leancloud成功", Toast.LENGTH_SHORT).show();
+                        QuickLoginEvent quickLoginEvent = new QuickLoginEvent();
+                        quickLoginEvent.isQuickLogin = true;
+                        EventBus.getDefault().post(quickLoginEvent);
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("login",true);
+                        startActivity(intent);
+                        getActivity().finish();
                     } else {
-                        Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "登录服务器失败，请重试", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
             JPushInterface.setAlias(getActivity().getApplicationContext(), "jianguo" + user.getT_user_login().getId(), new TagAliasCallback() {
                 @Override
                 public void gotResult(int i, String s, Set<String> set) {
-
                     LogUtils.e("jpush", s + ",code=" + i);
                 }
             });
         }
-//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-//            @Override
-//            public void done(AVIMClient avimClient, AVIMException e) {
-//                if (null == e) {
-//                    TalkMessageEvent talkMessageEvent=new TalkMessageEvent();
-//                    talkMessageEvent.isLogin=true;
-//                    EventBus.getDefault().post(talkMessageEvent);
-//                } else {
-//                    showShortToast(e.toString());
-//                }
-//            }
-//        });
 
     }
 

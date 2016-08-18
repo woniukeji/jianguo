@@ -355,7 +355,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="其他事项："
+                android:text="人员要求："
                 android:textSize="15dp"
                 android:textColor="#9b9b9b"
                 />
@@ -481,6 +481,19 @@
             android:textColor="@color/app_bg"
             />
     </RelativeLayout>
+       <TextView
+           android:id="@+id/tv_fuli"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="兼职福利"
+           android:textColor="#F87C7C"
+           android:layout_marginTop="10dp"
+           android:paddingLeft="15dp"
+           android:drawablePadding="3dp"
+           android:textSize="16dp"
+           android:background="@color/white"
+           android:drawableLeft="@mipmap/icon_attention"
+           />
 
     <TextView
         android:id="@+id/tv_worker"

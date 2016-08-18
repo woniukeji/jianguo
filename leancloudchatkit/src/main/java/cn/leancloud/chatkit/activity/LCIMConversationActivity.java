@@ -18,11 +18,9 @@ import java.util.Arrays;
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.R;
 import cn.leancloud.chatkit.cache.LCIMConversationItemCache;
-import cn.leancloud.chatkit.event.LCIMTalkingConversationIdEvent;
 import cn.leancloud.chatkit.utils.LCIMConstants;
 import cn.leancloud.chatkit.utils.LCIMConversationUtils;
 import cn.leancloud.chatkit.utils.LCIMLogUtils;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by wli on 16/2/29.
@@ -146,13 +144,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
     super.onDestroy();
     LCIMConversationItemCache.getInstance().clearUnread(conversationId);
   }
-  private void sendEvent(boolean exit,String conversationId) {
-    LCIMTalkingConversationIdEvent event = new LCIMTalkingConversationIdEvent();
-    event.exitConversation = exit;
-    event.conversationId = conversationId;
-    EventBus.getDefault().post(event);
 
-  }
   /**
    * 弹出 toast
    *
