@@ -101,18 +101,9 @@ dependencies {
     //avoscloud-push 为推送与实时聊天需要的包
     compile project(path: ':DrioDownlibrary')
     compile project(path: ':viewPagerlibrary')
-    //    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
-
-    //    compile 'cn.leancloud.android:avoscloud-push:v3.7.1@aar'
-
-    //    compile('cn.leancloud.android:avoscloud-push:v3.13.6@aar') { transitive = true }
-
     //暂时去掉 清单文件 启动 退出
-
     //compile 'cn.lightsky.infiniteindicator:library:1.1.0'
-
     //    compile 'com.tencent.bugly:crashreport:1.2.9'
-
     // bugly后续更新SDK，请直接更新版本号
     compile files('libs/happy-dns-0.2.4.jar')
     compile files('libs/httpclient-4.4.1.1.jar')
@@ -160,6 +151,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.sdsmdg.tastytoast:tastytoast:0.0.4'//toast
+    compile 'com.zhy:flowlayout-lib:1.0.3'
 //         compile ('cn.leancloud.android:chatkit:1.0.0')
     compile files('libs/AMap_Location_V2.7.0_20160726.jar')
     compile project(':multi-image-selector')

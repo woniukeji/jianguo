@@ -21,6 +21,7 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
+import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
@@ -52,17 +53,14 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
     ImageView mImgOff;
     public int MSG_POST_SUCCESS=4;
     private int jobid;
-    private RxJobDetails.DataBean.TJobInfoBean jobinfo;
-    private String payMethod;
-     private String money;
+    private JobInfo jobinfo;
     private SubscriberOnNextListener<String> stringSubscriberOnNextListener;
 
 
-    public SignUpPopuWin(Context context, Handler handler, int id, RxJobDetails.DataBean.TJobInfoBean jobinfo, String toString, String s) {
+    public SignUpPopuWin(Context context, Handler handler, int id, JobInfo jobinfo) {
         this.context = context;
         this.mHandler=handler;
         jobid=id;
-        this.payMethod=s;
         this.jobinfo=jobinfo;
     }
     public void showShareWindow() {
@@ -123,26 +121,28 @@ public class SignUpPopuWin extends PopupWindow implements View.OnClickListener {
             String date = DateUtils.getTime(Long.valueOf(jobinfo.getStart_date()),Long.valueOf( jobinfo.getStop_date()));
             String time = DateUtils.getHm(Long.parseLong(jobinfo.getStart_time()))+"-"+DateUtils.getHm(Long.parseLong(jobinfo.getStop_time()));
             String setTime =jobinfo.getSet_time();
-            mTvWage.setText(money);
+            mTvWage.setText(jobinfo.getJob_money());
             mTvWorkDate.setText(date);
             mTvWorkTime.setText(time);
             mTvCollectionSites.setText(jobinfo.getSet_place());
             mTvCollectionTime.setText(setTime);
 
 
-            if (jobinfo.getLimit_sex() == 0) {
+            if (jobinfo.getLimit_sex() .equals("0") ) {
                 mTvSex.setText("女");
-            } else if (jobinfo.getLimit_sex() == 1) {
+            } else if (jobinfo.getLimit_sex().equals("1")) {
                 mTvSex.setText("男");
-            } else if (jobinfo.getLimit_sex() == 30) {
+            } else if (jobinfo.getLimit_sex().equals("30")) {
                 mTvSex.setText("女");
-            }else if (jobinfo.getLimit_sex() == 31) {
+            }else if (jobinfo.getLimit_sex() .equals("31")) {
                 mTvSex.setText("男");
-            }else{
+            }else if (jobinfo.getLimit_sex() .equals("2")){
                 mTvSex.setText("男女不限");//性别限制（0=只招女，1=只招男，2=不限男女）
+            }else {
+                mTvSex.setText("男女各限");
             }
             //期限（1=月结，2=周结，3=日结，4=小时结）
-                mTvPayMethod.setText(payMethod);
+                mTvPayMethod.setText(jobinfo.getMode());
 
             if (jobinfo.getOther()==null||jobinfo.getOther().equals("null")||jobinfo.getOther().equals("")){
                 mTvOther.setText("暂无");

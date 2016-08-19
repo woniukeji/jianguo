@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="礼仪模特"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:background="@drawable/lable_bg"
+        android:textColor="#666666"
+        android:textSize="12dp"
+        />

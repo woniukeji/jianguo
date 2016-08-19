@@ -4,14 +4,11 @@ package com.woniukeji.jianguo.http;
 import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
+import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.entity.PushMessage;
-import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
-
 import java.util.List;
-
-import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -48,7 +45,12 @@ public interface MethodInterface {
 */
         @GET("T_Job_info_Select_Servlet")
         Observable<RxJobDetails> getJobDetail(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id);
-/**
+
+        @GET("T_JobDetailForUser_Servlet")
+        Observable<HttpResult<JobInfo>> getJobDetailNew(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id);
+
+
+        /**
 *拉取城市和兼职类型（兼职列表界面使用）
 */
         @GET("T_Job_Area_City_List_User_Servlet")
@@ -92,9 +94,9 @@ public interface MethodInterface {
 */
         @POST("T_user_resume_Update_Servlet")
         Observable<HttpResult<String>> postResume(@Query("only") String only, @Query("login_id") String login_id,
-                                                    @Query("name") String name, @Query("nickname") String nickname,
-                                                    @Query("school") String school, @Query("height") String height,
-                                                    @Query("student") String student, @Query("name_image") String name_image,
+                                                  @Query("name") String name, @Query("nickname") String nickname,
+                                                  @Query("school") String school, @Query("height") String height,
+                                                  @Query("student") String student, @Query("name_image") String name_image,
                                                   @Query("intoschool_date") String intoschool_date, @Query("birth_date") String birth_date,
                                                   @Query("shoe_size") String shoe_size, @Query("clothing_size") String clothing_size,
                                                   @Query("sex") String sex);
@@ -104,4 +106,10 @@ public interface MethodInterface {
 */
         @GET("T_UserGroup_Servlet")//T_UserGroup_Servlet
         Observable<HttpResult<List<LCChatKitUser>>> getTalkUser(@Query("only") String only, @Query("login_id") String login_id);
+
+/**
+*收藏某兼职
+*/
+        @POST("T_attent_Insert_Servlet")//T_UserGroup_Servlet
+        Observable<HttpResult<String>> postAttention(@Query("only") String only, @Query("login_id") String login_id, @Query("follow") String follow, @Query("collection") String collection);
 }

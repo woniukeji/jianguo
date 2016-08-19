@@ -337,7 +337,8 @@ public class PereferenceActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(final JobViewHolder holder, final int position)
         {
-            holder.tv.setText(JobEntitys.get(position).getType_name());
+//            holder.tv.setText(JobEntitys.get(position).getType_name());
+            holder.tv.setText("身份证复印件");
             if (JobEntitys.get(position).getIs_type()){
                 holder.tv.setTextColor(getResources().getColor(R.color.white));
                 holder.tv.setBackgroundColor(getResources().getColor(R.color.app_bg));

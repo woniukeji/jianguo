@@ -5,6 +5,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
+import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
@@ -33,9 +34,7 @@ import rx.schedulers.Schedulers;
 public class HttpMethods {
 
     public static final String BASE_URL = Constants.JIANGUO_USING;
-
-        private static final int DEFAULT_TIMEOUT = 5;
-
+        private static final int DEFAULT_TIMEOUT = 8;
         private Retrofit retrofit;
         private MethodInterface methodInterface;
 
@@ -67,7 +66,6 @@ public class HttpMethods {
 
     /**
      * 用来统一处理Http的resultCode,并将HttpResult的Data部分剥离出来返回给subscriber
-     *
      * @param <T> Subscriber真正需要的数据类型，也就是Data部分的数据类型
      */
     private class HttpResultFunc<T> implements Func1<HttpResult<T>, T> {
@@ -129,6 +127,18 @@ public class HttpMethods {
                 .subscribe(subscriber);
     }
     /**
+     *获取兼职详情（工作详情界面new）
+     */
+    public void getJobDetailNew(Subscriber<JobInfo> subscriber, String loginId, String jobId){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getJobDetailNew(only,loginId,jobId)
+                .map(new HttpResultFunc<JobInfo>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    /**
      *获取兼职详情（工作详情界面）
      */
     public void getCityCategory(Subscriber<CityCategory> subscriber){
@@ -140,6 +150,7 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+
     /**
     *绑定微信账户
     *@param
@@ -240,4 +251,17 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lcChatKitUserSubscriber);
     }
+    /**
+     *提交收藏兼职请求
+     */
+    public void postAttention(Subscriber<String> subscriber, String loginid,String follow,String collection){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postAttention(only,loginid,follow,collection)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 }

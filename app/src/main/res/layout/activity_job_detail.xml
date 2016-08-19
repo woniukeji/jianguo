@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <include
         android:id="@+id/top"
@@ -177,6 +178,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
+        android:gravity="center|left"
         android:textColor="#666666"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
@@ -345,8 +347,9 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_require"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="32dp"
             android:orientation="horizontal"
             android:background="@color/white"
             android:gravity="center|left"
@@ -359,6 +362,15 @@
                 android:textSize="15dp"
                 android:textColor="#9b9b9b"
                 />
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/id_require"
+                app:max_select="-1"
+                app:auto_select_effect="false"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+            </com.zhy.view.flowlayout.TagFlowLayout>
+
             <TextView
                 android:id="@+id/tv_other"
                 android:layout_width="wrap_content"
@@ -366,8 +378,6 @@
                 android:textSize="15dp"
                 android:layout_marginLeft="12dp"
                 />
-
-
         </LinearLayout>
 
     </LinearLayout>
@@ -481,11 +491,18 @@
             android:textColor="@color/app_bg"
             />
     </RelativeLayout>
+       <LinearLayout
+           android:id="@+id/ll_welfare"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           >
+
        <TextView
            android:id="@+id/tv_fuli"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="兼职福利"
+           android:text="工作福利"
            android:textColor="#F87C7C"
            android:layout_marginTop="10dp"
            android:paddingLeft="15dp"
@@ -494,7 +511,16 @@
            android:background="@color/white"
            android:drawableLeft="@mipmap/icon_attention"
            />
-
+           <com.zhy.view.flowlayout.TagFlowLayout
+               android:id="@+id/id_welfare"
+               app:max_select="-1"
+               app:auto_select_effect="false"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:background="#ffffff"
+               android:padding="5dp">
+           </com.zhy.view.flowlayout.TagFlowLayout>
+       </LinearLayout>
     <TextView
         android:id="@+id/tv_worker"
         android:layout_width="match_parent"
@@ -543,7 +569,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:textSize="16dp"
+            android:text="上家"
             android:layout_marginTop="12dp"
+            android:drawablePadding="6dp"
+            android:drawableRight="@mipmap/officia"
             />
         <TextView
             android:id="@+id/tv_jobs_count"
@@ -551,6 +580,7 @@
             android:layout_toRightOf="@id/cirimg_work"
             android:layout_width="wrap_content"
             android:layout_marginLeft="15dp"
+            android:text="多个职位在招"
             android:layout_height="wrap_content"
             android:textSize="12dp"
             />
