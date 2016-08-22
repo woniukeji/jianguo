@@ -5,6 +5,7 @@ import com.woniukeji.jianguo.entity.Balance;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.NameAuth;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.entity.RxJobDetails;
 import com.woniukeji.jianguo.entity.User;
@@ -110,6 +111,20 @@ public interface MethodInterface {
 /**
 *收藏某兼职
 */
-        @POST("T_attent_Insert_Servlet")//T_UserGroup_Servlet
+        @POST("T_attent_Insert_Servlet")
         Observable<HttpResult<String>> postAttention(@Query("only") String only, @Query("login_id") String login_id, @Query("follow") String follow, @Query("collection") String collection);
+/**
+*提现验证码接口
+*/
+        @GET("IsmsCkeck")
+        Observable<HttpResult<String>> checkSms(@Query("only") String only, @Query("tel") String tel);
+
+/**
+*提现接口新增验证码参数
+*/
+        @POST("T_newMoneyout_Servlet")
+        Observable<HttpResult<String>> postMoney(@Query("only") String only, @Query("login_id") String login_id,@Query("smscode") String smscode,@Query("type") String type,@Query("money") String money);
+
+
+
 }

@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseActivity;
 import com.woniukeji.jianguo.base.Constants;
@@ -37,6 +38,7 @@ import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
+import com.woniukeji.jianguo.http.BackgroundSubscriber;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.MethodInterface;
 import com.woniukeji.jianguo.http.NoProgressSubscriber;
@@ -45,6 +47,8 @@ import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -61,6 +65,8 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.wechat.friends.Wechat;
 import okhttp3.Call;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static cn.pedant.SweetAlert.SweetAlertDialog.OnCancelListener;
 import static cn.pedant.SweetAlert.SweetAlertDialog.PROGRESS_TYPE;
@@ -96,16 +102,15 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     @BindView(R.id.tv_tel) TextView tvTel;
 
     private Balance balance;
-    private int MSG_USER_SUCCESS = 0;
-    private int MSG_USER_FAIL = 1;
-    private int MSG_PHONE_SUCCESS = 2;
     private Handler mHandler = new Myhandler(this);
     private String type = "";
     private int loginid=0;
     private double blanceMoney;
     private String sms;
     private TimeCount time;
-    private SubscriberOnNextListener<String> subscriberOnNextListener;
+    private SubscriberOnNextListener<String> weixinSubscriberOnNextListener;
+    private SubscriberOnNextListener<String> SmsSubscriberOnNextListener;
+    private SubscriberOnNextListener<String> MoneySubscriberOnNextListener;
     private ProgressDialog progressDialog;
 
     @Override
@@ -164,14 +169,26 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
     @Override
     public void initListeners() {
-        subscriberOnNextListener=new SubscriberOnNextListener<String>() {
+        weixinSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
             @Override
             public void onNext(String httpResult) {
                 progressDialog.dismiss();
-                showLongToast("微信账户绑定成功！");
+                showLongToast("微信账户绑定成功！", TastyToast.SUCCESS);
             }
         };
-
+        SmsSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
+            @Override
+            public void onNext(String message) {
+                showLongToast("验证码已发送，请注意查收", TastyToast.SUCCESS);
+            }
+        };
+        MoneySubscriberOnNextListener=new SubscriberOnNextListener<String>() {
+            @Override
+            public void onNext(String message) {
+                showLongToast("提现申请成功!", TastyToast.SUCCESS);
+                showDialog();
+            }
+        };
 
         etMoneySum.addTextChangedListener(new TextWatcher() {
 
@@ -300,7 +317,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
         }
 //        ProgressDialog progressDialog=new ProgressDialog(DrawMoneyActivity.this);
 //        progressDialog.setMessage("加载中...");
-        HttpMethods.getInstance().bindWX(new NoProgressSubscriber<String>(subscriberOnNextListener,this,progressDialog), String.valueOf(loginid),openid,nickname,sex,province,city,imgurl,unionid);
+        HttpMethods.getInstance().bindWX(new NoProgressSubscriber<String>(weixinSubscriberOnNextListener,this,progressDialog), String.valueOf(loginid),openid,nickname,sex,province,city,imgurl,unionid);
         progressDialog.dismiss();
     }
 
@@ -440,10 +457,12 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
                 finish();
                 break;
             case R.id.btn_sms:
+//                test();
                 time.start();
                 String tel = (String) SPUtils.getParam(DrawMoneyActivity.this, Constants.LOGIN_INFO, Constants.SP_TEL, "");
-                GetSMS getSMS = new GetSMS(tel);
-                getSMS.execute();
+                HttpMethods.getInstance().checkSms(new ProgressSubscriber<String>(SmsSubscriberOnNextListener,this),tel);
+//                 GetSMS getSMS = new GetSMS(tel);
+//                getSMS.execute();
                 break;
             case R.id.rl_alipay:
                 Intent intentali=new Intent(DrawMoneyActivity.this, BindAliActivity.class);
@@ -470,15 +489,11 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
                 } else if (etSms.getText().toString().equals("")) {
                     showShortToast("请输入验证码");
                     return;
-                } else if (!etSms.getText().toString().equals(sms)) {
-                    showShortToast("验证码不正确");
-                    return;
-                } else if (Double.valueOf(etMoneySum.getText().toString()) < 50) {
+                }  else if (Double.valueOf(etMoneySum.getText().toString()) < 50) {
                     showShortToast("提现金额必须大于50");
                     return;
                 }
-                PostTask postTask = new PostTask(String.valueOf(loginid), type, etMoneySum.getText().toString());
-                postTask.execute();
+                 HttpMethods.getInstance().postMoney(new ProgressSubscriber<String>(MoneySubscriberOnNextListener,this),String.valueOf(loginid),etSms.getText().toString().trim(),  type,etMoneySum.getText().toString());
                 break;
         }
     }
@@ -489,90 +504,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
         super.onDestroy();
     }
 
-    /**
-     * 提现Task
-     */
-    public class PostTask extends AsyncTask<Void, Void, Void> {
-
-        private final String id;
-        private final String type;
-        private final String money;
-        //        private final String kahao;
-        SweetAlertDialog pDialog = new SweetAlertDialog(DrawMoneyActivity.this, PROGRESS_TYPE);
-
-        PostTask(String id, String type, String money) {
-            this.id = id;
-            this.type = type;
-            this.money = money;
-        }
-
-        protected Void doInBackground(Void... params) {
-            UserRegisterPhone();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("保存中...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final Void user) {
-            pDialog.dismiss();
-        }
-
-        /**
-         * UserRegisterPhone
-         *
-         */
-        public void UserRegisterPhone() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.POST_DRAW_MONEY)
-                    .addParams("only", only)
-                    .addParams("status", type)
-                    .addParams("type", type)
-                    .addParams("login_id", id)
-                    .addParams("money", money)
-                    .build()
-                    .connTimeOut(30000)
-                    .readTimeOut(20000)
-                    .writeTimeOut(20000)
-                    .execute(new BaseCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Message message = new Message();
-                            message.obj = e.getMessage();
-                            message.what = MSG_USER_FAIL;
-                            mHandler.sendMessage(message);
-                        }
-
-
-                        @Override
-                        public void onResponse(BaseBean response, int id) {
-                            if (response.getCode().equals("200")) {
-                                Message message = new Message();
-                                message.obj = response.getMessage();
-                                message.what = MSG_USER_SUCCESS;
-                                mHandler.sendMessage(message);
-                            } else {
-                                Message message = new Message();
-                                message.obj = response.getMessage();
-                                message.what = MSG_USER_FAIL;
-                                mHandler.sendMessage(message);
-                            }
-
-                        }
-
-
-                    });
-        }
-    }
 
     /**
      * 手机验证码Task
@@ -612,16 +543,16 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
                     .addParams("tel", tel)
                     .addParams("only", only)
                     .build()
-                    .connTimeOut(6000)
-                    .readTimeOut(2000)
-                    .writeTimeOut(2000)
+                    .connTimeOut(9000)
+                    .readTimeOut(8000)
+                    .writeTimeOut(8000)
                     .execute(new CodeCallback() {
 
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             Message message = new Message();
                             message.obj = e.toString();
-                            message.what = MSG_USER_FAIL;
+                            message.what = 3;
                             mHandler.sendMessage(message);
                         }
 
@@ -629,11 +560,9 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
                         public void onResponse(SmsCode response, int id) {
                             Message message = new Message();
                             message.obj = response;
-                            message.what = MSG_PHONE_SUCCESS;
+                            message.what = 2;
                             mHandler.sendMessage(message);
                         }
-
-
                     });
         }
 
@@ -656,5 +585,85 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
         }
 
 
+    }
+
+//    public void UserRegisterPhone() {
+//        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+//        OkHttpUtils
+//                .get()
+//                .url(Constants.POST_DRAW_MONEY)
+//                .addParams("only", only)
+//                .addParams("status", type)
+//                .addParams("type", type)
+//                .addParams("login_id", id)
+//                .addParams("money", money)
+//                .build()
+//                .connTimeOut(30000)
+//                .readTimeOut(20000)
+//                .writeTimeOut(20000)
+//                .execute(new BaseCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        Message message = new Message();
+//                        message.obj = e.getMessage();
+//                        message.what = MSG_USER_FAIL;
+//                        mHandler.sendMessage(message);
+//                    }
+//
+//
+//                    @Override
+//                    public void onResponse(BaseBean response, int id) {
+//                        if (response.getCode().equals("200")) {
+//                            Message message = new Message();
+//                            message.obj = response.getMessage();
+//                            message.what = MSG_USER_SUCCESS;
+//                            mHandler.sendMessage(message);
+//                        } else {
+//                            Message message = new Message();
+//                            message.obj = response.getMessage();
+//                            message.what = MSG_USER_FAIL;
+//                            mHandler.sendMessage(message);
+//                        }
+//
+//                    }
+//
+//
+//                });
+//    }
+    /**
+    *测试
+    */
+    public void test () {
+        OkHttpUtils
+                .get()
+                .url("http://api.cassianetworks.com/gap/nodes/")
+                .addParams("chip", "1")
+                .addParams("event", "1")
+                .addParams("mac", "CC:1B:E0:E0:18:FC")
+                .addParams("access_token", "69a4ed756bfb8b0e50fc6d9a2ea892ae6ce10e3e223105d597f41a0d185163ecc2b6dad685cd2cc8a67ed2678b78836e4798a3cdba0e031ed56c7d998d10b5d3")
+                .build()
+                .connTimeOut(300000)
+                .readTimeOut(200000)
+                .writeTimeOut(200000)
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        response.toString();
+                        String string = response.body().string();
+                        ResponseBody body = response.body();
+
+                        return null;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        String message = e.getMessage();
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+                        String message = response.toString();
+                    }
+                });
     }
 }

@@ -86,10 +86,10 @@
         android:layout_height="68dp"
         android:layout_marginTop="5dp"
         android:visibility="gone">
-        <View
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/warmming_blue" />
+            android:src="@drawable/warmming_blue" />
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -119,10 +119,9 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:textColor="#575757"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:singleLine="true"
-        android:visibility="gone"
-        android:text="@string/dialog_default_title" />
+        android:text="驱动啥地方看对方空间的看过" />
 
     <LinearLayout
         android:id="@+id/ll_edit"

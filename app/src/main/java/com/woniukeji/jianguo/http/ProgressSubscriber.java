@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.listener.ProgressCancelListener;
 
@@ -21,6 +22,7 @@ import rx.Subscriber;
 public class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCancelListener{
 
     private SubscriberOnNextListener subscriberOnNextListener;
+    private ProgressDialogHandler mProgressDialogHandler;
     private Context mContext;
     private ProgressDialog progressDialog;
     private String message="请稍后……";
@@ -28,36 +30,48 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCanc
     public ProgressSubscriber(SubscriberOnNextListener subscriberOnNextListener, Context context) {
         this.subscriberOnNextListener = subscriberOnNextListener;
         mContext=context;
+        mProgressDialogHandler = new ProgressDialogHandler(context, this, true);
     }
     public ProgressSubscriber(SubscriberOnNextListener subscriberOnNextListener, Context context,String message) {
         this.subscriberOnNextListener = subscriberOnNextListener;
         mContext=context;
         this.message=message;
+        mProgressDialogHandler = new ProgressDialogHandler(context, this, true);
+    }
+    private void showProgressDialog(){
+        if (mProgressDialogHandler != null) {
+            mProgressDialogHandler.obtainMessage(ProgressDialogHandler.SHOW_PROGRESS_DIALOG).sendToTarget();
+        }
+    }
+
+    private void dismissProgressDialog(){
+        if (mProgressDialogHandler != null) {
+            mProgressDialogHandler.obtainMessage(ProgressDialogHandler.DISMISS_PROGRESS_DIALOG).sendToTarget();
+            mProgressDialogHandler = null;
+        }
     }
     @Override
     public void onStart() {
         super.onStart();
-        progressDialog=new ProgressDialog(mContext);
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        showProgressDialog();
     }
 
     @Override
     public void onCompleted() {
-        progressDialog.dismiss();
+        dismissProgressDialog();
 //      Toast.makeText(mContext, "获取数据成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onError(Throwable e) {
         if (e instanceof SocketTimeoutException) {
-            Toast.makeText(mContext, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(mContext, "网络中断，请检查您的网络状态", TastyToast.LENGTH_LONG, TastyToast.ERROR);
         } else if (e instanceof ConnectException) {
-            Toast.makeText(mContext, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(mContext, "网络中断，请检查您的网络状态", TastyToast.LENGTH_LONG, TastyToast.ERROR);
         } else {
-            Toast.makeText(mContext, "error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            TastyToast.makeText(mContext, "error:" + e.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR);
         }
-        progressDialog.dismiss();
+        dismissProgressDialog();
     }
 
     @Override

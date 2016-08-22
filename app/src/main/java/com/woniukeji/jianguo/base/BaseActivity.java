@@ -100,7 +100,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void showLongToast(String text) {
         TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
     }
-
+/**
+*showShortToast
+*@param text toast的文字
+*@param type 类型 包括警告、错误、成功、失败、默认样式
+*@author invinjun
+*created at 2016/8/22 9:07
+*/
     public void showShortToast(String text,int type) {
         switch (type){
             case TastyToast.DEFAULT:
@@ -118,9 +124,40 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             case TastyToast.INFO:
                 TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.WARNING);
                 break;
+            default:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+                break;
         }
     }
-
+    /**
+     *showLongToast
+     *@param text toast的文字
+     *@param type 类型 包括警告、错误、成功、失败、默认样式
+     *@author invinjun
+     *created at 2016/8/22 9:07
+     */
+    public void showLongToast(String text,int type) {
+        switch (type){
+            case TastyToast.DEFAULT:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+                break;
+            case TastyToast.WARNING:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                break;
+            case TastyToast.ERROR:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                break;
+            case TastyToast.SUCCESS:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                break;
+            case TastyToast.INFO:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                break;
+            default:
+                TastyToast.makeText(getApplicationContext(), text, TastyToast.LENGTH_LONG, TastyToast.DEFAULT);
+                break;
+        }
+    }
 
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {

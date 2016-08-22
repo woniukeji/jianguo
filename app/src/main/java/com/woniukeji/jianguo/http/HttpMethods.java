@@ -263,5 +263,28 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-
+    /**
+     *提交提现申请
+     */
+    public void postMoney(Subscriber<String> subscriber, String loginid,String sms,String type,String money){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postMoney(only,loginid,sms,type,money)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    /**
+    *手机号存在发送验证码（提现、忘记密码，修改密码）
+    */
+    public void checkSms(Subscriber<String> subscriber,String tel){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.checkSms(only,tel)
+                .map(new HttpResultFunc())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }
