@@ -143,7 +143,7 @@ public class SettingActivity extends BaseActivity {
                                 LCChatKit.getInstance().close(new AVIMClientCallback() {
                                     @Override
                                     public void done(AVIMClient avimClient, AVIMException e) {
-                                        Toast.makeText(SettingActivity.this,"leancloud退出成功",Toast.LENGTH_LONG).show();
+//                                        Toast.makeText(SettingActivity.this,"leancloud退出成功",Toast.LENGTH_LONG).show();
                                     }
                                 });
 

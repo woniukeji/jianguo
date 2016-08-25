@@ -63,7 +63,17 @@ public class JobInfo {
         private String mode;
         private String isEnroll;
         private String isFavorite;
-        private List<String> limit;
+        private String merchant_LogId;
+
+    public String getMerchant_LogId() {
+        return merchant_LogId;
+    }
+
+    public void setMerchant_LogId(String merchant_LogId) {
+        this.merchant_LogId = merchant_LogId;
+    }
+
+    private List<String> limit;
         private List<String> welfare;
 
         public int getId() {

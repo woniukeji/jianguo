@@ -498,7 +498,7 @@ public class AuthActivity extends BaseActivity {
     private void startCropImageActivity(Uri imageUri,int requestCode) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this,requestCode);
+                .start(this,requestCode,false);
     }
 
         /**

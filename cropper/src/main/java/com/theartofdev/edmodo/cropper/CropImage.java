@@ -392,10 +392,13 @@ public final class CropImage {
         /**
          * Get {@link CropImageActivity} intent to start the activity.
          */
-        public Intent getIntent(@NonNull Context context) {
-            return getIntent(context, CropImageActivity.class);
+        public Intent getIntent(@NonNull Context context,boolean isHead) {
+            if (isHead){
+                return  getIntent(context, CropHeadActivity.class);
+            }else {
+                return   getIntent(context, CropImageActivity.class);
+            }
         }
-
         /**
          * Get {@link CropImageActivity} intent to start the activity.
          */
@@ -416,11 +419,11 @@ public final class CropImage {
          */
         public void start(@NonNull Activity activity) {
             mOptions.validate();
-            activity.startActivityForResult(getIntent(activity), CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
+            activity.startActivityForResult(getIntent(activity,false), CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
         }
-        public void start(@NonNull Activity activity,int requestCode) {
+        public void start(@NonNull Activity activity,int requestCode,boolean isHead) {
             mOptions.validate();
-            activity.startActivityForResult(getIntent(activity), requestCode);
+            activity.startActivityForResult(getIntent(activity,isHead), requestCode);
         }
         /**
          * Start {@link CropImageActivity}.
@@ -437,8 +440,8 @@ public final class CropImage {
          *
          * @param fragment fragment to receive result
          */
-        public void start(@NonNull Context context, @NonNull Fragment fragment) {
-            fragment.startActivityForResult(getIntent(context), CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
+        public void start(@NonNull Context context, @NonNull Fragment fragment,boolean isHead) {
+            fragment.startActivityForResult(getIntent(context,isHead), CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
         }
 
         /**

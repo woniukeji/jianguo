@@ -573,7 +573,7 @@ public class MultiImageSelectorFragment extends Fragment {
     private void startCropImageActivity(Uri imageUri,int requestCode) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .start(getActivity(),requestCode);
+                .start(getActivity(),requestCode,false);
     }
     /**
      * 回调接口

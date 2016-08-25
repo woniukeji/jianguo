@@ -66,6 +66,7 @@ import butterknife.ButterKnife;
 import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -75,7 +76,7 @@ import okhttp3.Response;
 public class ResumeActivity extends BaseActivity {
     @BindView(R.id.img_back) ImageView imgBack;
     @BindView(R.id.tv_title) TextView tvTitle;
-    @BindView(R.id.img_head) ImageView imgHead;
+    @BindView(R.id.img_head) CircleImageView imgHead;
     @BindView(R.id.et_real_name) EditText etRealName;
     @BindView(R.id.rb_girl) RadioButton rbGirl;
     @BindView(R.id.rb_boy) RadioButton rbBoy;
@@ -106,8 +107,6 @@ public class ResumeActivity extends BaseActivity {
     @BindView(R.id.img_lead) ImageView imgLead;
     @BindView(R.id.tv_necessary_school) TextView tvNecessarySchool;
     @BindView(R.id.img_edit) TextView tvEdit;
-    private int MSG_POST_SUCCESS = 0;
-    private int MSG_POST_FAIL = 1;
     private int MSG_GET_SUCCESS = 4;
     private int MSG_GET_FAIL = 3;
     private Handler mHandler = new Myhandler(this);
@@ -211,6 +210,9 @@ public class ResumeActivity extends BaseActivity {
 
                 break;
             case R.id.img_head:
+//                Intent intent2=new Intent(ResumeActivity.this,PicTipActivity.class);
+//                intent2.putExtra("front",false);
+//                startActivityForResult(intent2,2);
                 CropImage.startPickImageActivity(this,CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1);
                 //单选多选,requestCode,最多选择数，单选模式
 //                MultiImageSelectorActivity.startSelect(ResumeActivity.this, 0, 1, 0);
@@ -671,7 +673,7 @@ public class ResumeActivity extends BaseActivity {
     private void startCropImageActivity(Uri imageUri,int requestCode) {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this,requestCode);
+                .start(this,requestCode,true);
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

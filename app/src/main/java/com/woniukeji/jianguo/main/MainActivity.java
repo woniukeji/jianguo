@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity {
 //        imgeMainLead=(ImageView)findViewById(R.id.img_main_lead);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainPager.setAdapter(adapter);
-        mainPager .setOffscreenPageLimit(2);
+        mainPager .setOffscreenPageLimit(3);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }

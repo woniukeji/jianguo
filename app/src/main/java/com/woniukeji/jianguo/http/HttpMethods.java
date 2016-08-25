@@ -3,9 +3,12 @@ package com.woniukeji.jianguo.http;
 
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.Balance;
+import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.entity.ListTJobEntity;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.entity.RxCityCategory;
 import com.woniukeji.jianguo.entity.RxJobDetails;
@@ -34,9 +37,10 @@ import rx.schedulers.Schedulers;
 public class HttpMethods {
 
     public static final String BASE_URL = Constants.JIANGUO_USING;
-        private static final int DEFAULT_TIMEOUT = 8;
+        private static final int DEFAULT_TIMEOUT = 10;
         private Retrofit retrofit;
         private MethodInterface methodInterface;
+
 
         //构造方法私有
         private HttpMethods() {
@@ -287,4 +291,38 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+
+    /**
+     *获取城市和banner
+     */
+    public void getCityBanner(Subscriber<CityBannerEntity> subscriber){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.getCityBanner(only)
+                .map(new HttpResultFunc<CityBannerEntity>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+/**
+*获取热门兼职列表
+*/    
+    public void getHotJobs(Subscriber<Jobs> subscriber,String cityid,String count){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        String hot="1";
+        methodInterface.getHotJobs(only,hot,cityid,count)
+                .map(new HttpResultFunc<Jobs>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    
+    /**
+    * .addParams("only", only)
+     .addParams("hot", "1")
+     .addParams("city_id", city_id)
+     .addParams("count", count)
+    */
+    
 }

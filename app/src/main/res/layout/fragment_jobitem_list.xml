@@ -47,12 +47,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:textSize="12dp"
+            android:textSize="13dp"
             android:textColor="@color/white"
             android:text="三亚"
             android:drawableRight="@mipmap/icon_dingwei"
             android:drawablePadding="8dp"
-            android:padding="10dp"
+            android:padding="12dp"
             />
         <TextView
             android:id="@+id/tv_title"

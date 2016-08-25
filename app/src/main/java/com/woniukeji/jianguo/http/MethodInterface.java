@@ -2,9 +2,12 @@ package com.woniukeji.jianguo.http;
 
 
 import com.woniukeji.jianguo.entity.Balance;
+import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.CityCategory;
 import com.woniukeji.jianguo.entity.HttpResult;
 import com.woniukeji.jianguo.entity.JobInfo;
+import com.woniukeji.jianguo.entity.Jobs;
+import com.woniukeji.jianguo.entity.ListTJobEntity;
 import com.woniukeji.jianguo.entity.NameAuth;
 import com.woniukeji.jianguo.entity.PushMessage;
 import com.woniukeji.jianguo.entity.RxJobDetails;
@@ -51,7 +54,7 @@ public interface MethodInterface {
         Observable<HttpResult<JobInfo>> getJobDetailNew(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id);
 
 
-        /**
+/**
 *拉取城市和兼职类型（兼职列表界面使用）
 */
         @GET("T_Job_Area_City_List_User_Servlet")
@@ -125,6 +128,17 @@ public interface MethodInterface {
         @POST("T_newMoneyout_Servlet")
         Observable<HttpResult<String>> postMoney(@Query("only") String only, @Query("login_id") String login_id,@Query("smscode") String smscode,@Query("type") String type,@Query("money") String money);
 
+/**
+*获取城市和轮播图 首页
+*/
+        @GET("T_city_Select_Servlet")
+        Observable<HttpResult<CityBannerEntity>> getCityBanner(@Query("only") String only);
 
+
+/**
+*拉取热门兼职列表
+*/
+        @GET("T_job_List_Servlet")
+        Observable<HttpResult<Jobs>> getHotJobs(@Query("only") String only, @Query("hot") String hot,@Query("city_id") String cityid,@Query("count") String count);
 
 }

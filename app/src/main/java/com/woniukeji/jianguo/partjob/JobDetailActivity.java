@@ -298,7 +298,7 @@ public class JobDetailActivity extends BaseActivity {
                 if (null == e) {
                     finish();
                     Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
-                    intent.putExtra(LCIMConstants.PEER_ID, "3"); //String.valueOf(t_job_info.getId())
+                    intent.putExtra(LCIMConstants.PEER_ID, String.valueOf(mJobInfo.getMerchant_LogId())); //String.valueOf(t_job_info.getId())
                     startActivity(intent);
                 } else {
                     Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -335,7 +335,7 @@ public class JobDetailActivity extends BaseActivity {
             if (sex.equals("0")) {
                 showShortToast("您的性别不符");
                 return;
-            }
+        }
         }
         if (mJobInfo.getNowCount() >= mJobInfo.getFinallySum()) {
             showShortToast("该兼职已报满，再看看其它的吧！");

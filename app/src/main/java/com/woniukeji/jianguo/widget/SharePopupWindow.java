@@ -141,11 +141,11 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
                 Wechat.ShareParams sp = new Wechat.ShareParams();
                 //任何分享类型都需要title和text
                 //the two params of title and text are required in every share type
-                sp.setTitle(jobinfo.getJob_name());
+                sp.setTitle("小伙伴给您分享了一条兼职！");
                 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
 //                momentsp.setTitleUrl("http://sharesdk.cn");
                 // text是分享文本，所有平台都需要这个字段
-                sp.setText(wage+"\n"+date+"\n"+jobinfo.getAddress());
+                sp.setText(jobinfo.getJob_name()+"\n"+wage+"\n"+jobinfo.getAddress());
                 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
                 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
                 // url仅在微信（包括好友和朋友圈）中使用
@@ -178,11 +178,11 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
                 WechatMoments.ShareParams momentsp = new WechatMoments.ShareParams();
                 //任何分享类型都需要title和text
                 //the two params of title and text are required in every share type
-                momentsp.setTitle(jobinfo.getJob_name());
+                momentsp.setTitle("小伙伴给您分享了一条兼职！");
                 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
 //                momentsp.setTitleUrl("http://sharesdk.cn");
                 // text是分享文本，所有平台都需要这个字段
-                momentsp.setText(wage+"\n"+date+"\n"+jobinfo.getAddress());
+                momentsp.setText(jobinfo.getJob_name()+"\n"+wage+"\n"+jobinfo.getAddress());
                 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
                 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
                 // url仅在微信（包括好友和朋友圈）中使用
@@ -220,8 +220,8 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
 //                platform = "1";
                 QQ.ShareParams qqsp = new QQ.ShareParams();
                 qqsp.setText("兼果科技");
-                qqsp.title = jobinfo.getJob_name();
-                qqsp.text =wage+"\n"+date+"\n"+jobinfo.getAddress();
+                qqsp.title = "小伙伴给您分享了一条兼职！";
+                qqsp.text =jobinfo.getJob_name()+"\n"+wage+"\n"+jobinfo.getAddress();
                 qqsp.setImageUrl(jobinfo.getJob_image());
 //                qqsp.setUrl(linkUrl+"?job_id="+jobid);
                 qqsp.setTitleUrl(linkUrl+"?job_id="+jobid);
@@ -250,9 +250,9 @@ public class SharePopupWindow extends PopupWindow implements OnClickListener {
             case R.id.qzon_share_icon:
 //                platform = "1";
                 QZone.ShareParams qz = new QZone.ShareParams();
-                qz.setTitle( jobinfo.getJob_name());
+                qz.setTitle("小伙伴给您分享了一条兼职！");
                 qz.setTitleUrl(linkUrl+"?job_id="+jobid);
-                qz.setText(wage+"\n"+date+"\n"+jobinfo.getAddress());
+                qz.setText(jobinfo.getJob_name()+"\n"+wage+"\n"+jobinfo.getAddress());
                 qz.setImageUrl(jobinfo.getJob_image());
 
                 Platform qzp = ShareSDK.getPlatform(QZone.NAME);

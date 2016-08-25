@@ -169,6 +169,21 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
 
     @Override
     public void initListeners() {
+        Date date = new Date(System.currentTimeMillis());//当前时间
+        int hour = Integer.parseInt(DateUtils.getHHTime(date));
+        if (hour < 8 || hour > 20) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(DrawMoneyActivity.this);
+            builder.setTitle("温馨提示");
+            builder.setMessage("尊敬的用户，您的提现申请将会在每天的8:00-21:00为您处理，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+//          sweetAlertDialog.set("尊敬的用户，兼果提现申请的处理时间为每日的8:00-21:00，请您耐心等待提现结果，给您带来的不便，敬请谅解");
+            builder.setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
+        }
         weixinSubscriberOnNextListener=new SubscriberOnNextListener<String>() {
             @Override
             public void onNext(String httpResult) {
@@ -186,7 +201,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
             @Override
             public void onNext(String message) {
                 showLongToast("提现申请成功!", TastyToast.SUCCESS);
-                showDialog();
+//                showDialog();
             }
         };
 
@@ -277,7 +292,19 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
                     }
                 }).show();
     }
-
+    private void showDialogNight() {
+        new SweetAlertDialog(DrawMoneyActivity.this,SweetAlertDialog.NORMAL_TYPE)
+                .setContentText("尊敬的用户，您的提现申请已经提交，工作人员将在24小时内为您处理，请您耐心等待")
+                .setTitleText("温馨提示")
+                .setConfirmText("确定")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                        finish();
+                    }
+                }).show();
+    }
     public void getWechatInfo() {
         progressDialog=new ProgressDialog(this);
         progressDialog.show();
