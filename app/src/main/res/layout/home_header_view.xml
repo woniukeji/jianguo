@@ -6,15 +6,19 @@
     android:layout_width="match_parent"
     android:background="@color/gray_btn_bg_color"
     android:layout_height="wrap_content">
-
-    <cn.lightsky.infiniteindicator.InfiniteIndicator
+    <com.woniukeji.jianguo.main.LoopViewPager
+        android:id="@id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="183dp"/>
+    <me.relex.circleindicator.CircleIndicator
         android:id="@+id/indicator_default_circle"
-        app:indicator_type="indicator_anim_circle"
-        android:layout_height="183dp"
-        android:layout_width="match_parent"/>
+        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/ll_part_top"/>
+
 <LinearLayout
     android:id="@+id/ll_part_top"
-    android:layout_below="@+id/indicator_default_circle"
+    android:layout_below="@+id/viewpager"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginTop="8dp"

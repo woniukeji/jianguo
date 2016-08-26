@@ -78,7 +78,7 @@ public interface MethodInterface {
         @GET("T_enroll_Insert_Servlet")
         Observable<HttpResult<String>> postSign(@Query("only") String only, @Query("login_id") String login_id,@Query("job_id") String job_id);
 /**
-*查询推送记录接口】、
+*查询推送记录接口
 *@author invinjun
 *created at 2016/7/26 16:44
 */

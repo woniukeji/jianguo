@@ -1,6 +1,5 @@
 package com.woniukeji.jianguo.main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,18 +17,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sdsmdg.tastytoast.TastyToast;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.base.BaseFragment;
 import com.woniukeji.jianguo.base.Constants;
-import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CityBannerEntity;
 import com.woniukeji.jianguo.entity.Jobs;
-import com.woniukeji.jianguo.entity.ListTJobEntity;
 import com.woniukeji.jianguo.eventbus.CityEvent;
 import com.woniukeji.jianguo.eventbus.JobFilterEvent;
 import com.woniukeji.jianguo.eventbus.LoginEvent;
@@ -38,43 +31,27 @@ import com.woniukeji.jianguo.http.BackgroundSubscriber;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
+import com.woniukeji.jianguo.listener.PageClickListener;
 import com.woniukeji.jianguo.partjob.PartJobActivity;
-import com.woniukeji.jianguo.utils.DateUtils;
-import com.woniukeji.jianguo.utils.LogUtils;
-import com.woniukeji.jianguo.utils.PicassoLoader;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.woniukeji.jianguo.utils.UpDialog;
 import com.woniukeji.jianguo.widget.CircleImageView;
 import com.woniukeji.jianguo.widget.FixedRecyclerView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
-import butterknife.OnClick;
 import butterknife.Unbinder;
-import cn.lightsky.infiniteindicator.InfiniteIndicator;
-import cn.lightsky.infiniteindicator.page.OnPageClickListener;
-import cn.lightsky.infiniteindicator.page.Page;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.greenrobot.event.EventBus;
-import okhttp3.Call;
-import okhttp3.Response;
+import me.relex.circleindicator.CircleIndicator;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
-public class HomeFragment extends BaseFragment implements ViewPager.OnPageChangeListener, OnPageClickListener, View.OnClickListener {
-
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
+public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChangeListener, View.OnClickListener ,PageClickListener{
     @BindView(R.id.list) FixedRecyclerView recycleList;
     @BindView(R.id.refresh_layout) SwipeRefreshLayout refreshLayout;
     @BindView(R.id.tv_location) TextView tvLocation;
@@ -82,17 +59,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     @BindView(R.id.rl_top) RelativeLayout rl_top;
     @BindView(R.id.circle_dot) CircleImageView circleDot;
     @BindView(R.id.rl_message) RelativeLayout rlMessage;
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
     private View headerView;
     private HomeJobAdapter adapter;
     private List<Jobs.ListTJobEntity> jobList = new ArrayList<Jobs.ListTJobEntity>();
-    private ArrayList<Page> pageViews = new ArrayList<>();
-    private InfiniteIndicator mAnimCircleIndicator;
-    private InfiniteIndicator mAnimLineIndicator;
     RelativeLayout mHeader;
-    InfiniteIndicator mIndicatorDefaultCircle;
     LinearLayout mLlPartTop;
     RelativeLayout mImgGiftsJob;
     RelativeLayout mImgDayJob;
@@ -102,16 +72,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     TextView mTvPart3;
     private int lastVisibleItem;
     private LinearLayoutManager mLayoutManager;
-    private int MSG_GET_SUCCESS = 0;
-    private int MSG_GET_FAIL = 1;
-    private int MSG_GET_CITY_SUCCESS = 4;
-    private int MSG_GET_CITY_FAIL = 5;
-    private Context context = this.getActivity();
     private CityBannerEntity.ListTCityEntity defultCity;
     private List<CityBannerEntity.ListTBannerEntity> banners;
     private String cityName;
     private String cityId;
-    private boolean NoGPS = true;
     private int loginId;
     private boolean DataComplete = false;
     private int totalDy;
@@ -121,22 +85,25 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     private SubscriberOnNextListener<CityBannerEntity> cityBannerEntitySubscriberOnNextListener;
     private SubscriberOnNextListener<Jobs> listSubscriberOnNextListener;
     private CityBannerEntity mCityBannerEntity;
-    public HomeFragment() {
-    }
-    public static HomeFragment newInstance(int columnCount) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private int[] drawables = new int[]{R.mipmap.lead1, R.mipmap.lead2, R.mipmap.lead3};
+    private LoopViewPager viewpager;
+    private CircleIndicator indicator;
+    private int currentItem  = 0;//当前页面
+    private ScheduledExecutorService scheduledExecutorService;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            if(msg.what == 100){
+                viewpager.setCurrentItem(currentItem);
+            }
+        }
+    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
         int version = (int) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_VERSION, 0);
         apkurl = (String) SPUtils.getParam(getActivity(), Constants.LOGIN_INFO, Constants.LOGIN_APK_URL, "");
         if (version>getVersion()) {//大于当前版本升级
@@ -163,7 +130,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
          view = inflater.inflate(R.layout.fragment_jobitem_list, container, false);
         headerView = inflater.inflate(R.layout.home_header_view, container, false);
         bind = ButterKnife.bind(this, view);//绑定framgent
-// Set the adapter
         RelativeLayout rlMessage = (RelativeLayout) view.findViewById(R.id.rl_message);
         rlMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,23 +139,13 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
             }
         });
         assignViews(headerView);
-        mAnimCircleIndicator = (InfiniteIndicator) headerView.findViewById(R.id.indicator_default_circle);
-        mAnimCircleIndicator.setImageLoader(new PicassoLoader());
-
-        mAnimCircleIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
-        mAnimCircleIndicator.setOnPageChangeListener(this);
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-
         adapter = new HomeJobAdapter(jobList, getActivity());
         adapter.addHeaderView(headerView);
         mLayoutManager = new LinearLayoutManager(getActivity());
-//设置布局管理器
         recycleList.setLayoutManager(mLayoutManager);
-//设置adapter
         recycleList.setAdapter(adapter);
-//设置Item增加、移除动画
         recycleList.setItemAnimator(new DefaultItemAnimator());
-//添加分割线
         refreshLayout.setColorSchemeResources(R.color.app_bg);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -208,10 +164,10 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-
     private void assignViews(View view) {
         mHeader = (RelativeLayout) view.findViewById(R.id.header);
-        mIndicatorDefaultCircle = (InfiniteIndicator) view.findViewById(R.id.indicator_default_circle);
+        viewpager = (LoopViewPager) view.findViewById(R.id.viewpager);
+        indicator = (CircleIndicator) view.findViewById(R.id.indicator_default_circle);
         mLlPartTop = (LinearLayout) view.findViewById(R.id.ll_part_top);
         mImgGiftsJob = (RelativeLayout) view.findViewById(R.id.img_gifts_job);
         mImgDayJob = (RelativeLayout) view.findViewById(R.id.img_day_job);
@@ -224,8 +180,43 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         mImgTravelJob.setOnClickListener(this);
         mImgMyJob.setOnClickListener(this);
         tvLocation.setOnClickListener(this);
-    }
 
+    }
+    /**
+     * 开始轮播图切换
+     */
+    private void startPlay(){
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(new SlideShowTask(), 1, 4, TimeUnit.SECONDS);
+    }
+/**
+*banner图选中点击的时候
+*@param
+*@param
+*@author invinjun
+*created at 2016/8/26 11:39
+*/
+    @Override
+    public void onPageClickListener(String url) {
+        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
+    }
+    /**
+     *执行轮播图切换任务
+     *
+     */
+    private class SlideShowTask implements Runnable{
+
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            synchronized (viewpager) {
+                currentItem = (currentItem+1)%drawables.length;
+                handler.sendEmptyMessage(100);
+            }
+        }
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -238,13 +229,11 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     DataComplete = false;
                 }
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
                 totalDy = totalDy + dy;
-                //define it for scroll height
                 int distance = totalDy;
                 if (distance > 0 && distance < 500) {
                     rl_top.getBackground().mutate().setAlpha(distance / 2);
@@ -260,7 +249,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     @Override
     public void onClick(View view) {
-        MainActivity mainActivity = (MainActivity) getActivity();
         switch (view.getId()) {
             case R.id.img_gifts_job:
                 Intent intent = new Intent(getActivity(), PartJobActivity.class);
@@ -302,10 +290,14 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
         }
     }
     private void initBannerData(List<CityBannerEntity.ListTBannerEntity> banners) {
+           List<String> strings=new ArrayList<>();
         for (int i = 0; i < banners.size(); i++) {
-            pageViews.add(new Page(String.valueOf(banners.get(i).getId()), banners.get(i).getImage(), this));
+            strings.add(banners.get(i).getImage());
         }
-        mAnimCircleIndicator.addPages(pageViews);
+        LooperPageAdapter pageAdapter=new LooperPageAdapter(this,banners);
+        viewpager.setAdapter(pageAdapter);
+        indicator.setViewPager(viewpager);
+        startPlay();
     }
     private void initData() {
         cityBannerEntitySubscriberOnNextListener=new SubscriberOnNextListener<CityBannerEntity>() {
@@ -322,7 +314,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                 initJobDataWithCity(defultCity);
                 initBannerData(banners);
                 adapter.notifyDataSetChanged();
-                mAnimCircleIndicator.start();
             }
         };
         listSubscriberOnNextListener=new SubscriberOnNextListener<Jobs>() {
@@ -402,19 +393,6 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
                     })
                     .setCancelText("取消").show();
         }
-
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAnimCircleIndicator.stop();
     }
 
     @Override
@@ -428,37 +406,15 @@ public class HomeFragment extends BaseFragment implements ViewPager.OnPageChange
 
     }
     @Override
-    public void onPageClick(int position, Page page) {
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
-        intent.putExtra("url", banners.get(position).getUrl());
-        startActivity(intent);
-    }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        LogUtils.e("home", "attach");
-    }
-    @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         bind.unbind();
         EventBus.getDefault().unregister(this);
-        LogUtils.i("fragment", ":onDestroyView");
     }
-
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-    }
-        public int dip2px(Context context, float dipValue) {
-            float scale = context.getResources().getDisplayMetrics().density;
-            return (int) (scale * dipValue + 0.5f);
-        }
-
     /**
      * 获取版本号
      *

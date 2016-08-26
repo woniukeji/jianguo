@@ -1,1 +1,1 @@
-include ':app', ':dialoglibrary', ':multi-image-selector', ':DrioDownlibrary', ':viewPagerlibrary', ':DownMenulibrary', ':cropper', ':leancloudchatkit'
+include ':app', ':dialoglibrary', ':multi-image-selector', ':DrioDownlibrary', ':DownMenulibrary', ':cropper', ':leancloudchatkit'

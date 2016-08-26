@@ -78,12 +78,9 @@ public class BindPhoneActivity extends BaseActivity {
             BindPhoneActivity quickLoginActivity= (BindPhoneActivity) reference.get();
             switch (msg.what) {
                 case 0:
-//                    BaseBean<User> user = (BaseBean<User>) msg.obj;
-//                    quickLoginActivity.saveToSP(user.getData());
                     quickLoginActivity.showShortToast("手机号验证成功！");
                     Intent intent=new Intent(quickLoginActivity,AuthActivity.class);
                     SPUtils.setParam(quickLoginActivity,Constants.LOGIN_INFO,Constants.SP_TEL,quickLoginActivity.phone);
-//                    intent.putExtra("user",user);
                     quickLoginActivity.startActivity(intent);
                     quickLoginActivity.finish();
                     break;
