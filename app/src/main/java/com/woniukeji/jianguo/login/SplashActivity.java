@@ -223,12 +223,15 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
                     if (null == e) {
-                        finish();
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
-                        TastyToast.makeText(getApplicationContext(), "聊天服务启动失败!", TastyToast.LENGTH_LONG, TastyToast.WARNING);
-//                        Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        TastyToast.makeText(getApplicationContext(), "聊天服务启动失败，稍后请重新登录!", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+// Toast.makeText(SplashActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -263,16 +266,6 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
 
     }
 
-
-//        ChatManager.getInstance().openClient(new AVIMClientCallback() {
-//            @Override
-//            public void done(AVIMClient avimClient, AVIMException e) {
-//                if (null == e) {
-//                } else {
-//                    showShortToast(e.toString());
-//                }
-//            }
-//        });
 
 
 

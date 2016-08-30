@@ -221,7 +221,12 @@ public class PasswordLoginFragment extends BaseFragment {
                         startActivity(intent);
                         getActivity().finish();
                     } else {
-                        Toast.makeText(getActivity(), "登录服务器失败，请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "聊天服务启动失败，稍后请重新登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra("login",true);
+                        startActivity(intent);
+                        getActivity().finish();
+
                     }
                 }
             });

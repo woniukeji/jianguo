@@ -25,6 +25,7 @@
         <TextView
             android:id="@+id/conversation_item_tv_unread"
             android:layout_width="wrap_content"
+            android:minWidth="13dp"
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="3dp"

@@ -7,35 +7,38 @@ import java.util.List;
  */
 
 public class JobInfo {
+
+
     /**
-     * id : 182
-     * set_place : 公交站
-     * set_time : 六点半
-     * start_date : 1471622400
-     * stop_date : 1476806400
-     * start_time : 1471658400
-     * stop_time : 1476864000
-     * work_content : 工作内容哈哈哈哈
-     * work_require : 工作要求嘻嘻嘻嘻
-     * address : 大堂
-     * reg_date : 2016-08-19 09:42:36
-     * job_name : 测试男女人数
-     * job_image : http://v3.jianguojob.com/logo.png
-     * job_money : 120元/天
+     * id : 2955
+     * set_place : 几个店铺
+     * set_time : 几个时间
+     * start_date : 1474041600
+     * stop_date : 1474387200
+     * start_time : 1474075800
+     * stop_time : 1474461000
+     * work_content : 工作内容l
+     * work_require : 工作站要
+     * address : 年轻妈妈
+     * reg_date : 2016-08-29 10:13:48
+     * job_name : 新数据
+     * job_image : http://7xlell.com2.z0.glb.qiniucdn.com/android_596BEBF4B908900232435E86991FFCA2
+     * job_money : 80元/天
      * limit_sex : 3
-     * finallySum : 33
+     * finallySum : 20
      * nowCount : 0
-     * merchant_name : 王五
-     * merchant_image : http://7xlell.com2.z0.glb.qiniucdn.com/01678d545b4de3f2ba858ae90a1cce21
+     * merchant_name : 兼果-军
+     * merchant_image : http://7xlell.com2.z0.glb.qiniucdn.com/D7QUF%7B%7BHI7%60A4D08A%5D9YHH8.jpg
      * merchant_id : 3
+     * merchant_LogId : 0
      * merchant_about : 五星级酒店式的服务
-     * other : null
+     * other :
      * status : 0
-     * mode : 周结
+     * mode : 日结
      * isEnroll : 0
      * isFavorite : 0
-     * limit : ["需面试","身份证复印件"]
-     * welfare : ["包吃包住","包一餐","报销路费","工资高","有礼物","自由工作"]
+     * limit : ["需面试"]
+     * welfare : ["包二餐","有奖励"]
      */
         private int id;
         private String set_place;
@@ -57,23 +60,14 @@ public class JobInfo {
         private String merchant_name;
         private String merchant_image;
         private int merchant_id;
+        private int merchant_LogId;
         private String merchant_about;
         private String other;
         private int status;
         private String mode;
         private String isEnroll;
         private String isFavorite;
-        private String merchant_LogId;
-
-    public String getMerchant_LogId() {
-        return merchant_LogId;
-    }
-
-    public void setMerchant_LogId(String merchant_LogId) {
-        this.merchant_LogId = merchant_LogId;
-    }
-
-    private List<String> limit;
+        private List<String> limit;
         private List<String> welfare;
 
         public int getId() {
@@ -236,6 +230,14 @@ public class JobInfo {
             this.merchant_id = merchant_id;
         }
 
+        public int getMerchant_LogId() {
+            return merchant_LogId;
+        }
+
+        public void setMerchant_LogId(int merchant_LogId) {
+            this.merchant_LogId = merchant_LogId;
+        }
+
         public String getMerchant_about() {
             return merchant_about;
         }
@@ -299,4 +301,6 @@ public class JobInfo {
         public void setWelfare(List<String> welfare) {
             this.welfare = welfare;
         }
-    }
+}
+
+

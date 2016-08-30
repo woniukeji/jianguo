@@ -43,32 +43,11 @@ public class Application extends android.app.Application {
         // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
         init();
         instance = this;
-        // 初始化参数依次为 this, AppId, AppKey，暂时关闭果聊，第二处splash和quick界面的账户登录
-//        AVOSCloud.initialize(this,"AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
-//        MessageHandler msgHandler = new MessageHandler(this);
-//        AVIMMessageManager.registerMessageHandler(AVIMTextMessage.class, msgHandler);
 
         LCChatKit.getInstance().setProfileProvider(CustomUserProvider.getInstance(getApplicationContext()));
 
-//        AVOSCloud.setDebugLogEnabled(true);
         LCChatKit.getInstance().init(getApplicationContext(), "AtwJtfIJPKQFtti8D3gNjMmb-gzGzoHsz","spNrDrtGWAXP633DkMMWT65B");
 
-
-//        AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
-//            public void done(AVException e) {
-//                if (e == null) {
-//                    // 保存成功
-//                    String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-//                    Toast.makeText(getApplicationContext(),"保存成功",Toast.LENGTH_SHORT).show();
-//                    // 关联  installationId 到用户表等操作……
-//                } else {
-//                    Toast.makeText(getApplicationContext(),"保存失败",Toast.LENGTH_SHORT).show();
-//                    // 保存失败，输出错误信息
-//                }
-//            }
-//        });
-//        PushService.setDefaultPushCallback(this, MainActivity.class);
-//  CrashReport.initCrashReport(getApplicationContext(), "注册时申请的APPID", false);
     }
 
     @Override

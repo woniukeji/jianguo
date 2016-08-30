@@ -77,7 +77,6 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements ProgressCanc
     @Override
     public void onNext(T t) {
         subscriberOnNextListener.onNext(t);
-
     }
 
     @Override

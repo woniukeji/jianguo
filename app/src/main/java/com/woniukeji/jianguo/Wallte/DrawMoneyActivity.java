@@ -201,6 +201,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
             @Override
             public void onNext(String message) {
                 showLongToast("提现申请成功!", TastyToast.SUCCESS);
+                finish();
 //                showDialog();
             }
         };
@@ -208,8 +209,7 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
         etMoneySum.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
+            public void onTextChanged(CharSequence s, int start, int before,int count) {
                 if (s.toString().contains(".")) {
                     if (s.length() - 1 - s.toString().indexOf(".") > 2) {
                         s = s.toString().subSequence(0,
@@ -280,19 +280,6 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     }
 
     private void showDialog() {
-        new SweetAlertDialog(DrawMoneyActivity.this,SweetAlertDialog.NORMAL_TYPE)
-                .setContentText("尊敬的用户，您的提现申请已经提交，工作人员将在24小时内为您处理，请您耐心等待")
-                .setTitleText("温馨提示")
-                .setConfirmText("确定")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                        finish();
-                    }
-                }).show();
-    }
-    private void showDialogNight() {
         new SweetAlertDialog(DrawMoneyActivity.this,SweetAlertDialog.NORMAL_TYPE)
                 .setContentText("尊敬的用户，您的提现申请已经提交，工作人员将在24小时内为您处理，请您耐心等待")
                 .setTitleText("温馨提示")
@@ -532,69 +519,8 @@ public class DrawMoneyActivity extends BaseActivity implements PlatformActionLis
     }
 
 
-    /**
-     * 手机验证码Task
-     */
-    public class GetSMS extends AsyncTask<Void, Void, User> {
-
-        private final String tel;
-
-        GetSMS(String phoneNum) {
-            this.tel = phoneNum;
-        }
-
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            CheckPhone();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(final User user) {
-        }
-
-        /**
-         * login
-         * 检查手机号是否存在
-         */
-        public void CheckPhone() {
-            String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
-            OkHttpUtils
-                    .get()
-                    .url(Constants.CHECK_PHONE_BLACK)
-                    .addParams("tel", tel)
-                    .addParams("only", only)
-                    .build()
-                    .connTimeOut(9000)
-                    .readTimeOut(8000)
-                    .writeTimeOut(8000)
-                    .execute(new CodeCallback() {
-
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Message message = new Message();
-                            message.obj = e.toString();
-                            message.what = 3;
-                            mHandler.sendMessage(message);
-                        }
-
-                        @Override
-                        public void onResponse(SmsCode response, int id) {
-                            Message message = new Message();
-                            message.obj = response;
-                            message.what = 2;
-                            mHandler.sendMessage(message);
-                        }
-                    });
-        }
 
 
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

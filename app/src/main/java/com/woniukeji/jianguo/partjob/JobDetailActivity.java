@@ -28,6 +28,7 @@ import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.JobInfo;
 import com.woniukeji.jianguo.entity.RealName;
+import com.woniukeji.jianguo.http.BackgroundSubscriber;
 import com.woniukeji.jianguo.http.HttpMethods;
 import com.woniukeji.jianguo.http.ProgressSubscriber;
 import com.woniukeji.jianguo.http.SubscriberOnNextListener;
@@ -100,9 +101,7 @@ public class JobDetailActivity extends BaseActivity {
     private boolean loadMore = false;
     private SubscriberOnNextListener<JobInfo> subscriberOnNextListener;
     private SubscriberOnNextListener<String> attentionSubscriberOnNextListener;
-    private String money;
-    private RecyclerView requireRecyclerView;
-    private RecyclerView welfareRecyclerView;
+    private SubscriberOnNextListener<Void>  voidSubscriberOnNextListener;
     private TagAdapter welfareAdapter;
     private TagAdapter requireAdapter;
     private JobInfo mJobInfo;
@@ -118,11 +117,9 @@ public class JobDetailActivity extends BaseActivity {
 
     private static class Myhandler extends Handler {
         private WeakReference<Context> reference;
-
         public Myhandler(Context context) {
             reference = new WeakReference<>(context);
         }
-
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -133,7 +130,6 @@ public class JobDetailActivity extends BaseActivity {
                     Toast.makeText(jobDetailActivity, ErrorMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    BaseBean<RealName> realNameBaseBean = (BaseBean<RealName>) msg.obj;
                     jobDetailActivity.showShortToast("获取实名信息成功");
                     break;
                 case 3:
@@ -149,9 +145,7 @@ public class JobDetailActivity extends BaseActivity {
                     break;
             }
         }
-
     }
-
 
     @Override
     public void setContentView() {
@@ -202,6 +196,12 @@ public class JobDetailActivity extends BaseActivity {
                 showShortToast("收藏成功", TastyToast.SUCCESS);
             }
         };
+        voidSubscriberOnNextListener=new SubscriberOnNextListener<Void>() {
+            @Override
+            public void onNext(Void aVoid) {
+             //浏览兼职接口成功
+            }
+        };
     }
 
     @Override
@@ -212,6 +212,7 @@ public class JobDetailActivity extends BaseActivity {
         resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
         sex = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
         HttpMethods.getInstance().getJobDetailNew(new ProgressSubscriber<JobInfo>(subscriberOnNextListener, this), String.valueOf(loginId), String.valueOf(jobid));
+        HttpMethods.getInstance().postLook(new BackgroundSubscriber<Void>(voidSubscriberOnNextListener,this),String.valueOf(loginId),String.valueOf(jobid));
     }
 
     @Override
@@ -268,21 +269,18 @@ public class JobDetailActivity extends BaseActivity {
             loadMore = false;
             tvMore.setText("");
             Drawable drawable = getResources().getDrawable(R.mipmap.icon_more);
-            tvMore.setCompoundDrawablesWithIntrinsicBounds(null,
-                    null, null, drawable);
+            tvMore.setCompoundDrawablesWithIntrinsicBounds(null,null,null,drawable);
         } else {
-            tvWorkContent.setMaxLines(20);
-            tvWorkRequire.setMaxLines(20);
+            tvWorkContent.setMaxLines(100);
+            tvWorkRequire.setMaxLines(100);
             loadMore = true;
             tvMore.setText("收起");
-            tvMore.setCompoundDrawablesWithIntrinsicBounds(null,
-                    null, null, null);
+            tvMore.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
     }
 
     /**
      * 在线咨询商家
-     *
      * @author invinjun
      * created at 2016/8/18 15:54
      */

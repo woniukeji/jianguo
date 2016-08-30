@@ -317,12 +317,20 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-    
-    /**
-    * .addParams("only", only)
-     .addParams("hot", "1")
-     .addParams("city_id", city_id)
-     .addParams("count", count)
-    */
-    
+/**
+*浏览兼职记录
+*@param subscriber
+*@param loginid
+ *@param jobid
+*@author invinjun
+*created at 2016/8/30 10:25
+*/
+    public void postLook(Subscriber<Void> subscriber, String loginid,String jobid){
+        String only = DateUtils.getDateTimeToOnly(System.currentTimeMillis());
+        methodInterface.postLook(only,loginid,jobid)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 }

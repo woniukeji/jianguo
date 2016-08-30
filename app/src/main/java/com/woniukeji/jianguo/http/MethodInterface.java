@@ -140,5 +140,10 @@ public interface MethodInterface {
 */
         @GET("T_job_List_Servlet")
         Observable<HttpResult<Jobs>> getHotJobs(@Query("only") String only, @Query("hot") String hot,@Query("city_id") String cityid,@Query("count") String count);
+/**
+*浏览兼职记录
+*/
+        @POST("T_job_Look_Servlet")
+        Observable<Void> postLook(@Query("only") String only, @Query("login_id") String login_id, @Query("job_id") String job_id);
 
 }

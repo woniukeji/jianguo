@@ -278,27 +278,7 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
                 startActivity(new Intent(getActivity(), CityActivity.class));
         }
     }
-    private void initJobDataWithCity(CityBannerEntity.ListTCityEntity defultCity) {
-        if (cityName != null && !cityName.equals("")) {
-            tvLocation.setText(cityName);
-            tvLocation.setText(defultCity.getCity());
-            HttpMethods.getInstance().getHotJobs(new ProgressSubscriber<Jobs>(listSubscriberOnNextListener,getActivity()),String.valueOf(defultCity.getCode()), "0");
-            return;
-        }else {
-            HttpMethods.getInstance().getHotJobs(new ProgressSubscriber<Jobs>(listSubscriberOnNextListener,getActivity()),"010", "0");
-            tvLocation.setText("北京");
-        }
-    }
-    private void initBannerData(List<CityBannerEntity.ListTBannerEntity> banners) {
-           List<String> strings=new ArrayList<>();
-        for (int i = 0; i < banners.size(); i++) {
-            strings.add(banners.get(i).getImage());
-        }
-        LooperPageAdapter pageAdapter=new LooperPageAdapter(this,banners);
-        viewpager.setAdapter(pageAdapter);
-        indicator.setViewPager(viewpager);
-        startPlay();
-    }
+
     private void initData() {
         cityBannerEntitySubscriberOnNextListener=new SubscriberOnNextListener<CityBannerEntity>() {
             @Override
@@ -334,7 +314,27 @@ public class HomeFragment extends BaseFragment implements  ViewPager.OnPageChang
         cityId = (String) SPUtils.getParam(getActivity(), Constants.USER_INFO, Constants.USER_LOCATION_CODE, "010");
         HttpMethods.getInstance().getCityBanner(new BackgroundSubscriber<CityBannerEntity>(cityBannerEntitySubscriberOnNextListener,getActivity()));
     }
-
+    private void initJobDataWithCity(CityBannerEntity.ListTCityEntity defultCity) {
+        if (cityName != null && !cityName.equals("")) {
+            tvLocation.setText(cityName);
+            tvLocation.setText(defultCity.getCity());
+            HttpMethods.getInstance().getHotJobs(new ProgressSubscriber<Jobs>(listSubscriberOnNextListener,getActivity()),String.valueOf(defultCity.getCode()), "0");
+            return;
+        }else {
+            HttpMethods.getInstance().getHotJobs(new ProgressSubscriber<Jobs>(listSubscriberOnNextListener,getActivity()),"010", "0");
+            tvLocation.setText("北京");
+        }
+    }
+    private void initBannerData(List<CityBannerEntity.ListTBannerEntity> banners) {
+        List<String> strings=new ArrayList<>();
+        for (int i = 0; i < banners.size(); i++) {
+            strings.add(banners.get(i).getImage());
+        }
+        LooperPageAdapter pageAdapter=new LooperPageAdapter(this,banners);
+        viewpager.setAdapter(pageAdapter);
+        indicator.setViewPager(viewpager);
+        startPlay();
+    }
     @Override
     public void onResume() {
         super.onResume();
