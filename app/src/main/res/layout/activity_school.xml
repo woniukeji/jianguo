@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.woniukeji.jianguo.mine.SchoolActivity">
+    tools:context="com.woniukeji.jianguo.activity.mine.SchoolActivity">
     <!--<include-->
         <!--android:id="@+id/in_title"-->
         <!--layout="@layout/app_title_bar"-->

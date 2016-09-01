@@ -9,7 +9,7 @@
     android:paddingRight="12dp"
     android:paddingTop="12dp"
     android:background="@drawable/dialog_background"
-    tools:context="com.woniukeji.jianguo.mine.PicTipActivity">
+    tools:context="com.woniukeji.jianguo.activity.mine.PicTipActivity">
     <TextView
         android:id="@+id/top"
         android:layout_width="match_parent"

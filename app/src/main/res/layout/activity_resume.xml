@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gray_btn_bg_color"
-    tools:context="com.woniukeji.jianguo.mine.AuthActivity"
+    tools:context="com.woniukeji.jianguo.activity.mine.AuthActivity"
     >
 
     <RelativeLayout
@@ -63,7 +63,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/gray_btn_bg_color"
-        tools:context="com.woniukeji.jianguo.mine.AuthActivity">
+        tools:context="com.woniukeji.jianguo.activity.mine.AuthActivity">
 <LinearLayout
     android:id="@+id/rl_root_view"
     android:clickable="true"

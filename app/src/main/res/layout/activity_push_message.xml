@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ebebeb"
-    tools:context="com.woniukeji.jianguo.main.PushMessageActivity">
+    tools:context="com.woniukeji.jianguo.activity.main.PushMessageActivity">
 
 <include
     layout="@layout/app_title_bar"

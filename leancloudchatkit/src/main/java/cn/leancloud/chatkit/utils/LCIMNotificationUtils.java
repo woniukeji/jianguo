@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.avos.avospush.notification.NotificationCompat;
 
@@ -59,25 +60,40 @@ public class LCIMNotificationUtils {
     return !notificationTagList.contains(tag);
   }
 
-  public static void showNotification(Context context, String title, String content, Intent intent) {
-    showNotification(context, title, content, null, intent);
+  public static void showNotification(Context context, int requestCode, String title, String content, Intent intent) {
+    showNotification(context,requestCode, title, content, null, intent);
   }
-
-  public static void showNotification(Context context, String title, String content, String sound, Intent intent) {
-    PendingIntent contentIntent = PendingIntent.getActivity(context, REPLY_NOTIFY_ID, intent, 0);
+  public static void showNotification(Context context, int requestCode,String title, String content, String sound, Intent intent) {
+    PendingIntent contentIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-        .setSmallIcon(context.getApplicationInfo().icon)
-        .setContentTitle(title).setAutoCancel(true).setContentIntent(contentIntent)
-        .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
-        .setContentText(content);
+            .setSmallIcon(context.getApplicationInfo().icon)
+            .setContentTitle(title).setAutoCancel(true).setContentIntent(contentIntent)
+            .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
+            .setContentText(content);
     NotificationManager manager =
-      (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     Notification notification = mBuilder.build();
     if (sound != null && sound.trim().length() > 0) {
       notification.sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + sound);
     }
-    manager.notify(REPLY_NOTIFY_ID, notification);
+    manager.notify(requestCode, notification);
+
   }
+//  public static void showNotification(Context context, String title, String content, String sound, Intent intent) {
+//    PendingIntent contentIntent = PendingIntent.getActivity(context, REPLY_NOTIFY_ID, intent, 0);
+//    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+//        .setSmallIcon(context.getApplicationInfo().icon)
+//        .setContentTitle(title).setAutoCancel(true).setContentIntent(contentIntent)
+//        .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
+//        .setContentText(content);
+//    NotificationManager manager =
+//      (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//    Notification notification = mBuilder.build();
+//    if (sound != null && sound.trim().length() > 0) {
+//      notification.sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + sound);
+//    }
+//    manager.notify(REPLY_NOTIFY_ID, notification);
+//  }
 
   public static void cancelNotification(Context context) {
     NotificationManager nMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

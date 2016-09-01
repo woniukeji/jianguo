@@ -88,7 +88,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:theme">
         <activity
-            android:name=".login.SplashActivity"
+            android:name=".activity.login.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -97,7 +97,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
@@ -173,11 +173,11 @@
         <!-- 自动升级 结束 -->
 
         <activity
-            android:name=".mine.AuthActivity"
+            android:name=".activity.mine.AuthActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.ResumeActivity"
+            android:name=".activity.mine.ResumeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
@@ -304,86 +304,86 @@
         <!-- 极光推送配置 结束 -->
 
         <activity
-            android:name=".mine.SchoolActivity"
+            android:name=".activity.mine.SchoolActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <!--<activity-->
             <!--android:name=".talk.ChatActivity"-->
             <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>-->
         <activity
-            android:name=".setting.SettingActivity"
+            android:name=".activity.setting.SettingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".setting.FeedBackActivity"
+            android:name=".activity.setting.FeedBackActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.CollectActivity"
+            android:name=".activity.mine.CollectActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".partjob.JobDetailActivity"
+            android:name=".activity.partjob.JobDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".partjob.MerchantActivity"
+            android:name=".activity.partjob.MerchantActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".main.CityActivity"
+            android:name=".activity.main.CityActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.EvaluationActivity"
+            android:name=".activity.mine.EvaluationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".login.BindPhoneActivity"
+            android:name=".activity.login.BindPhoneActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.MyPartJboActivity"
+            android:name=".activity.mine.MyPartJboActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".login.LeadActivity"
+            android:name=".activity.login.LeadActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".wallte.WalletActivity"
+            android:name=".activity.wallte.WalletActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".wallte.DrawMoneyActivity"
+            android:name=".activity.wallte.DrawMoneyActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".wallte.BindAliActivity"
+            android:name=".activity.wallte.BindAliActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".wallte.BindYinlianActivity"
+            android:name=".activity.wallte.BindYinlianActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".wallte.DrawPassActivity"
+            android:name=".activity.wallte.DrawPassActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.AboutActivity"
+            android:name=".activity.mine.AboutActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".partjob.PartJobActivity"
+            android:name=".activity.partjob.PartJobActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".main.WebViewActivity"
+            android:name=".activity.main.WebViewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.CollTionActivity"
+            android:name=".activity.mine.CollTionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
@@ -395,38 +395,38 @@
             android:value="Channel ID"/>
 
         <activity
-            android:name=".main.PushMessageActivity"
+            android:name=".activity.main.PushMessageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".mine.PicTipActivity"
+            android:name=".activity.mine.PicTipActivity"
             android:theme="@style/Theme.AppCompat.Dialog">
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".activity.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".login.ForgetPassActivity"
+            android:name=".activity.login.ForgetPassActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name=".login.RegistActivity"
+            android:name=".activity.login.RegistActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
         <activity
-            android:name=".setting.PereferenceActivity"
+            android:name=".activity.setting.PereferenceActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
         <activity
-            android:name=".login.ChangePhoneActivity"
+            android:name=".activity.login.ChangePhoneActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>
         <activity
-            android:name=".mine.SignUpActivity"
+            android:name=".activity.mine.SignUpActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
         </activity>

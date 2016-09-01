@@ -4,21 +4,13 @@ package com.woniukeji.jianguo.base;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.woniukeji.jianguo.eventbus.CustomUserProvider;
-import com.woniukeji.jianguo.main.MainActivity;
-import com.woniukeji.jianguo.partjob.JobDetailActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 import cn.leancloud.chatkit.LCChatKit;
 import okhttp3.OkHttpClient;
 

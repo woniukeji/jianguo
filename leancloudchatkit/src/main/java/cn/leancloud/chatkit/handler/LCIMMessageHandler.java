@@ -11,6 +11,8 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
+import java.util.Calendar;
+
 import cn.leancloud.chatkit.LCChatKit;
 import cn.leancloud.chatkit.LCChatKitUser;
 import cn.leancloud.chatkit.R;
@@ -93,7 +95,8 @@ public class LCIMMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage
           } else if (null != userProfile) {
             String title = userProfile.getUserName();
             Intent intent = getIMNotificationIntent(conversation.getConversationId(), message.getFrom());
-            LCIMNotificationUtils.showNotification(context, title, notificationContent, null, intent);
+            LCIMNotificationUtils.showNotification(context, Integer.parseInt(message.getFrom()), title, notificationContent, null, intent);
+//            LCIMNotificationUtils.showNotification(context, title, notificationContent, null, intent);
           }
         }
       });

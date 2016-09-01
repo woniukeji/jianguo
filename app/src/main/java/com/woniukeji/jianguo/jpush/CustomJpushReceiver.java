@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
-import com.woniukeji.jianguo.entity.JobDetails;
 import com.woniukeji.jianguo.entity.PushType;
 import com.woniukeji.jianguo.eventbus.MessageEvent;
-import com.woniukeji.jianguo.main.MainActivity;
-import com.woniukeji.jianguo.main.PushMessageActivity;
-import com.woniukeji.jianguo.main.WebViewActivity;
-import com.woniukeji.jianguo.mine.AuthActivity;
-import com.woniukeji.jianguo.mine.SignUpActivity;
-import com.woniukeji.jianguo.partjob.JobDetailActivity;
-import com.woniukeji.jianguo.wallte.WalletActivity;
+import com.woniukeji.jianguo.activity.main.MainActivity;
+import com.woniukeji.jianguo.activity.main.PushMessageActivity;
+import com.woniukeji.jianguo.activity.main.WebViewActivity;
+import com.woniukeji.jianguo.activity.mine.AuthActivity;
+import com.woniukeji.jianguo.activity.mine.SignUpActivity;
+import com.woniukeji.jianguo.activity.partjob.JobDetailActivity;
+import com.woniukeji.jianguo.activity.wallte.WalletActivity;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;

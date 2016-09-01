@@ -5,7 +5,7 @@
               android:gravity="center_horizontal"
               android:orientation="vertical"
                 android:background="#F1F1F1"
-              tools:context="com.woniukeji.jianguo.login.LoginActivity">
+              tools:context=".activity.login.LoginActivity">
 
     <!-- CheckPhone progress -->
 

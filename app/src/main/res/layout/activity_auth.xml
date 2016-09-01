@@ -11,7 +11,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gray_btn_bg_color"
-    tools:context="com.woniukeji.jianguo.mine.AuthActivity">
+    tools:context="com.woniukeji.jianguo.activity.mine.AuthActivity">
     <include
         android:id="@+id/in_title"
         layout="@layout/app_title_bar"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gray_btn_bg_color"
-    tools:context="com.woniukeji.jianguo.setting.FeedBackActivity">
+    tools:context="com.woniukeji.jianguo.activity.setting.FeedBackActivity">
     <include
         layout="@layout/app_title_bar"
         />

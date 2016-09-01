@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
-    tools:context="com.woniukeji.jianguo.mine.CollectActivity">
+    tools:context="com.woniukeji.jianguo.activity.mine.CollectActivity">
  <include
      layout="@layout/app_title_bar"
      android:id="@+id/top"

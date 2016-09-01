@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:background="@color/gray_btn_bg_color"
     android:layout_height="wrap_content">
-    <com.woniukeji.jianguo.main.LoopViewPager
+    <com.woniukeji.jianguo.widget.LoopViewPager
         android:id="@id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="183dp"/>
