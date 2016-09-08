@@ -540,7 +540,6 @@
         android:textColor="@color/transparent"
         />
     <RelativeLayout
-        android:id="@+id/rl_company"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -584,7 +583,15 @@
             android:layout_height="wrap_content"
             android:textSize="12dp"
             />
-
+<ImageView
+    android:id="@+id/iv_company"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:background="@mipmap/tel"
+    android:layout_centerVertical="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="20dp"
+    />
     </RelativeLayout>
        <TextView
            android:layout_width="match_parent"

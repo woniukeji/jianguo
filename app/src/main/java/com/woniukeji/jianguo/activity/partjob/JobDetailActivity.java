@@ -34,6 +34,7 @@ import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.GlideCircleTransform;
 import com.woniukeji.jianguo.utils.SPUtils;
+import com.woniukeji.jianguo.widget.Mdialog;
 import com.woniukeji.jianguo.widget.SharePopupWindow;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -78,7 +79,6 @@ public class JobDetailActivity extends BaseActivity {
     @BindView(R.id.cirimg_work) ImageView cirimgWork;
     @BindView(R.id.tv_company_name) TextView tvCompanyName;
     @BindView(R.id.tv_jobs_count) TextView tvJobsCount;
-    @BindView(R.id.rl_company) RelativeLayout rlCompany;
     @BindView(R.id.tv_contact_company) TextView tvContactCompany;
     @BindView(R.id.tv_collection) TextView tvCollection;
     @BindView(R.id.tv_signup) TextView tvSignup;
@@ -223,7 +223,7 @@ public class JobDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.img_share, R.id.tv_more, R.id.img_back, R.id.tv_location_detail, R.id.rl_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
+    @OnClick({R.id.img_share, R.id.tv_more, R.id.img_back, R.id.tv_location_detail, R.id.iv_company, R.id.tv_contact_company, R.id.tv_collection, R.id.tv_signup})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_more:
@@ -237,7 +237,8 @@ public class JobDetailActivity extends BaseActivity {
                 break;
             case R.id.tv_location_detail:
                 break;
-            case R.id.rl_company:
+            case R.id.iv_company:
+                contact_tel();
                 break;
             case R.id.tv_contact_company:
                 ContactCompany();
@@ -254,6 +255,21 @@ public class JobDetailActivity extends BaseActivity {
                 CheckSignRequire();
                 break;
         }
+    }
+
+    private void contact_tel() {
+        if (loginId == 0) {
+            showShortToast("请先登录");
+            startActivity(new Intent(JobDetailActivity.this, LoginActivity.class));
+            return;
+        }
+        String tel=mJobInfo.getMerchantTel();
+        if (tel==null||tel.equals("")){
+            showShortToast("该商家暂无电话");
+            return;
+        }
+        Mdialog mdialog=new Mdialog(mContext,tel);
+        mdialog.show();
     }
 
     /**
@@ -294,6 +310,7 @@ public class JobDetailActivity extends BaseActivity {
                     finish();
                     Intent intent = new Intent(JobDetailActivity.this, LCIMConversationActivity.class);
                     intent.putExtra(LCIMConstants.PEER_ID, String.valueOf(mJobInfo.getMerchant_LogId())); //String.valueOf(t_job_info.getId())
+                    intent.putExtra("job_name",mJobInfo.getJob_name());
                     startActivity(intent);
                 } else {
                     Toast.makeText(JobDetailActivity.this, e.toString(), Toast.LENGTH_SHORT).show();

@@ -69,8 +69,17 @@ public class JobInfo {
         private String isFavorite;
         private List<String> limit;
         private List<String> welfare;
+        private String merchantTel;
 
-        public int getId() {
+        public String getMerchantTel() {
+            return merchantTel;
+        }
+
+        public void setMerchantTel(String merchantTel) {
+            this.merchantTel = merchantTel;
+        }
+
+    public int getId() {
             return id;
         }
 

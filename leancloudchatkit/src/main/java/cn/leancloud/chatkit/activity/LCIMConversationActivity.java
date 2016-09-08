@@ -31,6 +31,7 @@ public class LCIMConversationActivity extends AppCompatActivity {
 
   protected LCIMConversationFragment conversationFragment;
   private String conversationId;
+  private String jobName="";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,9 @@ public class LCIMConversationActivity extends AppCompatActivity {
     }
 
     Bundle extras = intent.getExtras();
+    if (extras.containsKey("job_name")) {
+      jobName = extras.getString("job_name");
+    }
     if (null != extras) {
       if (extras.containsKey(LCIMConstants.PEER_ID)) {
         getConversation(extras.getString(LCIMConstants.PEER_ID));
@@ -80,6 +84,9 @@ public class LCIMConversationActivity extends AppCompatActivity {
       }
       actionBar.setDisplayUseLogoEnabled(false);
       actionBar.setDisplayHomeAsUpEnabled(true);
+      if (!jobName.equals("")) {
+        conversationFragment.sendText("咨询\""+jobName+"\"相关问题");
+      }
       finishActivity(RESULT_OK);
     }
   }
