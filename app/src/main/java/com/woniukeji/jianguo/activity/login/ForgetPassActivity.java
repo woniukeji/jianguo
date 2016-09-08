@@ -28,7 +28,6 @@ import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.MD5Util;
 import com.woniukeji.jianguo.utils.SPUtils;
@@ -38,8 +37,8 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.lang.ref.WeakReference;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -187,7 +186,7 @@ public class ForgetPassActivity extends BaseActivity {
                 break;
             case R.id.btn_get_code:
                 String tel = phoneNumber.getText().toString();
-                boolean isOK = CommonUtils.isMobileNO(tel);
+                boolean isOK = tel.length()==11;
                 if (isOK) {
 //                    showShortToast("正在发送验证码，请稍后");
                     new TimeCount(60000, 1000,btnGetCode).start();//构造CountDownTimer对象
@@ -212,7 +211,7 @@ public class ForgetPassActivity extends BaseActivity {
         if (phoneNumber.getText().toString().equals("")) {
             showShortToast("手机号不能为空");
             return false;
-        } else if (!CommonUtils.isMobileNO(phoneNumber.getText().toString().trim())) {
+        } else if (phoneNumber.getText().toString().length()!=11) {
             showShortToast("手机号码格式不正确");
             return false;
         } else if (passWord1.getText().toString().equals("")) {

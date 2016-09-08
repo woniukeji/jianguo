@@ -15,14 +15,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.woniukeji.jianguo.R;
 import com.woniukeji.jianguo.activity.BaseActivity;
+import com.woniukeji.jianguo.activity.mine.AuthActivity;
 import com.woniukeji.jianguo.base.Constants;
 import com.woniukeji.jianguo.entity.BaseBean;
 import com.woniukeji.jianguo.entity.CodeCallback;
 import com.woniukeji.jianguo.entity.SmsCode;
 import com.woniukeji.jianguo.entity.User;
-import com.woniukeji.jianguo.activity.mine.AuthActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
-import com.woniukeji.jianguo.utils.CommonUtils;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.SPUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -165,7 +164,7 @@ public class BindPhoneActivity extends BaseActivity {
                 break;
             case R.id.btn_get_code:
                 String tel=phoneNumber.getText().toString();
-                boolean isOK=CommonUtils.isMobileNO(tel);
+                boolean isOK=tel.length()==11;
                 if (isOK){
                     CheckPhone(tel);
                 }else{
@@ -177,7 +176,7 @@ public class BindPhoneActivity extends BaseActivity {
     }
 
     private boolean CheckStatus() {
-        if (!CommonUtils.isMobileNO(phoneNumber.getText().toString().trim())) {
+        if (phoneNumber.getText().toString().length()!=11) {
             showShortToast("手机号码格式不正确");
             return false;
         }
