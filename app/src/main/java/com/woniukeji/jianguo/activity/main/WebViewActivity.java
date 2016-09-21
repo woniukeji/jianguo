@@ -45,6 +45,13 @@ public class WebViewActivity extends BaseActivity {
     public void initData() {
         webview.setWebViewClient(webViewClient);
         webview.setWebChromeClient(webChromeClient);
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setLoadWithOverviewMode(true);
+        webview.getSettings().setSupportZoom(true);
+// 设置出现缩放工具
+        webview.getSettings().setBuiltInZoomControls(true);
+//扩大比例的缩放
+        webview.getSettings().setUseWideViewPort(true);
         String url = getIntent().getStringExtra("url");
         webview.loadUrl(url);
     }

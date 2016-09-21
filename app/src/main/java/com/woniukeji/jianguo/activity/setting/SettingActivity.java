@@ -134,12 +134,14 @@ public class SettingActivity extends BaseActivity {
                                 sweetAlertDialog.cancel();
                                 sweetAlertDialog.dismiss();
 //                                暂时关闭果聊
-                                LCChatKit.getInstance().close(new AVIMClientCallback() {
-                                    @Override
-                                    public void done(AVIMClient avimClient, AVIMException e) {
+                                if(LCChatKit.getInstance()!=null){
+                                    LCChatKit.getInstance().close(new AVIMClientCallback() {
+                                        @Override
+                                        public void done(AVIMClient avimClient, AVIMException e) {
 //                                        Toast.makeText(SettingActivity.this,"leancloud退出成功",Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                                        }
+                                    });
+                                }
 
                                 JPushInterface.stopPush(SettingActivity.this);
 //                ActivityManager.getActivityManager().finishAllActivity();
