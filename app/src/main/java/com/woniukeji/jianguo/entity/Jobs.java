@@ -61,6 +61,16 @@ public class Jobs {
             private String money;
             private int term;
             private int limit_sex;
+            private int user_count;
+
+            public int getUser_count() {
+                return user_count;
+            }
+
+            public void setUser_count(int user_count) {
+                this.user_count = user_count;
+            }
+
             private int count;
             private int sum;
             private int day;

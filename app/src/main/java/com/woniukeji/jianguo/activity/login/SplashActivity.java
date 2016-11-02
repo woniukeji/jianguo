@@ -334,8 +334,6 @@ public class SplashActivity extends BaseActivity implements AMapLocationListener
     public void onClick(View view) {
 
     }
-
-
         /**
          * login
          * 授权过的weixin qq 用户直接通过token登陆

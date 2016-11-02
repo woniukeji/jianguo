@@ -57,7 +57,10 @@ public class JobInfo {
         private String limit_sex;
         private int finallySum;
         private int nowCount;
-        private String merchant_name;
+        private int user_count;
+
+
+    private String merchant_name;
         private String merchant_image;
         private int merchant_id;
         private int merchant_LogId;
@@ -169,6 +172,13 @@ public class JobInfo {
 
         public String getJob_name() {
             return job_name;
+        }
+        public int getUser_count() {
+            return user_count;
+        }
+
+        public void setUser_count(int user_count) {
+            this.user_count = user_count;
         }
 
         public void setJob_name(String job_name) {

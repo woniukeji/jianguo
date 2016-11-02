@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
@@ -39,6 +40,7 @@ import com.woniukeji.jianguo.http.SubscriberOnNextListener;
 import com.woniukeji.jianguo.activity.login.BindPhoneActivity;
 import com.woniukeji.jianguo.utils.ActivityManager;
 import com.woniukeji.jianguo.utils.BitmapUtils;
+import com.woniukeji.jianguo.utils.LogUtils;
 import com.woniukeji.jianguo.widget.CircleProDialog;
 import com.woniukeji.jianguo.utils.DateUtils;
 import com.woniukeji.jianguo.utils.EditCheckUtil;
@@ -414,10 +416,9 @@ public class AuthActivity extends BaseActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 realFilePath1 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
-//                FileInputStream is = new  FileInputStream(realFilePath1);
+                LogUtils.e("filepath",realFilePath1);
                 Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath1,1080, 720);
                 imgFront.setImageBitmap(bitmap);
-//                imgFront.setImageURI(result.getUri());
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -430,69 +431,12 @@ public class AuthActivity extends BaseActivity {
 //                FileInputStream is = new  FileInputStream(realFilePath1);
                 Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath2,1080, 720);
                 imgOpposite.setImageBitmap(bitmap);
+                LogUtils.e("filepath",realFilePath2);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
         }
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE1 && resultCode == Activity.RESULT_OK) {
-//            Uri imageUri = CropImage.getPickImageResultUri(this, data);
-//            // For API >= 23 we need to check specifically that we have permissions to read external storage.
-//            boolean requirePermissions = false;
-//            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
-//                // request permissions and handle the result in onRequestPermissionsResult()
-//                requirePermissions = true;
-////                mCropImageUri = imageUri;
-////                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-//            } else {
-//                // no permissions required or already grunted, can start crop image activity
-//                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1);
-//            }
-//        }
-//        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE2 && resultCode == Activity.RESULT_OK) {
-//            Uri imageUri = CropImage.getPickImageResultUri(this, data);
-//            // For API >= 23 we need to check specifically that we have permissions to read external storage.
-//            boolean requirePermissions = false;
-//            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
-//                // request permissions and handle the result in onRequestPermissionsResult()
-//                requirePermissions = true;
-////                mCropImageUri = imageUri;
-////                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-//            } else {
-//                // no permissions required or already grunted, can start crop image activity
-//                startCropImageActivity(imageUri,CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2);
-//            }
-//        }
-//        // handle result of CropImageActivity
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE1) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if (resultCode == RESULT_OK) {
-//                realFilePath1 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
-////                FileInputStream is = new  FileInputStream(realFilePath1);
-//                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath1,1080, 720);
-//                imgFront.setImageBitmap(bitmap);
-////                imgFront.setImageURI(result.getUri());
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
-//            }
-//        }
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE2) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if (resultCode == RESULT_OK) {
-//                 realFilePath2 = FileUtils.getRealFilePath(AuthActivity.this, result.getUri());
-////                imgOpposite.setImageURI(result.getUri());
-////                FileInputStream is = new  FileInputStream(realFilePath1);
-//                Bitmap bitmap=BitmapUtils.compressBitmap(realFilePath2,1080, 720);
-//                imgOpposite.setImageBitmap(bitmap);
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
-//            }
-//        }
-//
-//    }
 
     private void startCropImageActivity(Uri imageUri,int requestCode) {
         CropImage.activity(imageUri)

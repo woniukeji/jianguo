@@ -4,8 +4,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,40 +171,65 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                     .transform(new GlideCircleTransform(mContext))
                     .into(holder.userHead);
 
-            //动画
-            final float count=job.getCount();//已有人数
-            final float sum=job.getSum();
-            holder.demoTv.setText(job.getCount()+"/"+job.getSum() );
-            if (job.getCount()>=job.getSum()){
-                holder.demoTv.setText("已招满");
+            int count=job.getCount();//已有人数
+            int sum=job.getSum();//总人数
+            if (sum<=10){
+                sum=sum+5;
+            }else if(sum>10){
+                sum= (int) (sum*1.4);
             }
-
-            final float score = count/sum*100;
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, score / 100f)
-//                    ObjectAnimator.ofFloat(holder.demoTv, "score", 0, score)
-            );
-            set.setDuration(800);
-            set.setInterpolator(new AccelerateInterpolator());
-            set.start();
-            if (type.equals("面议")||type.equals("义工")){
-
+            final String jobStatus;
+            if (sum-count>0) {
+                if (job.getStatus()==0){
+                    holder.imgStatus.setImageResource(R.mipmap.start);
+                    holder.tvStart.setText("正在招募");
+                    holder.tvSurplus.setVisibility(View.VISIBLE);
+                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("仅剩" + (sum - count) + "个名额");
+                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(mContext.getResources().getColor(R.color.red1));
+                    spannableStringBuilder.setSpan(foregroundColorSpan, 2, spannableStringBuilder.length()-3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                    holder.tvSurplus.setText(spannableStringBuilder);
+                    jobStatus= holder.tvSurplus.getText().toString();
+                }else {
+                    holder.imgStatus.setImageResource(R.mipmap.finish);
+                    holder.tvStart.setText("已经招满");
+                    holder.tvSurplus.setVisibility(View.GONE);
+                    jobStatus= "已经招满";
+                }
             }else {
-                type=money+ type;
+                holder.imgStatus.setBackgroundResource(R.mipmap.finish);
+                holder.tvStart.setText("已经招满");
+                holder.tvSurplus.setVisibility(View.GONE);
+                jobStatus= "已经招满";
             }
-            final String finalType = type;
-
+            holder.tvLook.setText(job.getLook()*7+"");
+            //动画
+//            float count=job.getCount();//已有人数
+//            float sum=job.getSum();
+//            holder.demoTv.setText(job.getCount()+"/"+job.getSum() );
+//            if (job.getCount()>=job.getSum()){
+//                holder.demoTv.setText("已招满");
+//            }
+//            if (job.getStatus()!=0){
+//                holder.imgPast.setVisibility(View.VISIBLE);
+//                holder.demoTv.setText("已招满");
+//            }else {
+//                holder.imgPast.setVisibility(View.GONE);
+//            }
+//            final float score = count/sum*100;
+//            AnimatorSet set = new AnimatorSet();
+//            set.playTogether(
+//                    ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, score / 100f)
+////                    ObjectAnimator.ofFloat(holder.demoTv, "score", 0, score)
+//            );
+//            set.setDuration(800);
+//            set.setInterpolator(new AccelerateInterpolator());
+//            set.start();
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(mContext, JobDetailActivity.class);
                     intent.putExtra("job",job.getId());
-                    intent.putExtra("jobbean",job);
-                    intent.putExtra("merchant",job.getMerchant_id());
-                    intent.putExtra("money",finalType);
-                    intent.putExtra("count", job.getCount()+"/"+job.getSum());
-                    intent.putExtra("mername", job.getName());
+                    intent.putExtra("jobStatus", jobStatus);
                     mContext.startActivity(intent);
                 }
             });
@@ -234,10 +263,14 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
         @BindView(R.id.img_sex) ImageView imgSex;
         @BindView(R.id.img_type) ImageView imgType;
         @BindView(R.id.img_pass) ImageView imgPast;
-        @BindView(R.id.demo_mpc) MagicProgressCircle demoMpc;
-        @BindView(R.id.demo_tv) AnimTextView demoTv;
+        @BindView(R.id.tv_look) TextView tvLook;
+//        @BindView(R.id.demo_mpc) MagicProgressCircle demoMpc;
+//        @BindView(R.id.demo_tv) AnimTextView demoTv;
         @BindView(R.id.rl_progess) RelativeLayout rlProgess;
-        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+//        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+@BindView(R.id.imgv_emoji) ImageView imgStatus;
+        @BindView(R.id.tv_surplus) TextView tvSurplus;
+        @BindView(R.id.tv_start) TextView tvStart;
         @BindView(R.id.tv_wages) TextView tvWages;
         @BindView(R.id.rl_job) RelativeLayout rlJob;
         @BindView(R.id.tv_pay_method) TextView tvPayMethod;

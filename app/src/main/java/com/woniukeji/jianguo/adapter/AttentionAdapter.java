@@ -156,7 +156,7 @@ public class AttentionAdapter extends RecyclerView.Adapter<AttentionAdapter.View
         @BindView(R.id.user_head) CircleImageView userHead;
         @BindView(R.id.business_name) TextView businessName;
         @BindView(R.id.tv_job_count) TextView tvJobCount;
-        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+//        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
         @BindView(R.id.rl_job) RelativeLayout rlJob;
         private ImageView animLoading;
         private TextView loading;

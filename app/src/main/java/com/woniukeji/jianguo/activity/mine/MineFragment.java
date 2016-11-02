@@ -142,12 +142,14 @@ public class MineFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-                if (status == 1 || status == 0) {//未认证 不可以查询信息
-                    Toast.makeText(getActivity(), "请先实名认证", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intentWallte = new Intent(getActivity().getApplicationContext(), WalletActivity.class);
-                    startActivity(intentWallte);
-                }
+                Intent intentWallte = new Intent(getActivity().getApplicationContext(), WalletActivity.class);
+                startActivity(intentWallte);
+//                if (status == 1 || status == 0) {//未认证 不可以查询信息
+//                    Toast.makeText(getActivity(), "请先实名认证", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Intent intentWallte = new Intent(getActivity().getApplicationContext(), WalletActivity.class);
+//                    startActivity(intentWallte);
+//                }
 
                 break;
             case R.id.ll_real_name:

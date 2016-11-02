@@ -2,11 +2,15 @@ package com.woniukeji.jianguo.activity.partjob;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +61,12 @@ public class JobDetailActivity extends BaseActivity {
     @BindView(R.id.tv_title) TextView tvTitle;
     @BindView(R.id.img_share) ImageView img_share;
     @BindView(R.id.user_head) ImageView userHead;
+    @BindView(R.id.img_pass) ImageView imgPass;
+
     @BindView(R.id.business_name) TextView businessName;
     @BindView(R.id.tv_wage) TextView tvWage;
     @BindView(R.id.tv_hiring_count) TextView tvHiringCount;
-    @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+//    @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
     @BindView(R.id.tv_release_date) TextView tvReleaseDate;
     @BindView(R.id.tv_work_location) TextView tvWorkLocation;
     @BindView(R.id.tv_location_detail) TextView tvLocationDetail;
@@ -104,6 +110,7 @@ public class JobDetailActivity extends BaseActivity {
     private JobInfo mJobInfo;
     private List<String> limitBeens = new ArrayList<>();
     private List<String> welfareBeens = new ArrayList<>();
+    private String strStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +212,7 @@ public class JobDetailActivity extends BaseActivity {
     public void initData() {
         Intent intent = getIntent();
         jobid = intent.getIntExtra("job", 0);
+        strStatus = intent.getStringExtra("jobStatus");
         loginId = (int) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_USERID, 0);
         resume = (String) SPUtils.getParam(mContext, Constants.LOGIN_INFO, Constants.SP_RESUMM, "");
         sex = (String) SPUtils.getParam(mContext, Constants.USER_INFO, Constants.USER_SEX, "");
@@ -349,10 +357,22 @@ public class JobDetailActivity extends BaseActivity {
                 return;
         }
         }
-        if (mJobInfo.getNowCount() >= mJobInfo.getFinallySum()) {
+        int sum=mJobInfo.getFinallySum();//总人数
+        if (sum<=10){
+            sum=sum+5;
+        }else if(sum>10){
+            sum= (int) (sum*1.4);
+        }
+        if (mJobInfo.getUser_count() >= sum) {
             showShortToast("该兼职已报满，再看看其它的吧！");
             return;
         }
+        if (mJobInfo.getStatus() != 0) {
+            showShortToast("该兼职已报满，再看看其它的吧！");
+            return;
+        }
+
+
         SignUpPopuWin signUpPopuWin=new SignUpPopuWin(mContext,mHandler,jobid,mJobInfo);
         signUpPopuWin.showShareWindow();
         Rect rect = new Rect();
@@ -388,9 +408,19 @@ public class JobDetailActivity extends BaseActivity {
         tvCollectionSites.setText(jobInfo.getSet_place());
         tvCollectionTime.setText(setTime);
         tvWage.setText(jobInfo.getJob_money());
-        tvHiringCount.setText(jobInfo.getNowCount() + "/" + jobInfo.getFinallySum());
+     if (strStatus!=null&&!strStatus.equals("")){
+         if (!strStatus.contains("招满")){
+             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(strStatus);
+             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.red1));
+             spannableStringBuilder.setSpan(foregroundColorSpan, 2, spannableStringBuilder.length()-3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+             tvHiringCount.setText(spannableStringBuilder);
+         }else {
+             tvHiringCount.setText(strStatus);
+         }
+     }
+
         if (jobInfo.getStatus() != 0) {
-            tvSignup.setText("该兼职已过期");
+            tvSignup.setText("已报满");
             tvSignup.setBackgroundResource(R.color.gray);
             tvSignup.setClickable(false);
         } else {
@@ -400,7 +430,7 @@ public class JobDetailActivity extends BaseActivity {
                 tvSignup.setClickable(false);
             }
         }
-        tvPayMethod.setText(jobInfo.getMode());
+
         //期限（0=月结，1=周结，2=日结，3=小时结）
         if (jobInfo.getIsFavorite().equals("0")) {
             Drawable drawable = getResources().getDrawable(R.drawable.icon_collection_normal);
@@ -430,7 +460,15 @@ public class JobDetailActivity extends BaseActivity {
         tvReleaseDate.setText(jobInfo.getReg_date().substring(0, 10) + " 发布");
         //商家信息
         tvCompanyName.setText(jobInfo.getMerchant_name());
-
+        if (jobInfo.getMerchant_name().contains("合作商家")){
+            imgPass.setVisibility(View.GONE);
+            tvJobsCount.setVisibility(View.VISIBLE);
+            tvPayMethod.setText("线下结算");
+        }else {
+            imgPass.setVisibility(View.VISIBLE);
+            tvJobsCount.setVisibility(View.GONE);
+            tvPayMethod.setText(jobInfo.getMode());
+        }
         if (jobInfo.getLimit() != null && jobInfo.getLimit().size() > 0) {
             limitBeens.addAll(jobInfo.getLimit());
             requireAdapter.notifyDataChanged();

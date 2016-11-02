@@ -130,7 +130,10 @@ public class WallteInAdapter extends RecyclerView.Adapter<WallteInAdapter.ViewHo
             }else {
                 holder.tvContentRemark.setText(job.getRemarks());
             }
-            holder.tvWorkDate.setText(DateUtils.getTime(Long.valueOf(job.getJob_start()),Long.valueOf( job.getJob_stop())));
+            if (job.getJob_start()!=null&&job.getJob_stop()!=null){
+                holder.tvWorkDate.setText(DateUtils.getTime(Long.valueOf(job.getJob_start()),Long.valueOf( job.getJob_stop())));
+            }
+//            holder.tvWorkDate.setText(DateUtils.getTime(Long.valueOf(job.getJob_start()),Long.valueOf( job.getJob_stop())));
             //动画
 //            float count = job.getCount();//已有人数
 //            float sum = job.getSum();

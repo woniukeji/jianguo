@@ -4,8 +4,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,20 +169,33 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                     .placeholder(R.mipmap.icon_head_defult)
                     .error(R.mipmap.icon_head_defult)
                     .into(holder.userHead);
-
-            //动画
-            float count=job.getCount();//已有人数
-            float sum=job.getSum();
-            holder.demoTv.setText(job.getCount()+"/"+job.getSum() );
-            final float score = count/sum*100;
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, score / 100f)
-//                    ObjectAnimator.ofFloat(holder.demoTv, "score", 0, score)
-            );
-            set.setDuration(800);
-            set.setInterpolator(new AccelerateInterpolator());
-            set.start();
+            holder.tvLook.setText(job.getLook()*7+"");
+            int count=job.getCount();//已有人数
+            int sum=job.getSum();//总人数
+            if (sum<=10){
+                sum=sum+5;
+            }else if(sum>10){
+                sum= (int) (sum*1.4);
+            }
+            if (sum-count>0) {
+                if (job.getStatus()==0){
+                    holder.imgStatus.setImageResource(R.mipmap.start);
+                    holder.tvStart.setText("正在招募");
+                    holder.tvSurplus.setVisibility(View.VISIBLE);
+                    SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder("仅剩"+(sum-count)+"个名额");
+                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.RED);
+                    spannableStringBuilder1.setSpan(foregroundColorSpan, 2, spannableStringBuilder1.length()-3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                    holder.tvSurplus.setText(spannableStringBuilder1);
+                }else {
+                    holder.imgStatus.setImageResource(R.mipmap.finish);
+                    holder.tvStart.setText("已经招满");
+                    holder.tvSurplus.setVisibility(View.GONE);
+                }
+            }else {
+                holder.imgStatus.setBackgroundResource(R.mipmap.finish);
+                holder.tvStart.setText("已经招满");
+                holder.tvSurplus.setVisibility(View.GONE);
+            }
             if (type.equals("面议")||type.equals("义工")){
             }else {
 //                type=Integer.valueOf(String.valueOf(job.getMoney()))+ type;
@@ -250,10 +267,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         @BindView(R.id.img_local) ImageView imgLocal;
         @BindView(R.id.img_sex) ImageView imgSex;
         @BindView(R.id.img_type) ImageView imgType;
-        @BindView(R.id.demo_mpc) MagicProgressCircle demoMpc;
-        @BindView(R.id.demo_tv) AnimTextView demoTv;
         @BindView(R.id.rl_progess) RelativeLayout rlProgess;
-        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+        @BindView(R.id.tv_look) TextView tvLook;
+//        @BindView(R.id.tv_enroll_num) TextView tvEnrollNum;
+        @BindView(R.id.imgv_emoji) ImageView imgStatus;
+        @BindView(R.id.tv_surplus) TextView tvSurplus;
+        @BindView(R.id.tv_start) TextView tvStart;
         @BindView(R.id.tv_wages) TextView tvWages;
         @BindView(R.id.rl_job) RelativeLayout rlJob;
         @BindView(R.id.tv_pay_method) TextView tvPayMethod;

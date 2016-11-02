@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="108dp"
     android:background="@color/white"
-    android:layout_marginTop="1dp"
+    android:layout_marginTop="1px"
     >
 
     <ImageView
@@ -23,64 +23,103 @@
 
     <RelativeLayout
         android:id="@+id/rl_progess"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center|right"
         android:layout_marginRight="15dp"
         >
 
-        <com.liulishuo.magicprogresswidget.MagicProgressCircle
-            android:id="@+id/demo_mpc"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:mpc_stroke_width="3dp"
-            app:mpc_start_color="#5edfd9"
-            app:mpc_end_color="#5edfd9"
-           app:mpc_default_color="#f3f4f3"
-           />
 
 
-        <com.woniukeji.jianguo.widget.AnimTextView
-            android:id="@+id/demo_tv"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/ll_zhaopin"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="15/20"
-            android:textSize="9dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+            android:gravity="center|right"
+            android:layout_alignParentTop="true"
+           >
+            <ImageView
+                android:id="@+id/imgv_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/start"
+                />
+
+            <TextView
+                android:id="@+id/tv_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在招募"
+                android:gravity="top"
+                android:textSize="14dp"
+                android:layout_marginLeft="5dp"
+                />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|right"
+            android:text="仅剩3个名额"
+            android:textColor="#9b9b9b"
+            android:layout_below="@+id/ll_zhaopin"
+            android:layout_marginTop="5dp"
+            android:textSize="13dp"
+            android:visibility="visible"
+            android:id="@+id/tv_surplus"/>
+        <TextView
+            android:layout_below="@id/tv_surplus"
+            android:id="@+id/tv_wages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1800/月"
+            android:gravity="center|right"
+            android:layout_marginTop="5dp"
+            android:textSize="16dp"
+            android:textColor="#f87c7c"
+            android:layout_alignRight="@+id/tv_surplus"
+            android:layout_alignEnd="@+id/tv_surplus"/>
+        <!--<com.liulishuo.magicprogresswidget.MagicProgressCircle-->
+            <!--android:id="@+id/demo_mpc"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--app:mpc_stroke_width="3dp"-->
+            <!--app:mpc_start_color="#5edfd9"-->
+            <!--app:mpc_end_color="#5edfd9"-->
+           <!--app:mpc_default_color="#f3f4f3"-->
+           <!--/>-->
+
+
+        <!--<com.woniukeji.jianguo.widget.AnimTextView-->
+            <!--android:id="@+id/demo_tv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="15/20"-->
+            <!--android:textSize="9dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_centerHorizontal="true"/>-->
 
     </RelativeLayout>
-    <TextView
-        android:id="@+id/tv_enroll_num"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:text="18/25"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="18dp"
-        android:textSize="10sp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:textColor="#f87c7c"
-        />
-    <TextView
-        android:id="@+id/tv_wages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="14dp"
-        android:text="1800/月"
-        android:layout_marginRight="18dp"
-        android:textSize="14dp"
-        android:textColor="#f87c7c"
-        />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_enroll_num"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:text="18/25"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginRight="18dp"-->
+        <!--android:textSize="10sp"-->
+        <!--android:gravity="center"-->
+        <!--android:visibility="gone"-->
+        <!--android:textColor="#f87c7c"-->
+        <!--/>-->
+
     <TextView
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2px"
         android:background="@color/gray_btn_bg_color"
         />
 
@@ -106,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-            android:text="是干什么的啊,kaibinsiji凯宾斯基"
+            android:text="兼职名称"
             android:gravity="center|left"
             android:layout_gravity="center"
             android:maxEms="9"
@@ -167,6 +206,25 @@
                 android:textColor="#9b9b9b"
                 android:gravity="center"
 
+                />
+            <ImageView
+                android:id="@+id/img_look"
+                android:layout_toRightOf="@id/tv_pay_method"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@mipmap/look"
+                android:layout_marginLeft="5dp"
+                />
+            <TextView
+                android:id="@+id/tv_look"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/img_look"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="123"
+                android:textSize="13dp"
+                android:textColor="#9b9b9b"
+                android:gravity="center"
                 />
         </RelativeLayout>
 
