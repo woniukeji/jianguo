@@ -210,6 +210,7 @@ public class HomeJobAdapter extends RecyclerView.Adapter<HomeJobAdapter.ViewHold
             }else {
                 holder.imgStatus.setImageResource(R.mipmap.finish);
                 holder.tvStart.setText("已经招满");
+                holder.tvStart.setTextColor(mContext.getResources().getColor(R.color.gray));
                 holder.tvSurplus.setVisibility(View.GONE);
                 jobStatus= "已经招满";
             }

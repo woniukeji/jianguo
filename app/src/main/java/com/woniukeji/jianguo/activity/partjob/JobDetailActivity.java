@@ -463,11 +463,15 @@ public class JobDetailActivity extends BaseActivity {
         if (jobInfo.getMerchant_name().contains("合作商家")){
             imgPass.setVisibility(View.GONE);
             tvJobsCount.setVisibility(View.VISIBLE);
-            tvPayMethod.setText("线下结算");
+            tvPayMethod.setText(jobInfo.getMode()+"（商家自结）");
+        }else if(jobInfo.getPermission()!=0){
+            imgPass.setVisibility(View.GONE);
+            tvJobsCount.setVisibility(View.GONE);
+            tvPayMethod.setText(jobInfo.getMode()+"（商家自结）");
         }else {
             imgPass.setVisibility(View.VISIBLE);
             tvJobsCount.setVisibility(View.GONE);
-            tvPayMethod.setText(jobInfo.getMode());
+            tvPayMethod.setText(jobInfo.getMode()+"（平台结算）");
         }
         if (jobInfo.getLimit() != null && jobInfo.getLimit().size() > 0) {
             limitBeens.addAll(jobInfo.getLimit());

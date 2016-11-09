@@ -60,7 +60,7 @@ public class JobInfo {
         private int user_count;
 
 
-    private String merchant_name;
+        private String merchant_name;
         private String merchant_image;
         private int merchant_id;
         private int merchant_LogId;
@@ -71,9 +71,18 @@ public class JobInfo {
         private String isEnroll;
         private String isFavorite;
         private List<String> limit;
-        private List<String> welfare;
-        private String merchantTel;
 
+    public int getPermission() {
+        return permission;
+    }
+
+    public void setPermission(int permission) {
+        this.permission = permission;
+    }
+
+    private List<String> welfare;
+        private String merchantTel;
+    private int permission;////商家权限（0是内部,1是外部商家，2是个人商户）
         public String getMerchantTel() {
             return merchantTel;
         }

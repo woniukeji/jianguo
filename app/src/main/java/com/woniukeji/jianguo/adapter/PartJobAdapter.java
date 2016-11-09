@@ -183,6 +183,7 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                 if (job.getStatus()==0){
                     holder.imgStatus.setImageResource(R.mipmap.start);
                     holder.tvStart.setText("正在招募");
+                    holder.tvStart.setTextColor(mContext.getResources().getColor(R.color.red1));
                     holder.tvSurplus.setVisibility(View.VISIBLE);
                     SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("仅剩" + (sum - count) + "个名额");
                     ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(mContext.getResources().getColor(R.color.red1));
@@ -193,12 +194,14 @@ public class PartJobAdapter extends RecyclerView.Adapter<PartJobAdapter.ViewHold
                     holder.imgStatus.setImageResource(R.mipmap.finish);
                     holder.tvStart.setText("已经招满");
                     holder.tvSurplus.setVisibility(View.GONE);
+                    holder.tvStart.setTextColor(mContext.getResources().getColor(R.color.gray));
                     jobStatus= "已经招满";
                 }
             }else {
                 holder.imgStatus.setBackgroundResource(R.mipmap.finish);
                 holder.tvStart.setText("已经招满");
                 holder.tvSurplus.setVisibility(View.GONE);
+                holder.tvStart.setTextColor(mContext.getResources().getColor(R.color.gray));
                 jobStatus= "已经招满";
             }
             holder.tvLook.setText(job.getLook()*7+"");

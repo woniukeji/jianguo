@@ -204,7 +204,7 @@ public class PasswordLoginFragment extends BaseFragment {
             if (JPushInterface.isPushStopped(getActivity().getApplicationContext())) {
                 JPushInterface.resumePush(getActivity().getApplicationContext());
             }
-            //登陆leancloud服务器 给极光设置别名
+            //登陆leancloud服务器
             LCChatKit.getInstance().open(String.valueOf(user.getT_user_login().getId()), new AVIMClientCallback() {
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
